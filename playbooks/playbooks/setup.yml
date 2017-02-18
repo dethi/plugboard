@@ -1,0 +1,6 @@
+---
+- name: Setup of server
+  user: root
+  hosts: all
+  roles:
+    - setup

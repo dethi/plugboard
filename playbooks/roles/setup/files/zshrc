@@ -1,0 +1,87 @@
+#########################
+# ZSH Config for Server #
+#########################
+
+export EDITOR=vim
+export HISTFILE=~/.zsh_history
+export HISTSIZE=4096
+export SAVEHIST=4096
+
+# Deconnect after 10 min of inactivity
+[ "$USER" = "root" ] && export TMOUT=600
+
+export PAGER="less"
+export LESSCHARSET="utf-8"
+export LESS_TERMCAP_mb=$(printf "\e[1;37m")
+export LESS_TERMCAP_md=$(printf "\e[1;31m")
+export LESS_TERMCAP_me=$(printf "\e[0m")
+export LESS_TERMCAP_se=$(printf "\e[0m")
+export LESS_TERMCAP_so=$(printf "\e[1;47;30m")
+export LESS_TERMCAP_ue=$(printf "\e[0m")
+export LESS_TERMCAP_us=$(printf "\e[1;32m")
+
+setopt appendhistory nomatch
+setopt extended_glob
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt sh_word_split # Do not quote expanded vars
+unsetopt beep notify
+
+alias ls='ls --color=auto -F -h'
+alias ll='ls -l'
+alias la='ls -la'
+alias ..='cd ..'
+alias d='docker'
+alias gst='git status'
+alias gd='git diff'
+alias ga='git add'
+alias df='df -h'
+alias reload="source ~/.zshrc"
+
+autoload -U colors && colors
+
+zstyle ':completion:*:default' list-colors ''
+
+MD5CMD=`(which md5sum > /dev/null && echo "md5sum") ||
+(which md5 > /dev/null && echo "md5") || echo "cat"`
+
+case `echo $(hostname) | $MD5CMD | sed -E 's/^(.).*$/\1/'` in
+    "b"|"6")
+        HOST_COLOR="red" ;;
+    "1"|"8"|"7")
+        HOST_COLOR="magenta" ;;
+    "5"|"4"|"a")
+        HOST_COLOR="yellow" ;;
+    "2"|"9"|"d")
+        HOST_COLOR="blue" ;;
+    "f"|"c"|"e")
+        HOST_COLOR="cyan" ;;
+    "3"|"0"|"f")
+        HOST_COLOR="green" ;;
+    *)
+        HOST_COLOR="white" ;;
+esac
+
+PROMPT="%(!.%F{red}%B.%F{white})%n@%F{${HOST_COLOR}}%m%(!.%b.)%f:%F{cyan}%~%f%(?.%F{green}.%B%F{red})%#%f%b "
+setopt nopromptcr
+
+export CLICOLOR="YES"
+export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
+which dircolors > /dev/null && eval `dircolors`
+
+# Fix keyboard
+bindkey -e
+bindkey '^W' vi-backward-kill-word
+bindkey "^[OH" beginning-of-line
+bindkey "^[OF" end-of-line
+bindkey "^[[3~" delete-char
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey '[D' emacs-backward-word
+bindkey '[C' emacs-forward-word
+
+for confFiles in ~/.myzsh ~/.zshrc.local ~/.zshrc_functions; do
+    [ -r "$confFiles" ] && source "$confFiles"
+done
+
+autoload -U compinit && compinit
