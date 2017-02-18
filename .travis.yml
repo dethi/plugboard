@@ -1,0 +1,12 @@
+dist: trusty
+sudo: false
+language: php
+php:
+  - '7.1'
+before_install:
+  - pip install --user --upgrade ansible
+install: true
+before_script:
+  - phpenv config-rm xdebug.ini
+script:
+  - ( cd playbooks && ./tests.sh )
