@@ -4,3 +4,4 @@
   hosts: all
   roles:
     - setup
+    - firewall
