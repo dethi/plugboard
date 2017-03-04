@@ -7,3 +7,4 @@
     - firewall
     - nodejs
     - yarn
+    - nginx
