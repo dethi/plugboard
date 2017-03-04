@@ -38,7 +38,7 @@ class Grid {
 	forEach(func, context) {
 		for (let y = 0; y < this.height; y++)
 			for (let x = 0; x < this.width; x++) {
-				let value = this.space[x + this.width * y];
+				const value = this.space[x + this.width * y];
 				if (value !== null)
 					func.call(context, value, new Vector(x, y));
 			}
@@ -60,14 +60,13 @@ const directionNames = 'n ne e se s sw w nw'.split(' ');
 
 function elementFromChar(legend, ch) {
 	if (ch === ' ') return null;
-	let element = new legend[ch]();
+	const element = new legend[ch]();
 	element.originChar = ch;
 	return element;
 }
 
 function charFromElement(element) {
-	if (element === null) return ' ';
-	return element.originChar;
+	return (element === null) ? ' ' : element.originChar;
 }
 
 function dirPlus(dir, n) {
@@ -88,7 +87,7 @@ class BouncingCritter {
 		if (view.look(this.direction) != ' ')
     		this.direction = view.find(' ') || ' ';
 
-		const space = this.direction
+		const space = this.direction;
 		if (this.energy > 60 && space) return { type: 'reproduce', direction: space };
 
 		const plants = view.findAll('*');
@@ -245,11 +244,7 @@ class View {
 
 	look(dir) {
 		const target = this.vector.plus(directions[dir]);
-		if (this.world.grid.isInside(target)){
-			return charFromElement(this.world.grid.get(target));
-		} else {
-			return "#";
-		}
+		return (this.world.grid.isInside(target)) ? charFromElement(this.world.grid.get(target)) : '#';
 	}
 
 	findAll(ch) {
@@ -261,8 +256,7 @@ class View {
 
 	find(ch) {
 		const found = this.findAll(ch);
-		if (found.length === 0) return null;
-		return randomElementInArray(found);
+		return (found.length === 0) ? null : randomElementInArray(found)
 	}
 }
 
