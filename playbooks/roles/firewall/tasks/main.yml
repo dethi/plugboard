@@ -1,4 +1,9 @@
 ---
+- name: copy app profiles
+  copy:
+    src: applications.d
+    dest: /etc/ufw/
+
 - name: allow SSH
   ufw:
     rule: allow
@@ -9,6 +14,11 @@
     rule: limit
     port: ssh
     proto: tcp
+
+- name: allow HTTP/HTTPS
+  ufw:
+    rule: allow
+    name: Nginx Full
 
 - name: set default incoming policy to deny
   ufw:
