@@ -357,10 +357,11 @@ function runGame(plans, Display) {
 			console.log('You loose !');
 			return;
 		}
-		currentLive--;
 		runLevel(new Level(plans[n]), Display, (status) => {
-			if (status === 'lost') startLevel(n);
-			else if (n < plans.length - 1) startLevel(n + 1);
+			if (status === 'lost') {
+				currentLive--;
+				startLevel(n);
+			} else if (n < plans.length - 1) startLevel(n + 1);
 			else console.log('You win !');
 		})
 	}
