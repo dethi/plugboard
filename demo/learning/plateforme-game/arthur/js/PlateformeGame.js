@@ -160,7 +160,7 @@ class Level {
 			this.grid.push(gridLine);
 		});
 
-		this.player = this.actors.filter((actor) => actor.type === 'player')[0];
+		this.player = this.actors.find((actor) => actor.type === 'player');
 
 		this.status = null;
 		this.finishDelay = null;
@@ -185,6 +185,8 @@ class Level {
 				if (fieldType) return fieldType;
 			}
 		}
+
+		return null;
 	}
 
 	actorAt(actor) {
@@ -197,6 +199,8 @@ class Level {
 				&& actor.pos.y < other.pos.y + other.size.y)
 				return other;
 		}
+
+		return null;
 	}
 
 	animate(step, keys) {
@@ -241,11 +245,11 @@ class DOMDisplay {
 
 	drawBackground() {
 		const table = elt('table', 'background');
-		table.style.width = this.level.width * scale + 'px';
+		table.style.width = `${this.level.width * scale}px`;
 
 		this.level.grid.forEach((raw) => {
 			const rowElt = table.appendChild(elt('tr'));
-			rowElt.style.height = scale + 'px';
+			rowElt.style.height = `${scale}px`;
 			raw.forEach((type) => rowElt.appendChild(elt('td', type)));
 		});
 
@@ -256,10 +260,10 @@ class DOMDisplay {
 		const wrap = elt('div');
 		this.level.actors.forEach((actor) => {
 			const rect = wrap.appendChild(elt('div', `actor ${actor.type}`));
-			rect.style.width = actor.size.x * scale + 'px';
-			rect.style.height = actor.size.y * scale + 'px';
-			rect.style.left = actor.pos.x * scale + 'px';
-			rect.style.top = actor.pos.y * scale + 'px';
+			rect.style.width = `${actor.size.x * scale}px`;
+			rect.style.height = `${actor.size.y * scale}px`;
+			rect.style.left = `${actor.pos.x * scale}px`;
+			rect.style.top = `${actor.pos.y * scale}px`;
 		});
 
 		return wrap;
