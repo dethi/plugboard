@@ -19,4 +19,4 @@
     state: present
 
 - name: install Node.js
-  apt: name=nodejs state=latest update_cache=yes
+  apt: name=nodejs state=latest

@@ -1,13 +1,9 @@
 ---
-- name: install Nginx
+- name: install nginx
   apt: name=nginx state=latest
+  tags: nginx
 
-- name: enable Nginx
-  systemd:
-    name: nginx
+- name: enable and start nginx
+  systemd: name=nginx state=started enabled=yes
     enabled: yes
-
-- name: start Nginx
-  systemd:
-    name: nginx
-    state: started
+  tags: nginx
