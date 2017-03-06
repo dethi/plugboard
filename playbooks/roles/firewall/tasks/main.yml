@@ -1,8 +1,6 @@
 ---
 - name: copy app profiles
-  copy:
-    src: applications.d
-    dest: /etc/ufw/
+  copy: src=applications.d dest=/etc/ufw/
 
 - name: allow SSH
   ufw:
@@ -31,9 +29,7 @@
     direction: outgoing
 
 - name: enable logging
-  ufw:
-    logging: low
+  ufw: logging=low
 
 - name: enable ufw
-  ufw:
-    state: enabled
+  ufw: state=enabled

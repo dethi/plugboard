@@ -14,4 +14,4 @@
     state: present
 
 - name: install Yarn
-  apt: name=yarn state=latest update_cache=yes
+  apt: name=yarn state=latest
