@@ -5,6 +5,7 @@
   roles:
     - common
     - firewall
+    - ntp
     - nodejs
     - yarn
     - nginx

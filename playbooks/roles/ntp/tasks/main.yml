@@ -1,0 +1,14 @@
+---
+- name: install ntp
+  apt: name=ntp state=latest
+  tags: ntp
+
+- name: copy ntp.conf
+  copy: src=ntp.conf dest=/etc/ntp.conf
+  notify:
+    - restart ntp
+  tags: ntp
+
+- name: start and enable ntp
+  systemd: name=ntp state=started enabled=yes
+  tags: ntp
