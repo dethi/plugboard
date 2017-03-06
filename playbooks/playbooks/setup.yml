@@ -3,7 +3,7 @@
   user: root
   hosts: all
   roles:
-    - setup
+    - common
     - firewall
     - nodejs
     - yarn
