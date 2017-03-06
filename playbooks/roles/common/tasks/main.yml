@@ -19,5 +19,8 @@
 - name: copy zshrc
   copy: src=zshrc dest=/root/.zshrc
 
+- name: copy vimrc
+  copy: src=vimrc dest=/root/.vimrc
+
 - name: set default shell to zsh
   user: name=root shell=/bin/zsh
