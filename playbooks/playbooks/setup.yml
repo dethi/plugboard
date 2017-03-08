@@ -1,0 +1,11 @@
+---
+- name: Setup of server
+  user: root
+  hosts: all
+  roles:
+    - common
+    - firewall
+    - ntp
+    - nodejs
+    - yarn
+    - nginx

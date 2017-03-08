@@ -1,0 +1,26 @@
+---
+- name: system update
+  apt:
+    update_cache: yes
+    cache_valid_time: '{{apt_cache_valid_time}}'
+    upgrade: dist
+
+- name: install general packages
+  apt: name={{item}} state=latest
+  with_items:
+    - less
+    - tree
+    - htop
+    - zsh
+    - vim
+    - git
+    - python
+
+- name: copy zshrc
+  copy: src=zshrc dest=/root/.zshrc
+
+- name: copy vimrc
+  copy: src=vimrc dest=/root/.vimrc
+
+- name: set default shell to zsh
+  user: name=root shell=/bin/zsh

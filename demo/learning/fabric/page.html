@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+
+    <script src="lib/fabric.js"></script>
+    <script>
+      const canvas = new fabric.Canvas('canvas');
+
+      const grid = 30;
+      const rect = new fabric.Rect({
+        top : grid,
+        left : grid,
+        width : grid,
+        height : grid,
+        fill : 'red',
+        hasControls: false
+      });
+
+      const leftMin = grid;
+      const leftMax = 300 - 2*grid;
+      const topMin = grid;
+      const topMax = 300 - 2*grid;
+
+      canvas.on('object:moving', options => {
+        let left = Math.round(options.target.left / grid) * grid;
+        left = Math.max(Math.min(left, leftMax), leftMin);
+
+        let top = Math.round(options.target.top / grid) * grid;
+        top = Math.max(Math.min(top, topMax), topMin);
+
+        options.target.set({ left, top });
+      });
+
+      const gridsize = 5;
+      for(let x = 1; x < (canvas.width / gridsize); x++)
+      {
+        canvas.add(new fabric.Line([grid*x, 0, grid*x, 300],
+          { stroke: "#000000", strokeWidth: 1, selectable:false, strokeDashArray: [5, 5]}));
+        canvas.add(new fabric.Line([0, grid*x, 300, grid*x],
+          { stroke: "#000000", strokeWidth: 1, selectable:false, strokeDashArray: [5, 5]}));
+      }
+      canvas.add(rect);
+    </script>
+  </body>
+</html>

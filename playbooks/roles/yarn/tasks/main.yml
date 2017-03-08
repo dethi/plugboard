@@ -1,0 +1,17 @@
+---
+- name: ensure APT can use HTTPS transport
+  apt: name=apt-transport-https state=installed
+
+- name: add APT key for Yarn
+  apt_key:
+    url: 'https://dl.yarnpkg.com/debian/pubkey.gpg'
+    id: 86E50310
+    state: present
+
+- name: add Yarn deb repo
+  apt_repository:
+    repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
+    state: present
+
+- name: install Yarn
+  apt: name=yarn state=latest

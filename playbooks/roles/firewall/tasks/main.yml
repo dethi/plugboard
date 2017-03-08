@@ -1,0 +1,35 @@
+---
+- name: copy app profiles
+  copy: src=applications.d dest=/etc/ufw/
+
+- name: allow SSH
+  ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: limit SSH connections
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+- name: allow HTTP/HTTPS
+  ufw:
+    rule: allow
+    name: Nginx Full
+
+- name: set default incoming policy to deny
+  ufw:
+    policy: deny
+    direction: incoming
+
+- name: set default outgoing policy to allow
+  ufw:
+    policy: allow
+    direction: outgoing
+
+- name: enable logging
+  ufw: logging=low
+
+- name: enable ufw
+  ufw: state=enabled

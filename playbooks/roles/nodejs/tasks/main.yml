@@ -1,0 +1,22 @@
+---
+- name: ensure APT can use HTTPS transport
+  apt: name=apt-transport-https state=installed
+
+- name: add APT key for NodeSource
+  apt_key:
+    url: 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key'
+    id: 68576280
+    state: present
+
+- name: add NodeSource deb repo
+  apt_repository:
+    repo: 'deb https://deb.nodesource.com/{{nodejs_version}} {{ansible_distribution_release}} stable main'
+    state: present
+
+- name: add NodeSource deb-src repo
+  apt_repository:
+    repo: 'deb-src https://deb.nodesource.com/{{nodejs_version}} {{ansible_distribution_release}} main'
+    state: present
+
+- name: install Node.js
+  apt: name=nodejs state=latest
