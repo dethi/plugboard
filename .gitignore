@@ -10,6 +10,7 @@
 /public/hot
 /public/js
 /public/css
+/public/mix-manifest.json
 /storage/*.key
 
 # Ansible
