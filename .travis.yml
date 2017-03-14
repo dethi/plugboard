@@ -4,9 +4,26 @@ language: php
 php:
   - '7.1'
 before_install:
+  - cp .env.example .env
+  - mkdir -p bootstrap/cache
+  - mkdir -p storage/app/public
+  - mkdir -p storage/framework/cache
+  - mkdir -p storage/framework/sessions
+  - mkdir -p storage/framework/views
+  - mkdir -p storage/logs
+install:
   - pip install --user --upgrade ansible
-install: true
+  - composer install --prefer-dist
+  - npm install -g yarn
+  - yarn
 before_script:
-  - phpenv config-rm xdebug.ini
+  - php artisan key:generate
+  - yarn run dev
 script:
   - ( cd playbooks && ./tests.sh )
+  - phpunit
+cache:
+  pip: true
+  directories:
+    - $HOME/.yarn-cache
+    - $HOME/.composer/cache
