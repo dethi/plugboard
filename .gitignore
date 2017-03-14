@@ -1,11 +1,19 @@
-vendor/
-node_modules/
+/vendor
+/node_modules
 
-# Laravel 5 & Lumen specific
-bootstrap/cache/
+# Laravel 5
+/bootstrap/cache
 .env.*.php
 .env.php
 .env
+/public/storage
+/public/hot
+/public/js
+/public/css
+/storage/*.key
 
 # Ansible
 *.retry
+
+# Idea
+/.idea
