@@ -7,6 +7,10 @@
     - python-mysqldb
   tags: mysql
 
+- name: enable and start MySQL
+  systemd: name=mysql state=started enabled=yes
+  tags: mysql
+
 - name: update root password
   mysql_user:
     name: root
