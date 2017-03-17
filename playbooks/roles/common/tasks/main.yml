@@ -15,12 +15,14 @@
     - vim
     - git
     - python
+    - pwgen
 
-- name: copy zshrc
-  copy: src=zshrc dest=/root/.zshrc
-
-- name: copy vimrc
-  copy: src=vimrc dest=/root/.vimrc
+- name: copy confs
+  copy: src={{item}} dest=~/.{{item}}
+  with_items:
+    - zshrc
+    - zshrc_functions
+    - vimrc
 
 - name: set default shell to zsh
-  user: name=root shell=/bin/zsh
+  user: name={{ansible_user}} shell=/bin/zsh
