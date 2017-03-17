@@ -1,0 +1,9 @@
+randpw() {
+    pw_len=17
+    if hash pwgen 2>/dev/null; then
+        pwgen -s -y $pw_len 10
+    else
+        < /dev/urandom tr -dc '[$%&*+-/:<=>?!@_{}[:alnum:]]' | head -c$pew_len
+        echo
+    fi
+}
