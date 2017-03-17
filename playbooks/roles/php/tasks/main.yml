@@ -1,0 +1,12 @@
+---
+- name: install php7-fpm
+  apt: name=php state=latest
+  tags: php
+
+- name: install php7-mysql
+  apt: name=php-mysql state=latest
+  tags: php
+
+- name: enable and start php7-fpm
+  systemd: name=php7.0-fpm state=started enabled=yes
+  tags: php
