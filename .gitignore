@@ -15,6 +15,7 @@
 
 # Ansible
 *.retry
+ansible_vault
 
 # Idea
 /.idea
