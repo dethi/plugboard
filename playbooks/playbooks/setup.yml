@@ -6,6 +6,7 @@
     - common
     - firewall
     - ntp
+    - letsencrypt
     - nodejs
     - yarn
     - php
