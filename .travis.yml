@@ -2,28 +2,32 @@ dist: trusty
 sudo: false
 language: php
 php:
-  - '7.1'
+- '7.1'
 before_install:
-  - cp .env.example .env
-  - mkdir -p bootstrap/cache
-  - mkdir -p storage/app/public
-  - mkdir -p storage/framework/cache
-  - mkdir -p storage/framework/sessions
-  - mkdir -p storage/framework/views
-  - mkdir -p storage/logs
+- cp .env.example .env
+- mkdir -p bootstrap/cache
+- mkdir -p storage/app/public
+- mkdir -p storage/framework/cache
+- mkdir -p storage/framework/sessions
+- mkdir -p storage/framework/views
+- mkdir -p storage/logs
 install:
-  - pip install --user --upgrade ansible
-  - composer install --prefer-dist
-  - npm install -g yarn
-  - yarn
+- pip install --user --upgrade ansible
+- composer install --prefer-dist
+- npm install -g yarn
+- yarn
 before_script:
-  - php artisan key:generate
-  - yarn run dev
+- php artisan key:generate
+- yarn run dev
+- echo $ANSIBLE_VAULT > playbooks/ansible_vault
 script:
-  - ( cd playbooks && ./tests.sh )
-  - phpunit
+- "( cd playbooks && ./tests.sh )"
+- phpunit
 cache:
   pip: true
   directories:
-    - $HOME/.yarn-cache
-    - $HOME/.composer/cache
+  - "$HOME/.yarn-cache"
+  - "$HOME/.composer/cache"
+env:
+  global:
+    secure: du8cIaQlYDoo8/zPLK2vWbNt3l+4q4fz217ern0mg08YtJqftMuA43MXs5YogiJeKSRtz8gmpGa+FSo1m+AkCbshmS0Ha48mQ8V4l99ghR8GSxWgPAtuZaMFu4gidnrpNEcXBv8OZ6hatHTG4TV35hiX+CK9Qo1qkPFvWILU+Ln5eGyLj+qbvbokTjf4wwLTiQP5wC0p7AP5Y/DNzV2XnAe0jrmyX/OLnzRlFiKtwb6E1u0QHJ6GFYt7uR8RS/1GLFImajlJgDhVa3W6U0WWcMZPQhA/iMLHN25U8BNbd+TrfLIw/TTl+OCqI0aQosXbVl6eauDK6R9gy1HOeaEQHZQ6GRwEx8cVP89J1eiHyjjGZk6IettJhasvCgr1k+0b9d98qsCG5YPZ/HXbkxT1JQGjIwaDRVcUeRIaYwigf0fwGkJEDsbP2Lpr2UYK6Rya2tecPEOGQbWDGZHGWIv9F3szRMssYEj1S+MkL8euTqbXZ7yjuM+Bs+6lN8Miey8ywOEjtb2wq1B7QSN14K66Lq6hXbzgYEzSVaNKEa5UFF2uRF81bpq4ZVUObQmwzo5RcRS2pYBnsjFeDXhlATFu/hCJAizV7sg8vGqqTkc4GbHT5FLroY0n+U0XshEPw9993VNQq70wACRke8W+FxUwp1rZMyD7+wLBfmb8NE6lJVg=
