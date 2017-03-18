@@ -9,31 +9,8 @@
     - reload nginx
   tags: nginx
 
-- name: copy ssl-plugboard.xyz.conf snippet
-  copy:
-    src: ssl-plugboard.xyz.conf
-    dest: /etc/nginx/snippets/ssl-plugboard.xyz.conf
-  notify:
-    - reload nginx
-  tags: nginx
-
-- name: copy plugboard.xyz site config
-  copy: src=plugboard.xyz dest=/etc/nginx/sites-available/plugboard.xyz
-  notify:
-    - reload nginx
-  tags: nginx
-
 - name: disable default site
   file: path=/etc/nginx/sites-enabled/default state=absent
-  notify:
-    - reload nginx
-  tags: nginx
-
-- name: enable plugboard.xyz site
-  file:
-    src: /etc/nginx/sites-available/plugboard.xyz
-    dest: /etc/nginx/sites-enabled/plugboard.xyz
-    state: link
   notify:
     - reload nginx
   tags: nginx
