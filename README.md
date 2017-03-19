@@ -3,7 +3,7 @@
 ## Installation
 
 Requirements:
-- PHP 7.1
+- PHP 7
 - Composer
 - Node.Js
 - Yarn
@@ -19,11 +19,6 @@ cp .env.example .env
 
 # creates mandatory directories
 mkdir -p bootstrap/cache
-mkdir -p storage/app/public
-mkdir -p storage/framework/cache
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views
-mkdir -p storage/logs
 
 # install dependencies
 composer install
@@ -41,10 +36,8 @@ php artisan migrate
 # install dependencies
 yarn
 
-# build for developement
+# bundle js
 yarn run watch
-# or for production
-yarn run production
 ```
 
 ## Run Tests
