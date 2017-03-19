@@ -6,6 +6,7 @@
     - php-mbstring
     - php-mysql
     - php-mongodb
+    - php-zip
     - composer
   tags: php
 
