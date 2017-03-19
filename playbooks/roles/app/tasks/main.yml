@@ -2,6 +2,13 @@
 - name: create deploy user
   user: name=deploy group=www-data
 
+- name: add authorized key
+  authorized_key:
+    user: deploy
+    key: "{{ lookup('file', 'deploy.pub') }}"
+    exclusive: yes
+    state: present
+
 - name: '{{app.app_id}} - create directory'
   file:
     path: '{{item.path}}'
@@ -86,3 +93,23 @@
   template:
     src: env.j2
     dest: '/var/www/{{app.app_id}}/shared/.env'
+
+- name: '{{app.app_id}} - initialize git'
+  raw: 'git init --bare ~/{{app.app_id}}/.git'
+  become: true
+  become_user: deploy
+
+- name: '{{app.app_id}} - generate post-receive'
+  template:
+    src: post-receive.j2
+    dest: '/home/deploy/{{app.app_id}}/.git/hooks/post-receive'
+    mode: '0755'
+  become: true
+  become_user: deploy
+
+- name: '{{app.app_id}} - generate deploy-app script'
+  template:
+    src: deploy-app.sh.j2
+    dest: '{{app_deploy_script_path}}/deploy-app-{{app.app_id}}.sh'
+    mode: '0755'
+  delegate_to: localhost

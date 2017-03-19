@@ -1,5 +1,6 @@
 /vendor
 /node_modules
+/scripts/key/deploy-key
 
 # Laravel 5
 /bootstrap/cache
