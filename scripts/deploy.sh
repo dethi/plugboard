@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+if [ -n "${TRAVIS_PULL_REQUEST_BRANCH-}" ]; then
+    echo "Cannot deploy pull-request"
+    exit 1
+fi
+
 if [ -z "${TRAVIS_BRANCH+xxx}" ]; then
     if [ "$#" -ne 1 ]; then
         echo "usage: ./deploy.sh <git_branch>"
