@@ -6,6 +6,11 @@
     - common
     - firewall
     - ntp
+    - letsencrypt
     - nodejs
     - yarn
+    - php
     - nginx
+    - mysql
+    - mongodb
+    - redis

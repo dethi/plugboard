@@ -1,0 +1,35 @@
+---
+- name: install MySQL
+  apt: name={{item}} state=latest
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+  tags: mysql
+
+- name: enable and start MySQL
+  systemd: name=mysql state=started enabled=yes
+  tags: mysql
+
+- name: update root password
+  mysql_user:
+    name: root
+    host: localhost
+    password: '{{mysql_root_password}}'
+    state: present
+  tags: mysql
+
+- name: copy MySQL credentials as .my.cnf file
+  template: src=my.cnf.j2 dest=~/.my.cnf mode=0600
+  tags: mysql
+
+- name: remove all anonymous user
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+  tags: mysql
+
+- name: remove the test database
+  mysql_db: name=test state=absent
+  tags: mysql

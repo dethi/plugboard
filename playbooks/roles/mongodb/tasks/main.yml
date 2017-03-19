@@ -1,0 +1,21 @@
+---
+- name: add APT key for MongoDB
+  apt_key:
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
+    id: 0C49F3730359A14518585931BC711F9BA15703C6
+    state: present
+  tags: mongodb
+
+- name: add MongoDB deb repo
+  apt_repository:
+    repo: 'deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse'
+    state: present
+  tags: mongodb
+
+- name: install MongoDB
+  apt: name=mongodb-org state=latest
+  tags: mongodb
+
+- name: enable and start MongoDB
+  systemd: name=mongod state=started enabled=yes
+  tags: mongodb

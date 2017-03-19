@@ -1,0 +1,15 @@
+---
+- name: install php7
+  apt: name={{item}} state=latest
+  with_items:
+    - php
+    - php-mbstring
+    - php-mysql
+    - php-mongodb
+    - php-zip
+    - composer
+  tags: php
+
+- name: enable and start php7-fpm
+  systemd: name=php7.0-fpm state=started enabled=yes
+  tags: php

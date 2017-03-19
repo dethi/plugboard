@@ -1,0 +1,8 @@
+---
+- name: install Redis
+  apt: name=redis-server state=latest
+  tags: redis
+
+- name: enable and start Redis
+  systemd: name=redis-server state=started enabled=yes
+  tags: redis

@@ -1,0 +1,115 @@
+---
+- name: create deploy user
+  user: name=deploy group=www-data
+
+- name: add authorized key
+  authorized_key:
+    user: deploy
+    key: "{{ lookup('file', 'deploy.pub') }}"
+    exclusive: yes
+    state: present
+
+- name: '{{app.app_id}} - create directory'
+  file:
+    path: '{{item.path}}'
+    mode: '{{item.mode}}'
+    owner: deploy
+    group: www-data
+    state: directory
+  with_items:
+    - {path: '/var/www/{{app.app_id}}/releases', mode: '0755'}
+    - {path: '/var/www/{{app.app_id}}/shared/storage/app/public', mode: '0775'}
+    - {path: '/var/www/{{app.app_id}}/shared/storage/framework/cache', mode: '0775'}
+    - {path: '/var/www/{{app.app_id}}/shared/storage/framework/sessions', mode: '0775'}
+    - {path: '/var/www/{{app.app_id}}/shared/storage/framework/views', mode: '0775'}
+    - {path: '/var/www/{{app.app_id}}/shared/storage/logs', mode: '0775'}
+
+- name: '{{app.app_id}} - check if SSL cert exists'
+  stat:
+    path: '/etc/letsencrypt/live/{{app.app_domain[0]}}'
+  register: ssl
+
+- name: '{{app.app_id}} - copy nginx app config (no ssl)'
+  template:
+    src: 'nginx-app.j2'
+    dest: '/etc/nginx/sites-available/{{app.app_id}}'
+  when: not ssl.stat.exists
+
+- name: '{{app.app_id}} - enable app (no ssl)'
+  file:
+    src: '/etc/nginx/sites-available/{{app.app_id}}'
+    dest: '/etc/nginx/sites-enabled/{{app.app_id}}'
+    state: link
+  when: not ssl.stat.exists
+
+- name: reload nginx (no ssl)
+  systemd: name=nginx state=reloaded
+  when: not ssl.stat.exists
+
+- name: '{{app.app_id}} - letsencrypt (no ssl)'
+  raw: 'letsencrypt certonly --agree-tos --email {{letsencrypt_email}} --webroot -w /var/www/{{app.app_id}} -d {{app.app_domain|join("-d ")}}'
+  when: not ssl.stat.exists
+
+- name: '{{app.app_id}} - recheck if SSL cert exists'
+  stat:
+    path: '/etc/letsencrypt/live/{{app.app_domain[0]}}'
+  register: ssl
+
+- name: '{{app.app_id}} - copy nginx app config'
+  template:
+    src: '{{item.src}}'
+    dest: '{{item.dest}}'
+  with_items:
+    - {src: 'nginx-app.j2', dest: '/etc/nginx/sites-available/{{app.app_id}}'}
+    - {src: 'ssl-app.conf.j2', dest: '/etc/nginx/snippets/ssl-{{app.app_id}}.conf'}
+
+- name: '{{app.app_id}} - enable app'
+  file:
+    src: '/etc/nginx/sites-available/{{app.app_id}}'
+    dest: '/etc/nginx/sites-enabled/{{app.app_id}}'
+    state: link
+  notify:
+    - reload nginx
+
+- name: '{{app.app_id}} - enable auto-renewing SSL'
+  cron:
+    name: 'renew {{app.app_id}} SSL'
+    job: 'letsencrypt renew'
+    special_time: daily
+
+- name: '{{app.app_id}} - create MySQL database'
+  mysql_db:
+    name: '{{app.app_db.name}}'
+    state: present
+
+- name: '{{app.app_id}} - create MySQL user'
+  mysql_user:
+    name: '{{app.app_db.user}}'
+    password: '{{app.app_db.password}}'
+    priv: '{{app.app_db.name}}.*:ALL'
+    state: present
+
+- name: '{{app.app_id}} - copy .env'
+  template:
+    src: env.j2
+    dest: '/var/www/{{app.app_id}}/shared/.env'
+
+- name: '{{app.app_id}} - initialize git'
+  raw: 'git init --bare ~/{{app.app_id}}/.git'
+  become: true
+  become_user: deploy
+
+- name: '{{app.app_id}} - generate post-receive'
+  template:
+    src: post-receive.j2
+    dest: '/home/deploy/{{app.app_id}}/.git/hooks/post-receive'
+    mode: '0755'
+  become: true
+  become_user: deploy
+
+- name: '{{app.app_id}} - generate deploy-app script'
+  template:
+    src: deploy-app.sh.j2
+    dest: '{{app_deploy_script_path}}/deploy-app-{{app.app_id}}.sh'
+    mode: '0755'
+  delegate_to: localhost

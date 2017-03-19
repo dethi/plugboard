@@ -1,0 +1,2 @@
+nginx_default: false
+app_deploy_script_path: '{{playbook_dir}}'

@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -euo pipefail
+
+RELEASE="$(date -u +%Y%m%d%H%M%S)"
+GIT_PATH="$HOME/{{app.app_id}}/.git"
+
+APP_PATH="/var/www/{{app.app_id}}"
+RELEASE_PATH="$APP_PATH/releases/$RELEASE"
+CURRENT_PATH="$APP_PATH/current"
+SHARED_PATH="$APP_PATH/shared"
+STORAGE_PATH="$SHARED_PATH/storage"
+
+echo "======="
+echo "=== RELEASE=$RELEASE"
+echo "=== GIT_PATH=$GIT_PATH"
+echo "=== APP_PATH=$APP_PATH"
+echo "=== RELEASE_PATH=$RELEASE_PATH"
+echo "=== CURRENT_PATH=$CURRENT_PATH"
+echo "=== SHARED_PATH=$SHARED_PATH"
+echo "=== STORAGE_PATH=$STORAGE_PATH"
+echo "======="
+
+mkdir -p "$RELEASE_PATH"
+git --work-tree="$RELEASE_PATH" --git-dir="$GIT_PATH" checkout -f
+echo "=== Checkout completed"
+
+####################
+# Deployment steps #
+####################
+
+cd $RELEASE_PATH
+echo "=== Change working directory to $PWD"
+ln -snf "$SHARED_PATH/.env" "$RELEASE_PATH/.env"
+echo "=== Link .env"
+mkdir -p "$RELEASE_PATH/bootstrap/cache"
+composer install --no-dev
+echo "=== PHP dependencies installed"
+yarn
+echo "=== Javascript dependencies installed"
+yarn run production
+echo "=== Javascript bundle completed"
+rm -rf "$RELEASE_PATH/storage"
+ln -snf "$STORAGE_PATH" "$RELEASE_PATH/storage"
+php artisan storage:link
+echo "=== Link storage/"
+php artisan optimize
+php artisan config:cache
+#php artisan route:cache
+echo "=== Optimization completed"
+php artisan migrate --force
+echo "=== Migration completed"
+ln -snf "$RELEASE_PATH" "$CURRENT_PATH"
+echo "=== New release deployed"
+php artisan view:clear
+echo "=== Clear view cache"
+#php artisan queue:restart
+#echo "=== Restart worker"
