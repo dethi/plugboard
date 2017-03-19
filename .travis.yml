@@ -28,6 +28,8 @@ after_success:
   -in scripts/key/deploy-key.enc -out scripts/key/deploy-key -d
 - chmod 600 scripts/key/deploy-key
 - ./scripts/deploy.sh
+addons:
+  ssh_known_hosts: plugboard.xyz
 cache:
   pip: true
   directories:
