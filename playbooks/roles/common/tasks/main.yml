@@ -16,6 +16,8 @@
     - git
     - python
     - pwgen
+    - zip
+    - unzip
 
 - name: copy confs
   copy: src={{item}} dest=~/.{{item}}
