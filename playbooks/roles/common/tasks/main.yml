@@ -19,6 +19,11 @@
     - zip
     - unzip
 
+- name: install ansible needed packages
+  apt: name={{item}} state=latest
+  with_items:
+    - python-passlib
+
 - name: copy confs
   copy: src={{item}} dest=~/.{{item}}
   with_items:
