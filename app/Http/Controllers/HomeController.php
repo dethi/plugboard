@@ -24,8 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $email = Auth::user()->email;
-        $gravatar_url = GravatarController::get($email, $s = 80, $d = 'mm', $r = 'g');
+        $gravatar_url = Auth::user()->getGravatarUrl($size = 80, $imageset = 'mm', $rating = 'g');
         return view('home', ['gravatar_url' => $gravatar_url]);
 
     }
