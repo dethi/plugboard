@@ -62,6 +62,17 @@
   with_items:
     - {src: 'nginx-app.j2', dest: '/etc/nginx/sites-available/{{app.app_id}}'}
     - {src: 'ssl-app.conf.j2', dest: '/etc/nginx/snippets/ssl-{{app.app_id}}.conf'}
+  notify:
+    - reload nginx
+
+- name: '{{app.app_id}} - generate htpasswd'
+  htpasswd:
+    path: '/etc/nginx/htpasswd/{{app.app_id}}.htpasswd'
+    name: '{{app.basic_auth.user}}'
+    password: '{{app.basic_auth.password}}'
+  when: app.basic_auth is defined
+  notify:
+    - reload nginx
 
 - name: '{{app.app_id}} - enable app'
   file:
