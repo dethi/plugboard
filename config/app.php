@@ -167,6 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Appstract\Opcache\OpcacheServiceProvider::class,
 
         /*
          * Application Service Providers...
