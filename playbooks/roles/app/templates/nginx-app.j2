@@ -19,6 +19,14 @@ server {
     include snippets/ssl-params.conf;
 
     {% if app.basic_auth is defined %}
+    satisfy any;
+
+    # Allow unauthenticated request from the server (required for the
+    # Opcache command)
+    allow {{ansible_default_ipv4.address}};
+    allow {{ansible_default_ipv6.address}};
+    deny all;
+
     auth_basic "Restricted Access";
     auth_basic_user_file /etc/nginx/htpasswd/{{app.app_id}}.htpasswd;
     {% endif %}
