@@ -1,5 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
+var ManifestPlugin = require('webpack-manifest-plugin');
+
 
 var assetsPath = path.resolve(__dirname, 'resources/assets');
 
@@ -11,6 +13,11 @@ module.exports = {
     filename: '[name].[chunkhash].js',
     path: path.resolve(__dirname, 'public/js')
   },
+  module: {
+    rules: [
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+    ]
+  },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -21,6 +28,10 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest'
+    }),
+    new ManifestPlugin({
+      fileName: 'mix-manifest.json',
+      basePath: '/js/'
     })
   ]
 }
