@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "webpack",
-    "production": "webpack -p"
+    "build": "NODE_ENV=development webpack",
+    "production": "NODE_ENV=production webpack -p"
   },
   "dependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },
   "devDependencies": {
-    "webpack": "^2.3.0"
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-react-app": "^2.2.0",
+    "webpack": "^2.3.0",
+    "webpack-manifest-plugin": "^1.1.0"
   }
 }
