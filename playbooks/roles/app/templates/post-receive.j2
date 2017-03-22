@@ -52,6 +52,8 @@ php artisan migrate --force
 echo "=== Migration completed"
 ln -snf "$RELEASE_PATH" "$CURRENT_PATH"
 echo "=== New release deployed"
+php artisan opcache:clear
+echo "=== Clear opcache"
 php artisan view:clear
 echo "=== Clear view cache"
 #php artisan queue:restart
