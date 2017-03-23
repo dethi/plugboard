@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=development webpack",
-    "production": "NODE_ENV=production webpack -p"
+    "watch": "NODE_ENV=development webpack -w --progress --hide-modules",
+    "production": "NODE_ENV=production webpack -p --progress --hide-modules",
+    "lint": "eslint --ext .jsx,.js resources/assets/js/",
+    "fix": "eslint --fix --ext .jsx,.js resources/assets/js/"
   },
   "dependencies": {
     "react": "^15.4.2",
@@ -16,12 +18,15 @@
     "babel-loader": "^6.4.1",
     "babel-preset-react-app": "^2.2.0",
     "eslint": "3.16.1",
+    "eslint-config-prettier": "^1.5.0",
     "eslint-config-react-app": "^0.6.2",
     "eslint-loader": "^1.6.3",
     "eslint-plugin-flowtype": "2.21.0",
     "eslint-plugin-import": "2.0.1",
     "eslint-plugin-jsx-a11y": "4.0.0",
+    "eslint-plugin-prettier": "^2.0.1",
     "eslint-plugin-react": "6.4.1",
+    "prettier": "^0.22.0",
     "webpack": "^2.3.0",
     "webpack-manifest-plugin": "^1.1.0"
   }
