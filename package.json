@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "watch": "NODE_ENV=development webpack -w --progress --hide-modules",
-    "production": "NODE_ENV=production webpack -p --progress --hide-modules",
+    "build": "NODE_ENV=production webpack -p --progress --hide-modules",
     "lint": "eslint --ext .jsx,.js resources/assets/js/",
     "fix": "eslint --fix --ext .jsx,.js resources/assets/js/"
   },
