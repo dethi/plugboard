@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 var publicPath = path.resolve(__dirname, 'public');
 var assetsPath = path.resolve(__dirname, 'resources/assets');
@@ -86,6 +87,20 @@ module.exports = {
     new ManifestPlugin({
       fileName: 'mix-manifest.json',
       basePath: '/'
+    }),
+    new BrowserSyncPlugin({
+      online: false,
+      notify: false,
+      host: 'localhost',
+      port: 3000,
+      files: [
+        'resources/views/**/*.php',
+        'public/js/**/*.js',
+        'public/css/**/*.css'
+      ],
+      proxy: process.platform === 'darwin'
+        ? 'http://plugboard.dev'
+        : 'http://localhost:8000'
     })
   ],
   node: {
