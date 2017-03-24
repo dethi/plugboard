@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="@{{ mix('app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -54,6 +54,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('app.js') }}"></script>
 </body>
 </html>
