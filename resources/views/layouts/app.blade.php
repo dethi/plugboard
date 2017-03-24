@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="@{{ mix('app.css') }}" rel="stylesheet">
+    <link href="{{ mix('vendor.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -51,6 +51,8 @@
         </nav>
 
         @yield('content')
+
+        <div id="root"></div>
     </div>
 
     <!-- Scripts -->

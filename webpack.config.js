@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 var publicPath = path.resolve(__dirname, 'public');
@@ -42,6 +43,30 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: isProduction,
+                modules: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]___[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: isProduction,
+                sourceComments: isProduction
+              }
+            }
+          ]
+        })
+      },
+      {
         test: /\.(svg|eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
         options: {
@@ -52,7 +77,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g)$/,
-        loaders: [
+        use: [
           {
             loader: 'url-loader',
             options: {
@@ -88,6 +113,9 @@ module.exports = {
       fileName: 'mix-manifest.json',
       basePath: '/'
     }),
+    new ExtractTextPlugin(
+      isProduction ? 'css/[name].[contenthash:8].css' : 'css/[name].css'
+    ),
     new BrowserSyncPlugin({
       online: false,
       notify: false,
