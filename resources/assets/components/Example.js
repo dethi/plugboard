@@ -1,3 +1,4 @@
 import React from 'react';
+import { Button } from 'react-toolbox/lib/button';
 
-export default () => <h2>Welcome to our platform!</h2>;
+export default () => <Button label="Welcome to our platform!" />;
