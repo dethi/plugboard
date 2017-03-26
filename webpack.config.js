@@ -43,24 +43,16 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
+        test: /\.(css|scss)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
+            'css-loader',
+            'resolve-url-loader',
             {
-              loader: 'css-loader',
+              loader: 'sass-loader',
               options: {
-                sourceMap: isProduction,
-                modules: true,
-                importLoaders: 1,
-                localIdentName: '[name]__[local]___[hash:base64:5]'
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: isProduction,
-                sourceComments: isProduction
+                sourceMap: true
               }
             }
           ]
