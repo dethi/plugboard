@@ -3,81 +3,146 @@ import ReactDOM from 'react-dom';
 import { fabric } from 'fabric';
 import { Button } from 'react-toolbox/lib/button';
 
-const fabricCanvas = new fabric.Canvas();
+const gridSize = 30;
 
-const grid = 30;
-const gridHeight = 300;
-const gridWidth = 600;
-const gridsize = 5;
+class Vector {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
 
-const leftMin = grid;
-const leftMax = gridWidth - 2 * grid;
-const topMin = grid;
-const topMax = gridHeight - 2 * grid;
-
-class Grid extends Component {
-  componentDidMount() {
-    const el = ReactDOM.findDOMNode(this);
-    fabricCanvas.initialize(el, {
-    	height: gridHeight,
-      width: gridWidth,
-    });
-
-    const rect = new fabric.Rect({
-      top : grid,
-      left : grid,
-      width : grid,
-      height : grid,
-      fill : 'red',
-      hasControls: false
-    });
-
-    fabricCanvas.on('object:moving', options => {
-      let left = Math.round(options.target.left / grid) * grid;
-      left = Math.max(Math.min(left, leftMax), leftMin);
-
-      let top = Math.round(options.target.top / grid) * grid;
-      top = Math.max(Math.min(top, topMax), topMin);
-
-      options.target.set({ left, top });
-    });
-
-    for(let x = 1; x < (fabricCanvas.width / gridsize); x++)
-    {
-      fabricCanvas.add(new fabric.Line([grid*x, 0, grid*x, gridHeight],
-        { stroke: "#000000", strokeWidth: 1, selectable:false, strokeDashArray: [5, 5]}));
-      fabricCanvas.add(new fabric.Line([0, grid*x, gridWidth, grid*x],
-        { stroke: "#000000", strokeWidth: 1, selectable:false, strokeDashArray: [5, 5]}));
-    }
-    fabricCanvas.add(rect);
-  };
-  render() {
-    return (
-      <canvas></canvas>
-    );
+  equals(other) {
+    return this.x === other.x && this.y === other.y;
   }
 }
 
-class NewComponent extends Component {
-  addComponent() {
-    fabricCanvas.add(new fabric.Rect({
-      top : grid,
-      left : grid,
-      width : grid,
-      height : grid,
-      fill : 'red',
+class Grid {
+  constructor(width, height, el) {
+    this.width = width;
+    this.height = height;
+    this.space = [width * height];
+
+    this.gridWidth = this.width * gridSize;
+    this.gridHeight = this.height * gridSize;
+    this.fabricCanvas = new fabric.Canvas();
+    this.fabricCanvas.initialize(el, {
+      height: this.gridHeight,
+      width: this.gridWidth,
+    });
+
+    this.leftMin = gridSize;
+    this.leftMax = this.gridWidth - 2 * gridSize;
+    this.topMin = gridSize;
+    this.topMax = this.gridHeight - 2 * gridSize;
+
+    this.color = 'red';
+    this.add = true;
+
+    this.fabricCanvas.on('mouse:down', options => {
+      if (!this.add) return;
+
+      const mousePos = this.fabricCanvas.getPointer(options.e);
+      const pos = new Vector(Math.floor(mousePos.x / gridSize), Math.floor(mousePos.y / gridSize));
+
+      if (!this.isInside(pos) || this.get(pos) !== undefined) return;
+
+      this.addRect(pos);
+    });
+
+    for(let x = 1; x < (this.fabricCanvas.width / 5); x++)
+    {
+      this.fabricCanvas.add(new fabric.Line([gridSize*x, 0, gridSize*x, this.gridHeight],
+        { stroke: "#000000", strokeWidth: 1, selectable:false, strokeDashArray: [5, 5]}));
+      this.fabricCanvas.add(new fabric.Line([0, gridSize*x, this.gridWidth, gridSize*x],
+        { stroke: "#000000", strokeWidth: 1, selectable:false, strokeDashArray: [5, 5]}));
+    }
+  }
+
+  isInside(vector) {
+    return vector.x > 0
+			&& vector.x < this.width - 1
+			&& vector.y > 0
+			&& vector.y < this.height - 1;
+  }
+
+  get(vector) {
+    return this.space[vector.x + this.width * vector.y];
+  }
+
+  set(vector, value) {
+    this.space[vector.x + this.width * vector.y] = value;
+  }
+
+  addRect(vector) {
+    const newRect = new Rect(this, vector, this.color);
+    this.set(vector, newRect);
+    this.fabricCanvas.add(newRect.fabricRect);
+  }
+}
+
+class Rect {
+  constructor(grid, vector, color) {
+    this.grid = grid;
+    this.pos = vector;
+    this.color = color;
+    this.fabricRect = new fabric.Rect({
+      top : gridSize * vector.y,
+      left : gridSize * vector.x,
+      width : gridSize,
+      height : gridSize,
+      fill : color,
       hasControls: false
-    }));
+    });
+
+    this.fabricRect.on('moving', options => {
+      let left = Math.round(options.e.offsetX / gridSize) * gridSize;
+      left = Math.max(Math.min(left, this.grid.leftMax), this.grid.leftMin);
+      this.fabricRect.left = left;
+
+      let top = Math.round(options.e.offsetY / gridSize) * gridSize;
+      top = Math.max(Math.min(top, this.grid.topMax), this.grid.topMin);
+      this.fabricRect.top = top;
+
+      const newPos = new Vector(Math.floor(left / gridSize), Math.floor(top / gridSize));
+
+      if (!newPos.equals(this.pos)) {
+        this.grid.set(this.pos, undefined);
+        this.pos = newPos;
+        this.grid.set(this.pos, this);
+      }
+    });
+  }
+}
+
+let grid;
+class GridReact extends Component {
+  componentDidMount() {
+    grid = new Grid(15, 10, this.refs.canvas)
+  };
+  setColorToRed() {
+    grid.color = 'red';
+    grid.add = true;
+  }
+  setColorToGreen() {
+    grid.color = 'green';
+    grid.add = true;
+  }
+  unset() {
+    grid.add = false;
   }
   render() {
     return (
-      <Button label="Add Component" onClick={this.addComponent}/>
+      <div>
+        <canvas ref="canvas"></canvas>
+        <Button label="Set to Red" onClick={this.setColorToRed}/>
+        <Button label="Set to Green" onClick={this.setColorToGreen}/>
+        <Button label="Nothing" onClick={this.unset}/>
+      </div>
     );
   }
 }
 
 export default () =>
 <div>
-  <Grid />
-  <NewComponent />
+  <GridReact />
 </div>;
