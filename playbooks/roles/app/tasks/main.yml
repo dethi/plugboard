@@ -9,6 +9,9 @@
     exclusive: yes
     state: present
 
+- name: install libcairo2
+  apt: name=libcairo2-dev state=latest
+
 - name: '{{app.app_id}} - create directory'
   file:
     path: '{{item.path}}'
