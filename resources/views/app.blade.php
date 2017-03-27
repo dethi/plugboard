@@ -22,13 +22,21 @@
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
+
+        window.GravatarUrl = "{{$gravatar_url}}";
     </script>
 </head>
 <body>
-    <div>Dashboard</div>
-    <div>
-      You are logged in!
-      <img src={{$gravatar_url}} />
+    <div id="root">
+        <section class="hero is-primary is-fullheight">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <span class="icon is-large">
+                        <i class="fa fa-spinner fa-pulse"></i>
+                    </span>
+                </div>
+            </div>
+        </section>
     </div>
 </body>
 </html>
