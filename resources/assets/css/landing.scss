@@ -1,4 +1,4 @@
-.is-dark {
+#landing .is-dark {
   background-image: linear-gradient(rgba(#114b5f, 0.6),rgba(#1a936f, 0.6)),
     linear-gradient(rgba(#000000, 0.7),rgba(#000000, 0.7)),
     url('../media/landing.jpg');
@@ -7,22 +7,22 @@
   background-size: cover;
 }
 
-.nav {
-  padding: 20px 0;
-}
-
-.hero.is-dark .nav-item a:not(.button), .hero.is-dark a.nav-item {
+#landing .hero.is-dark .nav-item a:not(.button), .hero.is-dark a.nav-item {
     color: #fff;
     padding: 0 30px;
 }
 
-.nav-item {
+#landing .nav {
+  padding: 20px 0;
+}
+
+#landing .nav-item {
   font-weight: bold;
   text-transform: uppercase;
   color: #fff;
 }
 
-.nav-item .button {
+#landing .nav-item .button {
   font-weight: bold;
   text-transform: uppercase;
   color: #fff;
@@ -31,8 +31,4 @@
   padding: 10px 20px;
   height: 45px;
   border-radius: 0px;
-}
-
-.uppercase {
-  text-transform: uppercase;
 }
