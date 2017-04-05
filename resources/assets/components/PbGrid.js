@@ -65,6 +65,7 @@ class Grid {
 
     this.fabricCanvas = new fabric.Canvas();
     this.fabricCanvas.initialize(el, {
+      selectable: false,
       height: this.gridHeight,
       width: this.gridWidth
     });
@@ -91,30 +92,33 @@ class Grid {
       this.addRect(pos);
     });
 
-    for (let x = 1; x < this.fabricCanvas.width / 5; x++) {
-      this.fabricCanvas.add(
+    const lines = [];
+    for (let x = 1; x < this.gridWidth / this.gridSize; x++) {
+      lines.push(
         new fabric.Line(
           [this.gridSize * x, 0, this.gridSize * x, this.gridHeight],
           {
-            stroke: '#000000',
-            strokeWidth: 1,
-            selectable: false,
-            strokeDashArray: [5, 5]
-          }
-        )
-      );
-      this.fabricCanvas.add(
-        new fabric.Line(
-          [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
-          {
-            stroke: '#000000',
-            strokeWidth: 1,
-            selectable: false,
-            strokeDashArray: [5, 5]
+            stroke: '#114B5F',
+            selectable: false
           }
         )
       );
     }
+    for (let x = 1; x < this.gridHeight / this.gridSize; x++) {
+      lines.push(
+        new fabric.Line(
+          [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
+          {
+            stroke: '#114B5F',
+            selectable: false
+          }
+        )
+      );
+    }
+    this.fabricGridLines = new fabric.Group(lines, {
+      selectable: false
+    });
+    this.fabricCanvas.add(this.fabricGridLines);
   }
 
   isInside(vector) {
@@ -122,6 +126,14 @@ class Grid {
       vector.x < this.width - 1 &&
       vector.y > 0 &&
       vector.y < this.height - 1;
+  }
+
+  toggleVisibility() {
+    this.fabricGridLines.visible = !this.fabricGridLines.visible;
+    if (this.fabricGridLines.visible)
+      this.fabricCanvas.remove(this.fabricGridLines);
+    else
+      this.fabricCanvas.add(this.fabricGridLines);
   }
 
   get(vector) {
@@ -162,6 +174,9 @@ class GridReact extends Component {
   debug = () => {
     console.log(this.grid.fabricCanvas.toJSON());
   };
+  gridVisible = () => {
+    this.grid.toggleVisibility();
+  };
   render() {
     return (
       <div>
@@ -170,6 +185,7 @@ class GridReact extends Component {
         <Button label="Set to Green" onClick={this.setColorToGreen} />
         <Button label="Nothing" onClick={this.unset} />
         <Button label="Debug" onClick={this.debug} />
+        <Button label="Grid" onClick={this.gridVisible} />
       </div>
     );
   }
