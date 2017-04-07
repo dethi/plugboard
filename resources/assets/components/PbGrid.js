@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { fabric } from 'fabric';
-import { Button } from 'react-toolbox/lib/button';
 
 class Vector {
   constructor(x, y) {
@@ -181,11 +180,11 @@ class GridReact extends Component {
     return (
       <div>
         <canvas ref="canvas" />
-        <Button label="Set to Red" onClick={this.setColorToRed} />
-        <Button label="Set to Green" onClick={this.setColorToGreen} />
-        <Button label="Nothing" onClick={this.unset} />
-        <Button label="Debug" onClick={this.debug} />
-        <Button label="Grid" onClick={this.gridVisible} />
+        <button onClick={this.setColorToRed}>Set to Red</button>
+        <button onClick={this.setColorToGreen}>Set to Green</button>
+        <button onClick={this.unset}>Nothing</button>
+        <button onClick={this.debug}>Debug</button>
+        <button onClick={this.gridVisible}>Grid</button>
       </div>
     );
   }
