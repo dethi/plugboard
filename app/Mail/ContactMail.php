@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ContactMail extends Mailable
 {
@@ -30,7 +29,7 @@ class ContactMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.contact')->with([
+        return $this->from("contact@plugboard.xyz")->replyTo($this->data['email'])->view('emails.contact')->with([
                         'name' => $this->data['name'],
                         'email' => $this->data['email'],
                         'subject' => $this->data['subject'],

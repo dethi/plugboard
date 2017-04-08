@@ -24,7 +24,7 @@
               <a class="nav-item">
                 FAQ
               </a>
-              <a class="nav-item">
+              <a class="nav-item" href="{{action('ContactController@get')}}">
                 Contact
               </a>
               <span class="nav-item">
