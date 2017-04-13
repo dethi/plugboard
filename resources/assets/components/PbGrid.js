@@ -12,19 +12,30 @@ class Vector {
   }
 }
 
-class Rect {
-  constructor(grid, vector, color) {
+class ElecComponent {
+  constructor(grid, vector, nbInput, nbOutput) {
     this.grid = grid;
     this.pos = vector;
-    this.color = color;
+
+    this.componentSize = this.grid.gridSize;
+    this.linkSize = this.componentSize / 7;
+
+    this.nbInput = nbInput;
+    this.nbOutput = nbOutput;
+
+    this.fabricElements = [];
     this.fabricRect = new fabric.Rect({
-      top: this.grid.gridSize * vector.y,
-      left: this.grid.gridSize * vector.x,
-      width: this.grid.gridSize,
-      height: this.grid.gridSize,
-      fill: color,
+      top: this.componentSize * vector.y,
+      left: this.componentSize * vector.x,
+      width: this.componentSize,
+      height: this.componentSize,
+      fill: 'red',
       hasControls: false
     });
+    this.fabricElements.push(this.fabricRect);
+
+    this.createInputElements();
+    this.createOutputElements();
 
     this.fabricRect.on('moving', options => {
       let left = Math.round(options.e.offsetX / this.grid.gridSize) *
@@ -49,11 +60,44 @@ class Rect {
       }
     });
   }
+
+  getFabricElements() {
+    return this.fabricElements;
+  }
+
+  createLinkElements(leftPos, nbElement) {
+    // Verify enough place for all link
+    const elPadding = (this.componentSize - this.linkSize * nbElement) /
+      (nbElement + 1);
+
+    for (let i = 0; i < nbElement; i++) {
+      const topPadding = i * this.linkSize + (i + 1) * elPadding;
+
+      const newLinkElement = new fabric.Rect({
+        top: this.componentSize * this.pos.y + topPadding,
+        left: leftPos,
+        width: this.linkSize,
+        height: this.linkSize,
+        fill: 'black'
+      });
+      this.fabricElements.push(newLinkElement);
+    }
+  }
+
+  createInputElements() {
+    const leftPos = this.componentSize * this.pos.x - this.linkSize / 2;
+    this.createLinkElements(leftPos, this.nbInput);
+  }
+
+  createOutputElements() {
+    const leftPos = this.componentSize * (this.pos.x + 1) - this.linkSize / 2;
+    this.createLinkElements(leftPos, this.nbOutput);
+  }
 }
 
 class Grid {
   constructor(width, height, gridSize, el) {
-    this.gridSize = 30;
+    this.gridSize = gridSize;
 
     this.width = width;
     this.height = height;
@@ -89,6 +133,7 @@ class Grid {
       if (!this.isInside(pos) || this.get(pos) !== undefined) return;
 
       this.addRect(pos);
+      this.add = false;
     });
 
     const lines = [];
@@ -127,7 +172,7 @@ class Grid {
       vector.y < this.height - 1;
   }
 
-  toggleVisibility() {
+  toggleGridVisibility() {
     this.fabricGridLines.visible = !this.fabricGridLines.visible;
     if (this.fabricGridLines.visible)
       this.fabricCanvas.remove(this.fabricGridLines);
@@ -144,27 +189,23 @@ class Grid {
   }
 
   addRect(vector) {
-    const newRect = new Rect(this, vector, this.color);
-    this.set(vector, newRect);
-    this.fabricCanvas.add(newRect.fabricRect);
+    const newElecComponent = new ElecComponent(this, vector, 4, 2);
+    this.set(vector, newElecComponent);
+
+    newElecComponent.getFabricElements().map(el => this.fabricCanvas.add(el));
   }
 }
 
-class GridReact extends Component {
+class GridComponent extends Component {
   constructor(props) {
     super(props);
 
     this.grid = null;
   }
   componentDidMount() {
-    this.grid = new Grid(15, 10, 30, this.refs.canvas);
+    this.grid = new Grid(15, 10, 50, this.refs.canvas);
   }
-  setColorToRed = () => {
-    this.grid.color = 'red';
-    this.grid.add = true;
-  };
-  setColorToGreen = () => {
-    this.grid.color = 'green';
+  add = () => {
     this.grid.add = true;
   };
   unset = () => {
@@ -174,14 +215,13 @@ class GridReact extends Component {
     console.log(this.grid.fabricCanvas.toJSON());
   };
   gridVisible = () => {
-    this.grid.toggleVisibility();
+    this.grid.toggleGridVisibility();
   };
   render() {
     return (
       <div>
         <canvas ref="canvas" />
-        <button onClick={this.setColorToRed}>Set to Red</button>
-        <button onClick={this.setColorToGreen}>Set to Green</button>
+        <button onClick={this.add}>Add</button>
         <button onClick={this.unset}>Nothing</button>
         <button onClick={this.debug}>Debug</button>
         <button onClick={this.gridVisible}>Grid</button>
@@ -192,6 +232,6 @@ class GridReact extends Component {
 
 export default () => (
   <div>
-    <GridReact />
+    <GridComponent />
   </div>
 );
