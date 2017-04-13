@@ -54,18 +54,21 @@ class ElecComponent {
       );
 
       if (!newPos.equals(this.pos)) {
-        this.grid.set(this.pos, undefined);
-        this.pos = newPos;
-        this.grid.set(this.pos, this);
+        this.moveComponent(newPos);
       }
     });
   }
 
-  getFabricElements() {
-    return this.fabricElements;
+  moveComponent(newPos) {
+    this.grid.set(this.pos, undefined);
+    this.pos = newPos;
+    this.moveInputElements();
+    this.moveOutputElements();
+    this.grid.set(this.pos, this);
   }
 
   createLinkElements(leftPos, nbElement) {
+    const newLinkElements = [];
     // Verify enough place for all link
     const elPadding = (this.componentSize - this.linkSize * nbElement) /
       (nbElement + 1);
@@ -78,20 +81,47 @@ class ElecComponent {
         left: leftPos,
         width: this.linkSize,
         height: this.linkSize,
-        fill: 'black'
+        fill: 'black',
+        hasControls: false
       });
-      this.fabricElements.push(newLinkElement);
+      newLinkElements.push(newLinkElement);
     }
+    return newLinkElements;
+  }
+
+  moveLinkElements(leftPos, elements) {
+    const elPadding = (this.componentSize - this.linkSize * elements.length) /
+      (elements.length + 1);
+
+    elements.forEach((el, index) => {
+      const topPadding = index * this.linkSize + (index + 1) * elPadding;
+      el.left = leftPos;
+      el.top = this.componentSize * this.pos.y + topPadding;
+    });
   }
 
   createInputElements() {
     const leftPos = this.componentSize * this.pos.x - this.linkSize / 2;
-    this.createLinkElements(leftPos, this.nbInput);
+    this.inputElements = this.createLinkElements(leftPos, this.nbInput);
+  }
+
+  moveInputElements() {
+    const leftPos = this.componentSize * this.pos.x - this.linkSize / 2;
+    this.moveLinkElements(leftPos, this.inputElements);
   }
 
   createOutputElements() {
     const leftPos = this.componentSize * (this.pos.x + 1) - this.linkSize / 2;
-    this.createLinkElements(leftPos, this.nbOutput);
+    this.outputElements = this.createLinkElements(leftPos, this.nbOutput);
+  }
+
+  moveOutputElements() {
+    const leftPos = this.componentSize * (this.pos.x + 1) - this.linkSize / 2;
+    this.moveLinkElements(leftPos, this.outputElements);
+  }
+
+  getFabricElements() {
+    return this.fabricElements.concat(this.inputElements, this.outputElements);
   }
 }
 
