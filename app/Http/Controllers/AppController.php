@@ -14,7 +14,6 @@ class AppController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     /**
@@ -24,7 +23,10 @@ class AppController extends Controller
      */
     public function index()
     {
-        $gravatar_url = Auth::user()->getGravatarUrl($size = 80, $imageset = 'mm', $rating = 'g');
+        $gravatar_url = null;
+        if(Auth::check()){
+            $gravatar_url = Auth::user()->getGravatarUrl($size = 80, $imageset = 'mm', $rating = 'g');
+        }
         return view('app', ['gravatar_url' => $gravatar_url]);
     }
 }
