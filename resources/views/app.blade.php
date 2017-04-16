@@ -27,6 +27,39 @@
     </script>
 </head>
 <body>
+
+<div id="app">
+
+    <nav class="nav">
+        <div class="nav-left">
+            <a class="nav-item" href="{{ url('/') }}"> {{ config('app.name', 'Laravel') }} </a>
+        </div>
+
+        <div class="nav-right nav-menu">
+            @if (Auth::guest())
+                <a class="nav-item" href="{{action('Auth\RegisterController@register')}}">
+                    Register
+                </a>
+                <a class="nav-item" href="{{action('Auth\LoginController@login')}}">
+                    Login
+                </a>
+            @else
+                <a class="nav-item">
+                    <img src="{{$gravatar_url}}" alt="Gravatar">
+                </a>
+                <a class="nav-item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            @endif
+        </div>
+    </nav>
+
     <div id="root">
         <section class="hero is-primary is-fullheight">
             <div class="hero-body">
@@ -38,5 +71,6 @@
             </div>
         </section>
     </div>
+</div>
 </body>
 </html>
