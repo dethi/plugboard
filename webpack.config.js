@@ -80,9 +80,11 @@ module.exports = {
             }
           },
           {
-            loader: 'img-loader',
+            loader: 'file-loader',
             options: {
-              enabled: isProduction
+              name: isProduction
+                ? 'media/[name].[hash:8].[ext]'
+                : 'media/[name].[ext]'
             }
           }
         ]
