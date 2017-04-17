@@ -12,13 +12,50 @@ class Vector {
   }
 }
 
+const LinkType = {
+  INPUT: 0,
+  OUTPUT: 1
+};
+
+class LinkElement {
+  constructor(component, linkType, linkSize, pos) {
+    this.component = component;
+    this.linkType = linkType;
+    this.linkSize = linkSize;
+    this.free = true;
+    this.pos = pos;
+    this.fabricRect = new fabric.Rect({
+      top: pos.x,
+      left: pos.y,
+      width: this.linkSize,
+      height: this.linkSize,
+      fill: 'black',
+      hasControls: false,
+      selectable: false
+    });
+
+    this.fabricRect.on('mousedown', options => {
+      this.component.grid.startCreateLink(
+        new Vector(this.fabricRect.left, this.fabricRect.top)
+      );
+    });
+  }
+
+  move(newPos) {
+    this.pos = newPos;
+    this.fabricRect.left = this.pos.y;
+    this.fabricRect.top = this.pos.x;
+    this.fabricRect.setCoords();
+  }
+}
+
 class ElecComponent {
   constructor(grid, vector, nbInput, nbOutput) {
     this.grid = grid;
     this.pos = vector;
 
     this.componentSize = this.grid.gridSize;
-    this.linkSize = this.componentSize / 7;
+    this.linkSize = this.componentSize / 5;
 
     this.nbInput = nbInput;
     this.nbOutput = nbOutput;
@@ -54,6 +91,7 @@ class ElecComponent {
       );
 
       if (!newPos.equals(this.pos)) {
+        this.fabricRect.setCoords();
         this.moveComponent(newPos);
       }
     });
@@ -67,7 +105,7 @@ class ElecComponent {
     this.grid.set(this.pos, this);
   }
 
-  createLinkElements(leftPos, nbElement) {
+  createLinkElements(leftPos, nbElement, linkType) {
     const newLinkElements = [];
     // Verify enough place for all link
     const elPadding = (this.componentSize - this.linkSize * nbElement) /
@@ -76,14 +114,12 @@ class ElecComponent {
     for (let i = 0; i < nbElement; i++) {
       const topPadding = i * this.linkSize + (i + 1) * elPadding;
 
-      const newLinkElement = new fabric.Rect({
-        top: this.componentSize * this.pos.y + topPadding,
-        left: leftPos,
-        width: this.linkSize,
-        height: this.linkSize,
-        fill: 'black',
-        hasControls: false
-      });
+      const newLinkElement = new LinkElement(
+        this,
+        linkType,
+        this.linkSize,
+        new Vector(this.componentSize * this.pos.y + topPadding, leftPos)
+      );
       newLinkElements.push(newLinkElement);
     }
     return newLinkElements;
@@ -95,14 +131,19 @@ class ElecComponent {
 
     elements.forEach((el, index) => {
       const topPadding = index * this.linkSize + (index + 1) * elPadding;
-      el.left = leftPos;
-      el.top = this.componentSize * this.pos.y + topPadding;
+      el.move(
+        new Vector(this.componentSize * this.pos.y + topPadding, leftPos)
+      );
     });
   }
 
   createInputElements() {
     const leftPos = this.componentSize * this.pos.x - this.linkSize / 2;
-    this.inputElements = this.createLinkElements(leftPos, this.nbInput);
+    this.inputElements = this.createLinkElements(
+      leftPos,
+      this.nbInput,
+      LinkType.INPUT
+    );
   }
 
   moveInputElements() {
@@ -112,7 +153,11 @@ class ElecComponent {
 
   createOutputElements() {
     const leftPos = this.componentSize * (this.pos.x + 1) - this.linkSize / 2;
-    this.outputElements = this.createLinkElements(leftPos, this.nbOutput);
+    this.outputElements = this.createLinkElements(
+      leftPos,
+      this.nbOutput,
+      LinkType.OUTPUT
+    );
   }
 
   moveOutputElements() {
@@ -121,7 +166,10 @@ class ElecComponent {
   }
 
   getFabricElements() {
-    return this.fabricElements.concat(this.inputElements, this.outputElements);
+    return this.fabricElements.concat(
+      this.inputElements.map(el => el.fabricRect),
+      this.outputElements.map(el => el.fabricRect)
+    );
   }
 }
 
@@ -150,6 +198,8 @@ class Grid {
 
     this.color = 'red';
     this.add = true;
+    this.addLink = false;
+    this.linkLine = null;
 
     this.fabricCanvas.on('mouse:down', options => {
       if (!this.add) return;
@@ -164,6 +214,35 @@ class Grid {
 
       this.addRect(pos);
       this.add = false;
+    });
+
+    this.fabricCanvas.on('mouse:move', options => {
+      if (!this.addLink) return;
+
+      const mousePos = this.fabricCanvas.getPointer(options.e);
+
+      this.fabricCanvas.remove(this.linkLine);
+      this.linkLine = new fabric.Line(
+        [
+          this.addLinkVectorStart.x,
+          this.addLinkVectorStart.y,
+          mousePos.x,
+          mousePos.y
+        ],
+        {
+          stroke: '#114B5F',
+          selectable: false
+        }
+      );
+
+      this.fabricCanvas.add(this.linkLine);
+    });
+
+    this.fabricCanvas.on('mouse:up', options => {
+      if (this.addLink) {
+        this.addLink = false;
+        this.fabricCanvas.remove(this.linkLine);
+      }
     });
 
     const lines = [];
@@ -219,10 +298,15 @@ class Grid {
   }
 
   addRect(vector) {
-    const newElecComponent = new ElecComponent(this, vector, 4, 2);
+    const newElecComponent = new ElecComponent(this, vector, 2, 1);
     this.set(vector, newElecComponent);
 
     newElecComponent.getFabricElements().map(el => this.fabricCanvas.add(el));
+  }
+
+  startCreateLink(vector) {
+    this.addLink = true;
+    this.addLinkVectorStart = vector;
   }
 }
 
