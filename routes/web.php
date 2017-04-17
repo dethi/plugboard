@@ -17,3 +17,4 @@ Route::get('/', 'PageController@index');
 Route::get('/app', 'AppController@index');
 Route::get('/contact', 'ContactController@get')->name('contact');
 Route::post('/contact', 'ContactController@post');
+Route::get('/about', 'AboutController@index');
