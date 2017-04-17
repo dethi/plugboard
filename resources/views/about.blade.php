@@ -12,10 +12,16 @@
                 <h1 class="page-header">About Us
                     <small>It's Nice to Meet You!</small>
                 </h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, explicabo dolores ipsam aliquam inventore corrupti eveniet quisquam quod totam laudantium repudiandae obcaecati ea consectetur debitis velit facere nisi expedita vel?</p>
+                <br/>
+                <p>
+                    PlugBoard est un nouveau support accessible et ludique pour l'électronique.
+                </p>
+                <p>
+                    Plugboard met en avant la progression personnalisée, le partage et la réutilisabilité de composants créés par la communauté.
+                </p>
             </div>
         </div>
-
+        <br/>
         <!-- Team Members Row -->
         <div class="row">
             <div class="col-lg-12">
