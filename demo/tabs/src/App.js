@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css';
-
 class App extends Component {
   handleSelect(index, last) {
       console.log('Selected tab: ' + index + ', Last tab: ' + last);
