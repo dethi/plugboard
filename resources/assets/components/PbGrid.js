@@ -17,12 +17,32 @@ const LinkType = {
   OUTPUT: 1
 };
 
+class LinkLine {
+  constructor(linkInput, linkOutput) {
+    this.linkInput = linkInput;
+    this.linkOutput = linkOutput;
+    this.fabricLine = new fabric.Line(
+      [
+        this.linkInput.pos.x,
+        this.linkInput.pos.y,
+        this.linkOutput.pos.x,
+        this.linkOutput.pos.y
+      ],
+      {
+        stroke: 'red',
+        selectable: false
+      }
+    );
+  }
+}
+
 class LinkElement {
   constructor(component, linkType, linkSize, pos) {
     this.component = component;
     this.linkType = linkType;
     this.linkSize = linkSize;
-    this.free = true;
+    this.linkLines = [];
+    this.use = false;
     this.pos = pos;
     this.fabricRect = new fabric.Rect({
       top: pos.y,
@@ -35,6 +55,7 @@ class LinkElement {
     });
 
     this.fabricRect.on('mousedown', options => {
+      if (this.linkType === LinkType.INPUT && this.isUse()) return;
       this.component.grid.startCreateLink(this);
     });
   }
@@ -44,6 +65,10 @@ class LinkElement {
     this.fabricRect.left = this.pos.x;
     this.fabricRect.top = this.pos.y;
     this.fabricRect.setCoords();
+  }
+
+  isUse() {
+    return this.linkLines.length > 0;
   }
 }
 
@@ -203,6 +228,7 @@ class Grid {
     this.add = true;
     this.addLink = false;
     this.linkOutputs = null;
+    this.linkEndding = null;
     this.linkLine = null;
 
     this.fabricCanvas.on('mouse:down', options => {
@@ -299,13 +325,16 @@ class Grid {
   startCreateLink(linkElement) {
     this.addLink = true;
     this.addLinkStartEl = linkElement;
+    this.linkEndding = null;
 
     this.linkOutputs = [];
 
     this.elecElements.forEach(el => {
       if (el === this.addLinkStartEl.component) return;
       if (this.addLinkStartEl.linkType === LinkType.OUTPUT) {
-        this.linkOutputs = this.linkOutputs.concat(el.inputElements);
+        this.linkOutputs = this.linkOutputs.concat(
+          el.inputElements.filter(el => !el.isUse())
+        );
       } else {
         this.linkOutputs = this.linkOutputs.concat(el.outputElements);
       }
@@ -331,7 +360,10 @@ class Grid {
     });
 
     if (target !== null) {
+      this.linkEndding = target;
       mousePos = target.pos;
+    } else {
+      this.linkEndding = null;
     }
     this.linkLine = new fabric.Line(
       [
@@ -352,6 +384,22 @@ class Grid {
   finishCreateLink() {
     this.addLink = false;
     this.fabricCanvas.remove(this.linkLine);
+
+    if (this.linkEndding) {
+      if (this.addLinkStartEl.linkType === LinkType.INPUT) {
+        console.log('Start from Input');
+        const link = new LinkLine(this.addLinkStartEl, this.linkEndding);
+        this.addLinkStartEl.linkLines.push(link);
+        this.linkEndding.linkLines.push(link);
+        this.fabricCanvas.add(link.fabricLine);
+      } else {
+        console.log('Start from Output');
+        const link = new LinkLine(this.linkEndding, this.addLinkStartEl);
+        this.addLinkStartEl.linkLines.push(link);
+        this.linkEndding.linkLines.push(link);
+        this.fabricCanvas.add(link.fabricLine);
+      }
+    }
   }
 }
 
