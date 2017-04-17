@@ -24,25 +24,25 @@
             <div class="columns">
                 <!--  <div class="col-lg-4 col-sm-6 text-center">-->
                 <div class="column">
-                    <img class="img-responsive img-center" src="{{url('/media/team/chabro.jpg')}}" alt="" height="200" width="200">
+                    <img class="img-responsive img-center" src="{{url('/static/team/chabro.jpg')}}" alt="" height="200" width="200">
                     <h3>Alexande Chabrolin</h3>
                     <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
                 </div>
                 <div class="column">
                     <!--  <div class="col-lg-4 col-sm-6 text-center">-->
-                    <img class="img-responsive img-center" src="{{url('/media/team/cormer.jpg')}}" alt="" height="200" width="200">
+                    <img class="img-responsive img-center" src="{{url('/static/team/cormer.jpg')}}" alt="" height="200" width="200">
                     <h3>Antoine Cormerais</h3>
                     <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
                 </div>
                 <div class="column">
                     <!--  <div class="col-lg-4 col-sm-6 text-center">-->
-                    <img class="img-responsive img-center" src="{{url('/media/team/deutsch.jpg')}}" alt="" height="200" width="200">
+                    <img class="img-responsive img-center" src="{{url('/static/team/deutsch.jpg')}}" alt="" height="200" width="200">
                     <h3>Thibault Deutsch</h3>
                     <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
                 </div>
                 <div class="column">
                     <!--  <div class="col-lg-4 col-sm-6 text-center">-->
-                    <img class="img-responsive img-center" src="{{url('/media/team/lehuen.jpg')}}" alt="" height="200" width="200">
+                    <img class="img-responsive img-center" src="{{url('/static/team/lehuen.jpg')}}" alt="" height="200" width="200">
                     <h3>Arthur Lehuen</h3>
                     <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
                 </div>
