@@ -11,10 +11,12 @@
   "dependencies": {
     "axios": "^0.15.3",
     "bulma": "^0.4.0",
+    "fabric": "^1.7.9",
     "font-awesome": "^4.7.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-router": "^4.0.0"
+    "react-router": "^4.0.0",
+    "react-tabs": "^0.8.2"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",
