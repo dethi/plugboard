@@ -4,8 +4,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Button from 'react-toolbox/lib/button/Button';
 import { fabric } from 'fabric';
 
-
-
 class Vector {
   constructor(x, y) {
     this.x = x;
@@ -124,10 +122,7 @@ class Grid {
     });
     this.fabricCanvas.add(this.fabricGridLines);
   }
-  setColorToBlue() {
-    this.color = 'blue';
-    this.add = true;
-  }
+
   isInside(vector) {
     return vector.x > 0 &&
       vector.x < this.width - 1 &&
@@ -156,22 +151,9 @@ class Grid {
     this.set(vector, newRect);
     this.fabricCanvas.add(newRect.fabricRect);
   }
-
-  getText() {
-    return "hola";
-  }
 }
-class Palette extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  render () {
-    return (
-    <Button label={this.props.label}  onClick={this.props.grid}/>
-  )
-  }
-}
+
 class GridReact extends Component {
   constructor(props) {
     super(props);
@@ -179,7 +161,9 @@ class GridReact extends Component {
     this.grid = null;
   }
   componentDidMount() {
-    this.grid = new Grid(15, 10, 30, this.refs.canvas);
+
+      this.grid = new Grid(15, 10, 30, this.refs.canvas);
+      this.grid = new Grid(15, 10, 30, this.refs.canvas1);
   }
   setColorToRed = () => {
     this.grid.color = 'red';
@@ -198,17 +182,27 @@ class GridReact extends Component {
   gridVisible = () => {
     this.grid.toggleVisibility();
   };
-  setColorToBlue = () => {
-    this.grid.setColorToBlue()
-  };
+
   render() {
-    var stylePanel = {
+    let stylePanel = {
       float: 'left',
-      width: '20%'
+      width: '20%',
+      'border-right': '1px solid black',
+      'padding-right': '10px',
+      'margin-right': '10px'
     };
-    var styleBoard = {
+    let styleBoard = {
+      float: 'left',
+      width: '55%',
+    };
+    let styleProfile = {
       float: 'right',
-      width: '75%'
+      width: '20%',
+      'border-left': '1px solid black',
+      'padding-left': '10px'
+    };
+    let styleActions = {
+      'text-align': 'center'
     };
     return (
 
@@ -221,29 +215,60 @@ class GridReact extends Component {
 					</TabList>
 
 					<TabPanel>
-          <h3>Basic</h3>
-          <Palette label="Set to Blue" grid={this.setColorToBlue} />
+						<Button label="Set to Red" onClick={this.setColorToRed} />
 						<Button label="Set to Green" onClick={this.setColorToGreen} />
             <h3>Advanced</h3>
-            <Palette label="Set to Blue" grid={this.setColorToBlue} />
   						<Button label="Set to Green" onClick={this.setColorToGreen} />
             <h3>Perso</h3>
-  						<Button label="Set to Green" onClick={this.setColorToGreen} />
+  						<Button label="Set to Red" onClick={this.setColorToRed} />
 						</TabPanel>
 					<TabPanel>
+            <form>
+              <input type="text" name="firstname" placeholder="Type here"/><br/>
+            </form>
 						<Button label="Nothing" onClick={this.unset} />
 						<Button label="Debug" onClick={this.debug} />
 						<Button label="Grid" onClick={this.gridVisible} />
 					</TabPanel>
-
 				</Tabs>
-
       </div>
+
       <div style={styleBoard}>
-        <canvas ref="canvas" />
+      <div class="actions" style={styleActions}>
+        <Button label="Play"/>
+        <Button label="Pause"/>
+        <Button label="Stop"/>
       </div>
-            </div>
+      <Tabs forceRenderTabPanel="true">
+        <TabList>
+          <Tab>Board 1</Tab>
+          <Tab>Board 2</Tab>
+        </TabList>
+        <TabPanel>
+          <canvas ref="canvas" />
+        </TabPanel>
+        <TabPanel>
+          <canvas ref="canvas1" />
+        </TabPanel>
+      </Tabs>
 
+      </div>
+        <div style={styleProfile}>
+          <h2>Name</h2>
+          <h3>Level 15</h3>
+          <progress value="15" max="100">15%</progress>
+          <Tabs>
+          <TabList>
+            <Tab>Informations</Tab>
+            <Tab>Achievements</Tab>
+            </TabList>
+          <TabPanel>
+            </TabPanel>
+            <TabPanel>
+            </TabPanel>
+            </Tabs>
+          </div>
+        </div>
     );
   }
 }
