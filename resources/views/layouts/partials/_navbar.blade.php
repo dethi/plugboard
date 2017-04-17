@@ -19,7 +19,7 @@
                     <a class="nav-item">
                         FAQ
                     </a>
-                    <a class="nav-item">
+                    <a class="nav-item" href="{{action('ContactController@index')}}">
                         Contact
                     </a>
                     <span class="nav-item">
