@@ -36,7 +36,6 @@
     "eslint-plugin-react": "6.4.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
-    "img-loader": "^2.0.0",
     "node-sass": "^4.5.1",
     "prettier": "^0.22.0",
     "resolve-url-loader": "^2.0.2",
