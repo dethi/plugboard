@@ -34,6 +34,21 @@ class LinkLine {
       }
     );
   }
+
+  refresh() {
+    this.fabricLine = new fabric.Line(
+      [
+        this.linkInput.pos.x,
+        this.linkInput.pos.y,
+        this.linkOutput.pos.x,
+        this.linkOutput.pos.y
+      ],
+      {
+        stroke: 'red',
+        selectable: false
+      }
+    );
+  }
 }
 
 class LinkElement {
@@ -65,6 +80,12 @@ class LinkElement {
     this.fabricRect.left = this.pos.x;
     this.fabricRect.top = this.pos.y;
     this.fabricRect.setCoords();
+
+    this.linkLines.forEach(line => {
+      this.component.grid.fabricCanvas.remove(line.fabricLine);
+      line.refresh();
+      this.component.grid.fabricCanvas.add(line.fabricLine);
+    });
   }
 
   isUse() {
