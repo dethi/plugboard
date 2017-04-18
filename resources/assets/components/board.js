@@ -433,6 +433,7 @@ class GridComponent extends Component {
   }
   componentDidMount() {
     this.grid = new Grid(15, 10, 50, this.refs.canvas);
+    this.grid1 = new Grid(15, 10, 50, this.refs.canvas1);
   }
   add = () => {
     this.grid.add = true;
@@ -450,9 +451,9 @@ class GridComponent extends Component {
     let stylePanel = {
       float: 'left',
       width: '20%',
-      'border-right': '1px solid black',
-      'padding-right': '10px',
-      'margin-right': '10px'
+      borderRight: '1px solid black',
+      paddingRight: '10px',
+      marginRight: '10px'
     };
     let styleBoard = {
       float: 'left',
@@ -461,11 +462,11 @@ class GridComponent extends Component {
     let styleProfile = {
       float: 'right',
       width: '20%',
-      'border-left': '1px solid black',
-      'padding-left': '10px'
+      borderLeft: '1px solid black',
+      paddingLeft: '10px'
     };
     let styleActions = {
-      'text-align': 'center'
+      textAlign: 'center'
     };
     return (
       <div>
@@ -498,12 +499,12 @@ class GridComponent extends Component {
         </div>
 
         <div style={styleBoard}>
-          <div class="actions" style={styleActions}>
+          <div className="actions" style={styleActions}>
             <button>Play</button>
             <button>Pause</button>
             <button>Stop</button>
           </div>
-          <Tabs forceRenderTabPanel="true">
+          <Tabs forceRenderTabPanel={true}>
             <TabList>
               <Tab>Board 1</Tab>
               <Tab>Board 2</Tab>
