@@ -78,14 +78,6 @@ module.exports = {
                 : 'media/[name].[ext]',
               limit: 10000
             }
-          },
-          {
-            loader: 'file-loader',
-            options: {
-              name: isProduction
-                ? 'media/[name].[hash:8].[ext]'
-                : 'media/[name].[ext]'
-            }
           }
         ]
       }
