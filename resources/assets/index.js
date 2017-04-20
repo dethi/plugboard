@@ -2,7 +2,7 @@ import './bootstrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Board from './components/Board';
+import WebApp from './components/WebApp';
 import './css/app.scss';
 
-ReactDOM.render(<Board />, document.getElementById('root'));
+ReactDOM.render(<WebApp />, document.getElementById('root'));

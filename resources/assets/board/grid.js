@@ -18,7 +18,7 @@ class Grid {
 
     this.fabricCanvas = new fabric.Canvas();
     this.fabricCanvas.initialize(el, {
-      selectable: false,
+      selection: false,
       height: this.gridHeight,
       width: this.gridWidth
     });
