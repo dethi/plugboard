@@ -4,27 +4,28 @@ import Palette from './Palette';
 import Board from './Board';
 import Profile from './Profile';
 
-class WebApp extends Component {
+export default class WebApp extends Component {
   constructor(props) {
     super(props);
 
-    this.color = 'red';
+    this.state = {
+      color: 'red'
+    };
   }
-  setColorToRed = () => {
-    this.color = 'green';
-  };
-  setColorToGreen = () => {
-    this.color = 'green';
-  };
+  handlePaletteChange(paletteValue) {
+    console.log('WebApp: ' + paletteValue);
+    this.setState({ color: paletteValue });
+  }
+  getColor() {
+    return this.state.color;
+  }
   render() {
     return (
       <div>
-        <Palette />
-        <Board />
+        <Palette updatePalette={this.handlePaletteChange.bind(this)} />
+        <Board getColor={this.getColor.bind(this)} />
         <Profile />
       </div>
     );
   }
 }
-
-export default () => <WebApp />;

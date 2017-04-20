@@ -5,7 +5,7 @@ import { LinkType, LinkElement } from './linkElement';
 import Vector from '../utils/vector';
 
 class ElecElement {
-  constructor(grid, vector, nbInput, nbOutput) {
+  constructor(grid, vector, nbInput, nbOutput, color) {
     this.grid = grid;
     this.pos = vector;
 
@@ -23,7 +23,7 @@ class ElecElement {
       left: this.componentSize * vector.x,
       width: this.componentSize,
       height: this.componentSize,
-      fill: 'red',
+      fill: color,
       hasControls: false
     });
     this.fabricElements.push(this.fabricRect);

@@ -3,15 +3,15 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Grid from '../board/grid';
 
-class Board extends Component {
+export default class Board extends Component {
   constructor(props) {
     super(props);
 
     this.grid = null;
   }
   componentDidMount() {
-    this.grid = new Grid(15, 10, 50, this.refs.canvas);
-    this.grid1 = new Grid(15, 10, 50, this.refs.canvas1);
+    this.grid = new Grid(15, 10, 50, this.refs.canvas, this.props.getColor);
+    this.grid1 = new Grid(15, 10, 50, this.refs.canvas1, this.props.getColor);
   }
   add = () => {
     this.grid.add = true;
@@ -56,9 +56,3 @@ class Board extends Component {
     );
   }
 }
-
-export default () => (
-  <div>
-    <Board />
-  </div>
-);

@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-class Palette extends Component {
+export default class Palette extends Component {
   constructor(props) {
     super(props);
 
-    this.color = 'red';
+    this.state = {
+      color: 'red'
+    };
+
+    console.log(this.props);
   }
   setColorToRed = () => {
-    this.color = 'green';
+    this.setState({ color: 'red' });
+    this.props.updatePalette('red');
   };
   setColorToGreen = () => {
-    this.color = 'green';
+    this.setState({ color: 'green' });
+    this.props.updatePalette('green');
   };
   render() {
     const stylePanel = {
@@ -30,7 +36,6 @@ class Palette extends Component {
           </TabList>
 
           <TabPanel>
-            <button onClick={this.add}>Add</button>
             <button onClick={this.setColorToRed}>Set to Red</button>
             <button onClick={this.setColorToGreen}>Set to Green</button>
             <h3>Advanced</h3>
@@ -40,17 +45,15 @@ class Palette extends Component {
           </TabPanel>
           <TabPanel>
             <form>
-              <input type="text" name="firstname" placeholder="Type here" />
+              <input type="text" name="search" placeholder="Type here" />
               <br />
             </form>
-            <button onClick={this.unset}>Nothing</button>
-            <button onClick={this.debug}>Debug</button>
-            <button onClick={this.gridVisible}>Grid</button>
+            <button>Nothing</button>
+            <button>Debug</button>
+            <button>Grid</button>
           </TabPanel>
         </Tabs>
       </div>
     );
   }
 }
-
-export default () => <Palette />;
