@@ -290,9 +290,11 @@ class Grid {
   }
 
   addGridLine() {
-    const lines = [];
+    this.fabricGridLines = [];
+    this.isGridVisible = true;
+
     for (let x = 1; x < this.gridWidth / this.gridSize; x++) {
-      lines.push(
+      this.fabricGridLines.push(
         new fabric.Line(
           [this.gridSize * x, 0, this.gridSize * x, this.gridHeight],
           {
@@ -303,7 +305,7 @@ class Grid {
       );
     }
     for (let x = 1; x < this.gridHeight / this.gridSize; x++) {
-      lines.push(
+      this.fabricGridLines.push(
         new fabric.Line(
           [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
           {
@@ -313,18 +315,13 @@ class Grid {
         )
       );
     }
-    this.fabricGridLines = new fabric.Group(lines, {
-      selectable: false
-    });
-    this.fabricCanvas.add(this.fabricGridLines);
+    this.fabricGridLines.forEach(el => this.fabricCanvas.add(el));
   }
 
   toggleGridVisibility() {
-    this.fabricGridLines.visible = !this.fabricGridLines.visible;
-    if (this.fabricGridLines.visible)
-      this.fabricCanvas.remove(this.fabricGridLines);
-    else
-      this.fabricCanvas.add(this.fabricGridLines);
+    this.isGridVisible = !this.isGridVisible;
+    this.fabricGridLines.forEach(el => el.visible = this.isGridVisible);
+    this.fabricCanvas.renderAll();
   }
 
   get(vector) {
