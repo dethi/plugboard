@@ -5,6 +5,8 @@ import ElecElement from './elecElement';
 
 import Vector from '../utils/vector';
 
+import { ElementType } from '../element/elementBlueprint';
+
 class Grid {
   constructor(width, height, gridSize, el, getCurBlueprint) {
     this.getCurBlueprint = getCurBlueprint;
@@ -31,6 +33,9 @@ class Grid {
 
     this.color = 'red';
 
+    this.inputElements = [];
+    this.outputElements = [];
+    this.gateElements = [];
     this.elecElements = [];
 
     this.add = true;
@@ -128,6 +133,20 @@ class Grid {
       blueprint.nbOutput,
       blueprint.color
     );
+
+    switch (blueprint.elementType) {
+      case ElementType.INPUT:
+        this.inputElements.push(newElecElement);
+        break;
+      case ElementType.OUTPUT:
+        this.outputElements.push(newElecElement);
+        break;
+      case ElementType.GATE:
+        this.gateElements.push(newElecElement);
+        break;
+      default:
+        break;
+    }
 
     this.elecElements.push(newElecElement);
     this.set(vector, newElecElement);
