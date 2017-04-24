@@ -35,19 +35,29 @@ class ElecElement {
       let left = Math.round(options.e.offsetX / this.grid.gridSize) *
         this.grid.gridSize;
       left = Math.max(Math.min(left, this.grid.leftMax), this.grid.leftMin);
-      this.fabricRect.left = left;
 
       let top = Math.round(options.e.offsetY / this.grid.gridSize) *
         this.grid.gridSize;
       top = Math.max(Math.min(top, this.grid.topMax), this.grid.topMin);
-      this.fabricRect.top = top;
 
       const newPos = new Vector(
         Math.floor(left / this.grid.gridSize),
         Math.floor(top / this.grid.gridSize)
       );
 
-      if (!newPos.equals(this.pos)) {
+      if (newPos.equals(this.pos) || this.grid.get(newPos) !== undefined) {
+        this.fabricRect.left = Math.max(
+          Math.min(this.pos.x * this.grid.gridSize, this.grid.leftMax),
+          this.grid.leftMin
+        );
+        this.fabricRect.top = Math.max(
+          Math.min(this.pos.y * this.grid.gridSize, this.grid.leftMax),
+          this.grid.leftMin
+        );
+      } else {
+        this.fabricRect.left = left;
+        this.fabricRect.top = top;
+
         this.fabricRect.setCoords();
         this.moveComponent(newPos);
       }
