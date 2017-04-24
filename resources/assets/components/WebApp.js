@@ -16,14 +16,18 @@ export default class WebApp extends Component {
     console.log('WebApp: ' + paletteValue);
     this.setState({ color: paletteValue });
   }
-  getColor() {
-    return this.state.color;
+  getCurElement() {
+    const curEl = this.state.color;
+
+    this.setState({ color: undefined });
+
+    return curEl;
   }
   render() {
     return (
       <div>
         <Palette updatePalette={this.handlePaletteChange.bind(this)} />
-        <Board getColor={this.getColor.bind(this)} />
+        <Board getCurElement={this.getCurElement.bind(this)} />
         <Profile />
       </div>
     );

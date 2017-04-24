@@ -6,8 +6,8 @@ import ElecElement from './elecElement';
 import Vector from '../utils/vector';
 
 class Grid {
-  constructor(width, height, gridSize, el, getColor) {
-    this.getColor = getColor;
+  constructor(width, height, gridSize, el, getCurElement) {
+    this.getCurElement = getCurElement;
     this.gridSize = gridSize;
 
     this.width = width;
@@ -42,6 +42,9 @@ class Grid {
     this.fabricCanvas.on('mouse:down', options => {
       if (!this.add) return;
 
+      const newEl = this.getCurElement();
+      if (newEl === undefined) return;
+
       const mousePos = this.fabricCanvas.getPointer(options.e);
       const pos = new Vector(
         Math.floor(mousePos.x / this.gridSize),
@@ -50,7 +53,7 @@ class Grid {
 
       if (!this.isInside(pos) || this.get(pos) !== undefined) return;
 
-      this.addRect(pos);
+      this.addElement(pos, newEl);
     });
 
     this.fabricCanvas.on('mouse:move', options => {
@@ -117,8 +120,8 @@ class Grid {
     this.space[vector.x + this.width * vector.y] = value;
   }
 
-  addRect(vector) {
-    const newElecElement = new ElecElement(this, vector, 2, 1, this.getColor());
+  addElement(vector, element) {
+    const newElecElement = new ElecElement(this, vector, 2, 1, element);
 
     this.elecElements.push(newElecElement);
     this.set(vector, newElecElement);

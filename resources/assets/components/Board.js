@@ -10,8 +10,20 @@ export default class Board extends Component {
     this.grid = null;
   }
   componentDidMount() {
-    this.grid = new Grid(15, 10, 50, this.refs.canvas, this.props.getColor);
-    this.grid1 = new Grid(15, 10, 50, this.refs.canvas1, this.props.getColor);
+    this.grid = new Grid(
+      15,
+      10,
+      50,
+      this.refs.canvas,
+      this.props.getCurElement
+    );
+    this.grid1 = new Grid(
+      15,
+      10,
+      50,
+      this.refs.canvas1,
+      this.props.getCurElement
+    );
   }
   add = () => {
     this.grid.add = true;
