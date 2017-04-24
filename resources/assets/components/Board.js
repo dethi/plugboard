@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Grid from '../board/grid';
+import Grid from '../libs/board/grid';
 
 export default class Board extends Component {
   constructor(props) {
