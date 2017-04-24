@@ -1,23 +1,34 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+import { ElementBlueprint } from '../libs/element/elementBlueprint';
+
 export default class Palette extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      color: 'red'
+      elements: [
+        ElementBlueprint.createInputBlueprint(),
+        ElementBlueprint.createOutputBlueprint(),
+        ElementBlueprint.createDefaultGateBlueprint()
+      ],
+      curElementId: 0
     };
 
     console.log(this.props);
   }
-  setColorToRed = () => {
-    this.setState({ color: 'red' });
-    this.props.updatePalette('red');
+  setToInput = () => {
+    this.setState({ curElementId: 0 });
+    this.props.updatePalette(this.state.elements[0]);
   };
-  setColorToGreen = () => {
-    this.setState({ color: 'green' });
-    this.props.updatePalette('green');
+  setToOutput = () => {
+    this.setState({ curElementId: 1 });
+    this.props.updatePalette(this.state.elements[1]);
+  };
+  setToGate = () => {
+    this.setState({ curElementId: 2 });
+    this.props.updatePalette(this.state.elements[2]);
   };
   render() {
     const stylePanel = {
@@ -36,12 +47,9 @@ export default class Palette extends Component {
           </TabList>
 
           <TabPanel>
-            <button onClick={this.setColorToRed}>Set to Red</button>
-            <button onClick={this.setColorToGreen}>Set to Green</button>
-            <h3>Advanced</h3>
-            <button onClick={this.setColorToGreen}>Set to Green</button>
-            <h3>Perso</h3>
-            <button onClick={this.setColorToRed}>Set to Red</button>
+            <button onClick={this.setToInput}>Input</button>
+            <button onClick={this.setToOutput}>Output</button>
+            <button onClick={this.setToGate}>Porte</button>
           </TabPanel>
           <TabPanel>
             <form>

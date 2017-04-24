@@ -15,14 +15,14 @@ export default class Board extends Component {
       10,
       50,
       this.refs.canvas,
-      this.props.getCurElement
+      this.props.getCurBlueprint
     );
     this.grid1 = new Grid(
       15,
       10,
       50,
       this.refs.canvas1,
-      this.props.getCurElement
+      this.props.getCurBlueprint
     );
   }
   add = () => {
