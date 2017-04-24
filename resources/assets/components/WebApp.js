@@ -9,25 +9,24 @@ export default class WebApp extends Component {
     super(props);
 
     this.state = {
-      color: 'red'
+      elementBlueprint: undefined
     };
   }
-  handlePaletteChange(paletteValue) {
-    console.log('WebApp: ' + paletteValue);
-    this.setState({ color: paletteValue });
+  handlePaletteChange(paletteBlueprint) {
+    this.setState({ elementBlueprint: paletteBlueprint });
   }
-  getCurElement() {
-    const curEl = this.state.color;
+  getCurBlueprint() {
+    const curBlueprint = this.state.elementBlueprint;
 
-    this.setState({ color: undefined });
+    this.setState({ elementBlueprint: undefined });
 
-    return curEl;
+    return curBlueprint;
   }
   render() {
     return (
       <div>
         <Palette updatePalette={this.handlePaletteChange.bind(this)} />
-        <Board getCurElement={this.getCurElement.bind(this)} />
+        <Board getCurBlueprint={this.getCurBlueprint.bind(this)} />
         <Profile />
       </div>
     );
