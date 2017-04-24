@@ -24,7 +24,7 @@ const SPECS = {
 };
 
 // (i1, i2) => AND => o2
-const BOARD = {
+/**const BOARD = {
   nextRegistery: 3,
   input: {
     i1: 0,
@@ -81,7 +81,7 @@ const BOARD1 = {
     }
   },
   specs: SPECS
-};
+};**/
 
 function evalutateBoard(board, prevState) {
   const newState = [...prevState];
@@ -197,6 +197,10 @@ function generateTruthTable(board) {
   );
 }
 
+// ULGY, Only for test
+export { SPECS, generateTruthTable };
+
+/**
 console.log('AND');
 console.log(evaluateComponent(BOARD.specs.AND, { A: 0, B: 0 }));
 console.log(evaluateComponent(BOARD.specs.AND, { A: 0, B: 1 }));
@@ -228,3 +232,4 @@ console.log(generateTruthTable(BOARD));
 
 console.log('GENERATE TRUTH TABLE BOARD1');
 console.log(generateTruthTable(BOARD1));
+**/
