@@ -91,7 +91,7 @@ class Grid {
 
       if (!this.isInside(pos) || this.get(pos) !== undefined) return;
 
-      this.addRect(pos);
+      this.addElement(pos);
     });
 
     const lines = [];
@@ -146,7 +146,7 @@ class Grid {
     this.space[vector.x + this.width * vector.y] = value;
   }
 
-  addRect(vector) {
+  addElement(vector) {
     const newRect = new Rect(this, vector, this.color);
     this.set(vector, newRect);
     this.fabricCanvas.add(newRect.fabricRect);
