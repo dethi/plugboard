@@ -138,6 +138,18 @@ class ElecElement {
       this.outputElements.map(el => el.fabricRect)
     );
   }
+
+  setAsInputElement() {
+    this.lastTime = 0;
+    this.fabricRect.on('mousedown', options => {
+      const date = new Date();
+      const now = date.getTime();
+      if (now - this.lastTime < 500) {
+        console.log('dubble');
+      }
+      this.lastTime = now;
+    });
+  }
 }
 
 export default ElecElement;
