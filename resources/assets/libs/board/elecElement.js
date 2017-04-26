@@ -5,16 +5,17 @@ import { LinkType, LinkElement } from './linkElement';
 import Vector from '../utils/vector';
 
 class ElecElement {
-  constructor(grid, vector, nbInput, nbOutput, color) {
+  constructor(grid, vector, blueprint) {
     this.grid = grid;
     this.pos = vector;
+    this.blueprint = blueprint;
 
     this.componentSize = this.grid.gridSize;
     this.linkSize = this.componentSize / 5;
 
-    this.nbInput = nbInput;
+    this.nbInput = this.blueprint.nbInput;
     this.inputElements = null;
-    this.nbOutput = nbOutput;
+    this.nbOutput = this.blueprint.nbOutput;
     this.outputElements = null;
 
     this.fabricElements = [];
@@ -23,7 +24,7 @@ class ElecElement {
       left: this.componentSize * vector.x,
       width: this.componentSize,
       height: this.componentSize,
-      fill: color,
+      fill: this.blueprint.colorOff,
       hasControls: false
     });
     this.fabricElements.push(this.fabricRect);
@@ -141,11 +142,18 @@ class ElecElement {
 
   setAsInputElement() {
     this.lastTime = 0;
+    this.on = false;
     this.fabricRect.on('mousedown', options => {
       const date = new Date();
       const now = date.getTime();
       if (now - this.lastTime < 500) {
-        console.log('dubble');
+        this.on = !this.on;
+        const newColor = this.on
+          ? this.blueprint.colorOn
+          : this.blueprint.colorOff;
+
+        this.fabricRect.setFill(newColor);
+        this.grid.fabricCanvas.renderAll();
       }
       this.lastTime = now;
     });
