@@ -148,7 +148,9 @@ class Grid {
     this.elecElements.push(newElecElement);
     this.set(vector, newElecElement);
 
-    newElecElement.getFabricElements().map(el => this.fabricCanvas.add(el));
+    newElecElement.getFabricElements().map(el => {
+      this.fabricCanvas.add(el);
+    });
   }
 
   startCreateLink(linkElement) {

@@ -1,0 +1,16 @@
+.componentPalette {
+  margin: auto;
+}
+
+.componentsPalette {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+
+.selectedComponent {
+  opacity: 0.5;
+  border: 1p solid black;
+}
