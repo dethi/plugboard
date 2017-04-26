@@ -126,16 +126,11 @@ class Grid {
   }
 
   addElement(vector, blueprint) {
-    const newElecElement = new ElecElement(
-      this,
-      vector,
-      blueprint.nbInput,
-      blueprint.nbOutput,
-      blueprint.color
-    );
+    const newElecElement = new ElecElement(this, vector, blueprint);
 
     switch (blueprint.elementType) {
       case ElementType.INPUT:
+        newElecElement.setAsInputElement();
         this.inputElements.push(newElecElement);
         break;
       case ElementType.OUTPUT:

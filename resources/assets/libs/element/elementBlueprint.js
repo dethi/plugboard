@@ -5,23 +5,24 @@ const ElementType = {
 };
 
 class ElementBlueprint {
-  constructor(elementType, nbInput, nbOutput, color) {
+  constructor(elementType, nbInput, nbOutput, colorOn, colorOff) {
     this.elementType = elementType;
-    this.color = color;
+    this.colorOn = colorOn;
+    this.colorOff = colorOff;
     this.nbInput = nbInput;
     this.nbOutput = nbOutput;
   }
 
   static createInputBlueprint() {
-    return new ElementBlueprint(ElementType.INPUT, 0, 1, 'green');
+    return new ElementBlueprint(ElementType.INPUT, 0, 1, 'green', 'red');
   }
 
   static createOutputBlueprint() {
-    return new ElementBlueprint(ElementType.OUTPUT, 1, 0, 'blue');
+    return new ElementBlueprint(ElementType.OUTPUT, 1, 0, 'green', 'red');
   }
 
   static createDefaultGateBlueprint() {
-    return new ElementBlueprint(ElementType.GATE, 2, 1, 'red');
+    return new ElementBlueprint(ElementType.GATE, 2, 1, 'blue', 'blue');
   }
 }
 

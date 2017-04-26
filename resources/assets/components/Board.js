@@ -54,7 +54,7 @@ export default class Board extends Component {
     return (
       <div style={styleBoard}>
         <div className="actions" style={styleActions}>
-          <button>Play</button>
+          <button onClick={this.exportBoard}>Play</button>
           <button>Pause</button>
           <button>Stop</button>
         </div>
@@ -65,7 +65,6 @@ export default class Board extends Component {
           </TabList>
           <TabPanel>
             <canvas ref="canvas" />
-            <button onClick={this.exportBoard}>Export</button>
           </TabPanel>
           <TabPanel>
             <canvas ref="canvas1" />
