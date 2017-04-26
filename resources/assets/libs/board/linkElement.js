@@ -41,6 +41,7 @@ class LinkLine {
 
 class LinkElement {
   constructor(component, linkType, linkSize, pos) {
+    this.id = undefined;
     this.component = component;
     this.linkType = linkType;
     this.linkSize = linkSize;
@@ -78,6 +79,14 @@ class LinkElement {
 
   isUse() {
     return this.linkLines.length > 0;
+  }
+
+  setId(newId) {
+    this.id = newId;
+  }
+
+  getId() {
+    return this.id;
   }
 }
 

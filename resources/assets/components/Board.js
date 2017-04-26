@@ -31,11 +31,11 @@ export default class Board extends Component {
   unset = () => {
     this.grid.add = false;
   };
-  debug = () => {
-    console.log(this.grid.fabricCanvas.toJSON());
-  };
   gridVisible = () => {
     this.grid.toggleGridVisibility();
+  };
+  exportBoard = () => {
+    console.log(this.grid.exportForEngine());
   };
   render() {
     const styleBoard = {
@@ -59,6 +59,7 @@ export default class Board extends Component {
           </TabList>
           <TabPanel>
             <canvas ref="canvas" />
+            <button onClick={this.exportBoard}>Export</button>
           </TabPanel>
           <TabPanel>
             <canvas ref="canvas1" />

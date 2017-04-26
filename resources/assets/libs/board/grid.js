@@ -218,20 +218,70 @@ class Grid {
     this.fabricCanvas.remove(this.linkLine);
 
     if (this.linkEndding) {
-      if (this.addLinkStartEl.linkType === LinkType.INPUT) {
-        console.log('Start from Input');
+      if (this.addLinkStartEl.linkType === LinkType.OUTPUT) {
         const link = new LinkLine(this.addLinkStartEl, this.linkEndding);
         this.addLinkStartEl.linkLines.push(link);
         this.linkEndding.linkLines.push(link);
         this.fabricCanvas.add(link.fabricLine);
       } else {
-        console.log('Start from Output');
         const link = new LinkLine(this.linkEndding, this.addLinkStartEl);
         this.addLinkStartEl.linkLines.push(link);
         this.linkEndding.linkLines.push(link);
         this.fabricCanvas.add(link.fabricLine);
       }
     }
+  }
+
+  exportForEngine() {
+    const board = {};
+    let curRegistery = 0;
+
+    // Create Input Registery
+    board.input = {};
+    this.inputElements.forEach((el, index) => {
+      board.input['i' + index] = curRegistery;
+      // Add check ?
+      el.outputElements[0].setId(curRegistery);
+      curRegistery++;
+    });
+
+    // Create Output Registery
+    board.output = {};
+    this.outputElements.forEach((el, index) => {
+      board.output['o' + index] = curRegistery;
+      el.inputElements[0].setId(curRegistery);
+      curRegistery++;
+    });
+
+    // Create Middle Registery
+    const lastOutputRegistery = curRegistery - 1;
+    this.gateElements.forEach(el => {
+      el.outputElements.forEach(ouEl => {
+        // Iterate over all ouEl linkLines !
+        const id = ouEl.linkLines[0].linkLine.linkOutput.getId();
+        if (id === undefined || id > lastOutputRegistery) {
+          el.setId(curRegistery);
+          curRegistery++;
+        }
+      });
+    });
+
+    // Link components
+    board.components = {};
+    this.gateElements.forEach((el, index) => {
+      const component = {};
+      component.specKey = 'AND';
+
+      let curChar = 'A';
+      component.input = {};
+      el.inputElements.forEach(inEl => {
+        input[curChar] = inEl.
+      });
+
+      board.components['c' + index] = component;
+    });
+
+    return board;
   }
 }
 
