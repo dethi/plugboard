@@ -254,15 +254,18 @@ class Grid {
     });
 
     // Create Middle Registery
-    const lastOutputRegistery = curRegistery - 1;
     this.gateElements.forEach(el => {
-      el.outputElements.forEach(ouEl => {
-        // Iterate over all ouEl linkLines !
-        const id = ouEl.linkLines[0].linkLine.linkOutput.getId();
-        if (id === undefined || id > lastOutputRegistery) {
-          el.setId(curRegistery);
+      el.inputElements.forEach(inEl => {
+        const linkTo = inEl.linkLines[0].linkInput;
+        let id = linkTo.getId();
+
+        if (id === undefined) {
+          linkTo.setId(curRegistery);
+          id = curRegistery;
           curRegistery++;
         }
+
+        inEl.setId(id);
       });
     });
 
@@ -275,11 +278,22 @@ class Grid {
       let curChar = 'A';
       component.input = {};
       el.inputElements.forEach(inEl => {
-        input[curChar] = inEl.
+        component.input[curChar] = inEl.getId();
+        curChar = String.fromCharCode(curChar.charCodeAt() + 1);
+      });
+
+      component.output = {};
+      el.outputElements.forEach(ouEl => {
+        component.output[curChar] = ouEl.linkLines.map(link => {
+          return link.linkOutput.getId();
+        });
+        curChar = String.fromCharCode(curChar.charCodeAt() + 1);
       });
 
       board.components['c' + index] = component;
     });
+
+    board.nextRegistery = curRegistery;
 
     return board;
   }

@@ -46,7 +46,6 @@ class LinkElement {
     this.linkType = linkType;
     this.linkSize = linkSize;
     this.linkLines = [];
-    this.use = false;
     this.pos = pos;
     this.fabricRect = new fabric.Rect({
       top: pos.y,
