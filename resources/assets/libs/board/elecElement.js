@@ -9,6 +9,7 @@ class ElecElement {
     this.grid = grid;
     this.pos = vector;
     this.blueprint = blueprint;
+    this.on = false;
 
     this.componentSize = this.grid.gridSize;
     this.linkSize = this.componentSize / 5;
@@ -142,21 +143,22 @@ class ElecElement {
 
   setAsInputElement() {
     this.lastTime = 0;
-    this.on = false;
     this.fabricRect.on('mousedown', options => {
       const date = new Date();
       const now = date.getTime();
       if (now - this.lastTime < 500) {
-        this.on = !this.on;
-        const newColor = this.on
-          ? this.blueprint.colorOn
-          : this.blueprint.colorOff;
-
-        this.fabricRect.setFill(newColor);
-        this.grid.fabricCanvas.renderAll();
+        this.setOn(!this.on);
       }
       this.lastTime = now;
     });
+  }
+
+  setOn(isOn) {
+    this.on = isOn;
+    const newColor = isOn ? this.blueprint.colorOn : this.blueprint.colorOff;
+
+    this.fabricRect.setFill(newColor);
+    this.grid.fabricCanvas.renderAll();
   }
 }
 

@@ -290,7 +290,22 @@ class Grid {
 
     board.nextRegistery = curRegistery;
 
-    return board;
+    const states = new Array(board.nextRegistery).fill(0);
+    this.inputElements.forEach((el, index) => {
+      states[index] = el.on ? 1 : 0;
+    });
+
+    return {
+      board: board,
+      states: states
+    };
+  }
+
+  applyState(states) {
+    const nbInput = this.inputElements.length;
+    this.outputElements.forEach((el, index) => {
+      el.setOn(states[nbInput + index] === 1);
+    });
   }
 }
 

@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Grid from '../libs/board/grid';
 
-import { SPECS, generateTruthTable } from '../engine/index';
+import { SPECS, evalutateBoardFinal } from '../engine/index';
 
 export default class Board extends Component {
   constructor(props) {
@@ -37,11 +37,14 @@ export default class Board extends Component {
     this.grid.toggleGridVisibility();
   };
   exportBoard = () => {
-    const board = this.grid.exportForEngine();
-    board.specs = SPECS;
+    const grid = this.grid.exportForEngine();
+    grid.board.specs = SPECS;
 
-    console.log(board);
-    console.log(generateTruthTable(board));
+    console.log(grid);
+    const res = evalutateBoardFinal(grid.board, grid.states);
+    console.log(res);
+
+    this.grid.applyState(res);
   };
   render() {
     const styleBoard = {

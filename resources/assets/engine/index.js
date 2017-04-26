@@ -198,7 +198,7 @@ function generateTruthTable(board) {
 }
 
 // ULGY, Only for test
-export { SPECS, generateTruthTable };
+export { SPECS, evalutateBoardFinal };
 
 /**
 console.log('AND');
