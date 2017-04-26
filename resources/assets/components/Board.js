@@ -3,6 +3,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Grid from '../libs/board/grid';
 
+import { SPECS, generateTruthTable } from '../engine/index';
+
 export default class Board extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +37,11 @@ export default class Board extends Component {
     this.grid.toggleGridVisibility();
   };
   exportBoard = () => {
-    console.log(this.grid.exportForEngine());
+    const board = this.grid.exportForEngine();
+    board.specs = SPECS;
+
+    console.log(board);
+    console.log(generateTruthTable(board));
   };
   render() {
     const styleBoard = {
