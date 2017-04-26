@@ -12,21 +12,21 @@ export default class WebApp extends Component {
       elementBlueprint: undefined
     };
   }
-  handlePaletteChange(paletteBlueprint) {
+  handlePaletteChange = paletteBlueprint => {
     this.setState({ elementBlueprint: paletteBlueprint });
-  }
-  getCurBlueprint() {
+  };
+  getCurBlueprint = () => {
     const curBlueprint = this.state.elementBlueprint;
 
     this.setState({ elementBlueprint: undefined });
 
     return curBlueprint;
-  }
+  };
   render() {
     return (
       <div>
-        <Palette updatePalette={this.handlePaletteChange.bind(this)} />
-        <Board getCurBlueprint={this.getCurBlueprint.bind(this)} />
+        <Palette updatePalette={this.handlePaletteChange} />
+        <Board getCurBlueprint={this.getCurBlueprint} />
         <Profile />
       </div>
     );
