@@ -15,8 +15,6 @@ export default class Palette extends Component {
       ],
       curElementId: 0
     };
-
-    console.log(this.props);
   }
   setToInput = () => {
     this.setState({ curElementId: 0 });
