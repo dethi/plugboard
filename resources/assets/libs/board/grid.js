@@ -44,6 +44,8 @@ class Grid {
     this.linkEndding = null;
     this.linkLine = null;
 
+    this.engineRepresentation = {};
+
     this.fabricCanvas.on('mouse:down', options => {
       if (!this.add) return;
 
@@ -228,7 +230,14 @@ class Grid {
   }
 
   exportForEngine() {
+    this.createEngineRepresentation();
+    this.createEngineStates();
+    return this.engineRepresentation;
+  }
+
+  createEngineRepresentation() {
     const board = {};
+    const registeryLines = {};
     let curRegistery = 0;
 
     // Create Input Registery
@@ -245,6 +254,7 @@ class Grid {
     this.outputElements.forEach((el, index) => {
       board.output['o' + index] = curRegistery;
       el.inputElements[0].setId(curRegistery);
+      registeryLines[curRegistery] = el.inputElements[0].linkLines[0];
       curRegistery++;
     });
 
@@ -255,8 +265,8 @@ class Grid {
         let id = linkTo.getId();
 
         if (id === undefined) {
-          linkTo.setId(curRegistery);
           id = curRegistery;
+          registeryLines[curRegistery] = inEl.linkLines[0];
           curRegistery++;
         }
 
@@ -290,21 +300,36 @@ class Grid {
 
     board.nextRegistery = curRegistery;
 
-    const states = new Array(board.nextRegistery).fill(0);
+    this.engineRepresentation.board = board;
+    this.engineRepresentation.registeryLines = registeryLines;
+  }
+
+  createEngineStates() {
+    const states = new Array(
+      this.engineRepresentation.board.nextRegistery
+    ).fill(0);
+
     this.inputElements.forEach((el, index) => {
       states[index] = el.on ? 1 : 0;
     });
 
-    return {
-      board: board,
-      states: states
-    };
+    Object.keys(this.engineRepresentation.registeryLines).forEach(key => {
+      states[key] = this.engineRepresentation.registeryLines[key].on ? 1 : 0;
+    });
+
+    this.engineRepresentation.states = states;
   }
 
   applyState(states) {
     const nbInput = this.inputElements.length;
     this.outputElements.forEach((el, index) => {
       el.setOn(states[nbInput + index] === 1);
+    });
+
+    // Handle set LinkInput witout infinit loop
+    Object.keys(states).forEach(key => {
+      if (key < nbInput) return;
+      this.engineRepresentation.registeryLines[key].setOn(states[key] === 1);
     });
   }
 }

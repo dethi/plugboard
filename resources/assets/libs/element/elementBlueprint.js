@@ -22,7 +22,7 @@ class ElementBlueprint {
   }
 
   static createDefaultGateBlueprint() {
-    return new ElementBlueprint(ElementType.GATE, 2, 1, 'blue', 'blue');
+    return new ElementBlueprint(ElementType.GATE, 2, 1, 'green', 'blue');
   }
 }
 
