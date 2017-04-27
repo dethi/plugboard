@@ -9,7 +9,6 @@ class ElecElement {
     this.grid = grid;
     this.pos = vector;
     this.blueprint = blueprint;
-    this.on = false;
 
     this.componentSize = this.grid.gridSize;
     this.linkSize = this.componentSize / 5;
@@ -142,6 +141,7 @@ class ElecElement {
   }
 
   setAsInputElement() {
+    this.on = false;
     this.lastTime = 0;
     this.fabricRect.on('mousedown', options => {
       const date = new Date();
@@ -156,6 +156,8 @@ class ElecElement {
   setOn(isOn) {
     this.on = isOn;
     const newColor = isOn ? this.blueprint.colorOn : this.blueprint.colorOff;
+
+    this.outputElements.forEach(ouEl => ouEl.setOn(isOn));
 
     this.fabricRect.setFill(newColor);
     this.grid.fabricCanvas.renderAll();

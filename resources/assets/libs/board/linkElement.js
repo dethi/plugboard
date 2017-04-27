@@ -9,6 +9,8 @@ class LinkLine {
   constructor(linkInput, linkOutput) {
     this.linkInput = linkInput;
     this.linkOutput = linkOutput;
+    this.on = false;
+
     this.fabricLine = new fabric.Line(
       [
         this.linkInput.pos.x,
@@ -24,6 +26,7 @@ class LinkLine {
   }
 
   refresh() {
+    this.linkInput.component.grid.fabricCanvas.remove(this.fabricLine);
     this.fabricLine = new fabric.Line(
       [
         this.linkInput.pos.x,
@@ -32,10 +35,17 @@ class LinkLine {
         this.linkOutput.pos.y
       ],
       {
-        stroke: 'red',
+        stroke: this.on ? 'green' : 'red',
         selectable: false
       }
     );
+    this.linkInput.component.grid.fabricCanvas.add(this.fabricLine);
+  }
+
+  setOn(isOn) {
+    this.on = isOn;
+    this.linkOutput.setOn(isOn);
+    this.refresh();
   }
 }
 
@@ -72,9 +82,7 @@ class LinkElement {
     this.fabricRect.setCoords();
 
     this.linkLines.forEach(line => {
-      this.component.grid.fabricCanvas.remove(line.fabricLine);
       line.refresh();
-      this.component.grid.fabricCanvas.add(line.fabricLine);
     });
   }
 
@@ -88,6 +96,14 @@ class LinkElement {
 
   getId() {
     return this.id;
+  }
+
+  setOn(isOn) {
+    this.on = isOn;
+
+    if (this.linkType === LinkType.OUTPUT) {
+      this.linkLines.forEach(link => link.setOn(isOn));
+    }
   }
 }
 

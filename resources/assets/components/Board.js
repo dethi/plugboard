@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Grid from '../libs/board/grid';
 
-import { SPECS, evalutateBoardFinal } from '../engine/index';
+import { SPECS, evalutateBoard } from '../engine/index';
 
 export default class Board extends Component {
   constructor(props) {
@@ -40,11 +40,7 @@ export default class Board extends Component {
     const grid = this.grid.exportForEngine();
     grid.board.specs = SPECS;
 
-    console.log(grid);
-    const res = evalutateBoardFinal(grid.board, grid.states);
-    console.log(res);
-
-    this.grid.applyState(res);
+    this.grid.applyState(evalutateBoard(grid.board, grid.states));
   };
   render() {
     const styleBoard = {
