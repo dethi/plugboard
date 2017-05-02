@@ -29,8 +29,6 @@ class ElecElement {
   }
 
   initComponent(fabricComponent) {
-    console.log(fabricComponent);
-
     fabricComponent.top = this.componentSize * this.pos.y;
     fabricComponent.left = this.componentSize * this.pos.x;
     fabricComponent.width = this.componentSize;
