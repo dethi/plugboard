@@ -205,6 +205,7 @@ class Grid {
       ],
       {
         stroke: '#114B5F',
+        strokeWidth: this.gridSize / 15,
         selectable: false
       }
     );
@@ -218,12 +219,20 @@ class Grid {
 
     if (this.linkEndding) {
       if (this.addLinkStartEl.linkType === LinkType.OUTPUT) {
-        const link = new LinkLine(this.addLinkStartEl, this.linkEndding);
+        const link = new LinkLine(
+          this.addLinkStartEl,
+          this.linkEndding,
+          this.gridSize / 5
+        );
         this.addLinkStartEl.linkLines.push(link);
         this.linkEndding.linkLines.push(link);
         this.fabricCanvas.add(link.fabricLine);
       } else {
-        const link = new LinkLine(this.linkEndding, this.addLinkStartEl);
+        const link = new LinkLine(
+          this.linkEndding,
+          this.addLinkStartEl,
+          this.gridSize / 5
+        );
         this.addLinkStartEl.linkLines.push(link);
         this.linkEndding.linkLines.push(link);
         this.fabricCanvas.add(link.fabricLine);

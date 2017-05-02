@@ -6,40 +6,36 @@ const LinkType = {
 };
 
 class LinkLine {
-  constructor(linkInput, linkOutput) {
+  constructor(linkInput, linkOutput, linkSize) {
     this.linkInput = linkInput;
     this.linkOutput = linkOutput;
+    this.linkSize = linkSize;
     this.on = false;
 
-    this.fabricLine = new fabric.Line(
-      [
-        this.linkInput.pos.x,
-        this.linkInput.pos.y,
-        this.linkOutput.pos.x,
-        this.linkOutput.pos.y
-      ],
-      {
-        stroke: 'red',
-        selectable: false
-      }
-    );
+    this.fabricLine = this.createLine();
+    this.fabricLine.stroke = 'red';
   }
 
   refresh() {
     this.linkInput.component.grid.fabricCanvas.remove(this.fabricLine);
-    this.fabricLine = new fabric.Line(
+    this.fabricLine = this.createLine();
+    this.fabricLine.stroke = this.on ? 'green' : 'red';
+    this.linkInput.component.grid.fabricCanvas.add(this.fabricLine);
+  }
+
+  createLine() {
+    return new fabric.Line(
       [
-        this.linkInput.pos.x,
-        this.linkInput.pos.y,
+        this.linkInput.pos.x + this.linkSize,
+        this.linkInput.pos.y + this.linkSize / 2 - this.linkSize / 6,
         this.linkOutput.pos.x,
-        this.linkOutput.pos.y
+        this.linkOutput.pos.y + this.linkSize / 2 - this.linkSize / 6
       ],
       {
-        stroke: this.on ? 'green' : 'red',
+        strokeWidth: this.linkSize / 3,
         selectable: false
       }
     );
-    this.linkInput.component.grid.fabricCanvas.add(this.fabricLine);
   }
 
   setOn(isOn) {
