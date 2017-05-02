@@ -128,28 +128,28 @@ class Grid {
   }
 
   addElement(vector, blueprint) {
-    const newElecElement = new ElecElement(this, vector, blueprint);
+    new ElecElement(this, vector, blueprint, newElecElement => {
+      switch (blueprint.elementType) {
+        case ElementType.INPUT:
+          newElecElement.setAsInputElement();
+          this.inputElements.push(newElecElement);
+          break;
+        case ElementType.OUTPUT:
+          this.outputElements.push(newElecElement);
+          break;
+        case ElementType.GATE:
+          this.gateElements.push(newElecElement);
+          break;
+        default:
+          break;
+      }
 
-    switch (blueprint.elementType) {
-      case ElementType.INPUT:
-        newElecElement.setAsInputElement();
-        this.inputElements.push(newElecElement);
-        break;
-      case ElementType.OUTPUT:
-        this.outputElements.push(newElecElement);
-        break;
-      case ElementType.GATE:
-        this.gateElements.push(newElecElement);
-        break;
-      default:
-        break;
-    }
+      this.elecElements.push(newElecElement);
+      this.set(vector, newElecElement);
 
-    this.elecElements.push(newElecElement);
-    this.set(vector, newElecElement);
-
-    newElecElement.getFabricElements().forEach(el => {
-      this.fabricCanvas.add(el);
+      newElecElement.getFabricElements().forEach(el => {
+        this.fabricCanvas.add(el);
+      });
     });
   }
 
@@ -280,7 +280,7 @@ class Grid {
     board.components = {};
     this.gateElements.forEach((el, index) => {
       const component = {};
-      component.specKey = 'AND';
+      component.specKey = el.blueprint.gateType;
 
       let curChar = 'A';
       component.input = {};

@@ -6,12 +6,12 @@ const ElementType = {
 
 const GateType = {
   NONE: 0,
-  AND: 1,
-  OR: 2,
-  NOR: 3,
-  NOT: 4,
-  NXOR: 5,
-  XOR: 6
+  AND: 'AND',
+  OR: 'OR',
+  NOR: 'NOR',
+  NOT: 'NOT',
+  NXOR: 'NXOR',
+  XOR: 'XOR'
 };
 
 class ElementBlueprint {
