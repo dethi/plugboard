@@ -4,21 +4,16 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { GateType, ElementBlueprint } from '../libs/element/elementBlueprint';
 
 // Used to create html for a single element in the palette
-class SelectableElement extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="componentPalette">
-        <a onClick={this.props.onClick}>
-          <figure className="image is-64x64">
-            <img src={this.props.img} id="test-img" />
-          </figure>
-        </a>
-      </div>
-    );
-  }
+function SelectableElement(props) {
+  return (
+    <div className="componentPalette">
+      <a onClick={props.onClick}>
+        <figure className="image is-64x64">
+          <img src={props.img} className="test-img" alt="sorry" />
+        </figure>
+      </a>
+    </div>
+  );
 }
 
 export default class Palette extends Component {
@@ -39,18 +34,19 @@ export default class Palette extends Component {
       curElementId: 0
     };
   }
+  updateStateOnClick = index => {
+    this.setState({ curElementId: index });
+    this.props.updatePalette(this.state.elements[index]);
+  };
   //Not working yet
-  updateStateOnClick(i) {
-    this.setState({ curElementId: i });
-    this.props.updatePalette(this.state.elements[i]);
-  }
+  /**
   currentSelected(i) {
-    if (i == this.props.state.curElementId) {
+    if (i === this.props.state.curElementId) {
       ('selectedComponent');
     } else {
       return '';
     }
-  }
+  }**/
 
   render() {
     const stylePanel = {
@@ -76,11 +72,11 @@ export default class Palette extends Component {
               <div className="componentsPalette">
                 <SelectableElement
                   img={this.state.elements[0].img}
-                  onClick={this.updateStateOnClick.bind(this, 0)}
+                  onClick={() => this.updateStateOnClick(0)}
                 />
                 <SelectableElement
                   img={this.state.elements[1].img}
-                  onClick={this.updateStateOnClick.bind(this, 1)}
+                  onClick={() => this.updateStateOnClick(1)}
                 />
               </div>
             </div>
@@ -89,7 +85,7 @@ export default class Palette extends Component {
               <div className="componentsPalette">
                 <SelectableElement
                   img={this.state.elements[2].img}
-                  onClick={this.updateStateOnClick.bind(this, 2)}
+                  onClick={() => this.updateStateOnClick(2)}
                 />
               </div>
             </div>
@@ -98,23 +94,23 @@ export default class Palette extends Component {
               <div className="componentsPalette">
                 <SelectableElement
                   img={this.state.elements[3].img}
-                  onClick={this.updateStateOnClick.bind(this, 3)}
+                  onClick={() => this.updateStateOnClick(3)}
                 />
                 <SelectableElement
                   img={this.state.elements[4].img}
-                  onClick={this.updateStateOnClick.bind(this, 4)}
+                  onClick={() => this.updateStateOnClick(4)}
                 />
                 <SelectableElement
                   img={this.state.elements[5].img}
-                  onClick={this.updateStateOnClick.bind(this, 5)}
+                  onClick={() => this.updateStateOnClick(5)}
                 />
                 <SelectableElement
                   img={this.state.elements[6].img}
-                  onClick={this.updateStateOnClick.bind(this, 6)}
+                  onClick={() => this.updateStateOnClick(6)}
                 />
                 <SelectableElement
                   img={this.state.elements[7].img}
-                  onClick={this.updateStateOnClick.bind(this, 7)}
+                  onClick={() => this.updateStateOnClick(7)}
                 />
               </div>
             </div>

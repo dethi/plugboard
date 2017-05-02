@@ -3,6 +3,7 @@ const ElementType = {
   OUTPUT: 1,
   GATE: 2
 };
+
 const GateType = {
   NONE: 0,
   AND: 1,

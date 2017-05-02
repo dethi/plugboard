@@ -148,7 +148,7 @@ class Grid {
     this.elecElements.push(newElecElement);
     this.set(vector, newElecElement);
 
-    newElecElement.getFabricElements().map(el => {
+    newElecElement.getFabricElements().forEach(el => {
       this.fabricCanvas.add(el);
     });
   }
