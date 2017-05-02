@@ -1,6 +1,11 @@
 // STATES = [ ...INPUT, ...OUTPUT, ...OTHERS REGISTERY ]
 
 const SPECS = {
+  NOT: {
+    input: ['A'],
+    output: ['B'],
+    truthTable: [[0, 1], [1, 0]]
+  },
   AND: {
     input: ['A', 'B'],
     output: ['C'],

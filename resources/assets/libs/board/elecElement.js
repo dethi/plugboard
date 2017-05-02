@@ -5,10 +5,12 @@ import { LinkType, LinkElement } from './linkElement';
 import Vector from '../utils/vector';
 
 class ElecElement {
-  constructor(grid, vector, blueprint) {
+  constructor(grid, vector, blueprint, uglyCallback) {
     this.grid = grid;
     this.pos = vector;
     this.blueprint = blueprint;
+
+    this.uglyCallback = uglyCallback;
 
     this.componentSize = this.grid.gridSize;
     this.linkSize = this.componentSize / 5;
@@ -19,14 +21,23 @@ class ElecElement {
     this.outputElements = null;
 
     this.fabricElements = [];
-    this.fabricRect = new fabric.Rect({
-      top: this.componentSize * vector.y,
-      left: this.componentSize * vector.x,
-      width: this.componentSize,
-      height: this.componentSize,
-      fill: this.blueprint.colorOff,
-      hasControls: false
+    this.fabricRect = null;
+
+    fabric.Image.fromURL(this.blueprint.img, oImg => {
+      this.initComponent(oImg);
     });
+  }
+
+  initComponent(fabricComponent) {
+    console.log(fabricComponent);
+
+    fabricComponent.top = this.componentSize * this.pos.y;
+    fabricComponent.left = this.componentSize * this.pos.x;
+    fabricComponent.width = this.componentSize;
+    fabricComponent.height = this.componentSize;
+    fabricComponent.hasControls = false;
+
+    this.fabricRect = fabricComponent;
     this.fabricElements.push(this.fabricRect);
 
     this.createInputElements();
@@ -63,6 +74,8 @@ class ElecElement {
         this.moveComponent(newPos);
       }
     });
+
+    this.uglyCallback(this);
   }
 
   moveComponent(newPos) {
