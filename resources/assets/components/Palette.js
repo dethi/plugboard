@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import { GateType, ElementBlueprint } from '../libs/element/elementBlueprint';
+import {
+  ElementType,
+  GateType,
+  ElementBlueprint
+} from '../libs/element/elementBlueprint';
 
 // Used to create html for a single element in the palette
 function SelectableElement(props) {
@@ -34,19 +38,11 @@ export default class Palette extends Component {
       curElementId: 0
     };
   }
+
   updateStateOnClick = index => {
     this.setState({ curElementId: index });
     this.props.updatePalette(this.state.elements[index]);
   };
-  //Not working yet
-  /**
-  currentSelected(i) {
-    if (i === this.props.state.curElementId) {
-      ('selectedComponent');
-    } else {
-      return '';
-    }
-  }**/
 
   render() {
     const stylePanel = {
@@ -56,7 +52,44 @@ export default class Palette extends Component {
       paddingRight: '10px',
       marginRight: '10px'
     };
+    let inputsOuputs = [];
+    let gates11 = [];
+    let gates21 = [];
 
+    this.state.elements.forEach((element, index) => {
+      if (
+        element.elementType === ElementType.OUTPUT ||
+        element.elementType === ElementType.INPUT
+      ) {
+        inputsOuputs.push(
+          <SelectableElement
+            key={index}
+            img={element.img}
+            onClick={this.updateStateOnClick.bind(this, index)}
+          />
+        );
+      } else if (
+        element.elementType === ElementType.GATE && element.nbInput === 1
+      ) {
+        gates11.push(
+          <SelectableElement
+            key={index}
+            img={element.img}
+            onClick={this.updateStateOnClick.bind(this, index)}
+          />
+        );
+      } else if (
+        element.elementType === ElementType.GATE && element.nbInput === 2
+      ) {
+        gates21.push(
+          <SelectableElement
+            key={index}
+            img={element.img}
+            onClick={this.updateStateOnClick.bind(this, index)}
+          />
+        );
+      }
+    });
     return (
       <div style={stylePanel}>
         <Tabs>
@@ -67,51 +100,21 @@ export default class Palette extends Component {
 
           <TabPanel>
             <div className="box">
-
               <h3 className="title is-3 has-text-centered">Input/Ouput</h3>
               <div className="componentsPalette">
-                <SelectableElement
-                  img={this.state.elements[0].img}
-                  onClick={() => this.updateStateOnClick(0)}
-                />
-                <SelectableElement
-                  img={this.state.elements[1].img}
-                  onClick={() => this.updateStateOnClick(1)}
-                />
+                {inputsOuputs}
               </div>
             </div>
             <div className="box">
               <h3 className="title is-3 has-text-centered">Gate 1/1</h3>
               <div className="componentsPalette">
-                <SelectableElement
-                  img={this.state.elements[2].img}
-                  onClick={() => this.updateStateOnClick(2)}
-                />
+                {gates11}
               </div>
             </div>
             <div className="box">
               <h3 className="title is-3 has-text-centered">Gate 2/1</h3>
               <div className="componentsPalette">
-                <SelectableElement
-                  img={this.state.elements[3].img}
-                  onClick={() => this.updateStateOnClick(3)}
-                />
-                <SelectableElement
-                  img={this.state.elements[4].img}
-                  onClick={() => this.updateStateOnClick(4)}
-                />
-                <SelectableElement
-                  img={this.state.elements[5].img}
-                  onClick={() => this.updateStateOnClick(5)}
-                />
-                <SelectableElement
-                  img={this.state.elements[6].img}
-                  onClick={() => this.updateStateOnClick(6)}
-                />
-                <SelectableElement
-                  img={this.state.elements[7].img}
-                  onClick={() => this.updateStateOnClick(7)}
-                />
+                {gates21}
               </div>
             </div>
           </TabPanel>
