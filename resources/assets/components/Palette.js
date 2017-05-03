@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import classNames from 'classnames';
 
-import {
-  ElementType,
-  GateType,
-  ElementBlueprint
-} from '../libs/element/elementBlueprint';
+import { GateType, ElementBlueprint } from '../libs/element/elementBlueprint';
 
-// Used to create html for a single element in the palette
 function SelectableElement(props) {
+  const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
   return (
-    <div className="componentPalette">
-      <a onClick={props.onClick}>
-        <figure className="image is-64x64">
-          <img src={props.img} className="test-img" alt="sorry" />
-        </figure>
-      </a>
-    </div>
+    <a
+      className={classNames('panel-block', 'app-palette-item', {
+        'is-active': props.selected
+      })}
+      onClick={props.onClick}
+    >
+      <figure className="media-left">
+        <p className="image is-24x24">
+          <img src={props.img} alt={props.name} />
+        </p>
+      </figure>
+      {capitalize(props.name)}
+    </a>
   );
 }
 
@@ -45,89 +48,24 @@ export default class Palette extends Component {
   };
 
   render() {
-    const stylePanel = {
-      float: 'left',
-      width: '20%',
-      borderRight: '1px solid black',
-      paddingRight: '10px',
-      marginRight: '10px'
-    };
-    let inputsOuputs = [];
-    let gates11 = [];
-    let gates21 = [];
+    const { elements, curElementId } = this.state;
 
-    this.state.elements.forEach((element, index) => {
-      if (
-        element.elementType === ElementType.OUTPUT ||
-        element.elementType === ElementType.INPUT
-      ) {
-        inputsOuputs.push(
-          <SelectableElement
-            key={index}
-            img={element.img}
-            onClick={this.updateStateOnClick.bind(this, index)}
-          />
-        );
-      } else if (
-        element.elementType === ElementType.GATE && element.nbInput === 1
-      ) {
-        gates11.push(
-          <SelectableElement
-            key={index}
-            img={element.img}
-            onClick={this.updateStateOnClick.bind(this, index)}
-          />
-        );
-      } else if (
-        element.elementType === ElementType.GATE && element.nbInput === 2
-      ) {
-        gates21.push(
-          <SelectableElement
-            key={index}
-            img={element.img}
-            onClick={this.updateStateOnClick.bind(this, index)}
-          />
-        );
-      }
-    });
     return (
-      <div style={stylePanel}>
-        <Tabs>
-          <TabList>
-            <Tab>Components</Tab>
-            <Tab>Search</Tab>
-          </TabList>
-
-          <TabPanel>
-            <div className="box">
-              <h3 className="title is-3 has-text-centered">Input/Ouput</h3>
-              <div className="componentsPalette">
-                {inputsOuputs}
-              </div>
-            </div>
-            <div className="box">
-              <h3 className="title is-3 has-text-centered">Gate 1/1</h3>
-              <div className="componentsPalette">
-                {gates11}
-              </div>
-            </div>
-            <div className="box">
-              <h3 className="title is-3 has-text-centered">Gate 2/1</h3>
-              <div className="componentsPalette">
-                {gates21}
-              </div>
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <form>
-              <input type="text" name="search" placeholder="Type here" />
-              <br />
-            </form>
-            <button>Nothing</button>
-            <button>Debug</button>
-            <button>Grid</button>
-          </TabPanel>
-        </Tabs>
+      <div className="column is-one-quarter">
+        <nav className="panel">
+          <p className="panel-heading">
+            Components
+          </p>
+          {elements.map((e, index) => (
+            <SelectableElement
+              key={index}
+              name={e.name}
+              img={e.img}
+              selected={index === curElementId}
+              onClick={() => this.updateStateOnClick(index)}
+            />
+          ))}
+        </nav>
       </div>
     );
   }

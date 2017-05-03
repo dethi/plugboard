@@ -6,14 +6,20 @@
 @import "./_utils.scss";
 @import "./webApp.scss";
 
+
+#root {
+    margin: 60px 10px 0 10px;
+}
+
 .app-main-nav {
     position: fixed;
     top: 0;
     width: 100%;
 }
 
-#root {
-    margin-top: 60px;
+.app-palette-item.is-active {
+    color: $primary;
+    font-weight: bold;
 }
 
 // html, body {
