@@ -10,6 +10,9 @@ export default class Board extends Component {
     super(props);
 
     this.grid = null;
+    this.state = {
+      timerId: null
+    };
   }
 
   componentDidMount() {
@@ -31,24 +34,18 @@ export default class Board extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.step !== this.props.step) {
-      this.exportBoard();
+    if (nextProps.running !== this.props.running) {
+      if (nextProps.running) {
+        this.run();
+      } else {
+        this.stop();
+      }
+    } else if (nextProps.step !== this.props.step) {
+      this.nextStep();
     }
   }
 
-  // add = () => {
-  //   this.grid.add = true;
-  // };
-
-  // unset = () => {
-  //   this.grid.add = false;
-  // };
-
-  // gridVisible = () => {
-  //   this.grid.toggleGridVisibility();
-  // };
-
-  exportBoard = () => {
+  nextStep = () => {
     const grid = this.grid.exportForEngine();
     grid.board.specs = SPECS;
 
@@ -56,6 +53,28 @@ export default class Board extends Component {
     // console.log(this.grid.getInputState());
 
     this.grid.applyState(evalutateBoard(grid.board, grid.states));
+  };
+
+  run = () => {
+    const grid = this.grid.exportForEngine();
+    grid.board.specs = SPECS;
+
+    let boardStates = grid.states;
+    const loop = () => {
+      const newBoardState = evalutateBoard(grid.board, boardStates);
+      this.grid.applyState(newBoardState);
+      boardStates = newBoardState;
+    };
+
+    const timerId = setInterval(loop, 100);
+    this.setState({ timerId });
+  };
+
+  stop = () => {
+    if (this.state.timerId !== null) {
+      clearInterval(this.state.timerId);
+      this.setState({ timerId: null });
+    }
   };
 
   render() {

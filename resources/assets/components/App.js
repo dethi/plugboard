@@ -11,12 +11,17 @@ export default class App extends Component {
 
     this.state = {
       elementBlueprint: undefined,
-      step: 0
+      step: 0,
+      running: false
     };
   }
 
   handleNextStep = () => {
     this.setState({ step: this.state.step + 1 });
+  };
+
+  toggleRun = () => {
+    this.setState({ running: !this.state.running });
   };
 
   handlePaletteChange = paletteBlueprint => {
@@ -25,22 +30,28 @@ export default class App extends Component {
 
   getCurBlueprint = () => {
     const curBlueprint = this.state.elementBlueprint;
-
     this.setState({ elementBlueprint: undefined });
-
     return curBlueprint;
   };
 
   render() {
-    const { step } = this.state;
+    const { step, running } = this.state;
 
     return (
       <div>
-        <NavBar onNextStep={this.handleNextStep} />
+        <NavBar
+          onNextStep={this.handleNextStep}
+          toggleRun={this.toggleRun}
+          running={running}
+        />
         <div className="app">
           <div className="columns">
             <Palette updatePalette={this.handlePaletteChange} />
-            <Board getCurBlueprint={this.getCurBlueprint} step={step} />
+            <Board
+              getCurBlueprint={this.getCurBlueprint}
+              step={step}
+              running={running}
+            />
             {/*<Profile />*/}
           </div>
         </div>

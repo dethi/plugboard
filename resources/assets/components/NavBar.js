@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 function GuestMenu(props) {
   return (
@@ -54,7 +55,13 @@ export default function NavBar(props) {
           </a>
           <a className="nav-item">
             <span className="icon">
-              <i className="fa fa-play" />
+              <i
+                className={classNames('fa', {
+                  'fa-play': !props.running,
+                  'fa-stop': props.running
+                })}
+                onClick={props.toggleRun}
+              />
             </span>
           </a>
         </div>
