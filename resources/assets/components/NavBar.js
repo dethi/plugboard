@@ -47,7 +47,7 @@ export default function NavBar(props) {
         </div>
 
         <div className="nav-center">
-          <a className="nav-item">
+          <a className="nav-item" onClick={props.onNextStep}>
             <span className="icon">
               <i className="fa fa-step-forward" />
             </span>
