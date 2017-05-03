@@ -29,32 +29,38 @@
 <body>
 
 <div id="app">
-  <nav class="nav">
-    <div class="nav-left">
-      <a class="nav-item" href="{{ url('/') }}"> {{ config('app.name', 'Laravel') }} </a>
-    </div>
-
-    <div class="nav-right nav-menu">
-      @if (Auth::guest())
-        <a class="nav-item" href="{{ action('Auth\RegisterController@register') }}">
-          Register
-        </a>
-        <a class="nav-item" href="{{ action('Auth\LoginController@login') }}">
-          Login
-        </a>
-      @else
+  <nav class="nav has-shadow app-main-nav">
+    <div class="container">
+      <div class="nav-left">
         <a class="nav-item">
-          <img src="{{$gravatar_url}}" alt="Gravatar">
+          <img src="/static/Plugboard-Green.png" alt="Plugboard logo">
         </a>
-        <a class="nav-item" href="{{ route('logout') }}"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-          Logout
-        </a>
+      </div>
+      <div class="nav-right nav-menu">
+        @if (Auth::guest())
+          <a class="nav-item is-tab" href="{{ action('Auth\RegisterController@register') }}">
+            Register
+          </a>
+          <a class="nav-item is-tab" href="{{ action('Auth\LoginController@login') }}">
+            Login
+          </a>
+        @else
+          <a class="nav-item is-tab">
+            <figure class="image is-24x24" style="margin-right: 8px;">
+              <img src="{{$gravatar_url}}">
+            </figure>
+            Profile
+          </a>
 
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-          {{ csrf_field() }}
-        </form>
-      @endif
+          <a class="nav-item is-tab" href="{{route('logout')}}"
+              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              Log out
+          </a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+          </form>
+        @endif
+      </div>
     </div>
   </nav>
 

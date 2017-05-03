@@ -5,3 +5,22 @@
 @import "./landing.scss";
 @import "./_utils.scss";
 @import "./webApp.scss";
+
+.app-main-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#root {
+    margin-top: 60px;
+}
+
+// html, body {
+//     height: 100%;
+//     overflow: hidden;
+// }
+
+// .columns, .column {
+//     overflow: scroll !important;
+// }
