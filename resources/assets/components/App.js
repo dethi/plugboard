@@ -5,7 +5,7 @@ import Palette from './Palette';
 import Board from './Board';
 import Profile from './Profile';
 
-export default class WebApp extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
