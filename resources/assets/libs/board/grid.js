@@ -249,12 +249,13 @@ class Grid {
   createEngineRepresentation() {
     const board = {};
     const registeryLines = {};
-    let curRegistery = 0;
+    let curRegistery = 1;
 
     // Create Input Registery
     board.input = {};
+    board.input['i0'] = 0;
     this.inputElements.forEach((el, index) => {
-      board.input['i' + index] = curRegistery;
+      board.input['i' + index + 1] = curRegistery;
       // Add check ?
       el.outputElements[0].setId(curRegistery);
       curRegistery++;
@@ -272,16 +273,20 @@ class Grid {
     // Create Middle Registery
     this.gateElements.forEach(el => {
       el.inputElements.forEach(inEl => {
-        const linkTo = inEl.linkLines[0].linkInput;
-        let id = linkTo.getId();
+        const inputs = inEl.linkLines[0];
 
-        if (id === undefined) {
-          id = curRegistery;
-          registeryLines[curRegistery] = inEl.linkLines[0];
-          curRegistery++;
+        if (inputs !== undefined) {
+          const linkTo = inEl.linkLines[0].linkInput;
+          let id = linkTo.getId();
+          if (id === undefined) {
+            id = curRegistery;
+            registeryLines[curRegistery] = inEl.linkLines[0];
+            curRegistery++;
+          }
+          inEl.setId(id);
+        } else {
+          inEl.setId(0);
         }
-
-        inEl.setId(id);
       });
     });
 
@@ -321,7 +326,7 @@ class Grid {
     ).fill(0);
 
     this.inputElements.forEach((el, index) => {
-      states[index] = el.on ? 1 : 0;
+      states[index + 1] = el.on ? 1 : 0;
     });
 
     Object.keys(this.engineRepresentation.registeryLines).forEach(key => {
@@ -332,7 +337,7 @@ class Grid {
   }
 
   applyState(states) {
-    const nbInput = this.inputElements.length;
+    const nbInput = this.inputElements.length + 1;
     this.outputElements.forEach((el, index) => {
       el.setOn(states[nbInput + index] === 1);
     });
