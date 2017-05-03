@@ -13,9 +13,9 @@ export default class Board extends Component {
   }
   componentDidMount() {
     this.grid = new Grid(
-      15,
-      10,
-      70,
+      30,
+      14,
+      40,
       this.refs.canvas,
       this.props.getCurBlueprint
     );
@@ -43,32 +43,47 @@ export default class Board extends Component {
     this.grid.applyState(evalutateBoard(grid.board, grid.states));
   };
   render() {
-    const styleBoard = {
-      float: 'left',
-      width: '55%'
-    };
-    const styleActions = {
-      textAlign: 'center'
+    const style = {
+      overflow: 'auto',
+      maxHeight: '100%',
+      maxWidth: '100%'
     };
     return (
-      <div style={styleBoard}>
-        <div className="actions" style={styleActions}>
-          <button onClick={this.exportBoard}>Play</button>
-          <button>Pause</button>
-          <button>Stop</button>
-        </div>
-        <Tabs forceRenderTabPanel={true}>
+      <div className="column is-half">
+        {/*<div className="app-engine-control">
+          <div className="field has-addons">
+            <p className="control">
+              <button className="button" onClick={this.exportBoard}>
+                <span className="icon is-small">
+                  <i className="fa fa-step-forward" />
+                </span>
+              </button>
+            </p>
+            <p className="control">
+              <button className="button">
+                <span className="icon is-small">
+                  <i className="fa fa-play" />
+                </span>
+              </button>
+            </p>
+          </div>
+        </div>*/}
+
+        {/*</div>*/}
+        {/*<Tabs forceRenderTabPanel={true}>
           <TabList>
             <Tab>Board 1</Tab>
             <Tab>Board 2</Tab>
           </TabList>
-          <TabPanel>
-            <canvas ref="canvas" />
-          </TabPanel>
+          <TabPanel>*/}
+        <div style={style}>
+          <canvas ref="canvas" />
+        </div>
+        {/*</TabPanel>
           <TabPanel>
             <canvas ref="canvas1" />
           </TabPanel>
-        </Tabs>
+        </Tabs>*/}
       </div>
     );
   }

@@ -19,8 +19,7 @@ class Grid {
     this.gridWidth = this.width * this.gridSize;
     this.gridHeight = this.height * this.gridSize;
 
-    this.fabricCanvas = new fabric.Canvas();
-    this.fabricCanvas.initialize(el, {
+    this.fabricCanvas = new fabric.Canvas(el, {
       selection: false,
       height: this.gridHeight,
       width: this.gridWidth
@@ -93,7 +92,7 @@ class Grid {
         new fabric.Line(
           [this.gridSize * x, 0, this.gridSize * x, this.gridHeight],
           {
-            stroke: '#114B5F',
+            stroke: '#a6a6a6',
             selectable: false
           }
         )
@@ -104,7 +103,7 @@ class Grid {
         new fabric.Line(
           [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
           {
-            stroke: '#114B5F',
+            stroke: '#a6a6a6',
             selectable: false
           }
         )

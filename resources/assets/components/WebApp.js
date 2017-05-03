@@ -24,10 +24,10 @@ export default class WebApp extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="columns">
         <Palette updatePalette={this.handlePaletteChange} />
         <Board getCurBlueprint={this.getCurBlueprint} />
-        <Profile />
+        {/*<Profile />*/}
       </div>
     );
   }
