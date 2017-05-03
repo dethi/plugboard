@@ -18,6 +18,19 @@ server {
     {% endif %}
     include snippets/ssl-params.conf;
 
+    {% if app.basic_auth is defined %}
+    satisfy any;
+
+    # Allow unauthenticated request from the server (required for the
+    # Opcache command)
+    allow {{ansible_default_ipv4.address}};
+    allow {{ansible_default_ipv6.address}};
+    deny all;
+
+    auth_basic "Restricted Access";
+    auth_basic_user_file /etc/nginx/htpasswd/{{app.app_id}}.htpasswd;
+    {% endif %}
+
     root /var/www/{{app.app_id}}/current/public;
     index index.php index.html;
 
@@ -25,14 +38,15 @@ server {
 
     location ~ /.well-known {
         # Letsencrypt challenge
+        auth_basic off;
         root /var/www/{{app.app_id}};
         allow all;
     }
 
     location / {
         # First attempt to serve request as file, then as directory,
-        # then index.php, then fall back to displaying a 404.
-        try_files $uri $uri/ /index.php?$query_string =404;
+        # then index.php.
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
     location ~ \.php$ {

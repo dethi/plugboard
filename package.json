@@ -1,19 +1,51 @@
 {
+  "name": "plugboard",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch-poll": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --watch-poll --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-  },
-  "devDependencies": {
-    "babel-preset-react": "^6.23.0",
-    "cross-env": "^3.2.3",
-    "laravel-mix": "^0.8.3"
+    "watch": "NODE_ENV=development webpack -w --progress --hide-modules",
+    "build": "NODE_ENV=production webpack -p --progress --hide-modules",
+    "lint": "eslint --ext .js resources/assets/",
+    "fix": "eslint --fix --ext .js resources/assets/"
   },
   "dependencies": {
+    "axios": "^0.15.3",
+    "bulma": "^0.4.0",
+    "classnames": "^2.2.5",
+    "fabric": "^1.7.9",
+    "font-awesome": "^4.7.0",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-router": "^4.0.0",
+    "react-tabs": "^0.8.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-eslint": "^7.2.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-react-app": "^2.2.0",
+    "browser-sync": "^2",
+    "browser-sync-webpack-plugin": "^1.1.4",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.27.3",
+    "eslint": "3.16.1",
+    "eslint-config-prettier": "^1.5.0",
+    "eslint-config-react-app": "^0.6.2",
+    "eslint-loader": "^1.6.3",
+    "eslint-plugin-flowtype": "2.21.0",
+    "eslint-plugin-import": "2.0.1",
+    "eslint-plugin-jsx-a11y": "4.0.0",
+    "eslint-plugin-prettier": "^2.0.1",
+    "eslint-plugin-react": "6.4.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.10.1",
+    "node-sass": "^4.5.1",
+    "prettier": "^0.22.0",
+    "resolve-url-loader": "^2.0.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.0",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.3.0",
+    "webpack-manifest-plugin": "^1.1.0"
   }
 }

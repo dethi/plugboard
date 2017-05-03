@@ -11,8 +11,10 @@
 /public/hot
 /public/js
 /public/css
+/public/media
 /public/mix-manifest.json
 /storage/*.key
+/storage/debugbar
 
 # Ansible
 *.retry

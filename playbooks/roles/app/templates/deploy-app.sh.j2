@@ -5,6 +5,8 @@ set -euo pipefail
 if [ $TRAVIS_BRANCH == '{{app.git_branch}}' ]; then
     echo '=== Starting deployment of {{app.app_id}}...'
 
+    git fetch --unshallow
+
     git remote add deploy 'deploy@plugboard.xyz:~/{{app.app_id}}'
     ssh-agent bash -c 'ssh-add "$DEPLOY_KEY" && git push --force deploy {{app.git_branch}}:master'
 

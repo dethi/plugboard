@@ -1,0 +1,31 @@
+@import "./_variables.scss";
+@import "~bulma";
+@import "~font-awesome/scss/font-awesome.scss";
+
+@import "./landing.scss";
+@import "./_utils.scss";
+
+
+.app {
+    margin: 60px 10px 0 10px;
+}
+
+.app-main-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.app-palette-item.is-active {
+    color: $primary;
+    font-weight: bold;
+}
+
+// html, body {
+//     height: 100%;
+//     overflow: hidden;
+// }
+
+// .columns, .column {
+//     overflow: scroll !important;
+// }

@@ -18,10 +18,11 @@ install:
 - yarn
 before_script:
 - php artisan key:generate
-- yarn run dev
 - echo $ANSIBLE_VAULT > playbooks/ansible_vault
 script:
 - "( cd playbooks && ./tests.sh )"
+- yarn run build
+- yarn run lint
 - phpunit
 after_success:
 - openssl aes-256-cbc -K $encrypted_332711f93af1_key -iv $encrypted_332711f93af1_iv
