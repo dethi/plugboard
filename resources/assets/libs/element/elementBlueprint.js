@@ -24,6 +24,7 @@ class ElementBlueprint {
     colorOn,
     colorOff,
     img,
+    imgOn,
     truthTable
   ) {
     this.name = name;
@@ -34,6 +35,7 @@ class ElementBlueprint {
     this.colorOn = colorOn;
     this.colorOff = colorOff;
     this.img = img;
+    this.imgOn = imgOn;
     this.truthTable = truthTable;
   }
 
@@ -46,7 +48,8 @@ class ElementBlueprint {
       1,
       'green',
       'red',
-      '/static/components/input.png'
+      '/static/components/input.png',
+      '/static/components/inputOn.png'
     );
   }
 
@@ -59,7 +62,8 @@ class ElementBlueprint {
       0,
       'green',
       'red',
-      '/static/components/output.png'
+      '/static/components/output.png',
+      '/static/components/outputOn.png'
     );
   }
 
@@ -72,6 +76,7 @@ class ElementBlueprint {
       1,
       'green',
       'blue',
+      '/static/components/and.png',
       '/static/components/and.png'
     );
   }
@@ -85,6 +90,7 @@ class ElementBlueprint {
       1,
       'green',
       'blue',
+      '/static/components/' + name + '.png',
       '/static/components/' + name + '.png'
     );
   }
