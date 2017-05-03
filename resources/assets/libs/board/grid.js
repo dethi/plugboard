@@ -320,10 +320,10 @@ class Grid {
   }
 
   getInputState() {
-    const states = new Array(this.inputElements.length).fill(0);
+    const states = new Array(this.inputElements.length + 1).fill(0);
 
     this.inputElements.forEach((el, index) => {
-      states[index] = el.on ? 1 : 0;
+      states[index + 1] = el.on ? 1 : 0;
     });
 
     return states;
