@@ -51,6 +51,10 @@ export default class Board extends Component {
   exportBoard = () => {
     const grid = this.grid.exportForEngine();
     grid.board.specs = SPECS;
+
+    // Gift for tibs
+    // console.log(this.grid.getInputState());
+
     this.grid.applyState(evalutateBoard(grid.board, grid.states));
   };
 

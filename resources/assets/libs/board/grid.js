@@ -319,6 +319,16 @@ class Grid {
     this.engineRepresentation.registeryLines = registeryLines;
   }
 
+  getInputState() {
+    const states = new Array(this.inputElements.length).fill(0);
+
+    this.inputElements.forEach((el, index) => {
+      states[index] = el.on ? 1 : 0;
+    });
+
+    return states;
+  }
+
   createEngineStates() {
     const states = new Array(
       this.engineRepresentation.board.nextRegistery
