@@ -36,6 +36,20 @@
           <img src="/static/Plugboard-Green.png" alt="Plugboard logo">
         </a>
       </div>
+
+      <div class="nav-center">
+        <a class="nav-item">
+          <span class="icon">
+            <i class="fa fa-step-forward"></i>
+          </span>
+        </a>
+        <a class="nav-item">
+          <span class="icon">
+            <i class="fa fa-play"></i>
+          </span>
+        </a>
+      </div>
+
       <div class="nav-right nav-menu">
         @if (Auth::guest())
           <a class="nav-item is-tab" href="{{ action('Auth\RegisterController@register') }}">
