@@ -48,10 +48,6 @@ export default class Board extends Component {
   nextStep = () => {
     const grid = this.grid.exportForEngine();
     grid.board.specs = SPECS;
-
-    // Gift for tibs
-    // console.log(this.grid.getInputState());
-
     this.grid.applyState(evalutateBoard(grid.board, grid.states));
   };
 
@@ -61,12 +57,13 @@ export default class Board extends Component {
 
     let boardStates = grid.states;
     const loop = () => {
+      this.grid.getInputState().forEach((e, i) => boardStates[i] = e);
       const newBoardState = evalutateBoard(grid.board, boardStates);
       this.grid.applyState(newBoardState);
       boardStates = newBoardState;
     };
 
-    const timerId = setInterval(loop, 100);
+    const timerId = setInterval(loop, 300);
     this.setState({ timerId });
   };
 
