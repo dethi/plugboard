@@ -166,12 +166,18 @@ class ElecElement {
 
   setOn(isOn) {
     this.on = isOn;
-    const newColor = isOn ? this.blueprint.colorOn : this.blueprint.colorOff;
+    const newImg = isOn ? this.blueprint.imgOn : this.blueprint.img;
 
     this.outputElements.forEach(ouEl => ouEl.setOn(isOn));
 
-    this.fabricRect.setFill(newColor);
-    this.grid.fabricCanvas.renderAll();
+    this.fabricRect.setSrc(newImg, () => {
+      this.fabricRect.top = this.componentSize * this.pos.y;
+      this.fabricRect.left = this.componentSize * this.pos.x;
+      this.fabricRect.width = this.componentSize;
+      this.fabricRect.height = this.componentSize;
+
+      this.grid.fabricCanvas.renderAll();
+    });
   }
 }
 
