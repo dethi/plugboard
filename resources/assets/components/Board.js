@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Grid from '../libs/board/grid';
 
@@ -11,6 +11,7 @@ export default class Board extends Component {
 
     this.grid = null;
   }
+
   componentDidMount() {
     this.grid = new Grid(
       30,
@@ -19,29 +20,40 @@ export default class Board extends Component {
       this.refs.canvas,
       this.props.getCurBlueprint
     );
-    this.grid1 = new Grid(
-      15,
-      10,
-      70,
-      this.refs.canvas1,
-      this.props.getCurBlueprint
-    );
+
+    // this.grid1 = new Grid(
+    //   15,
+    //   10,
+    //   70,
+    //   this.refs.canvas1,
+    //   this.props.getCurBlueprint
+    // );
   }
-  add = () => {
-    this.grid.add = true;
-  };
-  unset = () => {
-    this.grid.add = false;
-  };
-  gridVisible = () => {
-    this.grid.toggleGridVisibility();
-  };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.step !== this.props.step) {
+      this.exportBoard();
+    }
+  }
+
+  // add = () => {
+  //   this.grid.add = true;
+  // };
+
+  // unset = () => {
+  //   this.grid.add = false;
+  // };
+
+  // gridVisible = () => {
+  //   this.grid.toggleGridVisibility();
+  // };
+
   exportBoard = () => {
     const grid = this.grid.exportForEngine();
     grid.board.specs = SPECS;
-
     this.grid.applyState(evalutateBoard(grid.board, grid.states));
   };
+
   render() {
     const style = {
       overflow: 'auto',
