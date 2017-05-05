@@ -3,7 +3,7 @@ import { fabric } from 'fabric';
 import { LinkType, LinkLine } from './linkElement';
 import ElecElement from './elecElement';
 
-import Vector from '../utils/vector';
+import { Vector } from '../../utils/vector';
 
 //import { ElementType } from '../element/elementBlueprint';
 // REMOVE ME

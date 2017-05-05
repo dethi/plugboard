@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Grid from '../libs/board/grid';
+import Grid from '../libs/board/view/grid';
 
 import { SPECS, evalutateBoard } from '../engine/index';
 
@@ -81,7 +81,7 @@ export default class Board extends Component {
       maxWidth: '100%'
     };
     return (
-      <div className="column is-half">
+      <div className="column">
         {/*<div className="app-engine-control">
           <div className="field has-addons">
             <p className="control">

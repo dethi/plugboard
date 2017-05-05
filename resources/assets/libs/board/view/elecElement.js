@@ -2,7 +2,7 @@ import { fabric } from 'fabric';
 
 import { LinkType, LinkElement } from './linkElement';
 
-import Vector from '../utils/vector';
+import { Vector } from '../../utils/vector';
 
 class ElecElement {
   constructor(grid, vector, blueprint, uglyCallback) {
