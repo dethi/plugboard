@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-import { GateType, ElementBlueprint } from '../libs/element/elementBlueprint';
+import { createSimplePalette } from '../libs/element/createSimplePalette';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -28,18 +28,11 @@ export default class Palette extends Component {
     super(props);
 
     this.state = {
-      elements: [
-        ElementBlueprint.createInputBlueprint(),
-        ElementBlueprint.createOutputBlueprint(),
-        ElementBlueprint.createGateBlueprint('not', GateType.NOT, 1),
-        ElementBlueprint.createGateBlueprint('and', GateType.AND),
-        ElementBlueprint.createGateBlueprint('nand', GateType.NAND),
-        ElementBlueprint.createGateBlueprint('or', GateType.OR),
-        ElementBlueprint.createGateBlueprint('nor', GateType.NOR),
-        ElementBlueprint.createGateBlueprint('nxor', GateType.NXOR)
-      ],
+      elements: createSimplePalette(),
       curElementId: 0
     };
+
+    console.log(this.state.elements);
   }
 
   updateStateOnClick = index => {

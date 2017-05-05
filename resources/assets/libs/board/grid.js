@@ -5,7 +5,9 @@ import ElecElement from './elecElement';
 
 import Vector from '../utils/vector';
 
-import { ElementType } from '../element/elementBlueprint';
+//import { ElementType } from '../element/elementBlueprint';
+// REMOVE ME
+class ElementType {}
 
 class Grid {
   constructor(width, height, gridSize, el, getCurBlueprint) {
@@ -92,7 +94,7 @@ class Grid {
         new fabric.Line(
           [this.gridSize * x, 0, this.gridSize * x, this.gridHeight],
           {
-            stroke: '#a6a6a6',
+            stroke: '#CDCDCD',
             selectable: false
           }
         )
@@ -103,7 +105,7 @@ class Grid {
         new fabric.Line(
           [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
           {
-            stroke: '#a6a6a6',
+            stroke: '#CDCDCD',
             selectable: false
           }
         )
