@@ -1,4 +1,4 @@
-class Vector {
+export class Vector {
   constructor(x, y) {
     this.x = x;
     this.y = y;
@@ -8,5 +8,3 @@ class Vector {
     return this.x === other.x && this.y === other.y;
   }
 }
-
-export default Vector;

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-import { createSimplePalette } from '../libs/element/createSimplePalette';
+import {
+  createSimplePalette,
+  createSimpleBoard
+} from '../libs/utils/createSimple';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -32,7 +35,8 @@ export default class Palette extends Component {
       curElementId: 0
     };
 
-    console.log(this.state.elements);
+    const grid = createSimpleBoard(this.state.elements);
+    console.log(grid);
   }
 
   updateStateOnClick = index => {
