@@ -1,22 +1,23 @@
 import { fabric } from 'fabric';
 
 import { LinkType, LinkLine } from './linkElement';
-import ElecElement from './elecElement';
+import { ElementView } from './elementView';
 
 import { Vector } from '../../utils/vector';
+
+import { GRID_SIZE } from '../constante';
 
 //import { ElementType } from '../element/elementBlueprint';
 // REMOVE ME
 class ElementType {}
 
-class Grid {
-  constructor(width, height, gridSize, el, getCurBlueprint) {
-    this.getCurBlueprint = getCurBlueprint;
-    this.gridSize = gridSize;
+export class GridView {
+  constructor(width, height, controller, el) {
+    this.controller = controller;
+    this.gridSize = GRID_SIZE;
 
     this.width = width;
     this.height = height;
-    this.space = [width * height];
 
     this.gridWidth = this.width * this.gridSize;
     this.gridHeight = this.height * this.gridSize;
@@ -32,14 +33,8 @@ class Grid {
     this.topMin = this.gridSize;
     this.topMax = this.gridHeight - 2 * this.gridSize;
 
-    this.color = 'red';
+    this.elecElements = {};
 
-    this.inputElements = [];
-    this.outputElements = [];
-    this.gateElements = [];
-    this.elecElements = [];
-
-    this.add = true;
     this.addLink = false;
     this.linkOutputs = null;
     this.linkEndding = null;
@@ -48,20 +43,13 @@ class Grid {
     this.engineRepresentation = {};
 
     this.fabricCanvas.on('mouse:down', options => {
-      if (!this.add) return;
-
-      const blueprint = this.getCurBlueprint();
-      if (blueprint === undefined) return;
-
       const mousePos = this.fabricCanvas.getPointer(options.e);
-      const pos = new Vector(
-        Math.floor(mousePos.x / this.gridSize),
-        Math.floor(mousePos.y / this.gridSize)
+      this.controller.onClick(
+        new Vector(
+          Math.floor(mousePos.x / this.gridSize),
+          Math.floor(mousePos.y / this.gridSize)
+        )
       );
-
-      if (!this.isInside(pos) || this.get(pos) !== undefined) return;
-
-      this.addElement(pos, blueprint);
     });
 
     this.fabricCanvas.on('mouse:move', options => {
@@ -76,13 +64,6 @@ class Grid {
     });
 
     this.addGridLine();
-  }
-
-  isInside(vector) {
-    return vector.x > 0 &&
-      vector.x < this.width - 1 &&
-      vector.y > 0 &&
-      vector.y < this.height - 1;
   }
 
   addGridLine() {
@@ -120,38 +101,39 @@ class Grid {
     this.fabricCanvas.renderAll();
   }
 
-  get(vector) {
-    return this.space[vector.x + this.width * vector.y];
+  getFabricPos(pos) {
+    return new Vector(
+      Math.max(Math.min(pos.x * GRID_SIZE, this.leftMax), this.leftMin),
+      Math.max(Math.min(pos.y * GRID_SIZE, this.topMax), this.topMin)
+    );
   }
 
-  set(vector, value) {
-    this.space[vector.x + this.width * vector.y] = value;
-  }
-
-  addElement(vector, blueprint) {
-    new ElecElement(this, vector, blueprint, newElecElement => {
-      switch (blueprint.elementType) {
+  addElement(pos, element) {
+    new ElementView(this, pos, element.spec, newElementView => {
+      /**
+      switch (element.spec.elementType) {
         case ElementType.INPUT:
           newElecElement.setAsInputElement();
-          this.inputElements.push(newElecElement);
           break;
         case ElementType.OUTPUT:
-          this.outputElements.push(newElecElement);
           break;
         case ElementType.GATE:
-          this.gateElements.push(newElecElement);
           break;
         default:
           break;
       }
+      **/
 
-      this.elecElements.push(newElecElement);
-      this.set(vector, newElecElement);
+      this.elecElements[element.id] = newElementView;
 
-      newElecElement.getFabricElements().forEach(el => {
+      newElementView.getFabricElements().forEach(el => {
         this.fabricCanvas.add(el);
       });
     });
+  }
+
+  moveElement(elId, newPos) {
+    this.elecElements[elId].move(newPos);
   }
 
   startCreateLink(linkElement) {
@@ -241,6 +223,7 @@ class Grid {
     }
   }
 
+  /**
   exportForEngine() {
     this.createEngineRepresentation();
     this.createEngineStates();
@@ -359,6 +342,5 @@ class Grid {
       this.engineRepresentation.registeryLines[key].setOn(states[key] === 1);
     });
   }
+  **/
 }
-
-export default Grid;
