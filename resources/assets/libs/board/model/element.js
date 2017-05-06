@@ -1,16 +1,20 @@
 export class Element {
-  constructor(pos, spec) {
+  constructor(id, pos, spec) {
+    this.id = id;
     this.pos = pos;
     this.spec = spec;
 
-    this.input = spec.input.reduce(
-      (result, item) => {
-        result[item] = 0;
-        return result;
-      },
-      {}
-    );
-
-    this.output = new Array(spec.output.length);
+    this.input = arrayToLinkObject(spec.input);
+    this.output = arrayToLinkObject(spec.output);
   }
+}
+
+function arrayToLinkObject(array) {
+  return array.reduce(
+    (result, item) => {
+      result[item] = null;
+      return result;
+    },
+    {}
+  );
 }

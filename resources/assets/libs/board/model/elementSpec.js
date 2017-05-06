@@ -1,5 +1,7 @@
 import InputImg from '../../../../media/components/input.png';
+import InputImgOn from '../../../../media/components/inputOn.png';
 import OutputImg from '../../../../media/components/output.png';
+import OutputImgOn from '../../../../media/components/outputOn.png';
 
 export class ElementSpec {
   constructor(name, input, output, img) {
@@ -14,12 +16,16 @@ export class ElementSpec {
 export class InputElementSpec extends ElementSpec {
   constructor() {
     super('Input', [], ['A'], InputImg);
+
+    this.imgOn = InputImgOn;
   }
 }
 
 export class OutputElementSpec extends ElementSpec {
   constructor() {
     super('Output', ['A'], [], OutputImg);
+
+    this.imgOn = OutputImgOn;
   }
 }
 
