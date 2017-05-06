@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-import { LinkType, LinkElement } from './linkElement';
+import { LinkType, LinkView } from './linkView';
 
 import { Vector } from '../../utils/vector';
 
@@ -87,7 +87,7 @@ export class ElementView {
     this.moveOutputElements();
   }
 
-  createLinkElements(leftPos, nbElement, linkType) {
+  createLinkElements(leftPos, nbElement, linkType, linkNames) {
     const newLinkElements = [];
     // Verify enough place for all link
     const elPadding = (this.componentSize - this.linkSize * nbElement) /
@@ -96,7 +96,8 @@ export class ElementView {
     for (let i = 0; i < nbElement; i++) {
       const topPadding = i * this.linkSize + (i + 1) * elPadding;
 
-      const newLinkElement = new LinkElement(
+      const newLinkElement = new LinkView(
+        linkNames[i],
         this,
         linkType,
         this.linkSize,
@@ -124,7 +125,8 @@ export class ElementView {
     this.inputElements = this.createLinkElements(
       leftPos,
       this.nbInput,
-      LinkType.INPUT
+      LinkType.INPUT,
+      this.spec.input
     );
   }
 
@@ -138,7 +140,8 @@ export class ElementView {
     this.outputElements = this.createLinkElements(
       leftPos,
       this.nbOutput,
-      LinkType.OUTPUT
+      LinkType.OUTPUT,
+      this.spec.output
     );
   }
 

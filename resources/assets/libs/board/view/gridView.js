@@ -1,15 +1,11 @@
 import { fabric } from 'fabric';
 
-import { LinkType, LinkLine } from './linkElement';
+import { LinkType, LinkLine } from './linkView';
 import { ElementView } from './elementView';
 
 import { Vector } from '../../utils/vector';
 
 import { GRID_SIZE } from '../constante';
-
-//import { ElementType } from '../element/elementBlueprint';
-// REMOVE ME
-class ElementType {}
 
 export class GridView {
   constructor(width, height, controller, el) {
@@ -110,19 +106,7 @@ export class GridView {
 
   addElement(pos, element) {
     new ElementView(this, pos, element.spec, newElementView => {
-      /**
-      switch (element.spec.elementType) {
-        case ElementType.INPUT:
-          newElecElement.setAsInputElement();
-          break;
-        case ElementType.OUTPUT:
-          break;
-        case ElementType.GATE:
-          break;
-        default:
-          break;
-      }
-      **/
+      if (element.spec.name === 'INPUT') newElementView.setAsInputElement();
 
       this.elecElements[element.id] = newElementView;
 
@@ -137,13 +121,16 @@ export class GridView {
   }
 
   startCreateLink(linkElement) {
+    console.log(linkElement);
+
     this.addLink = true;
     this.addLinkStartEl = linkElement;
     this.linkEndding = null;
 
     this.linkOutputs = [];
 
-    this.elecElements.forEach(el => {
+    Object.keys(this.elecElements).forEach(key => {
+      const el = this.elecElements[key];
       if (el === this.addLinkStartEl.component) return;
       if (this.addLinkStartEl.linkType === LinkType.OUTPUT) {
         this.linkOutputs = this.linkOutputs.concat(

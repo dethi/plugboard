@@ -15,7 +15,7 @@ export class ElementSpec {
 
 export class InputElementSpec extends ElementSpec {
   constructor() {
-    super('Input', [], ['A'], InputImg);
+    super('INPUT', [], ['A'], InputImg);
 
     this.imgOn = InputImgOn;
   }
@@ -23,7 +23,7 @@ export class InputElementSpec extends ElementSpec {
 
 export class OutputElementSpec extends ElementSpec {
   constructor() {
-    super('Output', ['A'], [], OutputImg);
+    super('OUTPUT', ['A'], [], OutputImg);
 
     this.imgOn = OutputImgOn;
   }
