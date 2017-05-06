@@ -26,16 +26,6 @@ export default class Board extends Component {
     this.gridController.addElement({ x: 1, y: 1 }, palette[2]);
     this.gridController.addElement({ x: 1, y: 3 }, palette[3]);
     this.gridController.addLink('0_B', '1_A');
-
-    console.log(this.gridController);
-
-    // this.grid1 = new Grid(
-    //   15,
-    //   10,
-    //   70,
-    //   this.refs.canvas1,
-    //   this.props.getCurBlueprint
-    // );
   }
 
   componentWillReceiveProps(nextProps) {
