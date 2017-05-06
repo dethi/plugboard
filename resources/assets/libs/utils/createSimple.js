@@ -4,13 +4,9 @@ import {
   GateElementSpec
 } from '../board/model/elementSpec';
 
-import { Grid } from '../board/model/grid';
-
 import NotImg from '../../../media/components/not.png';
 import AndImg from '../../../media/components/and.png';
 import OrImg from '../../../media/components/or.png';
-
-import { Vector } from './vector';
 
 export function createSimplePalette() {
   const palette = [];
@@ -41,13 +37,4 @@ export function createSimplePalette() {
   );
 
   return palette;
-}
-
-export function createSimpleBoard(elements) {
-  const grid = new Grid(10, 10);
-  const pos = new Vector(2, 2);
-  const pos1 = new Vector(2, 3);
-  grid.addElement(pos, elements[2]);
-  grid.addElement(pos1, elements[3]);
-  return grid;
 }
