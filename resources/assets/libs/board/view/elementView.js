@@ -4,26 +4,28 @@ import { LinkType, LinkElement } from './linkElement';
 
 import { Vector } from '../../utils/vector';
 
-class ElecElement {
-  constructor(grid, vector, blueprint, uglyCallback) {
-    this.grid = grid;
+import { GRID_SIZE, LINK_SIZE } from '../constante';
+
+export class ElementView {
+  constructor(gridView, vector, spec, uglyCallback) {
+    this.gridView = gridView;
     this.pos = vector;
-    this.blueprint = blueprint;
+    this.spec = spec;
 
     this.uglyCallback = uglyCallback;
 
-    this.componentSize = this.grid.gridSize;
-    this.linkSize = this.componentSize / 5;
+    this.componentSize = GRID_SIZE;
+    this.linkSize = LINK_SIZE;
 
-    this.nbInput = this.blueprint.nbInput;
+    this.nbInput = this.spec.input.length;
     this.inputElements = null;
-    this.nbOutput = this.blueprint.nbOutput;
+    this.nbOutput = this.spec.output.length;
     this.outputElements = null;
 
     this.fabricElements = [];
     this.fabricRect = null;
 
-    fabric.Image.fromURL(this.blueprint.img, oImg => {
+    fabric.Image.fromURL(this.spec.img, oImg => {
       this.initComponent(oImg);
     });
   }
@@ -42,46 +44,47 @@ class ElecElement {
     this.createOutputElements();
 
     this.fabricRect.on('moving', options => {
-      let left = Math.round(options.e.offsetX / this.grid.gridSize) *
-        this.grid.gridSize;
-      left = Math.max(Math.min(left, this.grid.leftMax), this.grid.leftMin);
-
-      let top = Math.round(options.e.offsetY / this.grid.gridSize) *
-        this.grid.gridSize;
-      top = Math.max(Math.min(top, this.grid.topMax), this.grid.topMin);
-
-      const newPos = new Vector(
-        Math.floor(left / this.grid.gridSize),
-        Math.floor(top / this.grid.gridSize)
+      let left = Math.round(options.e.offsetX / GRID_SIZE) * GRID_SIZE;
+      left = Math.max(
+        Math.min(left, this.gridView.leftMax),
+        this.gridView.leftMin
       );
 
-      if (newPos.equals(this.pos) || this.grid.get(newPos) !== undefined) {
-        this.fabricRect.left = Math.max(
-          Math.min(this.pos.x * this.grid.gridSize, this.grid.leftMax),
-          this.grid.leftMin
-        );
-        this.fabricRect.top = Math.max(
-          Math.min(this.pos.y * this.grid.gridSize, this.grid.leftMax),
-          this.grid.leftMin
-        );
-      } else {
-        this.fabricRect.left = left;
-        this.fabricRect.top = top;
+      let top = Math.round(options.e.offsetY / GRID_SIZE) * GRID_SIZE;
+      top = Math.max(Math.min(top, this.gridView.topMax), this.gridView.topMin);
 
+      const newPos = new Vector(
+        Math.floor(left / GRID_SIZE),
+        Math.floor(top / GRID_SIZE)
+      );
+
+      if (
+        newPos.equals(this.pos) || this.gridView.controller.get(newPos) !== null
+      ) {
+        const fabricPos = this.gridView.getFabricPos(this.pos);
+
+        this.fabricRect.left = fabricPos.x;
+        this.fabricRect.top = fabricPos.y;
         this.fabricRect.setCoords();
-        this.moveComponent(newPos);
+      } else {
+        this.gridView.controller.onElementMove(this.pos, newPos);
       }
     });
 
     this.uglyCallback(this);
   }
 
-  moveComponent(newPos) {
-    this.grid.set(this.pos, undefined);
+  move(newPos) {
     this.pos = newPos;
+
+    const fabricPos = this.gridView.getFabricPos(this.pos);
+
+    this.fabricRect.left = fabricPos.x;
+    this.fabricRect.top = fabricPos.y;
+    this.fabricRect.setCoords();
+
     this.moveInputElements();
     this.moveOutputElements();
-    this.grid.set(this.pos, this);
   }
 
   createLinkElements(leftPos, nbElement, linkType) {
@@ -166,7 +169,7 @@ class ElecElement {
 
   setOn(isOn) {
     this.on = isOn;
-    const newImg = isOn ? this.blueprint.imgOn : this.blueprint.img;
+    const newImg = isOn ? this.spec.imgOn : this.spec.img;
 
     this.outputElements.forEach(ouEl => ouEl.setOn(isOn));
 
@@ -180,5 +183,3 @@ class ElecElement {
     });
   }
 }
-
-export default ElecElement;

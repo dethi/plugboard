@@ -10,7 +10,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      elementBlueprint: undefined,
+      elementBlueprint: null,
       step: 0,
       running: false
     };
@@ -30,7 +30,7 @@ export default class App extends Component {
 
   getCurBlueprint = () => {
     const curBlueprint = this.state.elementBlueprint;
-    this.setState({ elementBlueprint: undefined });
+    this.setState({ elementBlueprint: null });
     return curBlueprint;
   };
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 // import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Grid from '../libs/board/view/grid';
+import { createSimplePalette } from '../libs/utils/createSimple';
+import { GridController } from '../libs/board/controller/gridController';
 
 import { SPECS, evalutateBoard } from '../engine/index';
 
@@ -9,20 +10,24 @@ export default class Board extends Component {
   constructor(props) {
     super(props);
 
-    this.grid = null;
+    this.gridController = null;
     this.state = {
       timerId: null
     };
   }
 
   componentDidMount() {
-    this.grid = new Grid(
-      30,
-      14,
-      40,
+    const palette = createSimplePalette();
+    this.gridController = new GridController(
       this.refs.canvas,
       this.props.getCurBlueprint
     );
+
+    this.gridController.addElement({ x: 1, y: 1 }, palette[2]);
+    this.gridController.addElement({ x: 1, y: 3 }, palette[3]);
+    this.gridController.addLink('0_B', '1_A');
+
+    console.log(this.gridController);
 
     // this.grid1 = new Grid(
     //   15,
