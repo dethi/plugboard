@@ -4,15 +4,15 @@ export class Element {
     this.pos = pos;
     this.spec = spec;
 
-    this.input = arrayToLinkObject(spec.input);
-    this.output = arrayToLinkObject(spec.output);
+    this.input = arrayToLinkObject(spec.input, true);
+    this.output = arrayToLinkObject(spec.output, false);
   }
 }
 
-function arrayToLinkObject(array) {
+function arrayToLinkObject(array, isInput) {
   return array.reduce(
     (result, item) => {
-      result[item] = null;
+      result[item] = isInput ? null : [];
       return result;
     },
     {}

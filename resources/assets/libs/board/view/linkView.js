@@ -6,9 +6,9 @@ export const LinkType = {
 };
 
 export class LinkLine {
-  constructor(linkInput, linkOutput, linkSize) {
-    this.linkInput = linkInput;
-    this.linkOutput = linkOutput;
+  constructor(linkA, linkB, linkSize) {
+    this.linkA = linkA;
+    this.linkB = linkB;
     this.linkSize = linkSize;
 
     this.fabricLine = this.createLine();
@@ -17,19 +17,19 @@ export class LinkLine {
 
   refresh() {
     // ULGY !!!!
-    this.linkInput.elementView.gridView.fabricCanvas.remove(this.fabricLine);
+    this.linkA.elementView.gridView.fabricCanvas.remove(this.fabricLine);
     this.fabricLine = this.createLine();
     this.fabricLine.stroke = this.on ? 'green' : 'red';
-    this.linkInput.elementView.gridView.fabricCanvas.add(this.fabricLine);
+    this.linkA.elementView.gridView.fabricCanvas.add(this.fabricLine);
   }
 
   createLine() {
     return new fabric.Line(
       [
-        this.linkInput.pos.x + this.linkSize,
-        this.linkInput.pos.y + this.linkSize / 2 - this.linkSize / 6,
-        this.linkOutput.pos.x,
-        this.linkOutput.pos.y + this.linkSize / 2 - this.linkSize / 6
+        this.linkA.pos.x + this.linkSize,
+        this.linkA.pos.y + this.linkSize / 2 - this.linkSize / 6,
+        this.linkB.pos.x,
+        this.linkB.pos.y + this.linkSize / 2 - this.linkSize / 6
       ],
       {
         strokeWidth: this.linkSize / 3,
@@ -66,6 +66,7 @@ export class LinkView {
 
   move(newPos) {
     this.pos = newPos;
+
     this.fabricRect.left = this.pos.x;
     this.fabricRect.top = this.pos.y;
     this.fabricRect.setCoords();
