@@ -25,7 +25,10 @@ export default class Board extends Component {
 
     this.gridController.addElement({ x: 1, y: 1 }, palette[2]);
     this.gridController.addElement({ x: 1, y: 3 }, palette[3]);
-    this.gridController.addLink('0_B', '1_A');
+    this.gridController.addElement({ x: 3, y: 1 }, palette[3]);
+
+    this.gridController.addLink([0, 'B'], [2, 'A']);
+    this.gridController.addLink([0, 'B'], [2, 'B']);
   }
 
   componentWillReceiveProps(nextProps) {

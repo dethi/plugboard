@@ -5,7 +5,7 @@ import { ElementView } from './elementView';
 
 import { Vector } from '../../utils/vector';
 
-import { GRID_SIZE } from '../constante';
+import { GRID_SIZE, MAX_DIST_LINK } from '../constante';
 
 export class GridView {
   constructor(width, height, controller, el) {
@@ -31,10 +31,7 @@ export class GridView {
 
     this.elecElements = {};
 
-    this.addLink = false;
-    this.linkOutputs = null;
-    this.linkEndding = null;
-    this.linkLine = null;
+    this.linking = false;
 
     this.engineRepresentation = {};
 
@@ -49,14 +46,14 @@ export class GridView {
     });
 
     this.fabricCanvas.on('mouse:move', options => {
-      if (!this.addLink) return;
+      if (!this.linking) return;
 
       const mousePos = this.fabricCanvas.getPointer(options.e);
       this.updateCreateLink(mousePos);
     });
 
     this.fabricCanvas.on('mouse:up', options => {
-      if (this.addLink) this.finishCreateLink();
+      if (this.linking) this.finishCreateLink();
     });
 
     this.addGridLine();
@@ -104,16 +101,26 @@ export class GridView {
     );
   }
 
-  addElement(pos, element) {
-    new ElementView(this, pos, element.spec, newElementView => {
-      if (element.spec.name === 'INPUT') newElementView.setAsInputElement();
+  addElement(pos, elementModel) {
+    const newElementView = new ElementView(this, pos, elementModel);
+    this.elecElements[elementModel.id] = newElementView;
 
-      this.elecElements[element.id] = newElementView;
+    if (elementModel.spec.name === 'INPUT') newElementView.setAsInputElement();
 
-      newElementView.getFabricElements().forEach(el => {
-        this.fabricCanvas.add(el);
-      });
+    newElementView.getFabricElements().forEach(el => {
+      this.fabricCanvas.add(el);
     });
+  }
+
+  addLink(inputInfo, outputInfo) {
+    const linkA = this.elecElements[inputInfo[0]].linkElements[inputInfo[1]];
+    const linkB = this.elecElements[outputInfo[0]].linkElements[outputInfo[1]];
+
+    const link = new LinkLine(linkA, linkB, this.gridSize / 5);
+
+    linkA.linkLines.push(link);
+    linkB.linkLines.push(link);
+    this.fabricCanvas.add(link.fabricLine);
   }
 
   moveElement(elId, newPos) {
@@ -121,9 +128,7 @@ export class GridView {
   }
 
   startCreateLink(linkElement) {
-    console.log(linkElement);
-
-    this.addLink = true;
+    this.linking = true;
     this.addLinkStartEl = linkElement;
     this.linkEndding = null;
 
@@ -131,7 +136,7 @@ export class GridView {
 
     Object.keys(this.elecElements).forEach(key => {
       const el = this.elecElements[key];
-      if (el === this.addLinkStartEl.component) return;
+      if (el === this.addLinkStartEl.elementView) return;
       if (this.addLinkStartEl.linkType === LinkType.OUTPUT) {
         this.linkOutputs = this.linkOutputs.concat(
           el.inputElements.filter(el => !el.isUse())
@@ -145,9 +150,7 @@ export class GridView {
   updateCreateLink(mousePos) {
     this.fabricCanvas.remove(this.linkLine);
 
-    // Where put this var ? and also the linkSize ratio.
-    const maxDist = 60;
-    let curDist = maxDist;
+    let curDist = MAX_DIST_LINK;
 
     let target = null;
     this.linkOutputs.forEach(el => {
@@ -184,29 +187,20 @@ export class GridView {
   }
 
   finishCreateLink() {
-    this.addLink = false;
+    this.linking = false;
     this.fabricCanvas.remove(this.linkLine);
 
     if (this.linkEndding) {
-      if (this.addLinkStartEl.linkType === LinkType.OUTPUT) {
-        const link = new LinkLine(
-          this.addLinkStartEl,
-          this.linkEndding,
-          this.gridSize / 5
+      if (this.addLinkStartEl.linkType === LinkType.OUTPUT)
+        this.controller.addLink(
+          [this.addLinkStartEl.elementView.id, this.addLinkStartEl.name],
+          [this.linkEndding.elementView.id, this.linkEndding.name]
         );
-        this.addLinkStartEl.linkLines.push(link);
-        this.linkEndding.linkLines.push(link);
-        this.fabricCanvas.add(link.fabricLine);
-      } else {
-        const link = new LinkLine(
-          this.linkEndding,
-          this.addLinkStartEl,
-          this.gridSize / 5
+      else
+        this.controller.addLink(
+          [this.linkEndding.elementView.id, this.linkEndding.name],
+          [this.addLinkStartEl.elementView.id, this.addLinkStartEl.name]
         );
-        this.addLinkStartEl.linkLines.push(link);
-        this.linkEndding.linkLines.push(link);
-        this.fabricCanvas.add(link.fabricLine);
-      }
     }
   }
 

@@ -66,12 +66,11 @@ export class GridController {
     this.set(pos, newElId);
   }
 
-  addLink(input, output) {
-    const inputInfo = input.split('_');
-    const outputInfo = output.split('_');
+  addLink(inputInfo, outputInfo) {
+    this.grid.elements[inputInfo[0]].output[inputInfo[1]].push(outputInfo);
+    this.grid.elements[outputInfo[0]].input[outputInfo[1]] = inputInfo;
 
-    this.grid.elements[inputInfo[0]].output[inputInfo[1]] = output;
-    this.grid.elements[outputInfo[0]].input[outputInfo[1]] = input;
+    this.gridView.addLink(inputInfo, outputInfo);
   }
 
   addInSpecs(spec) {

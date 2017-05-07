@@ -7,12 +7,12 @@ import { Vector } from '../../utils/vector';
 import { GRID_SIZE, LINK_SIZE } from '../constante';
 
 export class ElementView {
-  constructor(gridView, vector, spec, uglyCallback) {
+  constructor(gridView, vector, elementModel) {
+    this.id = elementModel.id;
+
     this.gridView = gridView;
     this.pos = vector;
-    this.spec = spec;
-
-    this.uglyCallback = uglyCallback;
+    this.spec = elementModel.spec;
 
     this.componentSize = GRID_SIZE;
     this.linkSize = LINK_SIZE;
@@ -21,6 +21,7 @@ export class ElementView {
     this.inputElements = null;
     this.nbOutput = this.spec.output.length;
     this.outputElements = null;
+    this.linkElements = {};
 
     this.fabricElements = [];
     this.fabricRect = null;
@@ -28,6 +29,9 @@ export class ElementView {
     fabric.Image.fromURL(this.spec.img, oImg => {
       this.initComponent(oImg);
     });
+
+    this.createInputElements();
+    this.createOutputElements();
   }
 
   initComponent(fabricComponent) {
@@ -40,38 +44,37 @@ export class ElementView {
     this.fabricRect = fabricComponent;
     this.fabricElements.push(this.fabricRect);
 
-    this.createInputElements();
-    this.createOutputElements();
+    this.fabricRect.on('moving', options => this.onMove(options));
 
-    this.fabricRect.on('moving', options => {
-      let left = Math.round(options.e.offsetX / GRID_SIZE) * GRID_SIZE;
-      left = Math.max(
-        Math.min(left, this.gridView.leftMax),
-        this.gridView.leftMin
-      );
+    this.gridView.fabricCanvas.add(this.fabricRect);
+  }
 
-      let top = Math.round(options.e.offsetY / GRID_SIZE) * GRID_SIZE;
-      top = Math.max(Math.min(top, this.gridView.topMax), this.gridView.topMin);
+  onMove(options) {
+    let left = Math.round(options.e.offsetX / GRID_SIZE) * GRID_SIZE;
+    left = Math.max(
+      Math.min(left, this.gridView.leftMax),
+      this.gridView.leftMin
+    );
 
-      const newPos = new Vector(
-        Math.floor(left / GRID_SIZE),
-        Math.floor(top / GRID_SIZE)
-      );
+    let top = Math.round(options.e.offsetY / GRID_SIZE) * GRID_SIZE;
+    top = Math.max(Math.min(top, this.gridView.topMax), this.gridView.topMin);
 
-      if (
-        newPos.equals(this.pos) || this.gridView.controller.get(newPos) !== null
-      ) {
-        const fabricPos = this.gridView.getFabricPos(this.pos);
+    const newPos = new Vector(
+      Math.floor(left / GRID_SIZE),
+      Math.floor(top / GRID_SIZE)
+    );
 
-        this.fabricRect.left = fabricPos.x;
-        this.fabricRect.top = fabricPos.y;
-        this.fabricRect.setCoords();
-      } else {
-        this.gridView.controller.onElementMove(this.pos, newPos);
-      }
-    });
+    if (
+      newPos.equals(this.pos) || this.gridView.controller.get(newPos) !== null
+    ) {
+      const fabricPos = this.gridView.getFabricPos(this.pos);
 
-    this.uglyCallback(this);
+      this.fabricRect.left = fabricPos.x;
+      this.fabricRect.top = fabricPos.y;
+      this.fabricRect.setCoords();
+    } else {
+      this.gridView.controller.onElementMove(this.pos, newPos);
+    }
   }
 
   move(newPos) {
@@ -103,6 +106,8 @@ export class ElementView {
         this.linkSize,
         new Vector(leftPos, this.componentSize * this.pos.y + topPadding)
       );
+
+      this.linkElements[linkNames[i]] = newLinkElement;
       newLinkElements.push(newLinkElement);
     }
     return newLinkElements;
