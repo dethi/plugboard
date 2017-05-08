@@ -95,12 +95,12 @@ export class GridController {
   exportForEngine() {
     if (this.engineRepresentationDirty) this.generateRepresentation(this.grid);
 
-    this.engineRepresentationDirty = false;
-
     return this.engineRepresentation;
   }
 
   generateRepresentation(grid) {
+    this.engineRepresentationDirty = false;
+
     const board = {
       input: {},
       output: {},
@@ -127,8 +127,8 @@ export class GridController {
         case 'GATE':
           board.components[el.id] = {
             specKey: el.spec.name,
-            input: arrayToLinkObject(el.spec.input, true),
-            output: arrayToLinkObject(el.spec.output, false)
+            input: arrayToLinkObject(el.spec.input, () => null),
+            output: arrayToLinkObject(el.spec.output, () => [])
           };
           break;
         default:
@@ -155,9 +155,13 @@ export class GridController {
 
       this.registeryRep[key] = {};
       Object.keys(realEl.input).forEach(inputName => {
-        let inputReg = this.registeryRep[realEl.input[inputName][0]];
-        if (inputReg === undefined || inputReg instanceof Object) {
-          inputReg = curRegistery++;
+        // Handle DefaultInput
+        let inputReg = 0;
+        if (realEl.input[inputName] !== null) {
+          inputReg = this.registeryRep[realEl.input[inputName][0]];
+          if (inputReg === undefined || inputReg instanceof Object) {
+            inputReg = curRegistery++;
+          }
         }
         this.registeryRep[key][inputName] = inputReg;
         rep.input[inputName] = inputReg;
@@ -180,8 +184,50 @@ export class GridController {
     });
 
     board.specs = grid.specs;
+    board.nextRegistery = curRegistery;
 
     this.engineRepresentation = board;
+  }
+
+  createEngineStates() {
+    if (this.engineRepresentationDirty) this.generateRepresentation(this.grid);
+
+    const states = new Array(this.engineRepresentation.nextRegistery).fill(0);
+
+    // Set Input States
+    Object.keys(this.engineRepresentation.input).forEach(key => {
+      // Regi 0 = Default Input
+      if (key > 0)
+        states[this.registeryRep[key]] = this.grid.elements[key].outputState[
+          'A'
+        ];
+    });
+
+    // Set Intern States
+    Object.keys(this.engineRepresentation.components).forEach(key => {
+      const realEl = this.grid.elements[key];
+      Object.keys(realEl.output).forEach(outputName => {
+        realEl.output[outputName].forEach(outputInfo => {
+          const state = realEl.outputState[outputName];
+          states[this.registeryRep[outputInfo[0]][outputInfo[1]]] = state;
+        });
+      });
+    });
+
+    return states;
+  }
+
+  applyState(states) {
+    const nbInput = this.inputElements.length + 1;
+    this.outputElements.forEach((el, index) => {
+      el.setOn(states[nbInput + index] === 1);
+    });
+
+    // Handle set LinkInput witout infinit loop
+    Object.keys(states).forEach(key => {
+      if (key < nbInput) return;
+      this.engineRepresentation.registeryLines[key].setOn(states[key] === 1);
+    });
   }
 
   get(vector) {

@@ -50,7 +50,10 @@ export default class Board extends Component {
 
   nextStep = () => {
     const grid = this.gridController.exportForEngine();
+    const states = this.gridController.createEngineStates();
     console.log(grid);
+    console.log(states);
+
     //this.gridController.applyState(evalutateBoard(grid.board, grid.states));
   };
 
