@@ -110,6 +110,16 @@ export class GridView {
     });
   }
 
+  removeElement(elId) {
+    this.elecElements[elId].getFabricElements().forEach(el => {
+      this.fabricCanvas.remove(el);
+    });
+
+    this.elecElements[elId].destroy();
+
+    delete this.elecElements[elId];
+  }
+
   addLink(inputInfo, outputInfo) {
     const linkA = this.elecElements[inputInfo[0]].linkElements[inputInfo[1]];
     const linkB = this.elecElements[outputInfo[0]].linkElements[outputInfo[1]];

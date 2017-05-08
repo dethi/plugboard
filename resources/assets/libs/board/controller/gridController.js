@@ -50,6 +50,13 @@ export class GridController {
     this.addElement(pos, selectedSpec);
   }
 
+  onDelete() {
+    const select = this.gridView.fabricCanvas.getActiveObject();
+    if (select !== null) {
+      this.removeElement(select.id);
+    }
+  }
+
   addElement(pos, spec) {
     const newElId = this.curId++;
     const newEl = new Element(newElId, pos, spec);
@@ -69,6 +76,33 @@ export class GridController {
         break;
       default:
     }
+
+    this.engineRepresentationDirty = true;
+  }
+
+  removeElement(elId) {
+    const el = this.grid.elements[elId];
+
+    // Unlink Output
+    Object.keys(el.output).forEach(outputName => {
+      el.output[outputName].forEach(outputInfo => {
+        this.grid.elements[outputInfo[0]].input[outputInfo[1]] = null;
+      });
+    });
+
+    // Unlink Input
+    Object.keys(el.input).forEach(inputName => {
+      const inputInfo = el.input[inputName];
+      if (inputInfo === null) return;
+      const srcEl = this.grid.elements[inputInfo[0]];
+      srcEl.output[inputInfo[1]] = srcEl.output[inputInfo[1]].filter(el => {
+        return el[0] !== elId;
+      });
+    });
+
+    delete this.grid.elements[elId];
+
+    this.gridView.removeElement(elId);
 
     this.engineRepresentationDirty = true;
   }

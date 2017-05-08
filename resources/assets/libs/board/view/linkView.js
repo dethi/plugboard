@@ -44,6 +44,12 @@ export class LinkLine {
       }
     );
   }
+
+  destroy() {
+    this.linkA.linkLines.splice(this.linkA.linkLines.indexOf(this), 1);
+    this.linkB.linkLines.splice(this.linkB.linkLines.indexOf(this), 1);
+    this.linkA.elementView.gridView.fabricCanvas.remove(this.fabricLine);
+  }
 }
 
 export class LinkView {
@@ -81,6 +87,10 @@ export class LinkView {
     this.linkLines.forEach(line => {
       line.refresh();
     });
+  }
+
+  destroy() {
+    this.linkLines.forEach(link => link.destroy());
   }
 
   isUse() {
