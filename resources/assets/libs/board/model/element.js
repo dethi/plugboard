@@ -5,8 +5,9 @@ export class Element {
     this.spec = spec;
 
     this.input = arrayToLinkObject(spec.input, () => null);
+    this.inputState = arrayToLinkObject(spec.input, () => 0);
+
     this.output = arrayToLinkObject(spec.output, () => []);
-    this.outputState = arrayToLinkObject(spec.output, () => 0);
   }
 }
 
