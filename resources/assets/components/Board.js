@@ -45,8 +45,14 @@ export default class Board extends Component {
       }
     } else if (nextProps.step !== this.props.step) {
       this.nextStep();
+    } else if (nextProps.delete !== this.props.delete) {
+      this.delete();
     }
   }
+
+  delete = event => {
+    this.gridController.onDelete();
+  };
 
   nextStep = () => {
     const grid = this.gridController.exportForEngine();

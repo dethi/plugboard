@@ -12,9 +12,14 @@ export default class App extends Component {
     this.state = {
       elementBlueprint: null,
       step: 0,
+      deleting: 0,
       running: false
     };
   }
+
+  handleDelete = () => {
+    this.setState({ deleting: this.state.deleting + 1 });
+  };
 
   handleNextStep = () => {
     this.setState({ step: this.state.step + 1 });
@@ -35,11 +40,12 @@ export default class App extends Component {
   };
 
   render() {
-    const { step, running } = this.state;
+    const { step, running, deleting } = this.state;
 
     return (
       <div>
         <NavBar
+          onDelete={this.handleDelete}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
@@ -49,6 +55,7 @@ export default class App extends Component {
             <Palette updatePalette={this.handlePaletteChange} />
             <Board
               getCurBlueprint={this.getCurBlueprint}
+              delete={deleting}
               step={step}
               running={running}
             />

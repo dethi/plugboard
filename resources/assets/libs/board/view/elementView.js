@@ -37,6 +37,8 @@ export class ElementView {
   }
 
   initComponent(fabricComponent) {
+    fabricComponent.id = this.id;
+
     fabricComponent.top = this.componentSize * this.pos.y;
     fabricComponent.left = this.componentSize * this.pos.x;
     fabricComponent.width = this.componentSize;
@@ -92,6 +94,11 @@ export class ElementView {
 
     this.moveInputElements();
     this.moveOutputElements();
+  }
+
+  destroy() {
+    this.inputElements.forEach(el => el.destroy());
+    this.outputElements.forEach(el => el.destroy());
   }
 
   createLinkElements(leftPos, nbElement, linkType, linkNames) {

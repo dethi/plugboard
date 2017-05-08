@@ -64,6 +64,21 @@ export default function NavBar(props) {
               />
             </span>
           </a>
+          <a className="nav-item" onClick={props.onDelete}>
+            <span className="icon">
+              <i className="fa fa-trash" />
+            </span>
+          </a>
+          <a className="nav-item" onClick={props.onDelete}>
+            <span className="icon">
+              <i className="fa fa-save" />
+            </span>
+          </a>
+          <a className="nav-item" onClick={props.onDelete}>
+            <span className="icon">
+              <i className="fa fa-folder-open" />
+            </span>
+          </a>
         </div>
 
         {guest ? <GuestMenu /> : <LoggedMenu profile={gravatarUrl} />}
