@@ -201,35 +201,4 @@ export class GridView {
         );
     }
   }
-
-  /**
-  createEngineStates() {
-    const states = new Array(
-      this.engineRepresentation.board.nextRegistery
-    ).fill(0);
-
-    this.inputElements.forEach((el, index) => {
-      states[index + 1] = el.on ? 1 : 0;
-    });
-
-    Object.keys(this.engineRepresentation.registeryLines).forEach(key => {
-      states[key] = this.engineRepresentation.registeryLines[key].on ? 1 : 0;
-    });
-
-    this.engineRepresentation.states = states;
-  }
-
-  applyState(states) {
-    const nbInput = this.inputElements.length + 1;
-    this.outputElements.forEach((el, index) => {
-      el.setOn(states[nbInput + index] === 1);
-    });
-
-    // Handle set LinkInput witout infinit loop
-    Object.keys(states).forEach(key => {
-      if (key < nbInput) return;
-      this.engineRepresentation.registeryLines[key].setOn(states[key] === 1);
-    });
-  }
-  **/
 }
