@@ -33,8 +33,6 @@ export class GridView {
 
     this.linking = false;
 
-    this.engineRepresentation = {};
-
     this.fabricCanvas.on('mouse:down', options => {
       const mousePos = this.fabricCanvas.getPointer(options.e);
       this.controller.onClick(
@@ -105,7 +103,7 @@ export class GridView {
     const newElementView = new ElementView(this, pos, elementModel);
     this.elecElements[elementModel.id] = newElementView;
 
-    if (elementModel.spec.name === 'INPUT') newElementView.setAsInputElement();
+    //if (elementModel.spec.name === 'INPUT') newElementView.setAsInputElement();
 
     newElementView.getFabricElements().forEach(el => {
       this.fabricCanvas.add(el);
@@ -205,96 +203,6 @@ export class GridView {
   }
 
   /**
-  exportForEngine() {
-    this.createEngineRepresentation();
-    this.createEngineStates();
-    return this.engineRepresentation;
-  }
-
-  createEngineRepresentation() {
-    const board = {};
-    const registeryLines = {};
-    let curRegistery = 1;
-
-    // Create Input Registery
-    board.input = {};
-    board.input['i0'] = 0;
-    this.inputElements.forEach((el, index) => {
-      board.input['i' + index + 1] = curRegistery;
-      // Add check ?
-      el.outputElements[0].setId(curRegistery);
-      curRegistery++;
-    });
-
-    // Create Output Registery
-    board.output = {};
-    this.outputElements.forEach((el, index) => {
-      board.output['o' + index] = curRegistery;
-      el.inputElements[0].setId(curRegistery);
-      registeryLines[curRegistery] = el.inputElements[0].linkLines[0];
-      curRegistery++;
-    });
-
-    // Create Middle Registery
-    this.gateElements.forEach(el => {
-      el.inputElements.forEach(inEl => {
-        const inputs = inEl.linkLines[0];
-
-        if (inputs !== undefined) {
-          const linkTo = inEl.linkLines[0].linkInput;
-          let id = linkTo.getId();
-          if (id === undefined) {
-            id = curRegistery;
-            registeryLines[curRegistery] = inEl.linkLines[0];
-            curRegistery++;
-          }
-          inEl.setId(id);
-        } else {
-          inEl.setId(0);
-        }
-      });
-    });
-
-    // Link components
-    board.components = {};
-    this.gateElements.forEach((el, index) => {
-      const component = {};
-      component.specKey = el.blueprint.gateType;
-
-      let curChar = 'A';
-      component.input = {};
-      el.inputElements.forEach(inEl => {
-        component.input[curChar] = inEl.getId();
-        curChar = String.fromCharCode(curChar.charCodeAt() + 1);
-      });
-
-      component.output = {};
-      el.outputElements.forEach(ouEl => {
-        component.output[curChar] = ouEl.linkLines.map(link => {
-          return link.linkOutput.getId();
-        });
-        curChar = String.fromCharCode(curChar.charCodeAt() + 1);
-      });
-
-      board.components['c' + index] = component;
-    });
-
-    board.nextRegistery = curRegistery;
-
-    this.engineRepresentation.board = board;
-    this.engineRepresentation.registeryLines = registeryLines;
-  }
-
-  getInputState() {
-    const states = new Array(this.inputElements.length + 1).fill(0);
-
-    this.inputElements.forEach((el, index) => {
-      states[index + 1] = el.on ? 1 : 0;
-    });
-
-    return states;
-  }
-
   createEngineStates() {
     const states = new Array(
       this.engineRepresentation.board.nextRegistery

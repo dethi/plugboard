@@ -71,14 +71,14 @@ const BOARD1 = {
         B: 1
       },
       output: {
-        C: [3]
+        C: [3, 4]
       }
     },
     c2: {
       specKey: 'NOR',
       input: {
         A: 3,
-        B: 3
+        B: 4
       },
       output: {
         C: [2]
