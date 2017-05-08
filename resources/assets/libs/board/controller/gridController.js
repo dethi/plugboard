@@ -6,7 +6,7 @@ import {
   OutputElementSpec,
   GateElementSpec
 } from '../model/elementSpec';
-import { Element } from '../model/element';
+import { Element, arrayToLinkObject } from '../model/element';
 
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
@@ -21,7 +21,12 @@ export class GridController {
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
     this.getSelectedSpec = getSelectedSpec;
 
-    this.curId = 0;
+    // Id 0 for default input
+    this.curId = 1;
+
+    this.registeryRep = {};
+    this.engineRepresentation = {};
+    this.engineRepresentationDirty = false;
   }
 
   onElementMove(oldPos, newPos) {
@@ -46,6 +51,14 @@ export class GridController {
   }
 
   addElement(pos, spec) {
+    const newElId = this.curId++;
+    const newEl = new Element(newElId, pos, spec);
+
+    this.grid.elements[newElId] = newEl;
+    this.gridView.addElement(pos, newEl);
+
+    this.set(pos, newElId);
+
     switch (spec.constructor) {
       case InputElementSpec:
         break;
@@ -57,13 +70,7 @@ export class GridController {
       default:
     }
 
-    const newElId = this.curId++;
-    const newEl = new Element(newElId, pos, spec);
-
-    this.grid.elements[newElId] = newEl;
-    this.gridView.addElement(pos, newEl);
-
-    this.set(pos, newElId);
+    this.engineRepresentationDirty = true;
   }
 
   addLink(inputInfo, outputInfo) {
@@ -71,6 +78,8 @@ export class GridController {
     this.grid.elements[outputInfo[0]].input[outputInfo[1]] = inputInfo;
 
     this.gridView.addLink(inputInfo, outputInfo);
+
+    this.engineRepresentationDirty = true;
   }
 
   addInSpecs(spec) {
@@ -79,6 +88,100 @@ export class GridController {
       output: spec.output,
       truthTable: spec.truthTable
     };
+
+    this.engineRepresentationDirty = true;
+  }
+
+  exportForEngine() {
+    if (this.engineRepresentationDirty) this.generateRepresentation(this.grid);
+
+    this.engineRepresentationDirty = false;
+
+    return this.engineRepresentation;
+  }
+
+  generateRepresentation(grid) {
+    const board = {
+      input: {},
+      output: {},
+      components: {}
+    };
+
+    this.registeryRep = {};
+
+    // Create Default INPUT
+    board.input[0] = 0;
+
+    // Representation Construction
+    Object.keys(grid.elements).forEach(key => {
+      const el = grid.elements[key];
+      const elName = el.spec.name.split('_');
+
+      switch (elName[0]) {
+        case 'INPUT':
+          board.input[el.id] = 0;
+          break;
+        case 'OUTPUT':
+          board.output[el.id] = 0;
+          break;
+        case 'GATE':
+          board.components[el.id] = {
+            specKey: el.spec.name,
+            input: arrayToLinkObject(el.spec.input, true),
+            output: arrayToLinkObject(el.spec.output, false)
+          };
+          break;
+        default:
+      }
+    });
+
+    let curRegistery = 0;
+    // Creation Registery
+    Object.keys(board.input).forEach(key => {
+      this.registeryRep[key] = curRegistery;
+      board.input[key] = curRegistery++;
+    });
+
+    Object.keys(board.output).forEach(key => {
+      // Ulgy handle, find the real name or fond a solution when linking
+      this.registeryRep[key] = {};
+      this.registeryRep[key]['A'] = curRegistery;
+      board.output[key] = curRegistery++;
+    });
+
+    Object.keys(board.components).forEach(key => {
+      const rep = board.components[key];
+      const realEl = grid.elements[key];
+
+      this.registeryRep[key] = {};
+      Object.keys(realEl.input).forEach(inputName => {
+        let inputReg = this.registeryRep[realEl.input[inputName][0]];
+        if (inputReg === undefined || inputReg instanceof Object) {
+          inputReg = curRegistery++;
+        }
+        this.registeryRep[key][inputName] = inputReg;
+        rep.input[inputName] = inputReg;
+      });
+    });
+
+    // Link output
+    Object.keys(board.components).forEach(key => {
+      const rep = board.components[key];
+      const realEl = grid.elements[key];
+
+      Object.keys(realEl.output).forEach(outputName => {
+        const outputs = realEl.output[outputName];
+        outputs.forEach(outputInfo => {
+          rep.output[outputName].push(
+            this.registeryRep[outputInfo[0]][outputInfo[1]]
+          );
+        });
+      });
+    });
+
+    board.specs = grid.specs;
+
+    this.engineRepresentation = board;
   }
 
   get(vector) {

@@ -9,7 +9,7 @@ export class Element {
   }
 }
 
-function arrayToLinkObject(array, isInput) {
+export function arrayToLinkObject(array, isInput) {
   return array.reduce(
     (result, item) => {
       result[item] = isInput ? null : [];

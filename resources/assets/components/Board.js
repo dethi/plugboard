@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { createSimplePalette } from '../libs/utils/createSimple';
 import { GridController } from '../libs/board/controller/gridController';
 
-import { SPECS, evalutateBoard } from '../engine/index';
+import { evalutateBoard } from '../engine/engine';
 
 export default class Board extends Component {
   constructor(props) {
@@ -23,12 +23,17 @@ export default class Board extends Component {
       this.props.getCurBlueprint
     );
 
-    this.gridController.addElement({ x: 1, y: 1 }, palette[2]);
-    this.gridController.addElement({ x: 1, y: 3 }, palette[3]);
-    this.gridController.addElement({ x: 3, y: 1 }, palette[3]);
+    this.gridController.addElement({ x: 1, y: 1 }, palette[0]);
+    this.gridController.addElement({ x: 3, y: 2 }, palette[3]);
+    this.gridController.addElement({ x: 7, y: 3 }, palette[1]);
+    this.gridController.addElement({ x: 1, y: 3 }, palette[0]);
+    this.gridController.addElement({ x: 5, y: 3 }, palette[3]);
 
-    this.gridController.addLink([0, 'B'], [2, 'A']);
-    this.gridController.addLink([0, 'B'], [2, 'B']);
+    this.gridController.addLink([1, 'A'], [2, 'A']);
+    this.gridController.addLink([4, 'A'], [2, 'B']);
+    this.gridController.addLink([2, 'C'], [5, 'A']);
+    this.gridController.addLink([4, 'A'], [5, 'B']);
+    this.gridController.addLink([5, 'C'], [3, 'A']);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,14 +49,14 @@ export default class Board extends Component {
   }
 
   nextStep = () => {
-    const grid = this.grid.exportForEngine();
-    grid.board.specs = SPECS;
-    this.grid.applyState(evalutateBoard(grid.board, grid.states));
+    const grid = this.gridController.exportForEngine();
+    console.log(grid);
+    //this.gridController.applyState(evalutateBoard(grid.board, grid.states));
   };
 
   run = () => {
     const grid = this.grid.exportForEngine();
-    grid.board.specs = SPECS;
+    //grid.board.specs = SPECS;
 
     let boardStates = grid.states;
     const loop = () => {
