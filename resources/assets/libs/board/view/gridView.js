@@ -100,10 +100,10 @@ export class GridView {
   }
 
   addElement(pos, elementModel) {
-    const newElementView = new ElementView(this, pos, elementModel);
-    this.elecElements[elementModel.id] = newElementView;
+    const isInput = elementModel.spec.name === 'INPUT';
+    const newElementView = new ElementView(this, pos, elementModel, isInput);
 
-    //if (elementModel.spec.name === 'INPUT') newElementView.setAsInputElement();
+    this.elecElements[elementModel.id] = newElementView;
 
     newElementView.getFabricElements().forEach(el => {
       this.fabricCanvas.add(el);
@@ -123,6 +123,11 @@ export class GridView {
 
   moveElement(elId, newPos) {
     this.elecElements[elId].move(newPos);
+  }
+
+  setOn(elId, linkName, newState) {
+    const linkEl = this.elecElements[elId].linkElements[linkName];
+    linkEl.linkLines.forEach(link => link.setState(newState));
   }
 
   startCreateLink(linkElement) {

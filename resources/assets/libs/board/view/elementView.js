@@ -7,7 +7,7 @@ import { Vector } from '../../utils/vector';
 import { GRID_SIZE, LINK_SIZE } from '../constante';
 
 export class ElementView {
-  constructor(gridView, vector, elementModel) {
+  constructor(gridView, vector, elementModel, isInput = false) {
     this.id = elementModel.id;
 
     this.gridView = gridView;
@@ -16,6 +16,8 @@ export class ElementView {
 
     this.componentSize = GRID_SIZE;
     this.linkSize = LINK_SIZE;
+
+    this.isInput = isInput;
 
     this.nbInput = this.spec.input.length;
     this.inputElements = null;
@@ -45,6 +47,8 @@ export class ElementView {
     this.fabricElements.push(this.fabricRect);
 
     this.fabricRect.on('moving', options => this.onMove(options));
+
+    if (this.isInput) this.setAsInputElement();
 
     this.gridView.fabricCanvas.add(this.fabricRect);
   }
@@ -179,7 +183,12 @@ export class ElementView {
     this.on = isOn;
     const newImg = isOn ? this.spec.imgOn : this.spec.img;
 
-    this.outputElements.forEach(ouEl => ouEl.setOn(isOn));
+    // Ugly
+    if (this.outputElements[0]) {
+      this.outputElements[0].linkLines.forEach(link => {
+        link.setState(this.on ? 1 : 0);
+      });
+    }
 
     this.fabricRect.setSrc(newImg, () => {
       this.fabricRect.top = this.componentSize * this.pos.y;
@@ -187,7 +196,8 @@ export class ElementView {
       this.fabricRect.width = this.componentSize;
       this.fabricRect.height = this.componentSize;
 
-      this.grid.fabricCanvas.renderAll();
+      this.gridView.fabricCanvas.renderAll();
+      this.gridView.controller.setInput(this.id, this.on ? 1 : 0);
     });
   }
 }
