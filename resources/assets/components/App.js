@@ -5,6 +5,8 @@ import Palette from './Palette';
 import Board from './Board';
 // import Profile from './Profile';
 
+import { SaveController } from '../libs/board/controller/saveController';
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,18 @@ export default class App extends Component {
       deleting: 0,
       running: false
     };
+
+    this.saveController = new SaveController();
   }
+
+  handleSave = () => {
+    const board = this.refs.board;
+    this.saveController.saveGrid(board.gridController.grid);
+  };
+
+  handleOpen = () => {
+    this.saveController.openGrid();
+  };
 
   handleDelete = () => {
     this.setState({ deleting: this.state.deleting + 1 });
@@ -46,6 +59,8 @@ export default class App extends Component {
       <div>
         <NavBar
           onDelete={this.handleDelete}
+          onSave={this.handleSave}
+          onOpen={this.handleOpen}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
@@ -54,6 +69,7 @@ export default class App extends Component {
           <div className="columns">
             <Palette updatePalette={this.handlePaletteChange} />
             <Board
+              ref="board"
               getCurBlueprint={this.getCurBlueprint}
               delete={deleting}
               step={step}
