@@ -13,6 +13,8 @@ export class LinkLine {
 
     this.fabricLine = this.createLine();
     this.fabricLine.stroke = 'red';
+
+    this.on = false;
   }
 
   refresh() {
@@ -21,6 +23,11 @@ export class LinkLine {
     this.fabricLine = this.createLine();
     this.fabricLine.stroke = this.on ? 'green' : 'red';
     this.linkA.elementView.gridView.fabricCanvas.add(this.fabricLine);
+  }
+
+  setState(newState) {
+    this.on = newState === 1;
+    this.refresh();
   }
 
   createLine() {

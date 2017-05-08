@@ -92,6 +92,15 @@ export class GridController {
     this.engineRepresentationDirty = true;
   }
 
+  setInput(id, state) {
+    const inputEl = this.grid.elements[id];
+    Object.keys(inputEl.output).forEach(outputName => {
+      inputEl.output[outputName].forEach(outputInfo => {
+        this.grid.elements[outputInfo[0]].inputState[outputInfo[1]] = state;
+      });
+    });
+  }
+
   exportForEngine() {
     if (this.engineRepresentationDirty) this.generateRepresentation(this.grid);
 
@@ -207,13 +216,20 @@ export class GridController {
   }
 
   applyState(states) {
-    Object.keys(this.engineRepresentation.components).forEach(key => {
-      const realEl = this.grid.elements[key];
+    Object.keys(this.engineRepresentation.components).forEach(id => {
+      const realEl = this.grid.elements[id];
       Object.keys(realEl.input).forEach(inputName => {
-        realEl.inputState[inputName] = states[
-          this.registeryRep[key][inputName]
-        ];
+        const newState = states[this.registeryRep[id][inputName]];
+        realEl.inputState[inputName] = newState;
+        this.gridView.setOn(id, inputName, newState);
       });
+    });
+
+    // Ugly
+    Object.keys(this.engineRepresentation.output).forEach(id => {
+      const newState = states[this.registeryRep[id]['A']];
+      this.gridView.setOn(id, 'A', newState);
+      this.gridView.elecElements[id].setOn(newState === 1);
     });
   }
 
