@@ -69,12 +69,12 @@ export default function NavBar(props) {
               <i className="fa fa-trash" />
             </span>
           </a>
-          <a className="nav-item" onClick={props.onDelete}>
+          <a className="nav-item" onClick={props.onSave}>
             <span className="icon">
               <i className="fa fa-save" />
             </span>
           </a>
-          <a className="nav-item" onClick={props.onDelete}>
+          <a className="nav-item" onClick={props.onOpen}>
             <span className="icon">
               <i className="fa fa-folder-open" />
             </span>
