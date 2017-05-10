@@ -216,4 +216,9 @@ export class GridView {
         );
     }
   }
+
+  clear() {
+    this.fabricCanvas.clear();
+    this.addGridLine();
+  }
 }

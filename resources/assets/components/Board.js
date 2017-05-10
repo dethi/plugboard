@@ -94,40 +94,9 @@ export default class Board extends Component {
     };
     return (
       <div className="column">
-        {/*<div className="app-engine-control">
-          <div className="field has-addons">
-            <p className="control">
-              <button className="button" onClick={this.exportBoard}>
-                <span className="icon is-small">
-                  <i className="fa fa-step-forward" />
-                </span>
-              </button>
-            </p>
-            <p className="control">
-              <button className="button">
-                <span className="icon is-small">
-                  <i className="fa fa-play" />
-                </span>
-              </button>
-            </p>
-          </div>
-        </div>*/}
-
-        {/*</div>*/}
-        {/*<Tabs forceRenderTabPanel={true}>
-          <TabList>
-            <Tab>Board 1</Tab>
-            <Tab>Board 2</Tab>
-          </TabList>
-          <TabPanel>*/}
         <div style={style}>
           <canvas ref="canvas" />
         </div>
-        {/*</TabPanel>
-          <TabPanel>
-            <canvas ref="canvas1" />
-          </TabPanel>
-        </Tabs>*/}
       </div>
     );
   }

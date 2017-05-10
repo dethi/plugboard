@@ -10,12 +10,6 @@ export class GridController {
     this.canvasHolder = canvasHolder;
     this.getSelectedSpec = getSelectedSpec;
 
-    this.initNewGrid();
-  }
-
-  initNewGrid() {
-    this.grid = new Grid();
-
     this.sizeX = GRID_SIZE_X;
     this.sizeY = GRID_SIZE_Y;
 
@@ -26,8 +20,12 @@ export class GridController {
       this.canvasHolder
     );
 
+    this.initNewGrid();
+  }
+
+  initNewGrid() {
+    this.grid = new Grid();
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
-    this.getSelectedSpec = this.getSelectedSpec;
 
     // Id 0 for default input
     this.curId = 1;
@@ -37,7 +35,14 @@ export class GridController {
     this.engineRepresentationDirty = false;
   }
 
+  clearGrid() {
+    this.gridView.clear();
+    this.initNewGrid();
+  }
+
   loadFromGrid(grid) {
+    this.clearGrid();
+
     const idMapping = {};
 
     // Add Elements
