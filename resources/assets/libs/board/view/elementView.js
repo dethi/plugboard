@@ -6,6 +6,8 @@ import { Vector } from '../../utils/vector';
 
 import { GRID_SIZE, LINK_SIZE } from '../constante';
 
+import { ImageElementProvider } from '../../utils/imageElementProvider';
+
 export class ElementView {
   constructor(gridView, vector, elementModel, isInput = false) {
     this.id = elementModel.id;
@@ -28,7 +30,11 @@ export class ElementView {
     this.fabricElements = [];
     this.fabricRect = null;
 
-    fabric.Image.fromURL(this.spec.img, oImg => {
+    this.img = ImageElementProvider.getElementImage(this.spec.img);
+    if (this.spec.imgOn !== undefined)
+      this.imgOn = ImageElementProvider.getElementImage(this.spec.imgOn);
+
+    fabric.Image.fromURL(this.img, oImg => {
       this.initComponent(oImg);
     });
 
@@ -188,7 +194,8 @@ export class ElementView {
 
   setOn(isOn) {
     this.on = isOn;
-    const newImg = isOn ? this.spec.imgOn : this.spec.img;
+
+    const newImg = isOn ? this.imgOn : this.img;
 
     // Ugly
     if (this.outputElements[0]) {

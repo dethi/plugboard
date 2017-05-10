@@ -3,6 +3,8 @@ import classNames from 'classnames';
 
 import { createSimplePalette } from '../libs/utils/createSimple';
 
+import { ImageElementProvider } from '../libs/utils/imageElementProvider';
+
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -51,7 +53,7 @@ export default class Palette extends Component {
             <SelectableElement
               key={index}
               name={e.name}
-              img={e.img}
+              img={ImageElementProvider.getElementImage(e.img)}
               selected={index === curElementId}
               onClick={() => this.updateStateOnClick(index)}
             />

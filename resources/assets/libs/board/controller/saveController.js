@@ -1,5 +1,7 @@
 export class SaveController {
-  saveGrid(grid) {}
+  saveGrid(grid) {
+    console.log(JSON.stringify(grid));
+  }
 
   openGrid() {}
 }
