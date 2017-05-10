@@ -41,4 +41,9 @@ class User extends Authenticatable
         $url .= "?s=80&d=mm&r=g";
         return $url;
     }
+
+    public function boards()
+    {
+        return $this->hasMany('App\Board');
+    }
 }
