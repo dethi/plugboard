@@ -86,8 +86,10 @@ export class GridController {
 
   onDelete() {
     const select = this.gridView.fabricCanvas.getActiveObject();
-    if (select !== undefined) {
+    if (select !== undefined && select !== null) {
       this.removeElement(select.id);
+    } else {
+      this.clearGrid();
     }
   }
 

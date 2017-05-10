@@ -62,21 +62,17 @@ export default class Board extends Component {
   };
 
   run = () => {
-    /*
-    const grid = this.grid.exportForEngine();
-    //grid.board.specs = SPECS;
+    let grid = null;
+    let states = null;
 
-    let boardStates = grid.states;
     const loop = () => {
-      this.grid.getInputState().forEach((e, i) => boardStates[i] = e);
-      const newBoardState = evalutateBoard(grid.board, boardStates);
-      this.grid.applyState(newBoardState);
-      boardStates = newBoardState;
+      grid = this.gridController.exportForEngine();
+      states = this.gridController.createEngineStates();
+      this.gridController.applyState(evalutateBoard(grid, states));
     };
 
     const timerId = setInterval(loop, 300);
     this.setState({ timerId });
-    */
   };
 
   stop = () => {

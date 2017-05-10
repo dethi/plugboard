@@ -218,7 +218,9 @@ export class GridView {
   }
 
   clear() {
+    this.elecElements = {};
     this.fabricCanvas.clear();
+
     this.addGridLine();
   }
 }
