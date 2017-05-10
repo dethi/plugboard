@@ -1,25 +1,33 @@
 import { Grid } from '../model/grid';
 import { GridView } from '../view/gridView';
 
-import {
-  InputElementSpec,
-  OutputElementSpec,
-  GateElementSpec
-} from '../model/elementSpec';
 import { Element, arrayToLinkObject } from '../model/element';
 
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
 export class GridController {
   constructor(canvasHolder, getSelectedSpec) {
+    this.canvasHolder = canvasHolder;
+    this.getSelectedSpec = getSelectedSpec;
+
+    this.initNewGrid();
+  }
+
+  initNewGrid() {
     this.grid = new Grid();
 
     this.sizeX = GRID_SIZE_X;
     this.sizeY = GRID_SIZE_Y;
-    this.gridView = new GridView(this.sizeX, this.sizeY, this, canvasHolder);
+
+    this.gridView = new GridView(
+      this.sizeX,
+      this.sizeY,
+      this,
+      this.canvasHolder
+    );
 
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
-    this.getSelectedSpec = getSelectedSpec;
+    this.getSelectedSpec = this.getSelectedSpec;
 
     // Id 0 for default input
     this.curId = 1;
@@ -27,6 +35,27 @@ export class GridController {
     this.registeryRep = {};
     this.engineRepresentation = {};
     this.engineRepresentationDirty = false;
+  }
+
+  loadFromGrid(grid) {
+    const idMapping = {};
+
+    // Add Elements
+    Object.keys(grid.elements).forEach(id => {
+      const el = grid.elements[id];
+      const newEl = this.addElement(el.pos, grid.specs[el.spec.name]);
+
+      idMapping[id] = newEl.id;
+    });
+
+    // Add Link
+    Object.keys(grid.elements).forEach(id => {
+      const el = grid.elements[id];
+      Object.keys(el.input).forEach(inputName => {
+        const outputInfo = el.input[inputName];
+        this.addLink(outputInfo, [idMapping[id], inputName]);
+      });
+    });
   }
 
   onElementMove(oldPos, newPos) {
@@ -66,22 +95,17 @@ export class GridController {
 
     this.set(pos, newElId);
 
-    switch (spec.constructor) {
-      case InputElementSpec:
-        break;
-      case OutputElementSpec:
-        break;
-      case GateElementSpec:
-        if (this.grid.specs[spec.name] === undefined) this.addInSpecs(spec);
-        break;
-      default:
-    }
+    if (this.grid.specs[spec.name] === undefined) this.addInSpecs(spec);
 
     this.engineRepresentationDirty = true;
+
+    return newEl;
   }
 
   removeElement(elId) {
     const el = this.grid.elements[elId];
+
+    this.set(el.pos, null);
 
     // Unlink Output
     Object.keys(el.output).forEach(outputName => {
@@ -117,12 +141,7 @@ export class GridController {
   }
 
   addInSpecs(spec) {
-    this.grid.specs[spec.name] = {
-      input: spec.input,
-      output: spec.output,
-      truthTable: spec.truthTable
-    };
-
+    this.grid.specs[spec.name] = spec;
     this.engineRepresentationDirty = true;
   }
 
