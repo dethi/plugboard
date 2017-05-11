@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-export default function SelectableElement(props) {
+export default function ConfModal(props) {
   return (
     <div
       className={classNames('modal', {
