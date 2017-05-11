@@ -4,6 +4,7 @@ import PaletteAction from '../actions/paletteActions';
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
 import PropTypes from 'prop-types';
+import ConfModal from './modal/ConfModal';
 
 class Board extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class Board extends Component {
 
     this.boardController = null;
     this.state = {
-      timerId: null
+      timerId: null,
+      modalClearOpen: false
     };
   }
 
@@ -43,10 +45,6 @@ class Board extends Component {
     }
   }
 
-  delete = () => {
-    this.boardController.onDelete();
-  };
-
   rotate = () => {
     this.boardController.onRotate();
   };
@@ -57,6 +55,19 @@ class Board extends Component {
 
   unSelectBlueprint = () => {
     this.props.dispatch(PaletteAction.unselecteBlueprint());
+  }
+
+  handleApplyClear = () => {
+    this.gridController.onDelete();
+    this.setState({ modalClearOpen: false });
+  };
+
+  handleCancelClear = () => {
+    this.setState({ modalClearOpen: false });
+  };
+
+  delete = event => {
+    this.setState({ modalClearOpen: true });
   };
 
   nextStep = () => {
@@ -94,10 +105,20 @@ class Board extends Component {
       maxWidth: '100%'
     };
     return (
-      <div className="column">
-        <div style={style}>
-          <canvas ref="canvas" />
+      <div>
+        <div className="column">
+          <div style={style}>
+            <canvas ref="canvas" />
+          </div>
         </div>
+        <ConfModal
+          isOpen={this.state.modalClearOpen}
+          onCancel={this.handleCancelClear}
+          onApply={this.handleApplyClear}
+          title="Clear The Board"
+          content="Are you sure you want to clear the board ?"
+          success="Clear"
+        />
       </div>
     );
   }
