@@ -16,8 +16,10 @@
     "font-awesome": "^4.7.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-redux": "^5.0.4",
     "react-router": "^4.0.0",
-    "react-tabs": "^0.8.2"
+    "react-tabs": "^0.8.2",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",
