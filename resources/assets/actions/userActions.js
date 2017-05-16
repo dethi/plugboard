@@ -1,12 +1,17 @@
-export const login = user => {
+const login = user => {
   return {
     type: 'LOGIN',
     user: user
   };
 };
 
-export const logout = () => {
+const logout = () => {
   return {
     type: 'LOGOUT'
   };
+};
+
+export default {
+  login,
+  logout
 };

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import { login, logout } from '../actions/userActions';
+import UserAction from '../actions/userActions';
+import Authentification from '../api/authentification';
 
 function GuestMenu(props) {
   return (
@@ -36,17 +37,15 @@ function LoggedMenu(props) {
 }
 
 class NavBar extends Component {
+
   handleLogin = () => {
-    this.props.dispatch(
-      login({
-        name: 'Arthur',
-        id: 42
-      })
-    );
+    Authentification.login('test', 'test').then(user => {
+      this.props.dispatch(UserAction.login(user));
+    });
   };
 
   handleLogout = () => {
-    this.props.dispatch(logout());
+    this.props.dispatch(UserAction.logout());
   };
 
   render() {
