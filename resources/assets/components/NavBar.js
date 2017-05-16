@@ -37,7 +37,6 @@ function LoggedMenu(props) {
 }
 
 class NavBar extends Component {
-
   handleLogin = () => {
     Authentification.login('test', 'test').then(user => {
       this.props.dispatch(UserAction.login(user));
@@ -109,6 +108,5 @@ const mapStateToProps = state => {
     user: state.user
   };
 };
-
 
 export default connect(mapStateToProps)(NavBar);
