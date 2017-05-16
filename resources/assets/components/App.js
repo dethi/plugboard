@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import NavBar from './NavBar';
 import Palette from './Palette';
 import Board from './Board';
 // import Profile from './Profile';
 
+import UserAction from '../actions/userActions';
+import Authentification from '../api/authentification';
+
 import { SaveController } from '../libs/board/controller/saveController';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -19,6 +23,14 @@ export default class App extends Component {
     };
 
     this.saveController = new SaveController();
+
+    // Check if token existe
+    const token = localStorage.getItem('plugboardToken');
+    if (token) {
+      Authentification.loginFromToken(token).then(user => {
+        this.props.dispatch(UserAction.login(user));
+      });
+    }
   }
 
   handleSave = () => {
@@ -82,3 +94,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect()(App);
