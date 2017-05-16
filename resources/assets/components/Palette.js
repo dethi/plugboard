@@ -61,7 +61,7 @@ class Palette extends Component {
                 selected={index === selectedBlueprintIndex}
                 onClick={() => this.updateSelectedBlueprint(index)}
               />
-          ))}
+            ))}
         </nav>
       </div>
     );

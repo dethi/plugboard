@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import PaletteAction from '../actions/paletteActions';
 
-import { createSimplePalette } from '../libs/utils/createSimple';
 import { GridController } from '../libs/board/controller/gridController';
 
 import { evalutateBoard } from '../engine/engine';
