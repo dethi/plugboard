@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { connect } from 'react-redux';
+
+import PaletteAction from '../actions/paletteActions';
 
 import { createSimplePalette } from '../libs/utils/createSimple';
 import { GridController } from '../libs/board/controller/gridController';
 
 import { evalutateBoard } from '../engine/engine';
 
-export default class Board extends Component {
+class Board extends Component {
   constructor(props) {
     super(props);
 
@@ -17,23 +19,10 @@ export default class Board extends Component {
   }
 
   componentDidMount() {
-    const palette = createSimplePalette();
     this.gridController = new GridController(
       this.refs.canvas,
-      this.props.getCurBlueprint
+      this.getCurBlueprint
     );
-
-    this.gridController.addElement({ x: 1, y: 1 }, palette[0]);
-    this.gridController.addElement({ x: 3, y: 2 }, palette[3]);
-    this.gridController.addElement({ x: 7, y: 3 }, palette[1]);
-    this.gridController.addElement({ x: 1, y: 3 }, palette[0]);
-    this.gridController.addElement({ x: 5, y: 3 }, palette[3]);
-
-    this.gridController.addLink([1, 'A'], [2, 'A']);
-    this.gridController.addLink([4, 'A'], [2, 'B']);
-    this.gridController.addLink([2, 'C'], [5, 'A']);
-    this.gridController.addLink([4, 'A'], [5, 'B']);
-    this.gridController.addLink([5, 'C'], [3, 'A']);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,6 +38,14 @@ export default class Board extends Component {
       this.delete();
     }
   }
+
+  getCurBlueprint = () => {
+    const blueprint = this.props.palette.selectedBlueprint;
+
+    this.props.dispatch(PaletteAction.unselecteBlueprint());
+
+    return blueprint;
+  };
 
   delete = event => {
     this.gridController.onDelete();
@@ -97,3 +94,11 @@ export default class Board extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    palette: state.palette
+  };
+};
+
+export default connect(mapStateToProps)(Board);

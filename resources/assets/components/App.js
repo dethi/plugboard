@@ -16,7 +16,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      elementBlueprint: null,
       step: 0,
       deleting: 0,
       running: false
@@ -54,16 +53,6 @@ class App extends Component {
     this.setState({ running: !this.state.running });
   };
 
-  handlePaletteChange = paletteBlueprint => {
-    this.setState({ elementBlueprint: paletteBlueprint });
-  };
-
-  getCurBlueprint = () => {
-    const curBlueprint = this.state.elementBlueprint;
-    this.setState({ elementBlueprint: null });
-    return curBlueprint;
-  };
-
   render() {
     const { step, running, deleting } = this.state;
 
@@ -79,10 +68,9 @@ class App extends Component {
         />
         <div className="app">
           <div className="columns">
-            <Palette updatePalette={this.handlePaletteChange} />
+            <Palette />
             <Board
               ref="board"
-              getCurBlueprint={this.getCurBlueprint}
               delete={deleting}
               step={step}
               running={running}

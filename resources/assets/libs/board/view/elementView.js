@@ -197,13 +197,6 @@ export class ElementView {
 
     const newImg = isOn ? this.imgOn : this.img;
 
-    // Ugly
-    if (this.outputElements[0]) {
-      this.outputElements[0].linkLines.forEach(link => {
-        link.setState(this.on ? 1 : 0);
-      });
-    }
-
     this.fabricRect.setSrc(newImg, () => {
       this.fabricRect.top = this.componentSize * this.pos.y;
       this.fabricRect.left = this.componentSize * this.pos.x;

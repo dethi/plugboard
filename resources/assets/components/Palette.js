@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import { createSimplePalette } from '../libs/utils/createSimple';
+import PaletteAction from '../actions/paletteActions';
 
+import { createSimplePalette } from '../libs/utils/createSimple';
 import { ImageElementProvider } from '../libs/utils/imageElementProvider';
 
 function SelectableElement(props) {
@@ -25,23 +27,24 @@ function SelectableElement(props) {
   );
 }
 
-export default class Palette extends Component {
+class Palette extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      elements: createSimplePalette(),
-      curElementId: 0
-    };
+    this.props.dispatch(PaletteAction.addBlueprints(createSimplePalette()));
   }
 
-  updateStateOnClick = index => {
-    this.setState({ curElementId: index });
-    this.props.updatePalette(this.state.elements[index]);
+  updateSelectedBlueprint = index => {
+    this.props.dispatch(
+      PaletteAction.selectBlueprint(this.props.palette.blueprints[index])
+    );
   };
 
   render() {
-    const { elements, curElementId } = this.state;
+    const { blueprints, selectedBlueprint } = this.props.palette;
+    let selectedBlueprintIndex = -1;
+    if (blueprints)
+      selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
 
     return (
       <div className="column is-one-quarter">
@@ -49,17 +52,26 @@ export default class Palette extends Component {
           <p className="panel-heading">
             Components
           </p>
-          {elements.map((e, index) => (
-            <SelectableElement
-              key={index}
-              name={e.name}
-              img={ImageElementProvider.getElementImage(e.img)}
-              selected={index === curElementId}
-              onClick={() => this.updateStateOnClick(index)}
-            />
+          {blueprints &&
+            blueprints.map((e, index) => (
+              <SelectableElement
+                key={index}
+                name={e.name}
+                img={ImageElementProvider.getElementImage(e.img)}
+                selected={index === selectedBlueprintIndex}
+                onClick={() => this.updateSelectedBlueprint(index)}
+              />
           ))}
         </nav>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    palette: state.palette
+  };
+};
+
+export default connect(mapStateToProps)(Palette);
