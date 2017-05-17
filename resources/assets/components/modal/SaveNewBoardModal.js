@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import Modal from './Modal';
 
 export default class SaveNewBoardModal extends Component {
   constructor(props) {
@@ -27,19 +28,14 @@ export default class SaveNewBoardModal extends Component {
   };
 
   render() {
+    const onCancel = this.props.onCancel;
     return (
-      <div
-        className={classNames('modal', {
-          'is-active': this.props.isOpen
-        })}
-      >
-        <div className="modal-background" />
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">Save new Board</p>
-            <button onClick={this.props.onCancel} className="delete" />
-          </header>
-          <section className="modal-card-body">
+      <Modal
+        isOpen={this.props.isOpen}
+        onCancel={onCancel}
+        title="Save new Board"
+        content={
+          <div>
             <div className="field">
               <label className="label">Name</label>
               <p className="control">
@@ -61,15 +57,17 @@ export default class SaveNewBoardModal extends Component {
                 />
               </p>
             </div>
-          </section>
-          <footer className="modal-card-foot">
+          </div>
+        }
+        footer={
+          <div>
             <a className="button is-success" onClick={this.onApply}>
               Save
             </a>
-            <a className="button" onClick={this.props.onCancel}>Cancel</a>
-          </footer>
-        </div>
-      </div>
+            <a className="button" onClick={onCancel}>Cancel</a>
+          </div>
+        }
+      />
     );
   }
 }
