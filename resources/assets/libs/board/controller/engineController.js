@@ -35,7 +35,7 @@ export default class EngineController {
     // Representation Construction
     Object.keys(this.board.elements).forEach(key => {
       const el = this.board.elements[key];
-      const elName = el.spec.name.split('_');
+      const elName = el.specName.split('_');
 
       switch (elName[0]) {
         case 'INPUT':
@@ -45,10 +45,11 @@ export default class EngineController {
           boardRep.output[el.id] = 0;
           break;
         case 'GATE':
+          const spec = this.board.specs[el.specName];
           boardRep.components[el.id] = {
-            specKey: el.spec.name,
-            input: arrayToLinkObject(el.spec.input, () => null),
-            output: arrayToLinkObject(el.spec.output, () => [])
+            specKey: el.specName,
+            input: arrayToLinkObject(spec.input, () => null),
+            output: arrayToLinkObject(spec.output, () => [])
           };
           break;
         default:

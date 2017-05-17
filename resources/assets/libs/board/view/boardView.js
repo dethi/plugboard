@@ -99,9 +99,15 @@ export class BoardView {
     );
   }
 
-  addElement(pos, elementModel) {
-    const isInput = elementModel.spec.name === 'INPUT';
-    const newElementView = new ElementView(this, pos, elementModel, isInput);
+  addElement(pos, elementModel, spec) {
+    const isInput = elementModel.specName === 'INPUT';
+    const newElementView = new ElementView(
+      this,
+      pos,
+      elementModel.id,
+      spec,
+      isInput
+    );
 
     this.elecElements[elementModel.id] = newElementView;
 
