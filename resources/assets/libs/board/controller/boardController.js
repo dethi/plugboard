@@ -3,7 +3,7 @@ import EngineController from './engineController';
 import { Board } from '../model/board';
 import { BoardView } from '../view/boardView';
 
-import { Element, arrayToLinkObject } from '../model/element';
+import { Element } from '../model/element';
 
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
@@ -61,6 +61,10 @@ export default class BoardController {
         this.addLink(outputInfo, [idMapping[id], inputName]);
       });
     });
+  }
+
+  exportBoard() {
+    return JSON.stringify(this.board);
   }
 
   onElementMove(oldPos, newPos) {
