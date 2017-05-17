@@ -1,3 +1,5 @@
+import EngineController from './engineController';
+
 import { Board } from '../model/board';
 import { BoardView } from '../view/boardView';
 
@@ -5,7 +7,7 @@ import { Element, arrayToLinkObject } from '../model/element';
 
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
-export class BoardController {
+export default class BoardController {
   constructor(canvasHolder, getSelectedSpec) {
     this.canvasHolder = canvasHolder;
     this.getSelectedSpec = getSelectedSpec;
@@ -30,9 +32,7 @@ export class BoardController {
     // Id 0 for default input
     this.curId = 1;
 
-    this.registeryRep = {};
-    this.engineRepresentation = {};
-    this.engineRepresentationDirty = false;
+    this.engineController = new EngineController();
   }
 
   clearBoard() {
@@ -104,7 +104,7 @@ export class BoardController {
 
     if (this.board.specs[spec.name] === undefined) this.addInSpecs(spec);
 
-    this.engineRepresentationDirty = true;
+    this.engineController.setDirty()
 
     return newEl;
   }
@@ -135,7 +135,7 @@ export class BoardController {
 
     this.boardView.removeElement(elId);
 
-    this.engineRepresentationDirty = true;
+    this.engineController.setDirty()
   }
 
   addLink(inputInfo, outputInfo) {
@@ -144,12 +144,12 @@ export class BoardController {
 
     this.boardView.addLink(inputInfo, outputInfo);
 
-    this.engineRepresentationDirty = true;
+    this.engineController.setDirty()
   }
 
   addInSpecs(spec) {
     this.board.specs[spec.name] = spec;
-    this.engineRepresentationDirty = true;
+    this.engineController.setDirty()
   }
 
   setInput(id, state) {
@@ -162,135 +162,15 @@ export class BoardController {
   }
 
   exportForEngine() {
-    if (this.engineRepresentationDirty) this.generateRepresentation(this.board);
-
-    return this.engineRepresentation;
+    return this.engineController.exportForEngine(this.board);
   }
 
-  generateRepresentation(board) {
-    this.engineRepresentationDirty = false;
-
-    const boardRep = {
-      input: {},
-      output: {},
-      components: {}
-    };
-
-    this.registeryRep = {};
-
-    // Create Default INPUT
-    boardRep.input[0] = 0;
-
-    // Representation Construction
-    Object.keys(board.elements).forEach(key => {
-      const el = board.elements[key];
-      const elName = el.spec.name.split('_');
-
-      switch (elName[0]) {
-        case 'INPUT':
-          boardRep.input[el.id] = 0;
-          break;
-        case 'OUTPUT':
-          boardRep.output[el.id] = 0;
-          break;
-        case 'GATE':
-          boardRep.components[el.id] = {
-            specKey: el.spec.name,
-            input: arrayToLinkObject(el.spec.input, () => null),
-            output: arrayToLinkObject(el.spec.output, () => [])
-          };
-          break;
-        default:
-      }
-    });
-
-    let curRegistery = 0;
-    // Creation Registery
-    Object.keys(boardRep.input).forEach(key => {
-      this.registeryRep[key] = curRegistery;
-      boardRep.input[key] = curRegistery++;
-    });
-
-    Object.keys(boardRep.output).forEach(key => {
-      // Ulgy handle, find the real name or fond a solution when linking
-      this.registeryRep[key] = {};
-      this.registeryRep[key]['A'] = curRegistery;
-      boardRep.output[key] = curRegistery++;
-    });
-
-    Object.keys(boardRep.components).forEach(key => {
-      const rep = boardRep.components[key];
-      const realEl = board.elements[key];
-
-      this.registeryRep[key] = {};
-      Object.keys(realEl.input).forEach(inputName => {
-        // Handle DefaultInput
-        let inputReg = 0;
-        if (realEl.input[inputName] !== null) {
-          inputReg = this.registeryRep[realEl.input[inputName][0]];
-          if (inputReg === undefined || inputReg instanceof Object) {
-            inputReg = curRegistery++;
-          }
-        }
-        this.registeryRep[key][inputName] = inputReg;
-        rep.input[inputName] = inputReg;
-      });
-    });
-
-    // Link output
-    Object.keys(boardRep.components).forEach(key => {
-      const rep = boardRep.components[key];
-      const realEl = board.elements[key];
-
-      Object.keys(realEl.output).forEach(outputName => {
-        const outputs = realEl.output[outputName];
-        outputs.forEach(outputInfo => {
-          rep.output[outputName].push(
-            this.registeryRep[outputInfo[0]][outputInfo[1]]
-          );
-        });
-      });
-    });
-
-    boardRep.specs = board.specs;
-    boardRep.nextRegistery = curRegistery;
-
-    this.engineRepresentation = boardRep;
-  }
-
-  createEngineStates() {
-    if (this.engineRepresentationDirty) this.generateRepresentation(this.board);
-
-    const states = new Array(this.engineRepresentation.nextRegistery).fill(0);
-
-    Object.keys(this.engineRepresentation.components).forEach(key => {
-      const realEl = this.board.elements[key];
-      Object.keys(realEl.input).forEach(inputName => {
-        states[this.registeryRep[key][inputName]] = realEl.inputState[
-          inputName
-        ];
-      });
-    });
-
-    return states;
+  exportEngineStates() {
+    return this.engineController.exportEngineStates();
   }
 
   applyState(states) {
-    Object.keys(this.engineRepresentation.components).forEach(id => {
-      const realEl = this.board.elements[id];
-      Object.keys(realEl.input).forEach(inputName => {
-        const newState = states[this.registeryRep[id][inputName]];
-        realEl.inputState[inputName] = newState;
-        this.boardView.setOn(id, inputName, newState);
-      });
-    });
-
-    // Ugly
-    Object.keys(this.engineRepresentation.output).forEach(id => {
-      const newState = states[this.registeryRep[id]['A']];
-      this.boardView.setOn(id, 'A', newState);
-      this.boardView.elecElements[id].setOn(newState === 1);
-    });
+    this.engineController.applyState(this.boardView, states);
   }
 
   get(vector) {
