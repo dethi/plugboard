@@ -19,10 +19,10 @@ export class LinkLine {
 
   refresh() {
     // ULGY !!!!
-    this.linkA.elementView.gridView.fabricCanvas.remove(this.fabricLine);
+    this.linkA.elementView.boardView.fabricCanvas.remove(this.fabricLine);
     this.fabricLine = this.createLine();
     this.fabricLine.stroke = this.on ? 'green' : 'red';
-    this.linkA.elementView.gridView.fabricCanvas.add(this.fabricLine);
+    this.linkA.elementView.boardView.fabricCanvas.add(this.fabricLine);
   }
 
   setState(newState) {
@@ -48,7 +48,7 @@ export class LinkLine {
   destroy() {
     this.linkA.linkLines.splice(this.linkA.linkLines.indexOf(this), 1);
     this.linkB.linkLines.splice(this.linkB.linkLines.indexOf(this), 1);
-    this.linkA.elementView.gridView.fabricCanvas.remove(this.fabricLine);
+    this.linkA.elementView.boardView.fabricCanvas.remove(this.fabricLine);
   }
 }
 
@@ -73,7 +73,7 @@ export class LinkView {
 
     this.fabricRect.on('mousedown', options => {
       if (this.linkType === LinkType.INPUT && this.isUse()) return;
-      this.elementView.gridView.startCreateLink(this);
+      this.elementView.boardView.startCreateLink(this);
     });
   }
 

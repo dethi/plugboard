@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import PaletteAction from '../actions/paletteActions';
 
-import { GridController } from '../libs/board/controller/gridController';
+import { BoardController } from '../libs/board/controller/boardController';
 
 import { evalutateBoard } from '../engine/engine';
 
@@ -11,14 +11,14 @@ class Board extends Component {
   constructor(props) {
     super(props);
 
-    this.gridController = null;
+    this.boardController = null;
     this.state = {
       timerId: null
     };
   }
 
   componentDidMount() {
-    this.gridController = new GridController(
+    this.boardController = new BoardController(
       this.refs.canvas,
       this.getCurBlueprint
     );
@@ -47,24 +47,24 @@ class Board extends Component {
   };
 
   delete = event => {
-    this.gridController.onDelete();
+    this.boardController.onDelete();
   };
 
   nextStep = () => {
-    const grid = this.gridController.exportForEngine();
-    const states = this.gridController.createEngineStates();
+    const board = this.boardController.exportForEngine();
+    const states = this.boardController.createEngineStates();
 
-    this.gridController.applyState(evalutateBoard(grid, states));
+    this.boardController.applyState(evalutateBoard(board, states));
   };
 
   run = () => {
-    let grid = null;
+    let board = null;
     let states = null;
 
     const loop = () => {
-      grid = this.gridController.exportForEngine();
-      states = this.gridController.createEngineStates();
-      this.gridController.applyState(evalutateBoard(grid, states));
+      board = this.boardController.exportForEngine();
+      states = this.boardController.createEngineStates();
+      this.boardController.applyState(evalutateBoard(board, states));
     };
 
     const timerId = setInterval(loop, 300);

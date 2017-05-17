@@ -9,10 +9,10 @@ import { GRID_SIZE, LINK_SIZE } from '../constante';
 import { ImageElementProvider } from '../../utils/imageElementProvider';
 
 export class ElementView {
-  constructor(gridView, vector, elementModel, isInput = false) {
+  constructor(boardView, vector, elementModel, isInput = false) {
     this.id = elementModel.id;
 
-    this.gridView = gridView;
+    this.boardView = boardView;
     this.pos = vector;
     this.spec = elementModel.spec;
 
@@ -58,18 +58,18 @@ export class ElementView {
 
     if (this.isInput) this.setAsInputElement();
 
-    this.gridView.fabricCanvas.add(this.fabricRect);
+    this.boardView.fabricCanvas.add(this.fabricRect);
   }
 
   onMove(options) {
     let left = Math.round(options.e.offsetX / GRID_SIZE) * GRID_SIZE;
     left = Math.max(
-      Math.min(left, this.gridView.leftMax),
-      this.gridView.leftMin
+      Math.min(left, this.boardView.leftMax),
+      this.boardView.leftMin
     );
 
     let top = Math.round(options.e.offsetY / GRID_SIZE) * GRID_SIZE;
-    top = Math.max(Math.min(top, this.gridView.topMax), this.gridView.topMin);
+    top = Math.max(Math.min(top, this.boardView.topMax), this.boardView.topMin);
 
     const newPos = new Vector(
       Math.floor(left / GRID_SIZE),
@@ -77,22 +77,22 @@ export class ElementView {
     );
 
     if (
-      newPos.equals(this.pos) || this.gridView.controller.get(newPos) !== null
+      newPos.equals(this.pos) || this.boardView.controller.get(newPos) !== null
     ) {
-      const fabricPos = this.gridView.getFabricPos(this.pos);
+      const fabricPos = this.boardView.getFabricPos(this.pos);
 
       this.fabricRect.left = fabricPos.x;
       this.fabricRect.top = fabricPos.y;
       this.fabricRect.setCoords();
     } else {
-      this.gridView.controller.onElementMove(this.pos, newPos);
+      this.boardView.controller.onElementMove(this.pos, newPos);
     }
   }
 
   move(newPos) {
     this.pos = newPos;
 
-    const fabricPos = this.gridView.getFabricPos(this.pos);
+    const fabricPos = this.boardView.getFabricPos(this.pos);
 
     this.fabricRect.left = fabricPos.x;
     this.fabricRect.top = fabricPos.y;
@@ -203,8 +203,8 @@ export class ElementView {
       this.fabricRect.width = this.componentSize;
       this.fabricRect.height = this.componentSize;
 
-      this.gridView.fabricCanvas.renderAll();
-      this.gridView.controller.setInput(this.id, this.on ? 1 : 0);
+      this.boardView.fabricCanvas.renderAll();
+      this.boardView.controller.setInput(this.id, this.on ? 1 : 0);
     });
   }
 }
