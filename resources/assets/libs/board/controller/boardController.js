@@ -1,4 +1,5 @@
 import EngineController from './engineController';
+import GridController from './gridController';
 
 import { Board } from '../model/board';
 import { BoardView } from '../view/boardView';
@@ -27,11 +28,11 @@ export default class BoardController {
 
   initNewBoard() {
     this.board = new Board();
-    this.space = new Array(this.sizeX * this.sizeY).fill(null);
 
     // Id 0 for default input
     this.curId = 1;
 
+    this.gridController = new GridController(this.sizeX, this.sizeY);
     this.engineController = new EngineController();
   }
 
@@ -68,18 +69,18 @@ export default class BoardController {
   }
 
   onElementMove(oldPos, newPos) {
-    const elId = this.get(oldPos);
+    const elId = this.gridController.get(oldPos);
 
     this.board.elements[elId].pos = newPos;
 
-    this.set(oldPos, null);
-    this.set(newPos, elId);
+    this.gridController.set(oldPos, null);
+    this.gridController.set(newPos, elId);
 
     this.boardView.moveElement(elId, newPos);
   }
 
   onClick(pos) {
-    if (this.get(pos) !== null) return;
+    if (this.gridController.get(pos) !== null) return;
 
     const selectedSpec = this.getSelectedSpec();
 
@@ -104,11 +105,11 @@ export default class BoardController {
     this.board.elements[newElId] = newEl;
     this.boardView.addElement(pos, newEl);
 
-    this.set(pos, newElId);
+    this.gridController.setElement(pos, newEl);
 
     if (this.board.specs[spec.name] === undefined) this.addInSpecs(spec);
 
-    this.engineController.setDirty()
+    this.engineController.setDirty();
 
     return newEl;
   }
@@ -116,7 +117,7 @@ export default class BoardController {
   removeElement(elId) {
     const el = this.board.elements[elId];
 
-    this.set(el.pos, null);
+    this.gridController.freePos(el.pos);
 
     // Unlink Output
     Object.keys(el.output).forEach(outputName => {
@@ -139,7 +140,7 @@ export default class BoardController {
 
     this.boardView.removeElement(elId);
 
-    this.engineController.setDirty()
+    this.engineController.setDirty();
   }
 
   addLink(inputInfo, outputInfo) {
@@ -148,12 +149,12 @@ export default class BoardController {
 
     this.boardView.addLink(inputInfo, outputInfo);
 
-    this.engineController.setDirty()
+    this.engineController.setDirty();
   }
 
   addInSpecs(spec) {
     this.board.specs[spec.name] = spec;
-    this.engineController.setDirty()
+    this.engineController.setDirty();
   }
 
   setInput(id, state) {
@@ -175,13 +176,5 @@ export default class BoardController {
 
   applyState(states) {
     this.engineController.applyState(this.boardView, states);
-  }
-
-  get(vector) {
-    return this.space[vector.x + this.sizeX * vector.y];
-  }
-
-  set(vector, value) {
-    this.space[vector.x + this.sizeX * vector.y] = value;
   }
 }

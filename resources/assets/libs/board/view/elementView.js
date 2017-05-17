@@ -76,8 +76,9 @@ export class ElementView {
       Math.floor(top / GRID_SIZE)
     );
 
+    // FIXME: UGLY !!!!
     if (
-      newPos.equals(this.pos) || this.boardView.controller.get(newPos) !== null
+      newPos.equals(this.pos) || this.boardView.controller.gridController.get(newPos) !== null
     ) {
       const fabricPos = this.boardView.getFabricPos(this.pos);
 
