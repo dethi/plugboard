@@ -6,12 +6,22 @@ export default class GridController {
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
   }
 
-  setElement(pos, el) {
-    this.set(pos, el.id);
+  setElement(el) {
+    this.set(el.pos, el.id);
   }
 
-  freePos(pos) {
-    this.set(pos, null);
+  canMove(el, newPos) {
+    return this.get(newPos) === null;
+  }
+
+  moveElement(el, oldPos) {
+    this.set(el.pos, el.id);
+
+    this.set(oldPos, null);
+  }
+
+  freeEl(el) {
+    this.set(el.pos, null);
   }
 
   get(pos) {

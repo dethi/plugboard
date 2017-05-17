@@ -9,12 +9,12 @@ import { GRID_SIZE, LINK_SIZE } from '../constante';
 import { ImageElementProvider } from '../../utils/imageElementProvider';
 
 export class ElementView {
-  constructor(boardView, vector, elementModel, isInput = false) {
-    this.id = elementModel.id;
+  constructor(boardView, vector, id, spec, isInput = false) {
+    this.id = id;
 
     this.boardView = boardView;
     this.pos = vector;
-    this.spec = elementModel.spec;
+    this.spec = spec;
 
     this.componentSize = GRID_SIZE;
     this.linkSize = LINK_SIZE;
@@ -76,17 +76,15 @@ export class ElementView {
       Math.floor(top / GRID_SIZE)
     );
 
-    // FIXME: UGLY !!!!
     if (
-      newPos.equals(this.pos) || this.boardView.controller.gridController.get(newPos) !== null
+      newPos.equals(this.pos) ||
+      !this.boardView.controller.onElementMove(this.pos, newPos)
     ) {
       const fabricPos = this.boardView.getFabricPos(this.pos);
 
       this.fabricRect.left = fabricPos.x;
       this.fabricRect.top = fabricPos.y;
       this.fabricRect.setCoords();
-    } else {
-      this.boardView.controller.onElementMove(this.pos, newPos);
     }
   }
 

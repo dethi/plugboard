@@ -2,7 +2,7 @@ export class Element {
   constructor(id, pos, spec) {
     this.id = id;
     this.pos = pos;
-    this.spec = spec;
+    this.specName = spec.name;
 
     this.input = arrayToLinkObject(spec.input, () => null);
     this.inputState = arrayToLinkObject(spec.input, () => 0);
