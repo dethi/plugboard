@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 
 import PaletteAction from '../actions/paletteActions';
 
-import { BoardController } from '../libs/board/controller/boardController';
-
+import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
 
 class Board extends Component {
@@ -52,7 +51,7 @@ class Board extends Component {
 
   nextStep = () => {
     const board = this.boardController.exportForEngine();
-    const states = this.boardController.createEngineStates();
+    const states = this.boardController.exportEngineStates();
 
     this.boardController.applyState(evalutateBoard(board, states));
   };
@@ -63,7 +62,7 @@ class Board extends Component {
 
     const loop = () => {
       board = this.boardController.exportForEngine();
-      states = this.boardController.createEngineStates();
+      states = this.boardController.exportEngineStates();
       this.boardController.applyState(evalutateBoard(board, states));
     };
 
