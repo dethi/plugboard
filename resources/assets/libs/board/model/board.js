@@ -1,4 +1,4 @@
-export class Grid {
+export class Board {
   constructor() {
     this.elements = {};
     this.specs = {};

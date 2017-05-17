@@ -7,7 +7,7 @@ import { Vector } from '../../utils/vector';
 
 import { GRID_SIZE, MAX_DIST_LINK } from '../constante';
 
-export class GridView {
+export class BoardView {
   constructor(width, height, controller, el) {
     this.controller = controller;
     this.gridSize = GRID_SIZE;

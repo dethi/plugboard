@@ -1,11 +1,11 @@
-import { Grid } from '../model/grid';
-import { GridView } from '../view/gridView';
+import { Board } from '../model/board';
+import { BoardView } from '../view/boardView';
 
 import { Element, arrayToLinkObject } from '../model/element';
 
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
-export class GridController {
+export class BoardController {
   constructor(canvasHolder, getSelectedSpec) {
     this.canvasHolder = canvasHolder;
     this.getSelectedSpec = getSelectedSpec;
@@ -13,18 +13,18 @@ export class GridController {
     this.sizeX = GRID_SIZE_X;
     this.sizeY = GRID_SIZE_Y;
 
-    this.gridView = new GridView(
+    this.boardView = new BoardView(
       this.sizeX,
       this.sizeY,
       this,
       this.canvasHolder
     );
 
-    this.initNewGrid();
+    this.initNewBoard();
   }
 
-  initNewGrid() {
-    this.grid = new Grid();
+  initNewBoard() {
+    this.board = new Board();
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
 
     // Id 0 for default input
@@ -35,27 +35,27 @@ export class GridController {
     this.engineRepresentationDirty = false;
   }
 
-  clearGrid() {
-    this.gridView.clear();
-    this.initNewGrid();
+  clearBoard() {
+    this.boardView.clear();
+    this.initNewBoard();
   }
 
-  loadFromGrid(grid) {
-    this.clearGrid();
+  loadFromBoard(board) {
+    this.clearBoard();
 
     const idMapping = {};
 
     // Add Elements
-    Object.keys(grid.elements).forEach(id => {
-      const el = grid.elements[id];
-      const newEl = this.addElement(el.pos, grid.specs[el.spec.name]);
+    Object.keys(board.elements).forEach(id => {
+      const el = board.elements[id];
+      const newEl = this.addElement(el.pos, board.specs[el.spec.name]);
 
       idMapping[id] = newEl.id;
     });
 
     // Add Link
-    Object.keys(grid.elements).forEach(id => {
-      const el = grid.elements[id];
+    Object.keys(board.elements).forEach(id => {
+      const el = board.elements[id];
       Object.keys(el.input).forEach(inputName => {
         const outputInfo = el.input[inputName];
         this.addLink(outputInfo, [idMapping[id], inputName]);
@@ -66,12 +66,12 @@ export class GridController {
   onElementMove(oldPos, newPos) {
     const elId = this.get(oldPos);
 
-    this.grid.elements[elId].pos = newPos;
+    this.board.elements[elId].pos = newPos;
 
     this.set(oldPos, null);
     this.set(newPos, elId);
 
-    this.gridView.moveElement(elId, newPos);
+    this.boardView.moveElement(elId, newPos);
   }
 
   onClick(pos) {
@@ -85,11 +85,11 @@ export class GridController {
   }
 
   onDelete() {
-    const select = this.gridView.fabricCanvas.getActiveObject();
+    const select = this.boardView.fabricCanvas.getActiveObject();
     if (select !== undefined && select !== null) {
       this.removeElement(select.id);
     } else {
-      this.clearGrid();
+      this.clearBoard();
     }
   }
 
@@ -97,12 +97,12 @@ export class GridController {
     const newElId = this.curId++;
     const newEl = new Element(newElId, pos, spec);
 
-    this.grid.elements[newElId] = newEl;
-    this.gridView.addElement(pos, newEl);
+    this.board.elements[newElId] = newEl;
+    this.boardView.addElement(pos, newEl);
 
     this.set(pos, newElId);
 
-    if (this.grid.specs[spec.name] === undefined) this.addInSpecs(spec);
+    if (this.board.specs[spec.name] === undefined) this.addInSpecs(spec);
 
     this.engineRepresentationDirty = true;
 
@@ -110,14 +110,14 @@ export class GridController {
   }
 
   removeElement(elId) {
-    const el = this.grid.elements[elId];
+    const el = this.board.elements[elId];
 
     this.set(el.pos, null);
 
     // Unlink Output
     Object.keys(el.output).forEach(outputName => {
       el.output[outputName].forEach(outputInfo => {
-        this.grid.elements[outputInfo[0]].input[outputInfo[1]] = null;
+        this.board.elements[outputInfo[0]].input[outputInfo[1]] = null;
       });
     });
 
@@ -125,52 +125,52 @@ export class GridController {
     Object.keys(el.input).forEach(inputName => {
       const inputInfo = el.input[inputName];
       if (inputInfo === null) return;
-      const srcEl = this.grid.elements[inputInfo[0]];
+      const srcEl = this.board.elements[inputInfo[0]];
       srcEl.output[inputInfo[1]] = srcEl.output[inputInfo[1]].filter(el => {
         return el[0] !== elId;
       });
     });
 
-    delete this.grid.elements[elId];
+    delete this.board.elements[elId];
 
-    this.gridView.removeElement(elId);
+    this.boardView.removeElement(elId);
 
     this.engineRepresentationDirty = true;
   }
 
   addLink(inputInfo, outputInfo) {
-    this.grid.elements[inputInfo[0]].output[inputInfo[1]].push(outputInfo);
-    this.grid.elements[outputInfo[0]].input[outputInfo[1]] = inputInfo;
+    this.board.elements[inputInfo[0]].output[inputInfo[1]].push(outputInfo);
+    this.board.elements[outputInfo[0]].input[outputInfo[1]] = inputInfo;
 
-    this.gridView.addLink(inputInfo, outputInfo);
+    this.boardView.addLink(inputInfo, outputInfo);
 
     this.engineRepresentationDirty = true;
   }
 
   addInSpecs(spec) {
-    this.grid.specs[spec.name] = spec;
+    this.board.specs[spec.name] = spec;
     this.engineRepresentationDirty = true;
   }
 
   setInput(id, state) {
-    const inputEl = this.grid.elements[id];
+    const inputEl = this.board.elements[id];
     Object.keys(inputEl.output).forEach(outputName => {
       inputEl.output[outputName].forEach(outputInfo => {
-        this.grid.elements[outputInfo[0]].inputState[outputInfo[1]] = state;
+        this.board.elements[outputInfo[0]].inputState[outputInfo[1]] = state;
       });
     });
   }
 
   exportForEngine() {
-    if (this.engineRepresentationDirty) this.generateRepresentation(this.grid);
+    if (this.engineRepresentationDirty) this.generateRepresentation(this.board);
 
     return this.engineRepresentation;
   }
 
-  generateRepresentation(grid) {
+  generateRepresentation(board) {
     this.engineRepresentationDirty = false;
 
-    const board = {
+    const boardRep = {
       input: {},
       output: {},
       components: {}
@@ -179,22 +179,22 @@ export class GridController {
     this.registeryRep = {};
 
     // Create Default INPUT
-    board.input[0] = 0;
+    boardRep.input[0] = 0;
 
     // Representation Construction
-    Object.keys(grid.elements).forEach(key => {
-      const el = grid.elements[key];
+    Object.keys(board.elements).forEach(key => {
+      const el = board.elements[key];
       const elName = el.spec.name.split('_');
 
       switch (elName[0]) {
         case 'INPUT':
-          board.input[el.id] = 0;
+          boardRep.input[el.id] = 0;
           break;
         case 'OUTPUT':
-          board.output[el.id] = 0;
+          boardRep.output[el.id] = 0;
           break;
         case 'GATE':
-          board.components[el.id] = {
+          boardRep.components[el.id] = {
             specKey: el.spec.name,
             input: arrayToLinkObject(el.spec.input, () => null),
             output: arrayToLinkObject(el.spec.output, () => [])
@@ -206,21 +206,21 @@ export class GridController {
 
     let curRegistery = 0;
     // Creation Registery
-    Object.keys(board.input).forEach(key => {
+    Object.keys(boardRep.input).forEach(key => {
       this.registeryRep[key] = curRegistery;
-      board.input[key] = curRegistery++;
+      boardRep.input[key] = curRegistery++;
     });
 
-    Object.keys(board.output).forEach(key => {
+    Object.keys(boardRep.output).forEach(key => {
       // Ulgy handle, find the real name or fond a solution when linking
       this.registeryRep[key] = {};
       this.registeryRep[key]['A'] = curRegistery;
-      board.output[key] = curRegistery++;
+      boardRep.output[key] = curRegistery++;
     });
 
-    Object.keys(board.components).forEach(key => {
-      const rep = board.components[key];
-      const realEl = grid.elements[key];
+    Object.keys(boardRep.components).forEach(key => {
+      const rep = boardRep.components[key];
+      const realEl = board.elements[key];
 
       this.registeryRep[key] = {};
       Object.keys(realEl.input).forEach(inputName => {
@@ -238,9 +238,9 @@ export class GridController {
     });
 
     // Link output
-    Object.keys(board.components).forEach(key => {
-      const rep = board.components[key];
-      const realEl = grid.elements[key];
+    Object.keys(boardRep.components).forEach(key => {
+      const rep = boardRep.components[key];
+      const realEl = board.elements[key];
 
       Object.keys(realEl.output).forEach(outputName => {
         const outputs = realEl.output[outputName];
@@ -252,19 +252,19 @@ export class GridController {
       });
     });
 
-    board.specs = grid.specs;
-    board.nextRegistery = curRegistery;
+    boardRep.specs = board.specs;
+    boardRep.nextRegistery = curRegistery;
 
-    this.engineRepresentation = board;
+    this.engineRepresentation = boardRep;
   }
 
   createEngineStates() {
-    if (this.engineRepresentationDirty) this.generateRepresentation(this.grid);
+    if (this.engineRepresentationDirty) this.generateRepresentation(this.board);
 
     const states = new Array(this.engineRepresentation.nextRegistery).fill(0);
 
     Object.keys(this.engineRepresentation.components).forEach(key => {
-      const realEl = this.grid.elements[key];
+      const realEl = this.board.elements[key];
       Object.keys(realEl.input).forEach(inputName => {
         states[this.registeryRep[key][inputName]] = realEl.inputState[
           inputName
@@ -277,19 +277,19 @@ export class GridController {
 
   applyState(states) {
     Object.keys(this.engineRepresentation.components).forEach(id => {
-      const realEl = this.grid.elements[id];
+      const realEl = this.board.elements[id];
       Object.keys(realEl.input).forEach(inputName => {
         const newState = states[this.registeryRep[id][inputName]];
         realEl.inputState[inputName] = newState;
-        this.gridView.setOn(id, inputName, newState);
+        this.boardView.setOn(id, inputName, newState);
       });
     });
 
     // Ugly
     Object.keys(this.engineRepresentation.output).forEach(id => {
       const newState = states[this.registeryRep[id]['A']];
-      this.gridView.setOn(id, 'A', newState);
-      this.gridView.elecElements[id].setOn(newState === 1);
+      this.boardView.setOn(id, 'A', newState);
+      this.boardView.elecElements[id].setOn(newState === 1);
     });
   }
 
