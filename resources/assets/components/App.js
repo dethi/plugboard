@@ -9,8 +9,6 @@ import Board from './Board';
 import UserAction from '../actions/userActions';
 import Authentification from '../api/authentification';
 
-import { SaveController } from '../libs/board/controller/saveController';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +19,6 @@ class App extends Component {
       running: false
     };
 
-    this.saveController = new SaveController();
-
     // Check if token existe
     const token = localStorage.getItem('plugboardToken');
     if (token) {
@@ -31,15 +27,6 @@ class App extends Component {
       });
     }
   }
-
-  handleSave = () => {
-    const board = this.refs.board;
-    this.saveController.saveGrid(board.gridController.grid);
-  };
-
-  handleOpen = () => {
-    this.saveController.openGrid();
-  };
 
   handleDelete = () => {
     this.setState({ deleting: this.state.deleting + 1 });
@@ -60,8 +47,8 @@ class App extends Component {
       <div>
         <NavBar
           onDelete={this.handleDelete}
-          onSave={this.handleSave}
-          onOpen={this.handleOpen}
+          onSave={() => {}}
+          onOpen={() => {}}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}

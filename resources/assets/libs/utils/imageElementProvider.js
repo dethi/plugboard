@@ -19,5 +19,5 @@ ImageElementProvider.images = {
   Input: InputImg,
   InputOn: InputImgOn,
   Output: OutputImg,
-  OutputImg: OutputImgOn
+  OutputOn: OutputImgOn
 };
