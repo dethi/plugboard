@@ -3,6 +3,8 @@ import { fabric } from 'fabric';
 import { LinkType, LinkLine } from './linkView';
 import { ElementView } from './elementView';
 
+import BoardState from '../controller/boardState';
+
 import { Vector } from '../../utils/vector';
 
 import { GRID_SIZE, MAX_DIST_LINK } from '../constante';
@@ -44,14 +46,24 @@ export class BoardView {
     });
 
     this.fabricCanvas.on('mouse:move', options => {
-      if (this.linking) {
-        const mousePos = this.fabricCanvas.getPointer(options.e);
-        this.updateCreateLink(mousePos);
+      switch (this.controller.boardState) {
+        case BoardState.LINKING:
+          const mousePos = this.fabricCanvas.getPointer(options.e);
+          this.updateCreateLink(mousePos);
+          break;
+        default:
+          break;
       }
     });
 
     this.fabricCanvas.on('mouse:up', options => {
-      if (this.linking) this.finishCreateLink();
+      switch (this.controller.boardState) {
+        case BoardState.LINKING:
+          this.finishCreateLink();
+          break;
+        default:
+          break;
+      }
     });
 
     this.addGridLine();
@@ -144,7 +156,7 @@ export class BoardView {
   }
 
   startCreateLink(linkElement) {
-    this.linking = true;
+    this.controller.onStartLink();
     this.addLinkStartEl = linkElement;
     this.linkEndding = null;
 
@@ -203,17 +215,16 @@ export class BoardView {
   }
 
   finishCreateLink() {
-    this.linking = false;
     this.fabricCanvas.remove(this.linkLine);
 
     if (this.linkEndding) {
       if (this.addLinkStartEl.linkType === LinkType.OUTPUT)
-        this.controller.addLink(
+        this.controller.onFinishLink(
           [this.addLinkStartEl.elementView.id, this.addLinkStartEl.name],
           [this.linkEndding.elementView.id, this.linkEndding.name]
         );
       else
-        this.controller.addLink(
+        this.controller.onFinishLink(
           [this.linkEndding.elementView.id, this.linkEndding.name],
           [this.addLinkStartEl.elementView.id, this.addLinkStartEl.name]
         );

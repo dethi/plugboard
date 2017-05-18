@@ -1,5 +1,6 @@
 import EngineController from './engineController';
 import GridController from './gridController';
+import BoardState from './boardState';
 
 import { Board } from '../model/board';
 import { BoardView } from '../view/boardView';
@@ -28,6 +29,7 @@ export default class BoardController {
 
   initNewBoard() {
     this.board = new Board();
+    this.boardState = BoardState.NONE;
 
     // Id 0 for default input
     this.curId = 1;
@@ -111,7 +113,22 @@ export default class BoardController {
 
   onUpdateSelectedBlueprint(blueprint) {
     this.selectedSpec = blueprint;
-    this.rotate = 0;
+
+    if (blueprint) {
+      this.boardState = BoardState.ADDING;
+      this.rotate = 0;
+    } else {
+      this.boardState = BoardState.NONE;
+    }
+  }
+
+  onStartLink() {
+    this.boardState = BoardState.LINKING;
+  }
+
+  onFinishLink(inputInfo, outputInfo) {
+    this.boardState = BoardState.NONE;
+    this.addLink(inputInfo, outputInfo);
   }
 
   addElement(pos, spec, rotate) {
