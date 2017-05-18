@@ -2,16 +2,16 @@ import { fabric } from 'fabric';
 
 import { LinkType, LinkView } from './linkView';
 
-import { Vector } from '../../utils/vector';
+import Vector from '../../utils/vector';
 
 import { GRID_SIZE, LINK_SIZE } from '../constante';
 
 import { ImageElementProvider } from '../../utils/imageElementProvider';
 
-export class ElementView {
-  constructor(elementModel, spec, isInput = false) {
-    this.id = elementModel.id;
-    this.rotate = elementModel.rotate;
+export default class ElementView {
+  constructor(id, rotate, spec, isInput = false) {
+    this.id = id;
+    this.rotate = rotate;
     this.spec = spec;
 
     this.componentSize = GRID_SIZE;

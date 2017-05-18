@@ -1,9 +1,10 @@
 import EngineController from './engineController';
 import GridController from './gridController';
+import CursorController from './cursorController';
 import BoardState from './boardState';
 
 import { Board } from '../model/board';
-import { BoardView } from '../view/boardView';
+import BoardView from '../view/boardView';
 
 import { Element } from '../model/element';
 
@@ -36,6 +37,7 @@ export default class BoardController {
 
     this.gridController = new GridController(this.sizeX, this.sizeY);
     this.engineController = new EngineController();
+    this.cursorController = new CursorController();
   }
 
   clearBoard() {
@@ -117,7 +119,14 @@ export default class BoardController {
     if (blueprint) {
       this.boardState = BoardState.ADDING;
       this.rotate = 0;
+
+      this.boardView.unSetCursor();
+      this.cursorController
+        .getCursor(blueprint)
+        .then(cursor => this.boardView.setCursor(cursor));
+
     } else {
+      this.boardView.unSetCursor();
       this.boardState = BoardState.NONE;
     }
   }
