@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import Modal from './Modal';
 
 export default class SaveNewBoardModal extends Component {
@@ -29,6 +28,12 @@ export default class SaveNewBoardModal extends Component {
 
   render() {
     const onCancel = this.props.onCancel;
+    const style = {
+      overflow: 'auto',
+      maxHeight: '100%',
+      maxWidth: '100%'
+    };
+
     return (
       <Modal
         isOpen={this.props.isOpen}
@@ -36,6 +41,9 @@ export default class SaveNewBoardModal extends Component {
         title="Save new Board"
         content={
           <div>
+            <div style={style}>
+              <img src={this.props.prev} alt="Preview" />
+            </div>
             <div className="field">
               <label className="label">Name</label>
               <p className="control">
