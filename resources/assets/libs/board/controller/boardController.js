@@ -37,7 +37,7 @@ export default class BoardController {
 
     this.gridController = new GridController(this.sizeX, this.sizeY);
     this.engineController = new EngineController();
-    this.cursorController = new CursorController();
+    this.cursorController = new CursorController(this.boardView);
   }
 
   clearBoard() {
@@ -111,6 +111,7 @@ export default class BoardController {
   onRotate() {
     this.rotate += 1;
     this.rotate %= 4;
+    this.updateCursor();
   }
 
   onUpdateSelectedBlueprint(blueprint) {
@@ -119,11 +120,7 @@ export default class BoardController {
     if (blueprint) {
       this.boardState = BoardState.ADDING;
       this.rotate = 0;
-
-      this.boardView.unSetCursor();
-      this.cursorController
-        .getCursor(blueprint)
-        .then(cursor => this.boardView.setCursor(cursor));
+      this.updateCursor();
 
     } else {
       this.boardView.unSetCursor();
@@ -183,6 +180,13 @@ export default class BoardController {
     this.boardView.removeElement(elId);
 
     this.engineController.setDirty();
+  }
+
+  updateCursor() {
+    this.boardView.unSetCursor();
+      this.cursorController
+        .getCursor(this.selectedSpec, this.rotate)
+        .then(cursor => this.boardView.setCursor(cursor));
   }
 
   addLink(inputInfo, outputInfo) {
