@@ -121,7 +121,6 @@ export default class BoardController {
       this.boardState = BoardState.ADDING;
       this.rotate = 0;
       this.updateCursor();
-
     } else {
       this.boardView.unSetCursor();
       this.boardState = BoardState.NONE;
@@ -184,9 +183,9 @@ export default class BoardController {
 
   updateCursor() {
     this.boardView.unSetCursor();
-      this.cursorController
-        .getCursor(this.selectedSpec, this.rotate)
-        .then(cursor => this.boardView.setCursor(cursor));
+    this.cursorController
+      .getCursor(this.selectedSpec, this.rotate)
+      .then(cursor => this.boardView.setCursor(cursor));
   }
 
   addLink(inputInfo, outputInfo) {
