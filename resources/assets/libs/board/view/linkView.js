@@ -33,7 +33,7 @@ export class LinkLine {
   createLine() {
     return new fabric.Line(
       [
-        this.linkA.pos.x + this.linkSize,
+        this.linkA.pos.x + this.linkSize / 2,
         this.linkA.pos.y + this.linkSize / 2 - this.linkSize / 6,
         this.linkB.pos.x,
         this.linkB.pos.y + this.linkSize / 2 - this.linkSize / 6
@@ -64,7 +64,7 @@ export class LinkView {
     this.fabricRect = new fabric.Rect({
       top: pos.y,
       left: pos.x,
-      width: this.linkSize,
+      width: this.linkSize / 2,
       height: this.linkSize,
       fill: 'black',
       hasControls: false,

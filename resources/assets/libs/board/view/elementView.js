@@ -33,32 +33,34 @@ export class ElementView {
     this.img = ImageElementProvider.getElementImage(this.spec.img);
     if (this.spec.imgOn !== undefined)
       this.imgOn = ImageElementProvider.getElementImage(this.spec.imgOn);
-
-    fabric.Image.fromURL(this.img, oImg => {
-      this.initComponent(oImg);
-    });
-
-    this.createInputElements();
-    this.createOutputElements();
   }
 
-  initComponent(fabricComponent) {
-    fabricComponent.id = this.id;
+  initComponent() {
+    return new Promise((resolve, reject) => {
+      fabric.Image.fromURL(this.img, fabricComponent => {
+        fabricComponent.id = this.id;
 
-    fabricComponent.top = this.componentSize * this.pos.y;
-    fabricComponent.left = this.componentSize * this.pos.x;
-    fabricComponent.width = this.componentSize;
-    fabricComponent.height = this.componentSize;
-    fabricComponent.hasControls = false;
+        fabricComponent.top = this.componentSize * this.pos.y;
+        fabricComponent.left = this.componentSize * this.pos.x;
+        fabricComponent.width = this.componentSize;
+        fabricComponent.height = this.componentSize;
+        fabricComponent.hasControls = false;
 
-    this.fabricRect = fabricComponent;
-    this.fabricElements.push(this.fabricRect);
+        this.fabricRect = fabricComponent;
+        this.fabricElements.push(this.fabricRect);
 
-    this.fabricRect.on('moving', options => this.onMove(options));
+        this.fabricRect.on('moving', options => this.onMove(options));
 
-    if (this.isInput) this.setAsInputElement();
+        this.fabricElements.push(fabricComponent);
 
-    this.boardView.fabricCanvas.add(this.fabricRect);
+        if (this.isInput) this.setAsInputElement();
+
+        this.createInputElements();
+        this.createOutputElements();
+
+        resolve(fabricComponent);
+      });
+    });
   }
 
   onMove(options) {
@@ -157,7 +159,7 @@ export class ElementView {
   }
 
   createOutputElements() {
-    const leftPos = this.componentSize * (this.pos.x + 1) - this.linkSize / 2;
+    const leftPos = this.componentSize * (this.pos.x + 1);
     this.outputElements = this.createLinkElements(
       leftPos,
       this.nbOutput,
@@ -167,7 +169,7 @@ export class ElementView {
   }
 
   moveOutputElements() {
-    const leftPos = this.componentSize * (this.pos.x + 1) - this.linkSize / 2;
+    const leftPos = this.componentSize * (this.pos.x + 1);
     this.moveLinkElements(leftPos, this.outputElements);
   }
 

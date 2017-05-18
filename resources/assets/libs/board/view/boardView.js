@@ -44,10 +44,10 @@ export class BoardView {
     });
 
     this.fabricCanvas.on('mouse:move', options => {
-      if (!this.linking) return;
-
-      const mousePos = this.fabricCanvas.getPointer(options.e);
-      this.updateCreateLink(mousePos);
+      if (this.linking) {
+        const mousePos = this.fabricCanvas.getPointer(options.e);
+        this.updateCreateLink(mousePos);
+      }
     });
 
     this.fabricCanvas.on('mouse:up', options => {
@@ -109,10 +109,12 @@ export class BoardView {
       isInput
     );
 
-    this.elecElements[elementModel.id] = newElementView;
+    newElementView.initComponent().then(() => {
+      this.elecElements[elementModel.id] = newElementView;
 
-    newElementView.getFabricElements().forEach(el => {
-      this.fabricCanvas.add(el);
+      newElementView.getFabricElements().forEach(el => {
+        this.fabricCanvas.add(el);
+      });
     });
   }
 
