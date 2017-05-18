@@ -9,11 +9,8 @@ import { GRID_SIZE, LINK_SIZE } from '../constante';
 import { ImageElementProvider } from '../../utils/imageElementProvider';
 
 export class ElementView {
-  constructor(boardView, vector, id, spec, isInput = false) {
+  constructor(id, spec, isInput = false) {
     this.id = id;
-
-    this.boardView = boardView;
-    this.pos = vector;
     this.spec = spec;
 
     this.componentSize = GRID_SIZE;
@@ -49,7 +46,8 @@ export class ElementView {
         this.fabricRect = fabricComponent;
         this.fabricElements.push(this.fabricRect);
 
-        this.fabricRect.on('moving', options => this.onMove(options));
+        this.fabricRect.on('moving', options =>
+          this.onMove(new Vector(options.e.offsetX, options.e.offsetY)));
 
         this.fabricElements.push(fabricComponent);
 
@@ -63,14 +61,19 @@ export class ElementView {
     });
   }
 
-  onMove(options) {
-    let left = Math.round(options.e.offsetX / GRID_SIZE) * GRID_SIZE;
+  placeOnBoard(boardView, pos) {
+    this.boardView = boardView;
+    this.pos = pos;
+  }
+
+  onMove(pos) {
+    let left = Math.round(pos.x / GRID_SIZE) * GRID_SIZE;
     left = Math.max(
       Math.min(left, this.boardView.leftMax),
       this.boardView.leftMin
     );
 
-    let top = Math.round(options.e.offsetY / GRID_SIZE) * GRID_SIZE;
+    let top = Math.round(pos.y / GRID_SIZE) * GRID_SIZE;
     top = Math.max(Math.min(top, this.boardView.topMax), this.boardView.topMin);
 
     const newPos = new Vector(

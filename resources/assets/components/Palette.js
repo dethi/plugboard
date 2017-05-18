@@ -35,9 +35,11 @@ class Palette extends Component {
   }
 
   updateSelectedBlueprint = index => {
-    this.props.dispatch(
-      PaletteAction.selectBlueprint(this.props.palette.blueprints[index])
-    );
+    const { blueprints, selectedBlueprint } = this.props.palette;
+    if (blueprints[index] === selectedBlueprint)
+      this.props.dispatch(PaletteAction.unselecteBlueprint());
+    else
+      this.props.dispatch(PaletteAction.selectBlueprint(blueprints[index]));
   };
 
   render() {
