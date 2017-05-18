@@ -5,6 +5,7 @@ import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
 import PropTypes from 'prop-types';
 import ConfModal from './modal/ConfModal';
+import SaveNewBoardModal from './modal/SaveNewBoardModal';
 
 class Board extends Component {
   constructor(props) {
@@ -13,7 +14,9 @@ class Board extends Component {
     this.boardController = null;
     this.state = {
       timerId: null,
-      modalClearOpen: false
+      modalClearOpen: false,
+      modalSaveOpen: false,
+      preview: null
     };
   }
 
@@ -42,6 +45,8 @@ class Board extends Component {
       this.props.palette.selectedBlueprint
     ) {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
+    } else if (nextProps.saving !== this.props.saving) {
+      this.save();
     }
   }
 
@@ -62,12 +67,27 @@ class Board extends Component {
     this.setState({ modalClearOpen: false });
   };
 
+  handleApplySave = () => {
+    // Save board using save controller
+    this.setState({ modalSaveOpen: false });
+  };
+
   handleCancelClear = () => {
     this.setState({ modalClearOpen: false });
   };
 
+  handleCancelSave = () => {
+    this.setState({ modalSaveOpen: false });
+  };
+
   delete = event => {
+    console.log('Delete');
     this.setState({ modalClearOpen: true });
+  };
+
+  save = event => {
+    this.setState({ preview: this.props.getCurCanvas().toDataURL('png') });
+    this.setState({ modalSaveOpen: true });
   };
 
   nextStep = () => {
@@ -118,6 +138,12 @@ class Board extends Component {
           title="Clear The Board"
           content="Are you sure you want to clear the board ?"
           success="Clear"
+        />
+        <SaveNewBoardModal
+          isOpen={this.state.modalSaveOpen}
+          onCancel={this.handleCancelSave}
+          onApply={this.handleApplySave}
+          prev={this.state.preview}
         />
       </div>
     );
