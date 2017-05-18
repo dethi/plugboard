@@ -3,18 +3,24 @@ import ElementView from '../view/elementView';
 import Vector from '../../utils/vector';
 
 export default class CursorController {
-  constructor() {
+  constructor(boardView) {
     this.cursors = {};
-
     this.curCursorId = 0;
+
+    this.boardView = boardView;
   }
 
-  getCursor(spec) {
+  getCursor(spec, rotate) {
     return new Promise((resolve, reject) => {
-      if (!this.cursors[spec.name]) {
-        const newCursor = new ElementView(this.curCursorId++, 0, spec, false);
+      if (!this.cursors[`${spec.name}_${rotate}`]) {
+        const newCursor = new ElementView(
+          this.curCursorId++,
+          rotate,
+          spec,
+          false
+        );
 
-        newCursor.pos = new Vector(0, 0);
+        newCursor.placeOnBoard(this.boardView, new Vector(0, 0));
         newCursor.initComponent().then(() => {
           newCursor.getFabricElements().forEach(el => {
             el.opacity = 0.2;
@@ -23,7 +29,7 @@ export default class CursorController {
           resolve(newCursor);
         });
       } else {
-        resolve(this.cursors[spec.name]);
+        resolve(this.cursors[`${spec.name}_${rotate}`]);
       }
     });
   }

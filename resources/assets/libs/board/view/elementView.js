@@ -74,7 +74,7 @@ export default class ElementView {
     this.pos = pos;
   }
 
-  onMove(pos) {
+  onMove(pos, isCursor = false) {
     let left = Math.round(pos.x / GRID_SIZE) * GRID_SIZE;
     left = Math.max(
       Math.min(left, this.boardView.leftMax),
@@ -89,11 +89,25 @@ export default class ElementView {
       Math.floor(top / GRID_SIZE)
     );
 
-    if (
-      newPos.equals(this.pos) ||
-      !this.boardView.controller.onElementMove(this.pos, newPos)
-    )
-      this.move(this.pos);
+    if (!isCursor) {
+      if (
+        newPos.equals(this.pos) ||
+        !this.boardView.controller.onElementMove(this.pos, newPos)
+      )
+        this.move(this.pos);
+    } else {
+      // UGLY
+      if (
+        newPos.equals(this.pos) ||
+        this.boardView.controller.gridController.get(newPos)
+      ) {
+        this.move(this.pos);
+        return this.pos;
+      } else {
+        this.move(newPos);
+        return newPos;
+      }
+    }
   }
 
   move(newPos) {

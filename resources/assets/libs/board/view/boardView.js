@@ -34,6 +34,7 @@ export default class BoardView {
     this.elecElements = {};
 
     this.curCusor = null;
+    this.curCusorPos = new Vector(0, 0);
 
     this.fabricCanvas.on('mouse:down', options => {
       const mousePos = this.fabricCanvas.getPointer(options.e);
@@ -50,6 +51,13 @@ export default class BoardView {
         case BoardState.LINKING:
           const mousePos = this.fabricCanvas.getPointer(options.e);
           this.updateCreateLink(mousePos);
+          break;
+        case BoardState.ADDING:
+          this.curCusorPos = this.curCusor.onMove(
+            new Vector(options.e.offsetX, options.e.offsetY),
+            true
+          );
+          this.fabricCanvas.renderAll();
           break;
         default:
           break;
@@ -163,6 +171,8 @@ export default class BoardView {
   setCursor(cursor) {
     this.curCusor = cursor;
     this.curCusor.getFabricElements().forEach(el => this.fabricCanvas.add(el));
+    this.curCusor.move(this.curCusorPos);
+    this.fabricCanvas.renderAll();
   }
 
   unSetCursor() {
