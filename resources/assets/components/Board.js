@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PaletteAction from '../actions/paletteActions';
 
 import BoardController from '../libs/board/controller/boardController';
+
 import { evalutateBoard } from '../engine/engine';
 
 class Board extends Component {
