@@ -85,7 +85,7 @@ export default class BoardController {
   onClick(pos) {
     if (this.gridController.get(pos) !== null) return;
 
-    const selectedSpec = this.getSelectedSpec();
+    const selectedSpec = this.getSelectedSpec(true);
 
     if (selectedSpec === null) return;
 

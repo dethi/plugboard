@@ -38,10 +38,10 @@ class Board extends Component {
     }
   }
 
-  getCurBlueprint = () => {
+  getCurBlueprint = (unselect = false) => {
     const blueprint = this.props.palette.selectedBlueprint;
 
-    this.props.dispatch(PaletteAction.unselecteBlueprint());
+    if (unselect) this.props.dispatch(PaletteAction.unselecteBlueprint());
 
     return blueprint;
   };
