@@ -1,15 +1,15 @@
 import { fabric } from 'fabric';
 
 import { LinkType, LinkLine } from './linkView';
-import { ElementView } from './elementView';
+import ElementView from './elementView';
 
 import BoardState from '../controller/boardState';
 
-import { Vector } from '../../utils/vector';
+import Vector from '../../utils/vector';
 
 import { GRID_SIZE, MAX_DIST_LINK } from '../constante';
 
-export class BoardView {
+export default class BoardView {
   constructor(width, height, controller, el) {
     this.controller = controller;
     this.gridSize = GRID_SIZE;
@@ -33,7 +33,7 @@ export class BoardView {
 
     this.elecElements = {};
 
-    this.linking = false;
+    this.curCusor = null;
 
     this.fabricCanvas.on('mouse:down', options => {
       const mousePos = this.fabricCanvas.getPointer(options.e);
@@ -113,7 +113,12 @@ export class BoardView {
 
   addElement(pos, elementModel, spec) {
     const isInput = elementModel.specName === 'INPUT';
-    const newElementView = new ElementView(elementModel, spec, isInput);
+    const newElementView = new ElementView(
+      elementModel.id,
+      elementModel.rotate,
+      spec,
+      isInput
+    );
 
     newElementView.placeOnBoard(this, pos);
     newElementView.initComponent().then(() => {
@@ -153,6 +158,18 @@ export class BoardView {
   setOn(elId, linkName, newState) {
     const linkEl = this.elecElements[elId].linkElements[linkName];
     linkEl.linkLines.forEach(link => link.setState(newState));
+  }
+
+  setCursor(cursor) {
+    this.curCusor = cursor;
+    this.curCusor.getFabricElements().forEach(el => this.fabricCanvas.add(el));
+  }
+
+  unSetCursor() {
+    if (this.curCusor)
+      this.curCusor
+        .getFabricElements()
+        .forEach(el => this.fabricCanvas.remove(el));
   }
 
   startCreateLink(linkElement) {
