@@ -16,6 +16,7 @@ class App extends Component {
     this.state = {
       step: 0,
       deleting: 0,
+      rotating: 0,
       running: false
     };
 
@@ -32,6 +33,10 @@ class App extends Component {
     this.setState({ deleting: this.state.deleting + 1 });
   };
 
+  handleRotate = () => {
+    this.setState({ rotating: this.state.rotating + 1 });
+  };
+
   handleNextStep = () => {
     this.setState({ step: this.state.step + 1 });
   };
@@ -41,12 +46,13 @@ class App extends Component {
   };
 
   render() {
-    const { step, running, deleting } = this.state;
+    const { step, running, deleting, rotating } = this.state;
 
     return (
       <div>
         <NavBar
           onDelete={this.handleDelete}
+          onRotate={this.handleRotate}
           onSave={() => {}}
           onOpen={() => {}}
           onNextStep={this.handleNextStep}
@@ -59,6 +65,7 @@ class App extends Component {
             <Board
               ref="board"
               delete={deleting}
+              rotate={rotating}
               step={step}
               running={running}
             />

@@ -20,7 +20,7 @@ class Board extends Component {
   componentDidMount() {
     this.boardController = new BoardController(
       this.refs.canvas,
-      this.getCurBlueprint
+      this.unSelectBlueprint
     );
   }
 
@@ -35,19 +35,30 @@ class Board extends Component {
       this.nextStep();
     } else if (nextProps.delete !== this.props.delete) {
       this.delete();
+    } else if (nextProps.rotate !== this.props.rotate) {
+      this.rotate();
+    } else if (
+      nextProps.palette.selectedBlueprint !==
+      this.props.palette.selectedBlueprint
+    ) {
+      this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
     }
   }
 
-  getCurBlueprint = (unselect = false) => {
-    const blueprint = this.props.palette.selectedBlueprint;
-
-    if (unselect) this.props.dispatch(PaletteAction.unselecteBlueprint());
-
-    return blueprint;
+  delete = () => {
+    this.boardController.onDelete();
   };
 
-  delete = event => {
-    this.boardController.onDelete();
+  rotate = () => {
+    this.boardController.onRotate();
+  };
+
+  updateSelectedBlueprint = blueprint => {
+    this.boardController.onUpdateSelectedBlueprint(blueprint);
+  };
+
+  unSelectBlueprint = () => {
+    this.props.dispatch(PaletteAction.unselecteBlueprint());
   };
 
   nextStep = () => {

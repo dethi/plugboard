@@ -53,18 +53,15 @@ export class LinkLine {
 }
 
 export class LinkView {
-  constructor(name, elementView, linkType, linkSize, pos) {
+  constructor(name, elementView, linkType, linkSize) {
     this.name = name;
     this.elementView = elementView;
     this.linkType = linkType;
     this.linkSize = linkSize;
     this.linkLines = [];
 
-    this.pos = pos;
     this.fabricRect = new fabric.Rect({
-      top: pos.y,
-      left: pos.x,
-      width: this.linkSize / 2,
+      width: this.linkSize,
       height: this.linkSize,
       fill: 'black',
       hasControls: false,
