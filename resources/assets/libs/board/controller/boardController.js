@@ -9,9 +9,9 @@ import { Element } from '../model/element';
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
 export default class BoardController {
-  constructor(canvasHolder, getSelectedSpec) {
+  constructor(canvasHolder, unSelectBlueprint) {
     this.canvasHolder = canvasHolder;
-    this.getSelectedSpec = getSelectedSpec;
+    this.unSelectBlueprint = unSelectBlueprint;
 
     this.sizeX = GRID_SIZE_X;
     this.sizeY = GRID_SIZE_Y;
@@ -49,7 +49,12 @@ export default class BoardController {
     // Add Elements
     Object.keys(board.elements).forEach(id => {
       const el = board.elements[id];
-      const newEl = this.addElement(el.pos, board.specs[el.spec.name]);
+
+      const newEl = this.addElement(
+        el.pos,
+        board.specs[el.spec.name],
+        el.rotate
+      );
 
       idMapping[id] = newEl.id;
     });
@@ -83,13 +88,11 @@ export default class BoardController {
   }
 
   onClick(pos) {
-    if (this.gridController.get(pos) !== null) return;
+    if (!this.selectedSpec || this.gridController.get(pos)) return;
 
-    const selectedSpec = this.getSelectedSpec(true);
+    this.addElement(pos, this.selectedSpec, this.rotate);
 
-    if (selectedSpec === null) return;
-
-    this.addElement(pos, selectedSpec);
+    this.unSelectBlueprint();
   }
 
   onDelete() {
@@ -101,9 +104,19 @@ export default class BoardController {
     }
   }
 
-  addElement(pos, spec) {
+  onRotate() {
+    this.rotate += 1;
+    this.rotate %= 4;
+  }
+
+  onUpdateSelectedBlueprint(blueprint) {
+    this.selectedSpec = blueprint;
+    this.rotate = 0;
+  }
+
+  addElement(pos, spec, rotate) {
     const newElId = this.curId++;
-    const newEl = new Element(newElId, pos, spec);
+    const newEl = new Element(newElId, pos, spec, rotate);
 
     this.board.elements[newElId] = newEl;
     this.boardView.addElement(pos, newEl, spec);

@@ -9,8 +9,9 @@ import { GRID_SIZE, LINK_SIZE } from '../constante';
 import { ImageElementProvider } from '../../utils/imageElementProvider';
 
 export class ElementView {
-  constructor(id, spec, isInput = false) {
-    this.id = id;
+  constructor(elementModel, spec, isInput = false) {
+    this.id = elementModel.id;
+    this.rotate = elementModel.rotate;
     this.spec = spec;
 
     this.componentSize = GRID_SIZE;
@@ -37,10 +38,17 @@ export class ElementView {
       fabric.Image.fromURL(this.img, fabricComponent => {
         fabricComponent.id = this.id;
 
-        fabricComponent.top = this.componentSize * this.pos.y;
-        fabricComponent.left = this.componentSize * this.pos.x;
+        fabricComponent.top = this.componentSize * this.pos.y +
+          (this.rotate === 2 || this.rotate === 3 ? this.componentSize : 0);
+
+        fabricComponent.left = this.componentSize * this.pos.x +
+          (this.rotate === 1 || this.rotate === 2 ? this.componentSize : 0);
+
         fabricComponent.width = this.componentSize;
         fabricComponent.height = this.componentSize;
+
+        fabricComponent.angle = 90 * this.rotate;
+
         fabricComponent.hasControls = false;
 
         this.fabricRect = fabricComponent;
@@ -84,13 +92,8 @@ export class ElementView {
     if (
       newPos.equals(this.pos) ||
       !this.boardView.controller.onElementMove(this.pos, newPos)
-    ) {
-      const fabricPos = this.boardView.getFabricPos(this.pos);
-
-      this.fabricRect.left = fabricPos.x;
-      this.fabricRect.top = fabricPos.y;
-      this.fabricRect.setCoords();
-    }
+    )
+      this.move(this.pos);
   }
 
   move(newPos) {
@@ -98,8 +101,12 @@ export class ElementView {
 
     const fabricPos = this.boardView.getFabricPos(this.pos);
 
-    this.fabricRect.left = fabricPos.x;
-    this.fabricRect.top = fabricPos.y;
+    this.fabricRect.top = fabricPos.y +
+      (this.rotate === 2 || this.rotate === 3 ? this.componentSize : 0);
+
+    this.fabricRect.left = fabricPos.x +
+      (this.rotate === 1 || this.rotate === 2 ? this.componentSize : 0);
+
     this.fabricRect.setCoords();
 
     this.moveInputElements();
@@ -111,21 +118,15 @@ export class ElementView {
     this.outputElements.forEach(el => el.destroy());
   }
 
-  createLinkElements(leftPos, nbElement, linkType, linkNames) {
+  createLinkElements(nbElement, linkType, linkNames) {
     const newLinkElements = [];
-    // Verify enough place for all link
-    const elPadding = (this.componentSize - this.linkSize * nbElement) /
-      (nbElement + 1);
 
     for (let i = 0; i < nbElement; i++) {
-      const topPadding = i * this.linkSize + (i + 1) * elPadding;
-
       const newLinkElement = new LinkView(
         linkNames[i],
         this,
         linkType,
-        this.linkSize,
-        new Vector(leftPos, this.componentSize * this.pos.y + topPadding)
+        this.linkSize
       );
 
       this.linkElements[linkNames[i]] = newLinkElement;
@@ -134,46 +135,65 @@ export class ElementView {
     return newLinkElements;
   }
 
-  moveLinkElements(leftPos, elements) {
+  moveLinkElements(initPos, isLeft, elements) {
     const elPadding = (this.componentSize - this.linkSize * elements.length) /
       (elements.length + 1);
 
     elements.forEach((el, index) => {
       const topPadding = index * this.linkSize + (index + 1) * elPadding;
-      el.move(
-        new Vector(leftPos, this.componentSize * this.pos.y + topPadding)
-      );
+      if (isLeft)
+        el.move(
+          new Vector(initPos, this.componentSize * this.pos.y + topPadding)
+        );
+      else
+        el.move(
+          new Vector(this.componentSize * this.pos.x + topPadding, initPos)
+        );
     });
   }
 
   createInputElements() {
-    const leftPos = this.componentSize * this.pos.x - this.linkSize / 2;
     this.inputElements = this.createLinkElements(
-      leftPos,
       this.nbInput,
       LinkType.INPUT,
       this.spec.input
     );
+
+    this.moveInputElements();
   }
 
   moveInputElements() {
-    const leftPos = this.componentSize * this.pos.x - this.linkSize / 2;
-    this.moveLinkElements(leftPos, this.inputElements);
+    if (this.rotate === 0 || this.rotate === 2) {
+      const leftPos = this.componentSize * this.pos.x +
+        (this.rotate === 0 ? -this.linkSize : this.componentSize);
+      this.moveLinkElements(leftPos, true, this.inputElements);
+    } else {
+      const topPos = this.componentSize * this.pos.y +
+        (this.rotate === 1 ? -this.linkSize : this.componentSize);
+      this.moveLinkElements(topPos, false, this.inputElements);
+    }
   }
 
   createOutputElements() {
-    const leftPos = this.componentSize * (this.pos.x + 1);
     this.outputElements = this.createLinkElements(
-      leftPos,
       this.nbOutput,
       LinkType.OUTPUT,
       this.spec.output
     );
+
+    this.moveOutputElements();
   }
 
   moveOutputElements() {
-    const leftPos = this.componentSize * (this.pos.x + 1);
-    this.moveLinkElements(leftPos, this.outputElements);
+    if (this.rotate === 0 || this.rotate === 2) {
+      const leftPos = this.componentSize * this.pos.x +
+        (this.rotate === 2 ? -this.linkSize : this.componentSize);
+      this.moveLinkElements(leftPos, true, this.outputElements);
+    } else {
+      const topPos = this.componentSize * this.pos.y +
+        (this.rotate === 3 ? -this.linkSize : this.componentSize);
+      this.moveLinkElements(topPos, false, this.outputElements);
+    }
   }
 
   getFabricElements() {

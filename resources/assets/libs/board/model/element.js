@@ -1,8 +1,10 @@
 export class Element {
-  constructor(id, pos, spec) {
+  constructor(id, pos, spec, rotate) {
     this.id = id;
-    this.pos = pos;
     this.specName = spec.name;
+
+    this.pos = pos;
+    this.rotate = rotate;
 
     this.input = arrayToLinkObject(spec.input, () => null);
     this.inputState = arrayToLinkObject(spec.input, () => 0);

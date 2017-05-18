@@ -79,6 +79,11 @@ class NavBar extends Component {
                 <i className="fa fa-trash" />
               </span>
             </a>
+            <a className="nav-item" onClick={this.props.onRotate}>
+              <span className="icon">
+                <i className="fa fa-repeat" />
+              </span>
+            </a>
             <a className="nav-item" onClick={this.props.onSave}>
               <span className="icon">
                 <i className="fa fa-save" />

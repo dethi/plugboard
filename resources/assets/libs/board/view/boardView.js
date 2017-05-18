@@ -101,7 +101,7 @@ export class BoardView {
 
   addElement(pos, elementModel, spec) {
     const isInput = elementModel.specName === 'INPUT';
-    const newElementView = new ElementView(elementModel.id, spec, isInput);
+    const newElementView = new ElementView(elementModel, spec, isInput);
 
     newElementView.placeOnBoard(this, pos);
     newElementView.initComponent().then(() => {
