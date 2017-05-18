@@ -38,11 +38,11 @@ export class ElementView {
       fabric.Image.fromURL(this.img, fabricComponent => {
         fabricComponent.id = this.id;
 
-        fabricComponent.top = this.componentSize * this.pos.y +
-          (this.rotate === 2 || this.rotate === 3 ? this.componentSize : 0);
-
-        fabricComponent.left = this.componentSize * this.pos.x +
-          (this.rotate === 1 || this.rotate === 2 ? this.componentSize : 0);
+        this.moveRect(
+          fabricComponent,
+          this.componentSize * this.pos.x,
+          this.componentSize * this.pos.y
+        );
 
         fabricComponent.width = this.componentSize;
         fabricComponent.height = this.componentSize;
@@ -101,16 +101,18 @@ export class ElementView {
 
     const fabricPos = this.boardView.getFabricPos(this.pos);
 
-    this.fabricRect.top = fabricPos.y +
-      (this.rotate === 2 || this.rotate === 3 ? this.componentSize : 0);
-
-    this.fabricRect.left = fabricPos.x +
-      (this.rotate === 1 || this.rotate === 2 ? this.componentSize : 0);
-
-    this.fabricRect.setCoords();
+    this.moveRect(this.fabricRect, fabricPos.x, fabricPos.y);
 
     this.moveInputElements();
     this.moveOutputElements();
+  }
+
+  moveRect(rect, posX, posY) {
+    rect.left = posX +
+      (this.rotate === 1 || this.rotate === 2 ? this.componentSize : 0);
+    rect.top = posY +
+      (this.rotate === 2 || this.rotate === 3 ? this.componentSize : 0);
+    rect.setCoords();
   }
 
   destroy() {
@@ -222,8 +224,12 @@ export class ElementView {
     const newImg = isOn ? this.imgOn : this.img;
 
     this.fabricRect.setSrc(newImg, () => {
-      this.fabricRect.top = this.componentSize * this.pos.y;
-      this.fabricRect.left = this.componentSize * this.pos.x;
+      this.moveRect(
+        this.fabricRect,
+        this.componentSize * this.pos.x,
+        this.componentSize * this.pos.y
+      );
+
       this.fabricRect.width = this.componentSize;
       this.fabricRect.height = this.componentSize;
 
