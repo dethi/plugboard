@@ -111,7 +111,7 @@ export default class BoardController {
   onRotate() {
     this.rotate += 1;
     this.rotate %= 4;
-    this.updateCursor();
+    this.updateCursor(false);
   }
 
   onUpdateSelectedBlueprint(blueprint) {
@@ -181,11 +181,13 @@ export default class BoardController {
     this.engineController.setDirty();
   }
 
-  updateCursor() {
-    this.boardView.unSetCursor();
-    this.cursorController
-      .getCursor(this.selectedSpec, this.rotate)
-      .then(cursor => this.boardView.setCursor(cursor));
+  updateCursor(resetPos = true) {
+    if (this.selectedSpec) {
+      this.boardView.unSetCursor();
+      this.cursorController
+        .getCursor(this.selectedSpec, this.rotate)
+        .then(cursor => this.boardView.setCursor(cursor, resetPos));
+    }
   }
 
   addLink(inputInfo, outputInfo) {
