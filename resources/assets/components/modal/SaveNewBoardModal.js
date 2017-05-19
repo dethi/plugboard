@@ -30,11 +30,6 @@ export default class SaveNewBoardModal extends Component {
 
   render() {
     const onCancel = this.props.onCancel;
-    const style = {
-      overflow: 'auto',
-      maxHeight: '100%',
-      maxWidth: '100%'
-    };
 
     return (
       <Modal
@@ -43,7 +38,8 @@ export default class SaveNewBoardModal extends Component {
         title="Save new Board"
         content={
           <div>
-            <div style={style}>
+            <div>
+              {/* FIXME: need to recize/limit previews */}
               <img src={this.props.prev} alt="Preview" />
             </div>
             <Text
