@@ -114,7 +114,6 @@ export default class ElementView {
     this.pos = newPos;
 
     const fabricPos = this.boardView.getFabricPos(this.pos);
-
     this.moveRect(this.fabricRect, fabricPos.x, fabricPos.y);
 
     this.moveInputElements();
@@ -127,6 +126,15 @@ export default class ElementView {
     rect.top = posY +
       (this.rotate === 2 || this.rotate === 3 ? this.componentSize : 0);
     rect.setCoords();
+  }
+
+  increaseRotate() {
+    this.rotate += 1;
+    this.rotate %= 4;
+
+    this.fabricRect.angle = 90 * this.rotate;
+
+    this.move(this.pos);
   }
 
   destroy() {
