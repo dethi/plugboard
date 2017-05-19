@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-
 import UserAction from '../actions/userActions';
 import Authentification from '../api/authentification';
+import PropTypes from 'prop-types';
 
 function GuestMenu(props) {
   return (
@@ -17,6 +17,10 @@ function GuestMenu(props) {
     </div>
   );
 }
+
+GuestMenu.PropTypes = {
+  onLogin: PropTypes.func.isRequired
+};
 
 function LoggedMenu(props) {
   return (
@@ -35,6 +39,11 @@ function LoggedMenu(props) {
     </div>
   );
 }
+
+LoggedMenu.PropTypes = {
+  user: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired
+};
 
 class NavBar extends Component {
   handleLogin = () => {
@@ -112,6 +121,16 @@ const mapStateToProps = state => {
   return {
     user: state.user
   };
+};
+
+NavBar.PropTypes = {
+  onNextStep: PropTypes.func.isRequired,
+  running: PropTypes.bool.isRequired,
+  toggleRun: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onOpen: PropTypes.func.isRequired,
+  user: PropTypes.object
 };
 
 export default connect(mapStateToProps)(NavBar);

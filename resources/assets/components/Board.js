@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import PaletteAction from '../actions/paletteActions';
-
 import BoardController from '../libs/board/controller/boardController';
-
 import { evalutateBoard } from '../engine/engine';
+import PropTypes from 'prop-types';
 
 class Board extends Component {
   constructor(props) {
@@ -109,6 +107,13 @@ const mapStateToProps = state => {
   return {
     palette: state.palette
   };
+};
+
+Board.propTypes = {
+  running: PropTypes.bool.isRequired,
+  step: PropTypes.number.isRequired,
+  delete: PropTypes.number.isRequired,
+  palette: PropTypes.element.isRequired
 };
 
 export default connect(mapStateToProps)(Board);
