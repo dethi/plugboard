@@ -262,6 +262,8 @@ export default class BoardView {
           [this.linkEndding.elementView.id, this.linkEndding.name],
           [this.addLinkStartEl.elementView.id, this.addLinkStartEl.name]
         );
+    } else {
+      this.controller.onFinishLinkFail();
     }
   }
 

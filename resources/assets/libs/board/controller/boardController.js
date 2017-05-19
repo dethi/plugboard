@@ -136,6 +136,10 @@ export default class BoardController {
     this.addLink(inputInfo, outputInfo);
   }
 
+  onFinishLinkFail() {
+    this.boardState = BoardState.NONE;
+  }
+
   addElement(pos, spec, rotate) {
     const newElId = this.curId++;
     const newEl = new Element(newElId, pos, spec, rotate);
