@@ -148,6 +148,11 @@ export default class BoardView {
     delete this.elecElements[elId];
   }
 
+  rotateElement(elId) {
+    this.elecElements[elId].increaseRotate();
+    this.fabricCanvas.renderAll();
+  }
+
   addLink(inputInfo, outputInfo) {
     const linkA = this.elecElements[inputInfo[0]].linkElements[inputInfo[1]];
     const linkB = this.elecElements[outputInfo[0]].linkElements[outputInfo[1]];

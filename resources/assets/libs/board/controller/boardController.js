@@ -109,9 +109,14 @@ export default class BoardController {
   }
 
   onRotate() {
-    this.rotate += 1;
-    this.rotate %= 4;
-    this.updateCursor(false);
+    const select = this.boardView.fabricCanvas.getActiveObject();
+    if (select !== undefined && select !== null) {
+      this.rotateElement(select.id);
+    } else {
+      this.rotate += 1;
+      this.rotate %= 4;
+      this.updateCursor(false);
+    }
   }
 
   onUpdateSelectedBlueprint(blueprint) {
@@ -183,6 +188,14 @@ export default class BoardController {
     this.boardView.removeElement(elId);
 
     this.engineController.setDirty();
+  }
+
+  rotateElement(elId) {
+    const el = this.board.elements[elId];
+    el.rotate += 1;
+    el.rotate %= 4;
+
+    this.boardView.rotateElement(elId);
   }
 
   updateCursor(resetPos = true) {
