@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-
 import PaletteAction from '../actions/paletteActions';
-
 import { createSimplePalette } from '../libs/utils/createSimple';
 import { ImageElementProvider } from '../libs/utils/imageElementProvider';
+import PropTypes from 'prop-types';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -26,6 +25,13 @@ function SelectableElement(props) {
     </a>
   );
 }
+
+SelectableElement.PropTypes = {
+  selected: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  img: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired
+};
 
 class Palette extends Component {
   constructor(props) {
@@ -74,6 +80,10 @@ const mapStateToProps = state => {
   return {
     palette: state.palette
   };
+};
+
+Palette.PropTypes = {
+  palette: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(Palette);
