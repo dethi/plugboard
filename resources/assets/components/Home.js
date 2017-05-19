@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { NavLink } from 'react-router-dom';
 class Home extends Component {
   render() {
     return (
@@ -11,12 +11,9 @@ class Home extends Component {
           <h2 className="subtitle is-4">
             Create, assemble, share.
           </h2>
-          <a
-            className="button is-medium is-primary uppercase"
-            href="{{action('AppController@index')}}"
-          >
+          <NavLink className="button is-medium is-primary uppercase" to="/app">
             Get started
-          </a>
+          </NavLink>
         </div>
       </div>
     );
