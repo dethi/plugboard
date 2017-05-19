@@ -78,7 +78,7 @@ class Board extends Component {
     this.setState({ modalSaveOpen: false });
   };
 
-  handleApplyLoad = () => {
+  handleApplyLoad = id => {
     // FIXME: Load selected board (using save controller)
     this.setState({ modalLoadOpen: false });
   };
@@ -107,6 +107,7 @@ class Board extends Component {
 
   load = event => {
     // FIXME: fetch last saved boards previews for display in modal
+    this.setState({ preview: this.props.getCurCanvas().toDataURL('png') });
     this.setState({ modalLoadOpen: true });
   };
 
@@ -169,6 +170,18 @@ class Board extends Component {
           isOpen={this.state.modalLoadOpen}
           onCancel={this.handleCancelLoad}
           onApply={this.handleApplyLoad}
+          previews={[
+            {
+              src: this.state.preview,
+              name: 'TEST',
+              id: 1
+            },
+            {
+              src: this.state.preview,
+              name: 'TEST2',
+              id: 2
+            }
+          ]}
         />
       </div>
     );

@@ -1,19 +1,33 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
 
-import Text from '../fields/Text';
-
 export default class LoadBoardModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      boardId: null
+    };
+  }
+
   onApply = () => {
-    this.props.onApply(
-      {
-        // FIXME: get the selected board
-      }
-    );
+    this.props.onApply(this.state.boardId);
+  };
+
+  selectBoard = id => {
+    this.setState({ boardId: id });
+    console.log(id);
   };
 
   render() {
     const onCancel = this.props.onCancel;
+    const Previews = this.props.previews.map(preview => (
+      <div key={preview.id} className="child">
+        <a onClick={() => this.selectBoard(preview.id)}>
+          <img src={preview.src} alt={preview.name} />
+        </a>
+      </div>
+    ));
 
     return (
       <Modal
@@ -21,17 +35,22 @@ export default class LoadBoardModal extends Component {
         onCancel={onCancel}
         title="Load Board"
         content={
-          <div className="field has-addons">
-            <p className="control">
-              <input className="input" type="text" placeholder="Recherche" />
-            </p>
-            <p className="control">
-              <button type="submit" className="button is-primary">
-                <span className="icon">
-                  <i className="fa fa-search" />
-                </span>
-              </button>
-            </p>
+          <div>
+            <div className="field has-addons">
+              <p className="control">
+                <input className="input" type="text" placeholder="Recherche" />
+              </p>
+              <p className="control">
+                <button type="submit" className="button is-primary">
+                  <span className="icon">
+                    <i className="fa fa-search" />
+                  </span>
+                </button>
+              </p>
+            </div>
+            <div className="parent">
+              {Previews}
+            </div>
           </div>
         }
         footer={

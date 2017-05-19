@@ -25,6 +25,18 @@
     font-weight: bold;
 }
 
+.parent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.child {
+  width: 200px;  /* Or whatever */
+  height: 200px; /* Or whatever */
+  margin: auto;  /* Magic! */
+}
+
 // html, body {
 //     height: 100%;
 //     overflow: hidden;
