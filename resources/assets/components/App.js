@@ -18,7 +18,8 @@ class App extends Component {
       deleting: 0,
       rotating: 0,
       running: false,
-      saving: false
+      saving: false,
+      loading: false
     };
 
     // Check if token existe
@@ -31,7 +32,7 @@ class App extends Component {
   }
 
   handleSave = () => {
-    this.saveController.saveGrid(this.refs.board.gridController.grid);
+    //this.saveController.saveGrid(this.refs.board.gridController.grid);
     this.setState({ saving: !this.state.saving });
   };
 
@@ -40,7 +41,8 @@ class App extends Component {
   };
 
   handleOpen = () => {
-    this.saveController.openGrid();
+    //this.saveController.openGrid();
+    this.setState({ loading: !this.state.loading });
   };
 
   handleDelete = () => {
@@ -60,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    const { step, running, deleting, saving, canvas, rotating } = this.state;
+    const { step, running, deleting, saving, rotating, loading } = this.state;
 
     return (
       <div>
@@ -83,6 +85,7 @@ class App extends Component {
               step={step}
               running={running}
               saving={saving}
+              loading={loading}
               getCurCanvas={this.getCurCanvas}
             />
             {/*<Profile />*/}

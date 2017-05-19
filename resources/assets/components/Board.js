@@ -4,8 +4,11 @@ import PaletteAction from '../actions/paletteActions';
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
 import PropTypes from 'prop-types';
+import { createSimplePalette } from '../libs/utils/createSimple';
+import { GridController } from '../libs/board/controller/gridController';
 import ConfModal from './modal/ConfModal';
 import SaveNewBoardModal from './modal/SaveNewBoardModal';
+import LoadBoardModal from './modal/LoadBoardModal';
 
 class Board extends Component {
   constructor(props) {
@@ -16,6 +19,7 @@ class Board extends Component {
       timerId: null,
       modalClearOpen: false,
       modalSaveOpen: false,
+      modalLoadOpen: false,
       preview: null
     };
   }
@@ -47,6 +51,8 @@ class Board extends Component {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
     } else if (nextProps.saving !== this.props.saving) {
       this.save();
+    } else if (nextProps.loading !== this.props.loading) {
+      this.load();
     }
   }
 
@@ -68,8 +74,13 @@ class Board extends Component {
   };
 
   handleApplySave = () => {
-    // Save board using save controller
+    // FIXME: Save board (using save controller)
     this.setState({ modalSaveOpen: false });
+  };
+
+  handleApplyLoad = () => {
+    // FIXME: Load selected board (using save controller)
+    this.setState({ modalLoadOpen: false });
   };
 
   handleCancelClear = () => {
@@ -80,14 +91,23 @@ class Board extends Component {
     this.setState({ modalSaveOpen: false });
   };
 
+  handleCancelLoad = () => {
+    this.setState({ modalLoadOpen: false });
+  };
+
   delete = event => {
-    console.log('Delete');
     this.setState({ modalClearOpen: true });
   };
 
   save = event => {
+    // FIXME: Should not put preview in state
     this.setState({ preview: this.props.getCurCanvas().toDataURL('png') });
     this.setState({ modalSaveOpen: true });
+  };
+
+  load = event => {
+    // FIXME: fetch last saved boards previews for display in modal
+    this.setState({ modalLoadOpen: true });
   };
 
   nextStep = () => {
@@ -144,6 +164,11 @@ class Board extends Component {
           onCancel={this.handleCancelSave}
           onApply={this.handleApplySave}
           prev={this.state.preview}
+        />
+        <LoadBoardModal
+          isOpen={this.state.modalLoadOpen}
+          onCancel={this.handleCancelLoad}
+          onApply={this.handleApplyLoad}
         />
       </div>
     );
