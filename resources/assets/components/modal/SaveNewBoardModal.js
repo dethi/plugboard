@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
+import Text from '../fields/Text';
+import TextArea from '../fields/TextArea';
 
 export default class SaveNewBoardModal extends Component {
   constructor(props) {
@@ -44,27 +46,16 @@ export default class SaveNewBoardModal extends Component {
             <div style={style}>
               <img src={this.props.prev} alt="Preview" />
             </div>
-            <div className="field">
-              <label className="label">Name</label>
-              <p className="control">
-                <input
-                  className="input"
-                  type="text"
-                  value={this.state.name}
-                  onChange={this.updateName}
-                />
-              </p>
-            </div>
-            <div className="field">
-              <label className="label">Description</label>
-              <p className="control">
-                <textarea
-                  className="textarea"
-                  value={this.state.desc}
-                  onChange={this.updateDesc}
-                />
-              </p>
-            </div>
+            <Text
+              label="Name"
+              value={this.state.name}
+              onChange={this.updateName}
+            />
+            <TextArea
+              label="Description"
+              value={this.state.desc}
+              onChange={this.updateDesc}
+            />
           </div>
         }
         footer={
