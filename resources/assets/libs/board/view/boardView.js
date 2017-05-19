@@ -37,13 +37,13 @@ export default class BoardView {
     this.curCusorPos = new Vector(0, 0);
 
     this.fabricCanvas.on('mouse:down', options => {
-      const mousePos = this.fabricCanvas.getPointer(options.e);
-      this.controller.onClick(
-        new Vector(
-          Math.floor(mousePos.x / this.gridSize),
-          Math.floor(mousePos.y / this.gridSize)
-        )
-      );
+      switch (this.controller.boardState) {
+        case BoardState.ADDING:
+          this.controller.onClick(this.curCusorPos);
+          break;
+        default:
+          break;
+      }
     });
 
     this.fabricCanvas.on('mouse:move', options => {
@@ -54,7 +54,7 @@ export default class BoardView {
           break;
         case BoardState.ADDING:
           this.curCusorPos = this.curCusor.onMove(
-            new Vector(options.e.offsetX, options.e.offsetY),
+            new Vector(options.e.layerX, options.e.layerY),
             true
           );
           this.fabricCanvas.renderAll();
@@ -168,10 +168,17 @@ export default class BoardView {
     linkEl.linkLines.forEach(link => link.setState(newState));
   }
 
-  setCursor(cursor) {
+  setCursor(cursor, resetPos = true) {
     this.curCusor = cursor;
-    this.curCusor.getFabricElements().forEach(el => this.fabricCanvas.add(el));
-    this.curCusor.move(this.curCusorPos);
+    this.curCusor.getFabricElements().forEach(el => {
+      if (resetPos) {
+        el.left = -100;
+        el.top = -100;
+      }
+      this.fabricCanvas.add(el);
+    });
+    if (!resetPos) this.curCusor.move(this.curCusorPos);
+
     this.fabricCanvas.renderAll();
   }
 
