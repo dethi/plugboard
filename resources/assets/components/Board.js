@@ -113,7 +113,7 @@ Board.propTypes = {
   running: PropTypes.bool.isRequired,
   step: PropTypes.number.isRequired,
   delete: PropTypes.number.isRequired,
-  palette: PropTypes.element.isRequired
+  palette: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(Board);
