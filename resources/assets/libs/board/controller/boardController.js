@@ -243,4 +243,8 @@ export default class BoardController {
   applyState(states) {
     this.engineController.applyState(this.boardView, states);
   }
+
+  toPng() {
+    return this.boardView.toPng();
+  }
 }
