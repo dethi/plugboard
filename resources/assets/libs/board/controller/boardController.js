@@ -56,7 +56,7 @@ export default class BoardController {
 
       const newEl = this.addElement(
         el.pos,
-        board.specs[el.spec.name],
+        board.specs[el.specName],
         el.rotate
       );
 
