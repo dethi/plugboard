@@ -25,7 +25,6 @@ export default class LoadBoardModal extends Component {
   };
 
   render() {
-    //const onCancel = this.props.onCancel;
     const Previews = this.props.previews.map(preview => (
       <div key={preview.id} className="child">
         <a onClick={() => this.selectBoard(preview.id)}>

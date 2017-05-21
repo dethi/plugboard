@@ -20,6 +20,24 @@ class Board extends Component {
       modalLoadOpen: false,
       preview: null
     };
+    // FIXME: Static data for tests
+    this.previews = [
+      {
+        src: this.state.preview,
+        name: 'TEST',
+        id: 1
+      },
+      {
+        src: this.state.preview,
+        name: 'TEST',
+        id: 2
+      },
+      {
+        src: this.state.preview,
+        name: 'TEST',
+        id: 3
+      }
+    ];
     this.board1 = {
       elements: {
         '1': {
@@ -74,6 +92,7 @@ class Board extends Component {
         }
       }
     };
+    // END FIXME
   }
 
   componentDidMount() {
@@ -121,19 +140,19 @@ class Board extends Component {
   };
 
   handleApplyClear = () => {
-    this.gridController.onDelete();
+    this.boardController.onDelete();
     this.setState({ modalClearOpen: false });
   };
 
   handleApplySave = () => {
-    // FIXME: Save board (using save controller)
+    // FIXME: Save board to server (using save controller)
     console.log('Save');
     console.log(this.boardController.exportBoard());
     this.setState({ modalSaveOpen: false });
   };
 
   handleApplyLoad = id => {
-    // FIXME: Load selected board (using save controller)
+    // FIXME: Load selected board from server (using save controller)
     this.boardController.loadFromBoard(this.board1);
     this.setState({ modalLoadOpen: false });
   };
@@ -155,14 +174,16 @@ class Board extends Component {
   };
 
   save = event => {
-    // FIXME: Should not put preview in state
+    // FIXME: Should not put preview in state (?)
     this.setState({ preview: this.boardController.toPng() });
     this.setState({ modalSaveOpen: true });
   };
 
   load = event => {
     // FIXME: fetch last saved boards previews for display in modal
-    this.setState({ preview: this.refs.canvas.toDataURL('png') });
+    this.setState({ preview: this.boardController.toPng() });
+    this.previews.map(e => e.src = this.state.preview);
+    // END FIXME
     this.setState({ modalLoadOpen: true });
   };
 
@@ -225,18 +246,7 @@ class Board extends Component {
           isOpen={this.state.modalLoadOpen}
           onCancel={this.handleCancelLoad}
           onApply={this.handleApplyLoad}
-          previews={[
-            {
-              src: this.state.preview,
-              name: 'TEST',
-              id: 1
-            },
-            {
-              src: this.state.preview,
-              name: 'TEST2',
-              id: 2
-            }
-          ]}
+          previews={this.previews}
         />
       </div>
     );
