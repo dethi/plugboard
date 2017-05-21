@@ -4,8 +4,6 @@ import PaletteAction from '../actions/paletteActions';
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
 import PropTypes from 'prop-types';
-import { createSimplePalette } from '../libs/utils/createSimple';
-import { GridController } from '../libs/board/controller/gridController';
 import ConfModal from './modal/ConfModal';
 import SaveNewBoardModal from './modal/SaveNewBoardModal';
 import LoadBoardModal from './modal/LoadBoardModal';
@@ -42,6 +40,10 @@ class Board extends Component {
       this.nextStep();
     } else if (nextProps.delete !== this.props.delete) {
       this.delete();
+    } else if (nextProps.saving !== this.props.saving) {
+      this.save();
+    } else if (nextProps.loading !== this.props.loading) {
+      this.load();
     } else if (nextProps.rotate !== this.props.rotate) {
       this.rotate();
     } else if (
@@ -49,10 +51,6 @@ class Board extends Component {
       this.props.palette.selectedBlueprint
     ) {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
-    } else if (nextProps.saving !== this.props.saving) {
-      this.save();
-    } else if (nextProps.loading !== this.props.loading) {
-      this.load();
     }
   }
 
@@ -66,7 +64,7 @@ class Board extends Component {
 
   unSelectBlueprint = () => {
     this.props.dispatch(PaletteAction.unselecteBlueprint());
-  }
+  };
 
   handleApplyClear = () => {
     this.gridController.onDelete();
@@ -101,13 +99,13 @@ class Board extends Component {
 
   save = event => {
     // FIXME: Should not put preview in state
-    this.setState({ preview: this.props.getCurCanvas().toDataURL('png') });
+    this.setState({ preview: this.refs.canvas.toDataURL('png') });
     this.setState({ modalSaveOpen: true });
   };
 
   load = event => {
     // FIXME: fetch last saved boards previews for display in modal
-    this.setState({ preview: this.props.getCurCanvas().toDataURL('png') });
+    this.setState({ preview: this.refs.canvas.toDataURL('png') });
     this.setState({ modalLoadOpen: true });
   };
 
@@ -198,7 +196,10 @@ Board.propTypes = {
   running: PropTypes.bool.isRequired,
   step: PropTypes.number.isRequired,
   delete: PropTypes.number.isRequired,
-  palette: PropTypes.object.isRequired
+  palette: PropTypes.object.isRequired,
+  rotate: PropTypes.number.isRequired,
+  saving: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps)(Board);

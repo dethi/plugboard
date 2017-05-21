@@ -69,8 +69,8 @@ class App extends Component {
         <NavBar
           onDelete={this.handleDelete}
           onRotate={this.handleRotate}
-          onSave={() => {}}
-          onOpen={() => {}}
+          onSave={this.handleSave}
+          onOpen={this.handleOpen}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
