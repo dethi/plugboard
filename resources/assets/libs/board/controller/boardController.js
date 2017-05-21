@@ -63,12 +63,14 @@ export default class BoardController {
       idMapping[id] = newEl.id;
     });
 
-    // Add Link
-    Object.keys(board.elements).forEach(id => {
-      const el = board.elements[id];
-      Object.keys(el.input).forEach(inputName => {
-        const outputInfo = el.input[inputName];
-        this.addLink(outputInfo, [idMapping[id], inputName]);
+    this.boardView.whenReady(() => {
+      // Add Link
+      Object.keys(board.elements).forEach(id => {
+        const el = board.elements[id];
+        Object.keys(el.input).forEach(inputName => {
+          const outputInfo = el.input[inputName];
+          this.addLink(outputInfo, [idMapping[id], inputName]);
+        });
       });
     });
   }
