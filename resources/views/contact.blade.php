@@ -1,7 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.landing')
 
-@section('content')
-<section class="section">
+@section('landing_content')
   <div class="container">
     <div class="columns">
       <div class="column is-4 is-offset-4">
@@ -25,11 +24,11 @@
                 <div class="field">
                   <div class="control has-icon">
                     <input class="input {{ $errors->has('name') ? 'is-danger' : '' }}"
-                      name="name"
-                      value="{{ old('name') }}"
-                      type="text"
-                      placeholder="Name"
-                      required autofocus
+                           name="name"
+                           value="{{ old('name') }}"
+                           type="text"
+                           placeholder="Name"
+                           required autofocus
                     />
 
                     <span class="icon is-small">
@@ -45,11 +44,11 @@
                 <div class="field">
                   <div class="control has-icon">
                     <input class="input {{ $errors->has('email') ? 'is-danger' : '' }}"
-                      name="email"
-                      value="{{ old('email') }}"
-                      type="email"
-                      placeholder="Email"
-                      required autofocus
+                           name="email"
+                           value="{{ old('email') }}"
+                           type="email"
+                           placeholder="Email"
+                           required autofocus
                     />
 
                     <span class="icon is-small">
@@ -65,11 +64,11 @@
                 <div class="field">
                   <div class="control">
                     <input class="input {{ $errors->has('subject') ? 'is-danger' : '' }}"
-                      name="subject"
-                      value="{{ old('subject') }}"
-                      type="text"
-                      placeholder="Subject"
-                      required autofocus
+                           name="subject"
+                           value="{{ old('subject') }}"
+                           type="text"
+                           placeholder="Subject"
+                           required autofocus
                     />
 
                     @if ($errors->has('subject'))
@@ -81,10 +80,10 @@
                 <div class="field">
                   <div class="control">
                     <textarea class="textarea {{ $errors->has('message') ? 'is-danger' : '' }}"
-                      form="contact_form"
-                      name="message"
-                      placeholder="Enter your message here..."
-                      required autofocus
+                              form="contact_form"
+                              name="message"
+                              placeholder="Enter your message here..."
+                              required autofocus
                     >{{ old('message') }}</textarea>
 
                     @if ($errors->has('message'))
@@ -105,5 +104,4 @@
       </div>
     </div>
   </div>
-</section>
 @endsection
