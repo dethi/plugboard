@@ -156,7 +156,7 @@ class Board extends Component {
 
   save = event => {
     // FIXME: Should not put preview in state
-    this.setState({ preview: this.refs.canvas.toDataURL('png') });
+    this.setState({ preview: this.boardController.toPng() });
     this.setState({ modalSaveOpen: true });
   };
 

@@ -302,4 +302,39 @@ export default class BoardView {
       }
     };
   }
+
+  toPng() {
+    // Ugly
+    let minX = 999999999999;
+    let maxX = 0;
+    let minY = 999999999999;
+    let maxY = 0;
+
+    Object.keys(this.elecElements).forEach(id => {
+      const el = this.elecElements[id];
+      if (el.pos.x > maxX) maxX = el.pos.x;
+      if (el.pos.x < minX) minX = el.pos.x;
+      if (el.pos.y > maxY) maxY = el.pos.y;
+      if (el.pos.y < minY) minY = el.pos.y;
+    });
+
+    if (maxX === 0) {
+      return this.fabricCanvas.toDataURL('png');
+    }
+
+    minX *= GRID_SIZE;
+    maxX = maxX * GRID_SIZE + GRID_SIZE;
+    minY *= GRID_SIZE;
+    maxY = maxY * GRID_SIZE + GRID_SIZE;
+
+    const options = {
+      format: 'png',
+      left: minX - GRID_SIZE / 2,
+      top: minY - GRID_SIZE / 2,
+      width: maxX - minX + GRID_SIZE,
+      height: maxY - minY + GRID_SIZE
+    };
+
+    return this.fabricCanvas.toDataURL(options);
+  }
 }
