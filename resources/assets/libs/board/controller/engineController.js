@@ -4,7 +4,7 @@ export default class EngineController {
   constructor() {
     this.registeryRep = {};
     this.engineRepresentation = {};
-    this.engineRepresentationDirty = false;
+    this.engineRepresentationDirty = true;
 
     this.board = null;
   }
