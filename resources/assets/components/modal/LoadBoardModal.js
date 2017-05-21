@@ -14,17 +14,26 @@ export default class LoadBoardModal extends Component {
     this.props.onApply(this.state.boardId);
   };
 
+  onCancel = () => {
+    this.setState({ boardId: null });
+    this.props.onCancel();
+  };
+
   selectBoard = id => {
     this.setState({ boardId: id });
     console.log(id);
   };
 
   render() {
-    const onCancel = this.props.onCancel;
+    //const onCancel = this.props.onCancel;
     const Previews = this.props.previews.map(preview => (
       <div key={preview.id} className="child">
         <a onClick={() => this.selectBoard(preview.id)}>
-          <img src={preview.src} alt={preview.name} />
+          <img
+            src={preview.src}
+            alt={preview.name}
+            className={this.state.boardId === preview.id ? 'box' : ''}
+          />
         </a>
       </div>
     ));
@@ -32,7 +41,7 @@ export default class LoadBoardModal extends Component {
     return (
       <Modal
         isOpen={this.props.isOpen}
-        onCancel={onCancel}
+        onCancel={this.onCancel}
         title="Load Board"
         content={
           <div>
@@ -58,7 +67,7 @@ export default class LoadBoardModal extends Component {
             <a className="button is-success" onClick={this.onApply}>
               Load
             </a>
-            <a className="button" onClick={onCancel}>Cancel</a>
+            <a className="button" onClick={this.onCancel}>Cancel</a>
           </div>
         }
       />
