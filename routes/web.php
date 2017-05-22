@@ -13,9 +13,6 @@
 
 Auth::routes();
 
-
-Route::get( '/', 'AppController@index');
-
-
-Route::get('/contact', 'ContactController@get')->name('contact');
-Route::post('/contact', 'ContactController@post');
+Route::get('/{path?}', function($path = null){
+        return View::make('app');
+    })->where('path', '.*');

@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import UserAction from '../actions/userActions';
 import Authentification from '../api/authentification';
 
+import { NavLink } from 'react-router-dom';
+
 class NavBarAccueil extends Component {
   handleLogin = () => {
     Authentification.login('test', 'test').then(user => {
@@ -31,9 +33,10 @@ class NavBarAccueil extends Component {
             <a className="nav-item">
               FAQ
             </a>
-            <a className="nav-item">
+
+            <NavLink className="nav-item" to="/contact">
               Contact
-            </a>
+            </NavLink>
             <span className="nav-item">
               <a className="button is-default" href="/login">
                 Login

@@ -21,8 +21,7 @@
   <script>
     window.Laravel = {!! json_encode([
       'csrfToken' => csrf_token(),
-      'guest' => Auth::guest(),
-      'gravatarUrl' => $gravatar_url
+      'guest' => Auth::guest()
     ]) !!};
   </script>
 </head>

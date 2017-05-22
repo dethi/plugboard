@@ -10,7 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import plugboardReducers from './reducers';
 
 import App from './components/App';
-import Index from './components/Index';
+import Index from './views/Index';
+import Contact from './views/Contact';
 import './css/app.scss';
 
 const store = createStore(plugboardReducers);
@@ -19,10 +20,10 @@ ReactDOM.render(
   <Provider store={store}>
 
     <BrowserRouter>
-
       <div>
         <Route exact={true} path="/" component={Index} />
         <Route path="/app" component={App} />
+        <Route path="/contact" component={Contact} />
       </div>
     </BrowserRouter>
   </Provider>,

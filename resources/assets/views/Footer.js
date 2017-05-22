@@ -7,7 +7,7 @@ class Footer extends Component {
         <div className="container">
           <div className="tabs is-centered">
             <ul>
-              <li><a> Plugboard</a></li>
+              <li><a>{new Date().getFullYear()} Plugboard</a></li>
             </ul>
           </div>
         </div>
