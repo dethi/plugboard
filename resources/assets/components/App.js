@@ -16,9 +16,7 @@ class App extends Component {
     this.state = {
       step: 0,
       rotating: 0,
-      running: false,
-      saving: false,
-      loading: false
+      running: false
     };
 
     // Check if token existe
@@ -30,18 +28,8 @@ class App extends Component {
     }
   }
 
-  handleSave = () => {
-    //this.saveController.saveGrid(this.refs.board.gridController.grid);
-    this.setState({ saving: !this.state.saving });
-  };
-
   getCurCanvas = () => {
     return this.refs.board.gridController.gridView.fabricCanvas;
-  };
-
-  handleOpen = () => {
-    //this.saveController.openGrid();
-    this.setState({ loading: !this.state.loading });
   };
 
   handleRotate = () => {
@@ -57,14 +45,12 @@ class App extends Component {
   };
 
   render() {
-    const { step, running, saving, rotating, loading } = this.state;
+    const { step, running, rotating } = this.state;
 
     return (
       <div>
         <NavBar
           onRotate={this.handleRotate}
-          onSave={this.handleSave}
-          onOpen={this.handleOpen}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
@@ -77,8 +63,6 @@ class App extends Component {
               rotate={rotating}
               step={step}
               running={running}
-              saving={saving}
-              loading={loading}
               getCurCanvas={this.getCurCanvas}
             />
             {/*<Profile />*/}

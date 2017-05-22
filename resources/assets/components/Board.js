@@ -3,13 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import PaletteAction from '../actions/paletteActions';
-import BoardAction from '../actions/boardActions';
 
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
-
-import SaveNewBoardModal from './modal/SaveNewBoardModal';
-import LoadBoardModal from './modal/LoadBoardModal';
 
 class Board extends Component {
   constructor(props) {
@@ -17,29 +13,9 @@ class Board extends Component {
 
     this.boardController = null;
     this.state = {
-      timerId: null,
-      modalSaveOpen: false,
-      modalLoadOpen: false,
-      preview: null
+      timerId: null
     };
     // FIXME: Static data for tests
-    this.previews = [
-      {
-        src: this.state.preview,
-        name: 'TEST',
-        id: 1
-      },
-      {
-        src: this.state.preview,
-        name: 'TEST',
-        id: 2
-      },
-      {
-        src: this.state.preview,
-        name: 'TEST',
-        id: 3
-      }
-    ];
     this.board1 = {
       elements: {
         '1': {
@@ -113,10 +89,6 @@ class Board extends Component {
       }
     } else if (nextProps.step !== this.props.step) {
       this.nextStep();
-    } else if (nextProps.saving !== this.props.saving) {
-      this.save();
-    } else if (nextProps.loading !== this.props.loading) {
-      this.load();
     } else if (nextProps.rotate !== this.props.rotate) {
       this.rotate();
     } else if (
@@ -124,10 +96,8 @@ class Board extends Component {
       this.props.palette.selectedBlueprint
     ) {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
-    } else if (nextProps.board !== this.props.board) {
-      if (nextProps.board.needClear) {
-        this.clearBoard();
-      }
+    } else if (nextProps.board.clear !== this.props.board.clear) {
+      this.clearBoard();
     }
   }
 
@@ -145,42 +115,6 @@ class Board extends Component {
 
   clearBoard = () => {
     this.boardController.onDelete();
-    this.props.dispatch(BoardAction.clearBoardDone());
-  };
-
-  handleApplySave = () => {
-    // FIXME: Save board to server (using save controller)
-    console.log('Save');
-    console.log(this.boardController.exportBoard());
-    this.setState({ modalSaveOpen: false });
-  };
-
-  handleApplyLoad = id => {
-    // FIXME: Load selected board from server (using save controller)
-    this.boardController.loadFromBoard(this.board1);
-    this.setState({ modalLoadOpen: false });
-  };
-
-  handleCancelSave = () => {
-    this.setState({ modalSaveOpen: false });
-  };
-
-  handleCancelLoad = () => {
-    this.setState({ modalLoadOpen: false });
-  };
-
-  save = event => {
-    // FIXME: Should not put preview in state (?)
-    this.setState({ preview: this.boardController.toPng() });
-    this.setState({ modalSaveOpen: true });
-  };
-
-  load = event => {
-    // FIXME: fetch last saved boards previews for display in modal
-    this.setState({ preview: this.boardController.toPng() });
-    this.previews.map(e => e.src = this.state.preview);
-    // END FIXME
-    this.setState({ modalLoadOpen: true });
   };
 
   nextStep = () => {
@@ -224,18 +158,6 @@ class Board extends Component {
             <canvas ref="canvas" />
           </div>
         </div>
-        <SaveNewBoardModal
-          isOpen={this.state.modalSaveOpen}
-          onCancel={this.handleCancelSave}
-          onApply={this.handleApplySave}
-          prev={this.state.preview}
-        />
-        <LoadBoardModal
-          isOpen={this.state.modalLoadOpen}
-          onCancel={this.handleCancelLoad}
-          onApply={this.handleApplyLoad}
-          previews={this.previews}
-        />
       </div>
     );
   }
@@ -253,9 +175,7 @@ Board.propTypes = {
   step: PropTypes.number.isRequired,
   palette: PropTypes.object.isRequired,
   board: PropTypes.object.isRequired,
-  rotate: PropTypes.number.isRequired,
-  saving: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired
+  rotate: PropTypes.number.isRequired
 };
 
 export default connect(mapStateToProps)(Board);
