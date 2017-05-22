@@ -32,5 +32,14 @@ export function createSimplePalette() {
     ])
   );
 
+  palette.push(
+    new GateElementSpec('GATE_XOR', ['A', 'B'], ['C'], 'Xor', [
+      [0, 0, 0],
+      [0, 1, 1],
+      [1, 0, 1],
+      [1, 1, 0]
+    ])
+  );
+
   return palette;
 }

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import PaletteAction from '../actions/paletteActions';
+import BoardAction from '../actions/boardActions';
+
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
-import PropTypes from 'prop-types';
-import ConfModal from './modal/ConfModal';
+
 import SaveNewBoardModal from './modal/SaveNewBoardModal';
 import LoadBoardModal from './modal/LoadBoardModal';
 
@@ -15,7 +18,6 @@ class Board extends Component {
     this.boardController = null;
     this.state = {
       timerId: null,
-      modalClearOpen: false,
       modalSaveOpen: false,
       modalLoadOpen: false,
       preview: null
@@ -111,8 +113,6 @@ class Board extends Component {
       }
     } else if (nextProps.step !== this.props.step) {
       this.nextStep();
-    } else if (nextProps.delete !== this.props.delete) {
-      this.delete();
     } else if (nextProps.saving !== this.props.saving) {
       this.save();
     } else if (nextProps.loading !== this.props.loading) {
@@ -124,6 +124,10 @@ class Board extends Component {
       this.props.palette.selectedBlueprint
     ) {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
+    } else if (nextProps.board !== this.props.board) {
+      if (nextProps.board.needClear) {
+        this.clearBoard();
+      }
     }
   }
 
@@ -139,9 +143,9 @@ class Board extends Component {
     this.props.dispatch(PaletteAction.unselecteBlueprint());
   };
 
-  handleApplyClear = () => {
+  clearBoard = () => {
     this.boardController.onDelete();
-    this.setState({ modalClearOpen: false });
+    this.props.dispatch(BoardAction.clearBoardDone());
   };
 
   handleApplySave = () => {
@@ -157,20 +161,12 @@ class Board extends Component {
     this.setState({ modalLoadOpen: false });
   };
 
-  handleCancelClear = () => {
-    this.setState({ modalClearOpen: false });
-  };
-
   handleCancelSave = () => {
     this.setState({ modalSaveOpen: false });
   };
 
   handleCancelLoad = () => {
     this.setState({ modalLoadOpen: false });
-  };
-
-  delete = event => {
-    this.setState({ modalClearOpen: true });
   };
 
   save = event => {
@@ -228,14 +224,6 @@ class Board extends Component {
             <canvas ref="canvas" />
           </div>
         </div>
-        <ConfModal
-          isOpen={this.state.modalClearOpen}
-          onCancel={this.handleCancelClear}
-          onApply={this.handleApplyClear}
-          title="Clear The Board"
-          content="Are you sure you want to clear the board ?"
-          success="Clear"
-        />
         <SaveNewBoardModal
           isOpen={this.state.modalSaveOpen}
           onCancel={this.handleCancelSave}
@@ -255,15 +243,16 @@ class Board extends Component {
 
 const mapStateToProps = state => {
   return {
-    palette: state.palette
+    palette: state.palette,
+    board: state.board
   };
 };
 
 Board.propTypes = {
   running: PropTypes.bool.isRequired,
   step: PropTypes.number.isRequired,
-  delete: PropTypes.number.isRequired,
   palette: PropTypes.object.isRequired,
+  board: PropTypes.object.isRequired,
   rotate: PropTypes.number.isRequired,
   saving: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired

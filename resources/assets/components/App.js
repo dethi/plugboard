@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import NavBar from './NavBar';
 import Palette from './Palette';
 import Board from './Board';
-// import Profile from './Profile';
+import ModalContainer from './modal/ModalContainer';
 
 import UserAction from '../actions/userActions';
 import Authentification from '../api/authentification';
@@ -15,7 +15,6 @@ class App extends Component {
 
     this.state = {
       step: 0,
-      deleting: 0,
       rotating: 0,
       running: false,
       saving: false,
@@ -45,10 +44,6 @@ class App extends Component {
     this.setState({ loading: !this.state.loading });
   };
 
-  handleDelete = () => {
-    this.setState({ deleting: this.state.deleting + 1 });
-  };
-
   handleRotate = () => {
     this.setState({ rotating: this.state.rotating + 1 });
   };
@@ -62,12 +57,11 @@ class App extends Component {
   };
 
   render() {
-    const { step, running, deleting, saving, rotating, loading } = this.state;
+    const { step, running, saving, rotating, loading } = this.state;
 
     return (
       <div>
         <NavBar
-          onDelete={this.handleDelete}
           onRotate={this.handleRotate}
           onSave={this.handleSave}
           onOpen={this.handleOpen}
@@ -80,7 +74,6 @@ class App extends Component {
             <Palette />
             <Board
               ref="board"
-              delete={deleting}
               rotate={rotating}
               step={step}
               running={running}
@@ -91,6 +84,7 @@ class App extends Component {
             {/*<Profile />*/}
           </div>
         </div>
+        <ModalContainer />
       </div>
     );
   }
