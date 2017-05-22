@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 import Text from '../fields/Text';
@@ -6,7 +8,7 @@ import TextArea from '../fields/TextArea';
 
 import SaveBoard from '../../api/saveBoard';
 
-export default class SaveNewBoardModal extends Component {
+class SaveNewBoardModal extends Component {
   constructor(props) {
     super(props);
 
@@ -44,12 +46,10 @@ export default class SaveNewBoardModal extends Component {
         title="Save new Board"
         content={
           <div>
-            {/*
-            <div>
-              FIXME: need to recize/limit previews
-              <img src={this.props.prev} alt="Preview" />
-            </div>
-            */}
+            {this.props.board.preview &&
+              <div>
+                <img src={this.props.board.preview} alt="Preview" />
+              </div>}
             <Text
               label="Name"
               value={this.state.name}
@@ -69,3 +69,15 @@ export default class SaveNewBoardModal extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    board: state.board
+  };
+};
+
+SaveNewBoardModal.propTypes = {
+  board: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(SaveNewBoardModal);
