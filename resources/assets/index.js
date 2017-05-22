@@ -10,8 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import plugboardReducers from './reducers';
 
 import App from './components/App';
-import Index from './views/Index';
-import Contact from './views/Contact';
+import Index from './components/Index';
+import Contact from './components/Contact';
 import './css/app.scss';
 
 const store = createStore(plugboardReducers);

@@ -19,16 +19,14 @@ class Contact extends Component {
                       className="control"
                       role="form"
                       method="POST"
-                      action="{{ url('/contact') }}"
                       id="contact_form"
                     >
 
                       <div className="field">
                         <div className="control has-icon">
                           <input
-                            className="input {{ $errors->has('name') ? 'is-danger' : '' }}"
+                            className="input"
                             name="name"
-                            value="{{ old('name') }}"
                             type="text"
                             placeholder="Name"
                             required
@@ -45,9 +43,8 @@ class Contact extends Component {
                       <div className="field">
                         <div className="control has-icon">
                           <input
-                            className="input {{ $errors->has('email') ? 'is-danger' : '' }}"
+                            className="input"
                             name="email"
-                            value="{{ old('email') }}"
                             type="email"
                             placeholder="Email"
                             required
@@ -64,9 +61,8 @@ class Contact extends Component {
                       <div className="field">
                         <div className="control">
                           <input
-                            className="input {{ $errors->has('subject') ? 'is-danger' : '' }}"
+                            className="input"
                             name="subject"
-                            value="{{ old('subject') }}"
                             type="text"
                             placeholder="Subject"
                             required
@@ -79,7 +75,7 @@ class Contact extends Component {
                       <div className="field">
                         <div className="control">
                           <textarea
-                            className="textarea {{ $errors->has('message') ? 'is-danger' : '' }}"
+                            className="textarea"
                             form="contact_form"
                             name="message"
                             placeholder="Enter your message here..."
