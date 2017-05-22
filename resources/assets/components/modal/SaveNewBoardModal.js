@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import Modal from './Modal';
 import Text from '../fields/Text';
 import TextArea from '../fields/TextArea';
@@ -21,27 +22,31 @@ export default class SaveNewBoardModal extends Component {
     this.setState({ desc: event.target.value });
   };
 
-  onApply = () => {
-    this.props.onApply({
-      name: this.state.name,
-      desc: this.state.desc
+  onCancel = () => {
+    this.setState({
+      name: '',
+      desc: ''
     });
   };
 
-  render() {
-    const onCancel = this.props.onCancel;
+  onApply = () => {
+    // Change store ? Call Api ?
+    console.log(this.state);
+  };
 
+  render() {
     return (
       <Modal
-        isOpen={this.props.isOpen}
-        onCancel={onCancel}
+        modalName="BOARD_SAVE"
         title="Save new Board"
         content={
           <div>
+            {/*
             <div>
-              {/* FIXME: need to recize/limit previews */}
+              FIXME: need to recize/limit previews
               <img src={this.props.prev} alt="Preview" />
             </div>
+            */}
             <Text
               label="Name"
               value={this.state.name}
@@ -54,14 +59,9 @@ export default class SaveNewBoardModal extends Component {
             />
           </div>
         }
-        footer={
-          <div>
-            <a className="button is-success" onClick={this.onApply}>
-              Save
-            </a>
-            <a className="button" onClick={onCancel}>Cancel</a>
-          </div>
-        }
+        success="Save"
+        onApply={this.onApply}
+        onCancel={this.onCancel}
       />
     );
   }

@@ -8,6 +8,8 @@ export default function ModalContainer(props) {
   return (
     <div>
       <ClearModal />
+      <SaveNewBoardModal />
+      <LoadBoardModal />
     </div>
   );
 }

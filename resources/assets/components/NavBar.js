@@ -60,7 +60,15 @@ class NavBar extends Component {
   };
 
   handleDelete = () => {
-    this.props.dispatch(ModalAction.displayModal('DELETE'));
+    this.props.dispatch(ModalAction.displayModal('BOARD_CLEAR'));
+  };
+
+  handleSaving = () => {
+    this.props.dispatch(ModalAction.displayModal('BOARD_SAVE'));
+  };
+
+  handleLoading = () => {
+    this.props.dispatch(ModalAction.displayModal('BOARD_LOAD'));
   };
 
   render() {
@@ -100,12 +108,12 @@ class NavBar extends Component {
                 <i className="fa fa-repeat" />
               </span>
             </a>
-            <a className="nav-item" onClick={this.props.onSave}>
+            <a className="nav-item" onClick={this.handleSaving}>
               <span className="icon">
                 <i className="fa fa-save" />
               </span>
             </a>
-            <a className="nav-item" onClick={this.props.onOpen}>
+            <a className="nav-item" onClick={this.handleLoading}>
               <span className="icon">
                 <i className="fa fa-folder-open" />
               </span>
@@ -134,7 +142,6 @@ NavBar.PropTypes = {
   onNextStep: PropTypes.func.isRequired,
   running: PropTypes.bool.isRequired,
   toggleRun: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
   user: PropTypes.object
 };

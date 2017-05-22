@@ -59,5 +59,4 @@ Modal.propTypes = {
   onCancel: PropTypes.func
 };
 
-
 export default connect(mapStateToProps)(Modal);

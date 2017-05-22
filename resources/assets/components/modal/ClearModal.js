@@ -13,7 +13,7 @@ class ClearModal extends Component {
     return (
       <div>
         <ConfModal
-          modalName="DELETE"
+          modalName="BOARD_CLEAR"
           title="Clear The Board"
           content="Are you sure you want to clear the board ?"
           success="Clear"

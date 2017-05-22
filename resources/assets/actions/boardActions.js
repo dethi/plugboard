@@ -4,13 +4,6 @@ const clearBoard = () => {
   };
 };
 
-const clearBoardDone = () => {
-  return {
-    type: 'CLEAR_BOARD_DONE'
-  };
-};
-
 export default {
-  clearBoard,
-  clearBoardDone
+  clearBoard
 };
