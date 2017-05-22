@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import UserAction from '../actions/userActions';
-import Authentification from '../api/authentification';
 import PropTypes from 'prop-types';
+
+import UserAction from '../actions/userActions';
+import ModalAction from '../actions/modalActions';
+
+import Authentification from '../api/authentification';
 
 function GuestMenu(props) {
   return (
@@ -56,6 +59,10 @@ class NavBar extends Component {
     this.props.dispatch(UserAction.logout());
   };
 
+  handleDelete = () => {
+    this.props.dispatch(ModalAction.displayModal('DELETE'));
+  };
+
   render() {
     return (
       <nav className="nav has-shadow app-main-nav">
@@ -83,7 +90,7 @@ class NavBar extends Component {
                 />
               </span>
             </a>
-            <a className="nav-item" onClick={this.props.onDelete}>
+            <a className="nav-item" onClick={this.handleDelete}>
               <span className="icon">
                 <i className="fa fa-trash" />
               </span>
@@ -127,7 +134,6 @@ NavBar.PropTypes = {
   onNextStep: PropTypes.func.isRequired,
   running: PropTypes.bool.isRequired,
   toggleRun: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
   user: PropTypes.object
