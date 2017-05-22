@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import PaletteAction from '../actions/paletteActions';
+import BoardAction from '../actions/boardActions';
 
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
@@ -32,6 +33,9 @@ class Board extends Component {
         this.stop();
       }
     } else if (nextProps.step !== this.props.step) {
+      // Ugly !!!!!
+      this.onBoardUpdate();
+
       this.nextStep();
     } else if (nextProps.rotate !== this.props.rotate) {
       this.rotate();
@@ -44,6 +48,12 @@ class Board extends Component {
       this.clearBoard();
     }
   }
+
+  onBoardUpdate = () => {
+    this.props.dispatch(
+      BoardAction.updatePreview(this.boardController.toPng())
+    );
+  };
 
   rotate = () => {
     this.boardController.onRotate();

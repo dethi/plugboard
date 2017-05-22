@@ -4,6 +4,14 @@ const clearBoard = () => {
   };
 };
 
+const updatePreview = preview => {
+  return {
+    type: 'UPDATE_PREVIEW',
+    preview: preview
+  };
+};
+
 export default {
-  clearBoard
+  clearBoard,
+  updatePreview
 };

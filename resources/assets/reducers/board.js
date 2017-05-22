@@ -6,6 +6,11 @@ const board = (state = {}, action) => {
         ...state,
         clear: state.clear + 1
       };
+    case 'UPDATE_PREVIEW':
+      return {
+        ...state,
+        preview: action.preview
+      };
     default:
       return state;
   }
