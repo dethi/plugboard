@@ -6,6 +6,15 @@ import classNames from 'classnames';
 import ModalAction from '../../actions/modalActions';
 
 class Modal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: this.props.modalName,
+      display: false
+    };
+  }
+
   handleCancel = () => {
     if (this.props.onCancel) this.props.onCancel();
     this.props.dispatch(ModalAction.hideModal(this.props.modalName));
@@ -16,11 +25,19 @@ class Modal extends Component {
     this.props.dispatch(ModalAction.hideModal(this.props.modalName));
   };
 
+  componentWillReceiveProps(nextProps) {
+    const isDisplay = nextProps.modal[this.state.name];
+    if (isDisplay !== this.props.modal[this.state.name]) {
+      this.setState({ display: isDisplay });
+      if (isDisplay && this.props.onDisplay) this.props.onDisplay();
+    }
+  }
+
   render() {
     return (
       <div
         className={classNames('modal', {
-          'is-active': this.props.modal[this.props.modalName]
+          'is-active': this.state.display
         })}
       >
         <div className="modal-background" />
@@ -56,7 +73,8 @@ Modal.propTypes = {
   modal: PropTypes.object.isRequired,
   modalName: PropTypes.string,
   onApply: PropTypes.func,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
+  onDisplay: PropTypes.func
 };
 
 export default connect(mapStateToProps)(Modal);

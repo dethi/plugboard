@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+
 import Modal from './Modal';
+
+import SaveBoard from '../../api/saveBoard';
 
 export default class LoadBoardModal extends Component {
   constructor(props) {
@@ -9,6 +12,13 @@ export default class LoadBoardModal extends Component {
       boardId: null
     };
   }
+
+  onDisplay = () => {
+    console.log('Display');
+    SaveBoard.loadBoard().then(board => {
+      console.log(board);
+    });
+  };
 
   onCancel = () => {
     this.setState({ boardId: null });
@@ -63,6 +73,7 @@ export default class LoadBoardModal extends Component {
         success="Load"
         onApply={this.onApply}
         onCancel={this.onCancel}
+        onDisplay={this.onDisplay}
       />
     );
   }
