@@ -16,6 +16,10 @@
     width: 100%;
 }
 
+.app-home-nav {
+    min-height: 75px;
+}
+
 .app-palette-item.is-active {
     color: $primary;
     font-weight: bold;

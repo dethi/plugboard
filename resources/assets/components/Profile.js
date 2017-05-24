@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-class Profile extends Component {
+export default class Profile extends Component {
   render() {
     return (
       <div className="column">
@@ -20,5 +20,3 @@ class Profile extends Component {
     );
   }
 }
-
-export default () => <Profile />;
