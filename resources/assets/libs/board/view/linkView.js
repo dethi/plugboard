@@ -102,6 +102,8 @@ export class LinkView {
   }
 
   move(newPos) {
+    if (this.pos && this.pos.x === newPos.x && this.pos.y === newPos.y) return;
+
     this.pos = newPos;
 
     this.fabricRect.left = this.pos.x;
