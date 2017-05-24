@@ -4,7 +4,7 @@ import NavBarAccueil from './NavBarAccueil';
 import Footer from './Footer';
 import Home from './Home';
 
-class Index extends Component {
+export default class Index extends Component {
   render() {
     return (
       <div id="landing">
@@ -17,5 +17,3 @@ class Index extends Component {
     );
   }
 }
-
-export default () => <Index />;

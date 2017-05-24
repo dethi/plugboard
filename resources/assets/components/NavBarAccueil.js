@@ -5,7 +5,7 @@ import Authentification from '../api/authentification';
 
 import { NavLink } from 'react-router-dom';
 
-class NavBarAccueil extends Component {
+export default class NavBarAccueil extends Component {
   handleLogin = () => {
     Authentification.login('test', 'test').then(user => {
       this.props.dispatch(UserAction.login(user));
@@ -14,7 +14,7 @@ class NavBarAccueil extends Component {
 
   render() {
     return (
-      <nav className="nav">
+      <nav className="nav app-home-nav">
         <div className="container">
           <div className="nav-left">
             <a className="nav-item">
@@ -48,5 +48,3 @@ class NavBarAccueil extends Component {
     );
   }
 }
-
-export default NavBarAccueil;

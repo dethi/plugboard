@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-class Home extends Component {
+
+export default class Home extends Component {
   render() {
     return (
       <div className="hero-body">
@@ -19,5 +20,3 @@ class Home extends Component {
     );
   }
 }
-
-export default () => <Home />;
