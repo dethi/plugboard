@@ -160,15 +160,16 @@ export default class BoardView {
     this.fabricCanvas.renderAll();
   }
 
-  addLink(inputInfo, outputInfo) {
+  addLink(inputInfo, outputInfo, path) {
     const linkA = this.elecElements[inputInfo[0]].linkElements[inputInfo[1]];
     const linkB = this.elecElements[outputInfo[0]].linkElements[outputInfo[1]];
 
-    const link = new LinkLine(linkA, linkB, this.gridSize / 5);
+    const link = new LinkLine(linkA, linkB, this.gridSize / 5, path);
 
     linkA.linkLines.push(link);
     linkB.linkLines.push(link);
-    this.fabricCanvas.add(link.fabricLine);
+
+    link.fabricLines.forEach(line => this.fabricCanvas.add(line));
   }
 
   moveElement(elId, newPos) {
@@ -252,7 +253,7 @@ export default class BoardView {
       ],
       {
         stroke: '#114B5F',
-        strokeWidth: this.gridSize / 15,
+        strokeWidth: this.gridSize / 20,
         selectable: false
       }
     );

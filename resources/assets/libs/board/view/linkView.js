@@ -6,23 +6,36 @@ export const LinkType = {
 };
 
 export class LinkLine {
-  constructor(linkA, linkB, linkSize) {
+  constructor(linkA, linkB, linkSize, path) {
     this.linkA = linkA;
     this.linkB = linkB;
     this.linkSize = linkSize;
+    this.path = path;
 
-    this.fabricLine = this.createLine();
-    this.fabricLine.stroke = 'red';
+    this.fabricLines = this.createLines('red');
 
     this.on = false;
   }
 
   refresh() {
     // ULGY !!!!
-    this.linkA.elementView.boardView.fabricCanvas.remove(this.fabricLine);
-    this.fabricLine = this.createLine();
-    this.fabricLine.stroke = this.on ? 'green' : 'red';
-    this.linkA.elementView.boardView.fabricCanvas.add(this.fabricLine);
+    this.fabricLines.forEach(line =>
+      this.linkA.elementView.boardView.fabricCanvas.remove(line));
+
+    this.path = this.linkA.elementView.boardView.controller.gridController.getPath(
+      {
+        x: Math.floor(this.linkA.pos.x / 50),
+        y: Math.floor(this.linkA.pos.y / 50)
+      },
+      {
+        x: Math.floor(this.linkB.pos.x / 50),
+        y: Math.floor(this.linkB.pos.y / 50)
+      }
+    );
+    this.fabricLines = this.createLines(this.on ? 'green' : 'red');
+
+    this.fabricLines.forEach(line =>
+      this.linkA.elementView.boardView.fabricCanvas.add(line));
   }
 
   setState(newState) {
@@ -30,25 +43,43 @@ export class LinkLine {
     this.refresh();
   }
 
-  createLine() {
-    return new fabric.Line(
-      [
-        this.linkA.pos.x + this.linkSize / 2,
-        this.linkA.pos.y + this.linkSize / 2 - this.linkSize / 6,
-        this.linkB.pos.x,
-        this.linkB.pos.y + this.linkSize / 2 - this.linkSize / 6
-      ],
-      {
-        strokeWidth: this.linkSize / 3,
-        selectable: false
+  createLines(color) {
+    const lines = [];
+
+    let curPos = null;
+
+    this.path.forEach(pos => {
+      if (!curPos) {
+        curPos = pos;
+        return;
       }
-    );
+
+      lines.push(
+        new fabric.Line(
+          [
+            curPos.x,
+            curPos.y,
+            pos.x,
+            pos.y
+          ],
+          {
+            strokeWidth: this.linkSize / 3,
+            selectable: false,
+            stroke: color
+          }
+        )
+      );
+      curPos = pos;
+    });
+
+    return lines;
   }
 
   destroy() {
     this.linkA.linkLines.splice(this.linkA.linkLines.indexOf(this), 1);
     this.linkB.linkLines.splice(this.linkB.linkLines.indexOf(this), 1);
-    this.linkA.elementView.boardView.fabricCanvas.remove(this.fabricLine);
+    this.fabricLines.forEach(line =>
+      this.linkA.elementView.boardView.fabricCanvas.remove(line));
   }
 }
 
