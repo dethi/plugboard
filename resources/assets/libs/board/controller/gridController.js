@@ -16,7 +16,7 @@ export default class GridController {
   setElement(el) {
     this.set(el.pos, el.id);
 
-    this.pfGrid.setWalkableAt(0, 1, false);
+    this.pfGrid.setWalkableAt(el.pos.x, el.pos.y, false);
   }
 
   canMove(el, newPos) {
@@ -25,21 +25,21 @@ export default class GridController {
 
   moveElement(el, oldPos) {
     this.set(el.pos, el.id);
-    this.pfGrid.setWalkableAt(0, 1, false);
+    this.pfGrid.setWalkableAt(el.pos.x, el.pos.y, false);
 
     this.set(oldPos, null);
-    this.pfGrid.setWalkableAt(0, 1, true);
+    this.pfGrid.setWalkableAt(oldPos.x, oldPos.y, true);
   }
 
   freeEl(el) {
     this.set(el.pos, null);
-    this.pfGrid.setWalkableAt(0, 1, true);
+    this.pfGrid.setWalkableAt(el.pos.x, el.pos.y, true);
   }
 
   getPath(posA, posB) {
-    const dijkstraFinder = new PathFinding.DijkstraFinder();
+    const bestFirstFinder = new PathFinding.BestFirstFinder();
 
-    const path = dijkstraFinder.findPath(
+    const path = bestFirstFinder.findPath(
       posA.x,
       posA.y,
       posB.x,

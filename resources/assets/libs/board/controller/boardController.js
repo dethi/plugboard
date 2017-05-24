@@ -216,9 +216,7 @@ export default class BoardController {
     inputEl.output[inputInfo[1]].push(outputInfo);
     outputEl.input[outputInfo[1]] = inputInfo;
 
-    const linkPath = this.gridController.getPath(inputEl.pos, outputEl.pos);
-
-    this.boardView.addLink(inputInfo, outputInfo, linkPath);
+    this.boardView.addLink(inputInfo, outputInfo);
 
     this.engineController.setDirty();
   }
