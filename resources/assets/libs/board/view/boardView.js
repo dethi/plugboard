@@ -160,16 +160,14 @@ export default class BoardView {
     this.fabricCanvas.renderAll();
   }
 
-  addLink(inputInfo, outputInfo, path) {
+  addLink(inputInfo, outputInfo) {
     const linkA = this.elecElements[inputInfo[0]].linkElements[inputInfo[1]];
     const linkB = this.elecElements[outputInfo[0]].linkElements[outputInfo[1]];
 
-    const link = new LinkLine(linkA, linkB, this.gridSize / 5, path);
+    const link = new LinkLine(linkA, linkB, this.gridSize / 5);
 
     linkA.linkLines.push(link);
     linkB.linkLines.push(link);
-
-    link.fabricLines.forEach(line => this.fabricCanvas.add(line));
   }
 
   moveElement(elId, newPos) {

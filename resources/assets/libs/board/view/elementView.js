@@ -111,10 +111,12 @@ export default class ElementView {
   }
 
   move(newPos) {
-    this.pos = newPos;
-
-    const fabricPos = this.boardView.getFabricPos(this.pos);
+    const fabricPos = this.boardView.getFabricPos(newPos);
     this.moveRect(this.fabricRect, fabricPos.x, fabricPos.y);
+
+    if (this.pos.x === newPos.x && this.pos.y === newPos.y) return;
+
+    this.pos = newPos;
 
     this.moveInputElements();
     this.moveOutputElements();

@@ -6,13 +6,13 @@ export const LinkType = {
 };
 
 export class LinkLine {
-  constructor(linkA, linkB, linkSize, path) {
+  constructor(linkA, linkB, linkSize) {
     this.linkA = linkA;
     this.linkB = linkB;
     this.linkSize = linkSize;
-    this.path = path;
 
-    this.fabricLines = this.createLines('red');
+    this.fabricLines = [];
+    this.refresh();
 
     this.on = false;
   }
@@ -39,7 +39,11 @@ export class LinkLine {
   }
 
   setState(newState) {
-    this.on = newState === 1;
+    const newOn = newState === 1;
+
+    if (this.on === newOn) return;
+
+    this.on = newOn;
     this.refresh();
   }
 
@@ -55,19 +59,11 @@ export class LinkLine {
       }
 
       lines.push(
-        new fabric.Line(
-          [
-            curPos.x,
-            curPos.y,
-            pos.x,
-            pos.y
-          ],
-          {
-            strokeWidth: this.linkSize / 3,
-            selectable: false,
-            stroke: color
-          }
-        )
+        new fabric.Line([curPos.x, curPos.y, pos.x, pos.y], {
+          strokeWidth: this.linkSize / 3,
+          selectable: false,
+          stroke: color
+        })
       );
       curPos = pos;
     });
