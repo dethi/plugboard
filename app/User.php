@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token',
     ];
 
     /**
@@ -36,10 +36,11 @@ class User extends Authenticatable
     * @return String containing either just a URL or a complete image tag
     * @source https://gravatar.com/site/implement/images/php/
     */
-    public function getGravatarUrl(int $size = 80, string $imageset = 'mm', string $rating = 'g') {
-      $url = '//gravatar.com/avatar/';
-      $url .= md5( strtolower( trim( $this->email ) ) );
-      $url .= "?s=$size&d=$imageset&r=$rating";
-      return $url;
+    public function getGravatarUrl(int $size = 80, string $imageset = 'mm', string $rating = 'g')
+    {
+        $url = '//gravatar.com/avatar/';
+        $url .= md5( strtolower( trim( $this->email ) ) );
+        $url .= "?s=$size&d=$imageset&r=$rating";
+        return $url;
     }
 }
