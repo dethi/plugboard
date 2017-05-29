@@ -7,7 +7,6 @@ import Board from './Board';
 import ModalContainer from './modal/ModalContainer';
 
 import UserAction from '../actions/userActions';
-import Authentification from '../api/authentification';
 
 class App extends Component {
   constructor(props) {
@@ -19,13 +18,7 @@ class App extends Component {
       running: false
     };
 
-    // Check if token existe
-    const token = localStorage.getItem('plugboardToken');
-    if (token) {
-      Authentification.loginFromToken(token).then(user => {
-        this.props.dispatch(UserAction.login(user));
-      });
-    }
+    this.props.dispatch(UserAction.init());
   }
 
   getCurCanvas = () => {

@@ -1,3 +1,9 @@
+const init = () => {
+  return {
+    type: 'INIT_AUTH'
+  };
+};
+
 const login = user => {
   return {
     type: 'LOGIN',
@@ -12,6 +18,7 @@ const logout = () => {
 };
 
 export default {
+  init,
   login,
   logout
 };
