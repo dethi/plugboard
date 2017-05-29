@@ -18,6 +18,12 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+            if ($request->ajax()) {
+                return response([
+                    'code' => 'guest_only',
+                    'error' => 'Guest only'
+                ], 403);
+            }
             return redirect('/app');
         }
 
