@@ -1,11 +1,12 @@
-import './bootstrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+
+import axios from 'axios';
 
 import plugboardReducers from './reducers';
 
@@ -14,7 +15,19 @@ import Index from './components/Index';
 import Contact from './components/Contact';
 import './css/app.scss';
 
-const store = createStore(plugboardReducers);
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+const store = createStore(
+  plugboardReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+store.subscribe(() => {
+  const state = store.getState();
+  if (state.user !== null) {
+    axios.defaults.headers.common['X-Auth'] = state.user.api_token;
+  }
+});
 
 ReactDOM.render(
   <Provider store={store}>

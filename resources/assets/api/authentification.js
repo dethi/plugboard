@@ -1,26 +1,12 @@
-const login = (email, password) => {
-  return new Promise((resolve, reject) => {
-    const user = {
-      name: 'Arthur',
-      id: 42,
-      token: 'plugboard42token'
-    };
-    resolve(user);
-  });
-};
+import axios from 'axios';
 
-const loginFromToken = token => {
-  return new Promise((resolve, reject) => {
-    const user = {
-      name: 'Arthur',
-      id: 42,
-      token: 'plugboard42token'
-    };
-    resolve(user);
-  });
+const login = (email, password) => {
+  return axios
+    .post('/api/auth/login', { email, password })
+    .then(res => res.data)
+    .catch(err => console.error(err));
 };
 
 export default {
-  login,
-  loginFromToken
+  login
 };
