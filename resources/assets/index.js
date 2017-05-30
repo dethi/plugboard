@@ -24,9 +24,9 @@ const store = createStore(
 
 store.subscribe(() => {
   const state = store.getState();
-  if (state.user !== null) {
-    axios.defaults.headers.common['X-Auth'] = state.user.api_token;
-  }
+  axios.defaults.headers.common['X-Auth'] = state.user !== null
+    ? state.user.api_token
+    : null;
 });
 
 ReactDOM.render(

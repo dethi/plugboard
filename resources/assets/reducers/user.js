@@ -3,7 +3,14 @@ import { localStorageAuthKey } from './../global';
 const user = (state = null, action) => {
   switch (action.type) {
     case 'INIT_AUTH':
-      return JSON.parse(localStorage.getItem(localStorageAuthKey));
+      const value = localStorage.getItem(localStorageAuthKey);
+      try {
+        return JSON.parse(value);
+      } catch (SyntaxError) {
+        // We cannot recover the Authenticated User, so we remove it.
+        localStorage.removeItem(localStorageAuthKey);
+        return null;
+      }
     case 'LOGIN':
       localStorage.setItem(localStorageAuthKey, JSON.stringify(action.user));
       return action.user;
