@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import UserAction from '../actions/userActions';
 import ModalAction from '../actions/modalActions';
 
-import Authentification from '../api/authentification';
-
 function GuestMenu(props) {
   return (
     <div className="nav-right nav-menu">
@@ -50,9 +48,7 @@ LoggedMenu.PropTypes = {
 
 class NavBar extends Component {
   handleLogin = () => {
-    Authentification.login('test', 'test').then(user => {
-      this.props.dispatch(UserAction.login(user));
-    });
+    this.props.dispatch(ModalAction.displayModal('LOGIN'));
   };
 
   handleLogout = () => {
