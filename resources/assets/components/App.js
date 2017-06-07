@@ -1,20 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import NavBar from './NavBar';
 import Palette from './Palette';
 import Board from './Board';
-// import Profile from './Profile';
+import ModalContainer from './modal/ModalContainer';
 
-export default class App extends Component {
+import UserAction from '../actions/userActions';
+
+class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      elementBlueprint: undefined,
       step: 0,
+      rotating: 0,
       running: false
     };
+
+    this.props.dispatch(UserAction.init());
   }
+
+  getCurCanvas = () => {
+    return this.refs.board.gridController.gridView.fabricCanvas;
+  };
+
+  handleRotate = () => {
+    this.setState({ rotating: this.state.rotating + 1 });
+  };
 
   handleNextStep = () => {
     this.setState({ step: this.state.step + 1 });
@@ -24,38 +37,34 @@ export default class App extends Component {
     this.setState({ running: !this.state.running });
   };
 
-  handlePaletteChange = paletteBlueprint => {
-    this.setState({ elementBlueprint: paletteBlueprint });
-  };
-
-  getCurBlueprint = () => {
-    const curBlueprint = this.state.elementBlueprint;
-    this.setState({ elementBlueprint: undefined });
-    return curBlueprint;
-  };
-
   render() {
-    const { step, running } = this.state;
+    const { step, running, rotating } = this.state;
 
     return (
       <div>
         <NavBar
+          onRotate={this.handleRotate}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
         />
         <div className="app">
           <div className="columns">
-            <Palette updatePalette={this.handlePaletteChange} />
+            <Palette />
             <Board
-              getCurBlueprint={this.getCurBlueprint}
+              ref="board"
+              rotate={rotating}
               step={step}
               running={running}
+              getCurCanvas={this.getCurCanvas}
             />
             {/*<Profile />*/}
           </div>
         </div>
+        <ModalContainer />
       </div>
     );
   }
 }
+
+export default connect()(App);

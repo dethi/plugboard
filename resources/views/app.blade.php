@@ -15,16 +15,6 @@
   <script defer src="{{ mix('manifest.js') }}"></script>
   <script defer src="{{ mix('vendor.js') }}"></script>
   <script defer src="{{ mix('app.js') }}"></script>
-
-  <!-- CSRF Token -->
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <script>
-    window.Laravel = {!! json_encode([
-      'csrfToken' => csrf_token(),
-      'guest' => Auth::guest(),
-      'gravatarUrl' => $gravatar_url
-    ]) !!};
-  </script>
 </head>
 <body>
   <div id="root">
@@ -38,11 +28,5 @@
       </div>
     </section>
   </div>
-
-  @if (Auth::check())
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-      {{ csrf_field() }}
-    </form>
-  @endif
 </body>
 </html>

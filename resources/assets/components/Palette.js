@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
-
-import { GateType, ElementBlueprint } from '../libs/element/elementBlueprint';
+import PaletteAction from '../actions/paletteActions';
+import { createSimplePalette } from '../libs/utils/createSimple';
+import { ImageElementProvider } from '../libs/utils/imageElementProvider';
+import PropTypes from 'prop-types';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -23,32 +26,33 @@ function SelectableElement(props) {
   );
 }
 
-export default class Palette extends Component {
+SelectableElement.PropTypes = {
+  selected: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  img: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired
+};
+
+class Palette extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      elements: [
-        ElementBlueprint.createInputBlueprint(),
-        ElementBlueprint.createOutputBlueprint(),
-        ElementBlueprint.createGateBlueprint('not', GateType.NOT, 1),
-        ElementBlueprint.createGateBlueprint('and', GateType.AND),
-        ElementBlueprint.createGateBlueprint('nand', GateType.NAND),
-        ElementBlueprint.createGateBlueprint('or', GateType.OR),
-        ElementBlueprint.createGateBlueprint('nor', GateType.NOR),
-        ElementBlueprint.createGateBlueprint('nxor', GateType.NXOR)
-      ],
-      curElementId: 0
-    };
+    this.props.dispatch(PaletteAction.addBlueprints(createSimplePalette()));
   }
 
-  updateStateOnClick = index => {
-    this.setState({ curElementId: index });
-    this.props.updatePalette(this.state.elements[index]);
+  updateSelectedBlueprint = index => {
+    const { blueprints, selectedBlueprint } = this.props.palette;
+    if (blueprints[index] === selectedBlueprint)
+      this.props.dispatch(PaletteAction.unselecteBlueprint());
+    else
+      this.props.dispatch(PaletteAction.selectBlueprint(blueprints[index]));
   };
 
   render() {
-    const { elements, curElementId } = this.state;
+    const { blueprints, selectedBlueprint } = this.props.palette;
+    let selectedBlueprintIndex = -1;
+    if (blueprints)
+      selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
 
     return (
       <div className="column is-one-quarter">
@@ -56,17 +60,30 @@ export default class Palette extends Component {
           <p className="panel-heading">
             Components
           </p>
-          {elements.map((e, index) => (
-            <SelectableElement
-              key={index}
-              name={e.name}
-              img={e.img}
-              selected={index === curElementId}
-              onClick={() => this.updateStateOnClick(index)}
-            />
-          ))}
+          {blueprints &&
+            blueprints.map((e, index) => (
+              <SelectableElement
+                key={index}
+                name={e.name}
+                img={ImageElementProvider.getElementImage(e.img)}
+                selected={index === selectedBlueprintIndex}
+                onClick={() => this.updateSelectedBlueprint(index)}
+              />
+            ))}
         </nav>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    palette: state.palette
+  };
+};
+
+Palette.PropTypes = {
+  palette: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(Palette);

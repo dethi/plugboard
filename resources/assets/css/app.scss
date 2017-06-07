@@ -16,9 +16,31 @@
     width: 100%;
 }
 
+.app-home-nav {
+    min-height: 75px;
+}
+
 .app-palette-item.is-active {
     color: $primary;
     font-weight: bold;
+}
+
+.parent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.child {
+  width: 200px;  /* Or whatever */
+  height: 200px; /* Or whatever */
+  margin: auto;  /* Magic! */
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+    max-height: 300px;
 }
 
 // html, body {

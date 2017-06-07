@@ -1,36 +1,28 @@
 import React, { Component } from 'react';
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import Grid from '../libs/board/grid';
+import PaletteAction from '../actions/paletteActions';
+import BoardAction from '../actions/boardActions';
 
-import { SPECS, evalutateBoard } from '../engine/index';
+import BoardController from '../libs/board/controller/boardController';
+import { evalutateBoard } from '../engine/engine';
 
-export default class Board extends Component {
+class Board extends Component {
   constructor(props) {
     super(props);
 
-    this.grid = null;
+    this.boardController = null;
     this.state = {
       timerId: null
     };
   }
 
   componentDidMount() {
-    this.grid = new Grid(
-      30,
-      14,
-      40,
+    this.boardController = new BoardController(
       this.refs.canvas,
-      this.props.getCurBlueprint
+      this.unSelectBlueprint
     );
-
-    // this.grid1 = new Grid(
-    //   15,
-    //   10,
-    //   70,
-    //   this.refs.canvas1,
-    //   this.props.getCurBlueprint
-    // );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,26 +33,59 @@ export default class Board extends Component {
         this.stop();
       }
     } else if (nextProps.step !== this.props.step) {
+      // Ugly !!!!!
+      this.onBoardUpdate();
+
       this.nextStep();
+    } else if (nextProps.rotate !== this.props.rotate) {
+      this.rotate();
+    } else if (
+      nextProps.palette.selectedBlueprint !==
+      this.props.palette.selectedBlueprint
+    ) {
+      this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
+    } else if (nextProps.board.clear !== this.props.board.clear) {
+      this.clearBoard();
     }
   }
 
+  onBoardUpdate = () => {
+    this.props.dispatch(
+      BoardAction.updatePreview(this.boardController.toPng())
+    );
+  };
+
+  rotate = () => {
+    this.boardController.onRotate();
+  };
+
+  updateSelectedBlueprint = blueprint => {
+    this.boardController.onUpdateSelectedBlueprint(blueprint);
+  };
+
+  unSelectBlueprint = () => {
+    this.props.dispatch(PaletteAction.unselecteBlueprint());
+  };
+
+  clearBoard = () => {
+    this.boardController.onDelete();
+  };
+
   nextStep = () => {
-    const grid = this.grid.exportForEngine();
-    grid.board.specs = SPECS;
-    this.grid.applyState(evalutateBoard(grid.board, grid.states));
+    const board = this.boardController.exportForEngine();
+    const states = this.boardController.exportEngineStates();
+
+    this.boardController.applyState(evalutateBoard(board, states));
   };
 
   run = () => {
-    const grid = this.grid.exportForEngine();
-    grid.board.specs = SPECS;
+    let board = null;
+    let states = null;
 
-    let boardStates = grid.states;
     const loop = () => {
-      this.grid.getInputState().forEach((e, i) => boardStates[i] = e);
-      const newBoardState = evalutateBoard(grid.board, boardStates);
-      this.grid.applyState(newBoardState);
-      boardStates = newBoardState;
+      board = this.boardController.exportForEngine();
+      states = this.boardController.exportEngineStates();
+      this.boardController.applyState(evalutateBoard(board, states));
     };
 
     const timerId = setInterval(loop, 300);
@@ -81,42 +106,30 @@ export default class Board extends Component {
       maxWidth: '100%'
     };
     return (
-      <div className="column is-half">
-        {/*<div className="app-engine-control">
-          <div className="field has-addons">
-            <p className="control">
-              <button className="button" onClick={this.exportBoard}>
-                <span className="icon is-small">
-                  <i className="fa fa-step-forward" />
-                </span>
-              </button>
-            </p>
-            <p className="control">
-              <button className="button">
-                <span className="icon is-small">
-                  <i className="fa fa-play" />
-                </span>
-              </button>
-            </p>
+      <div>
+        <div className="column">
+          <div style={style}>
+            <canvas ref="canvas" />
           </div>
-        </div>*/}
-
-        {/*</div>*/}
-        {/*<Tabs forceRenderTabPanel={true}>
-          <TabList>
-            <Tab>Board 1</Tab>
-            <Tab>Board 2</Tab>
-          </TabList>
-          <TabPanel>*/}
-        <div style={style}>
-          <canvas ref="canvas" />
         </div>
-        {/*</TabPanel>
-          <TabPanel>
-            <canvas ref="canvas1" />
-          </TabPanel>
-        </Tabs>*/}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    palette: state.palette,
+    board: state.board
+  };
+};
+
+Board.propTypes = {
+  running: PropTypes.bool.isRequired,
+  step: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  board: PropTypes.object.isRequired,
+  rotate: PropTypes.number.isRequired
+};
+
+export default connect(mapStateToProps)(Board);
