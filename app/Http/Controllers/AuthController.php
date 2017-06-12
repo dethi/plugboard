@@ -26,7 +26,25 @@ class AuthController extends Controller
 
         return response([
             'code' => 'failed_login',
-            'error' => 'Wrong email/password combination'
+            'status' => 'Wrong email/password combination'
         ], 401);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $input = $request->only('name', 'email', 'password');
+
+        User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => bcrypt($input['password']),
+        ]);
+        return ['code' => 'ok', 'status' => 'Successfully created'];
     }
 }
