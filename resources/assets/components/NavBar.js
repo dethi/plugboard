@@ -9,7 +9,7 @@ import ModalAction from '../actions/modalActions';
 function GuestMenu(props) {
   return (
     <div className="nav-right nav-menu">
-      <a className="nav-item is-tab" href="/register">
+      <a className="nav-item is-tab" onClick={props.onRegister}>
         Register
       </a>
       <a className="nav-item is-tab" onClick={props.onLogin}>
@@ -20,7 +20,8 @@ function GuestMenu(props) {
 }
 
 GuestMenu.PropTypes = {
-  onLogin: PropTypes.func.isRequired
+  onLogin: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired
 };
 
 function LoggedMenu(props) {
@@ -49,6 +50,10 @@ LoggedMenu.PropTypes = {
 class NavBar extends Component {
   handleLogin = () => {
     this.props.dispatch(ModalAction.displayModal('LOGIN'));
+  };
+
+  handleRegister = () => {
+    this.props.dispatch(ModalAction.displayModal('REGISTER'));
   };
 
   handleLogout = () => {
@@ -117,7 +122,10 @@ class NavBar extends Component {
           </div>
 
           {!this.props.user
-            ? <GuestMenu onLogin={this.handleLogin} />
+            ? <GuestMenu
+                onLogin={this.handleLogin}
+                onRegister={this.handleRegister}
+              />
             : <LoggedMenu
                 onLogout={this.handleLogout}
                 user={this.props.user}
