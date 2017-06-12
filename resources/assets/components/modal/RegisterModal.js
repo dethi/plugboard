@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 
-// import UserAction from '../../actions/userActions';
-// import Authentification from '../../api/authentification';
+import UserAction from '../../actions/userActions';
+import Authentification from '../../api/authentification';
 
 class RegisterModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      name: '',
       email: '',
       password: '',
-      passwordConfirmation: ''
+      password_confirmation: ''
     };
   }
 
@@ -28,14 +29,21 @@ class RegisterModal extends Component {
 
   onCancel = () => {
     this.setState({
+      name: '',
       email: '',
       password: '',
-      passwordConfirmation: ''
+      password_confirmation: ''
     });
   };
 
   onApply = () => {
-    // Register with Authentification
+    console.log('Register');
+    Authentification.register(
+      this.state.name,
+      this.state.email,
+      this.state.password,
+      this.state.password_confirmation
+    );
   };
 
   render() {
@@ -48,6 +56,24 @@ class RegisterModal extends Component {
             <div className="field">
               <div className="control has-icon">
                 <input
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                  className="input"
+                  name="name"
+                  type="text"
+                  placeholder="User Name"
+                  required
+                  autoFocus
+                />
+                <span className="icon is-small">
+                  <i className="fa fa-user" />
+                </span>
+              </div>
+            </div>
+
+            <div className="field">
+              <div className="control has-icon">
+                <input
                   value={this.state.email}
                   onChange={this.handleInputChange}
                   className="input"
@@ -55,7 +81,6 @@ class RegisterModal extends Component {
                   type="email"
                   placeholder="Email"
                   required
-                  autoFocus
                 />
                 <span className="icon is-small">
                   <i className="fa fa-envelope" />
@@ -83,10 +108,10 @@ class RegisterModal extends Component {
             <div className="field">
               <div className="control has-icon">
                 <input
-                  value={this.state.passwordConfirmation}
+                  value={this.state.password_confirmation}
                   onChange={this.handleInputChange}
                   className="input"
-                  name="passwordConfirmation"
+                  name="password_confirmation"
                   type="password"
                   placeholder="Confirm Password"
                   required

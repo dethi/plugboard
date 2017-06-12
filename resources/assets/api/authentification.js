@@ -7,6 +7,19 @@ const login = (email, password) => {
     .catch(err => console.error(err));
 };
 
-export default {
-  login
+const register = (name, email, password, password_confirmation) => {
+  return axios
+    .post('/api/auth/register', {
+      name,
+      email,
+      password,
+      password_confirmation
+    })
+    .then(res => res.data)
+    .catch(err => console.error(err));
+};
+
+module.exports = {
+  login,
+  register
 };
