@@ -57,7 +57,7 @@ class NavBar extends Component {
   };
 
   handleLogout = () => {
-    this.props.dispatch(UserAction.logout());
+    this.props.dispatch(ModalAction.displayModal('LOGOUT'));
   };
 
   handleDelete = () => {

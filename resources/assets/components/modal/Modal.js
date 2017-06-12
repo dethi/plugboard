@@ -34,6 +34,12 @@ class Modal extends Component {
   }
 
   render() {
+    let cancelStyle = 'button';
+    let cancelText = 'Cancel';
+    if (typeof this.props.cancelText !== 'undefined') {
+      cancelStyle = 'button is-danger';
+      cancelText = this.props.cancelText;
+    }
     return (
       <div
         className={classNames('modal', {
@@ -54,7 +60,9 @@ class Modal extends Component {
               <a className="button is-success" onClick={this.handleApply}>
                 {this.props.success}
               </a>
-              <a className="button" onClick={this.handleCancel}>Cancel</a>
+              <a className={cancelStyle} onClick={this.handleCancel}>
+                {cancelText}
+              </a>
             </div>
           </footer>
         </div>
