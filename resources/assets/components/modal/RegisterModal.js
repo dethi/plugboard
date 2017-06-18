@@ -39,8 +39,6 @@ class RegisterModal extends Component {
   };
 
   onApply = () => {
-    console.log('Register');
-
     return new Promise((resolve, reject) => {
       Authentification.register(
         this.state.name,
@@ -49,19 +47,16 @@ class RegisterModal extends Component {
         this.state.password_confirmation
       )
         .then(data => {
-          console.log('ThenReg');
-          console.log(data);
           this.setState({ err: null });
           resolve();
         })
-        .catch(data => {
-          console.log('CatchReg');
-          console.log(data);
-          const errFormat = [];
-          Object.values(data).forEach(err => errFormat.push(err[0]));
-
-          this.setState({ err: errFormat });
-          reject();
+        .catch(response => {
+          if (response.status === 422) {
+            const errFormat = [];
+            Object.values(response.data).forEach(err => errFormat.push(err[0]));
+            this.setState({ err: errFormat });
+            reject();
+          }
         });
     });
   };

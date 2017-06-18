@@ -11,7 +11,8 @@ class LoginModal extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      err: null
     };
   }
 
@@ -28,13 +29,31 @@ class LoginModal extends Component {
   onCancel = () => {
     this.setState({
       email: '',
-      password: ''
+      password: '',
+      err: null
     });
   };
 
   onApply = () => {
-    Authentification.login(this.state.email, this.state.password).then(user => {
-      this.props.dispatch(UserAction.login(user));
+    return new Promise((resolve, reject) => {
+      Authentification.login(this.state.email, this.state.password)
+        .then(user => {
+          this.props.dispatch(UserAction.login(user));
+          this.setState({ err: null });
+          resolve();
+        })
+        .catch(response => {
+          if (response.status === 422) {
+            const errFormat = [];
+            Object.values(response.data).forEach(err => errFormat.push(err[0]));
+            this.setState({ err: errFormat });
+          }
+          if (response.status === 401) {
+            this.setState({ err: [response.data.status] });
+          }
+
+          reject();
+        });
     });
   };
 
@@ -92,6 +111,7 @@ class LoginModal extends Component {
         success="Login"
         onApply={this.onApply}
         onCancel={this.onCancel}
+        err={this.state.err}
       />
     );
   }
