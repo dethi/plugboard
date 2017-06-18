@@ -16,7 +16,9 @@ const register = (name, email, password, password_confirmation) => {
       password_confirmation
     })
     .then(res => res.data)
-    .catch(err => console.error(err));
+    .catch(err => {
+      throw err.response.data;
+    });
 };
 
 module.exports = {

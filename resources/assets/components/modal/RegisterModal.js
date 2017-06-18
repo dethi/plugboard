@@ -13,7 +13,8 @@ class RegisterModal extends Component {
       name: '',
       email: '',
       password: '',
-      password_confirmation: ''
+      password_confirmation: '',
+      err: null
     };
   }
 
@@ -32,18 +33,37 @@ class RegisterModal extends Component {
       name: '',
       email: '',
       password: '',
-      password_confirmation: ''
+      password_confirmation: '',
+      err: null
     });
   };
 
   onApply = () => {
     console.log('Register');
-    Authentification.register(
-      this.state.name,
-      this.state.email,
-      this.state.password,
-      this.state.password_confirmation
-    );
+
+    return new Promise((resolve, reject) => {
+      Authentification.register(
+        this.state.name,
+        this.state.email,
+        this.state.password,
+        this.state.password_confirmation
+      )
+        .then(data => {
+          console.log('ThenReg');
+          console.log(data);
+          this.setState({ err: null });
+          resolve();
+        })
+        .catch(data => {
+          console.log('CatchReg');
+          console.log(data);
+          const errFormat = [];
+          Object.values(data).forEach(err => errFormat.push(err[0]));
+
+          this.setState({ err: errFormat });
+          reject();
+        });
+    });
   };
 
   render() {
@@ -126,6 +146,7 @@ class RegisterModal extends Component {
         success="Register"
         onApply={this.onApply}
         onCancel={this.onCancel}
+        err={this.state.err}
       />
     );
   }
