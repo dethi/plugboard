@@ -47,19 +47,7 @@ export default class GridController {
       this.pfGrid.clone()
     );
 
-    const compressPath = PathFinding.Util.compressPath(path);
-
-    const formatPath = [];
-    compressPath.forEach(el => {
-      formatPath.push(
-        new Vector(
-          el[0] * GRID_SIZE + GRID_SIZE / 2,
-          el[1] * GRID_SIZE + GRID_SIZE / 2
-        )
-      );
-    });
-
-    return formatPath;
+    return PathFinding.Util.compressPath(path);
   }
 
   get(pos) {

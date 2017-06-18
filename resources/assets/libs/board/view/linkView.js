@@ -1,5 +1,9 @@
 import { fabric } from 'fabric';
 
+import { GRID_SIZE } from '../constante';
+
+import Vector from '../../utils/vector';
+
 export const LinkType = {
   INPUT: 0,
   OUTPUT: 1
@@ -24,12 +28,12 @@ export class LinkLine {
 
     this.path = this.linkA.elementView.boardView.controller.gridController.getPath(
       {
-        x: Math.floor(this.linkA.pos.x / 50),
-        y: Math.floor(this.linkA.pos.y / 50)
+        x: Math.floor(this.linkA.pos.x / GRID_SIZE),
+        y: Math.floor(this.linkA.pos.y / GRID_SIZE)
       },
       {
-        x: Math.floor(this.linkB.pos.x / 50),
-        y: Math.floor(this.linkB.pos.y / 50)
+        x: Math.floor(this.linkB.pos.x / GRID_SIZE),
+        y: Math.floor(this.linkB.pos.y / GRID_SIZE)
       }
     );
     this.fabricLines = this.createLines(this.on ? 'green' : 'red');
@@ -52,20 +56,59 @@ export class LinkLine {
 
     let curPos = null;
 
+    const linkARealPos = new Vector(
+      Math.floor(this.linkA.pos.x / GRID_SIZE),
+      Math.floor(this.linkA.pos.y / GRID_SIZE)
+    );
+
+    const linkBRealPos = new Vector(
+      Math.floor(this.linkB.pos.x / GRID_SIZE),
+      Math.floor(this.linkB.pos.y / GRID_SIZE)
+    );
+
+    let isXAligne = true;
+    let isYAligne = true;
+
+    // Pos is on the return format of the pathfinding (Array with x in 0 and y in 1)
     this.path.forEach(pos => {
+      const realPos = new Vector(
+        pos[0] * GRID_SIZE + GRID_SIZE / 2,
+        pos[1] * GRID_SIZE + GRID_SIZE / 2
+      );
+
+      if (pos[0] !== linkARealPos.x) isXAligne = false;
+      if (isXAligne) {
+        realPos.x = this.linkA.pos.x;
+      } else {
+        if (pos[0] === linkBRealPos.x) {
+          realPos.x = this.linkB.pos.x;
+        }
+      }
+
+      if (pos[1] !== linkARealPos.y) isYAligne = false;
+      if (isYAligne) {
+        realPos.y = this.linkA.pos.y;
+      } else {
+        if (pos[1] === linkBRealPos.y) {
+          realPos.y = this.linkB.pos.y;
+        }
+      }
+
+      console.log(realPos);
+
       if (!curPos) {
-        curPos = pos;
+        curPos = realPos;
         return;
       }
 
       lines.push(
-        new fabric.Line([curPos.x, curPos.y, pos.x, pos.y], {
+        new fabric.Line([curPos.x, curPos.y, realPos.x, realPos.y], {
           strokeWidth: this.linkSize / 3,
           selectable: false,
           stroke: color
         })
       );
-      curPos = pos;
+      curPos = realPos;
     });
 
     return lines;
@@ -86,6 +129,8 @@ export class LinkView {
     this.linkType = linkType;
     this.linkSize = linkSize;
     this.linkLines = [];
+
+    this.pos = null;
 
     this.fabricRect = new fabric.Rect({
       width: this.linkSize,
