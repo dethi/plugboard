@@ -23,7 +23,6 @@ class Modal extends Component {
 
   handleApply = () => {
     if (this.props.onApply) {
-
       // Check if onApply return a Promise, if so display loader and hide only if promise is a success
       const res = this.props.onApply();
       if (res && typeof res.then === 'function') {
