@@ -11,14 +11,14 @@ class BoardController extends Controller
 {
     public function index()
     {
-        Auth::loginUsingId(1);
-
-        return Board::where('user_id', Auth::id())->get();
+        return Auth::user()->boards()->get();
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        Auth::loginUsingId(1);
+        $this->validate($request, [
+            'title' => 'required|alpha_dash|between:1,255'
+        ]);
 
         $board = new Board();
         $board->title = $request->input('title');
@@ -29,14 +29,14 @@ class BoardController extends Controller
 
     public function show($id)
     {
-        return Board::with(['versions' => function ($query) {
+        return Auth::user()->boards()->with(['versions' => function ($query) {
             $query->latest()->first();
         }])->findOrFail($id);
     }
 
     public function add_version(Request $request, $id)
     {
-        $board = Board::findOrFail($id);
+        $board = Auth::user()->boards()->findOrFail($id);
 
         $data = new BoardData();
         $data->data = $request->input('data');
