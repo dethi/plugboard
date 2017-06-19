@@ -11,14 +11,16 @@ class LoadBoardModal extends Component {
 
     this.state = {
       modalName: 'BOARD_LOAD',
+      boards: null,
       boardId: null
     };
   }
 
   onDisplay = () => {
     console.log('Display');
-    boardApi.getBoards().then(board => {
-      console.log(board);
+    boardApi.getBoards().then(boards => {
+      console.log(boards);
+      this.setState({ boards: boards });
     });
   };
 
@@ -48,6 +50,7 @@ class LoadBoardModal extends Component {
         </a>
       </div>
     ));*/
+    const { boards } = this.state;
 
     return (
       <Modal
@@ -55,7 +58,10 @@ class LoadBoardModal extends Component {
         title="Load Board"
         content={
           <div>
-            <div className="field has-addons">
+            <span className="icon is-large">
+              <i className="fa fa-spinner fa-pulse" />
+            </span>
+            {/*<div className="field has-addons">
               <p className="control">
                 <input className="input" type="text" placeholder="Recherche" />
               </p>
@@ -66,10 +72,17 @@ class LoadBoardModal extends Component {
                   </span>
                 </button>
               </p>
-            </div>
-            <div className="parent">
-              {/*Previews*/}
-            </div>
+            </div>*/}
+            {boards &&
+              <div className="parent is-loading">
+                {boards.length === 0
+                  ? <div className="notification is-warning is-fullwidth">
+                      You don't have any saved boards
+                    </div>
+                  : <p>
+                      lallala
+                    </p>}
+              </div>}
           </div>
         }
         success="Load"
