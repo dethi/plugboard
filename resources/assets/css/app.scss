@@ -4,6 +4,7 @@
 
 @import "./landing.scss";
 @import "./_utils.scss";
+@import "./objectif.scss";
 
 
 .app {
@@ -53,6 +54,21 @@ textarea {
     resize: vertical;
     min-height: 80px;
     max-height: 300px;
+}
+
+
+.on-canvas
+{
+    position: absolute;
+    background-color: white;
+}
+.on-canvas-right
+{
+    right: 0px;
+}
+.on-canvas-left
+{
+    left: 0px;
 }
 
 // html, body {

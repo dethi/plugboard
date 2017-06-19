@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import NavBar from './NavBar';
-import Palette from './board/Palette';
-import Board from './board/Board';
+
+import Palette from './Palette';
+import Objectif from './objectif/ItemInBoard';
+import Board from './Board';
+
 import ModalContainer from './modal/ModalContainer';
 
 import UserAction from '../actions/userActions';
@@ -50,7 +53,6 @@ class App extends Component {
         />
         <div className="app">
           <div className="columns">
-            <Palette />
             <Board
               ref="board"
               rotate={rotating}
@@ -58,6 +60,9 @@ class App extends Component {
               running={running}
               getCurCanvas={this.getCurCanvas}
             />
+
+            <Objectif />
+            <Palette />
             {/*<Profile />*/}
           </div>
         </div>
