@@ -68,27 +68,26 @@ export class LinkLine {
     let isXAligne = true;
     let isYAligne = true;
 
-    // Pos is on the return format of the pathfinding (Array with x in 0 and y in 1)
     this.path.forEach(pos => {
       const realPos = new Vector(
-        pos[0] * GRID_SIZE + GRID_SIZE / 2,
-        pos[1] * GRID_SIZE + GRID_SIZE / 2
+        pos.x * GRID_SIZE + GRID_SIZE / 2,
+        pos.y * GRID_SIZE + GRID_SIZE / 2
       );
 
-      if (pos[0] !== linkARealPos.x) isXAligne = false;
+      if (pos.x !== linkARealPos.x) isXAligne = false;
       if (isXAligne) {
         realPos.x = this.linkA.pos.x + LINK_SIZE / 2;
       } else {
-        if (pos[0] === linkBRealPos.x) {
+        if (pos.x === linkBRealPos.x) {
           realPos.x = this.linkB.pos.x + LINK_SIZE / 2;
         }
       }
 
-      if (pos[1] !== linkARealPos.y) isYAligne = false;
+      if (pos.y !== linkARealPos.y) isYAligne = false;
       if (isYAligne) {
         realPos.y = this.linkA.pos.y + LINK_SIZE / 2;
       } else {
-        if (pos[1] === linkBRealPos.y) {
+        if (pos.y === linkBRealPos.y) {
           realPos.y = this.linkB.pos.y + LINK_SIZE / 2;
         }
       }
