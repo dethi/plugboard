@@ -48,21 +48,17 @@ class Board extends Component {
       this.clearBoard();
     } else if (nextProps.board.prepare !== this.props.board.prepare) {
       this.prepareBoard();
-    } else if (
-      nextProps.board.boardMetaData !== this.props.board.boardMetaData
-    ) {
+    } else if (nextProps.board.load !== this.props.board.load) {
       console.log('RELOAD');
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }
   }
 
   prepareBoard = () => {
-    this.props.dispatch(
-      BoardAction.updateBoard(
-        this.boardController.exportBoard(),
-        this.boardController.toPng()
-      )
-    );
+    const boardData = this.boardController.exportBoard();
+    const preview = this.boardController.toPng();
+
+    this.props.dispatch(BoardAction.updateBoard(boardData, preview));
 
     if (!this.props.board.boardMetaData) {
       this.props.dispatch(ModalAction.displayModal('BOARD_SAVE'));
@@ -70,10 +66,7 @@ class Board extends Component {
     }
 
     boardApi
-      .saveBoard(
-        this.props.board.boardMetaData.id,
-        this.boardController.exportBoard()
-      )
+      .saveBoard(this.props.board.boardMetaData.id, boardData, preview)
       .catch(response => console.log(response));
   };
 

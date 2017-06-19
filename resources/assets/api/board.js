@@ -9,9 +9,9 @@ const saveNewBoard = title => {
     });
 };
 
-const saveBoard = (boardId, data) => {
+const saveBoard = (boardId, data, preview) => {
   return axios
-    .post(`/api/board/${boardId}/version`, { data })
+    .post(`/api/board/${boardId}/version`, { data, preview })
     .then(res => res.data)
     .catch(err => {
       throw err.response;
