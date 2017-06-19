@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-import { GRID_SIZE } from '../constante';
+import { GRID_SIZE, LINK_SIZE, LINE_SIZE } from '../constante';
 
 import Vector from '../../utils/vector';
 
@@ -10,10 +10,9 @@ export const LinkType = {
 };
 
 export class LinkLine {
-  constructor(linkA, linkB, linkSize) {
+  constructor(linkA, linkB) {
     this.linkA = linkA;
     this.linkB = linkB;
-    this.linkSize = linkSize;
 
     this.fabricLines = [];
     this.refresh();
@@ -78,23 +77,21 @@ export class LinkLine {
 
       if (pos[0] !== linkARealPos.x) isXAligne = false;
       if (isXAligne) {
-        realPos.x = this.linkA.pos.x;
+        realPos.x = this.linkA.pos.x + LINK_SIZE / 2;
       } else {
         if (pos[0] === linkBRealPos.x) {
-          realPos.x = this.linkB.pos.x;
+          realPos.x = this.linkB.pos.x + LINK_SIZE / 2;
         }
       }
 
       if (pos[1] !== linkARealPos.y) isYAligne = false;
       if (isYAligne) {
-        realPos.y = this.linkA.pos.y;
+        realPos.y = this.linkA.pos.y + LINK_SIZE / 2;
       } else {
         if (pos[1] === linkBRealPos.y) {
-          realPos.y = this.linkB.pos.y;
+          realPos.y = this.linkB.pos.y + LINK_SIZE / 2;
         }
       }
-
-      console.log(realPos);
 
       if (!curPos) {
         curPos = realPos;
@@ -103,7 +100,7 @@ export class LinkLine {
 
       lines.push(
         new fabric.Line([curPos.x, curPos.y, realPos.x, realPos.y], {
-          strokeWidth: this.linkSize / 3,
+          strokeWidth: LINE_SIZE,
           selectable: false,
           stroke: color
         })
