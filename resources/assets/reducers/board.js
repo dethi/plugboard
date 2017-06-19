@@ -6,9 +6,27 @@ const board = (state = {}, action) => {
         ...state,
         clear: state.clear + 1
       };
-    case 'UPDATE_PREVIEW':
+    case 'PREPARE_BOARD_SAVE':
+      if (!state.prepare) state.prepare = 0;
       return {
         ...state,
+        prepare: state.prepare + 1
+      };
+    case 'SET_BOARD_METADATA':
+      return {
+        ...state,
+        boardMetaData: action.boardMetaData
+      };
+    case 'LOAD_BOARD':
+      return {
+        ...state,
+        boardMetaData: action.boardMetaData,
+        boardData: action.boardData
+      };
+    case 'UPDATE_BOARD':
+      return {
+        ...state,
+        boardData: action.boardData,
         preview: action.preview
       };
     default:

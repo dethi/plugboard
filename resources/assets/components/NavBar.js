@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import ModalAction from '../actions/modalActions';
+import BoardAction from '../actions/boardActions';
 
 function GuestMenu(props) {
   return (
@@ -68,7 +69,8 @@ class NavBar extends Component {
       this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
       return;
     }
-    this.props.dispatch(ModalAction.displayModal('BOARD_SAVE'));
+
+    this.props.dispatch(BoardAction.prepareBoardForSave());
   };
 
   handleLoading = () => {

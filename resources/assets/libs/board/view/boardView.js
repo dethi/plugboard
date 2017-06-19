@@ -322,6 +322,13 @@ export default class BoardView {
       return this.fabricCanvas.toDataURL('png');
     }
 
+    // Ulgy way to create a square
+    if (maxX - minX < maxY - minY) {
+      maxX = minX + maxY - minY;
+    } else {
+      maxY = minY + maxX - minX;
+    }
+
     minX *= GRID_SIZE;
     maxX = maxX * GRID_SIZE + GRID_SIZE;
     minY *= GRID_SIZE;
