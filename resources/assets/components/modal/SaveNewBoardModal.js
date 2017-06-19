@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 
+import BoardAction from '../../actions/boardActions';
+
 import boardApi from '../../api/board';
 
 class SaveNewBoardModal extends Component {
@@ -36,10 +38,20 @@ class SaveNewBoardModal extends Component {
   onApply = () => {
     return new Promise((resolve, reject) => {
       boardApi
-        .saveBoard(this.state.name)
+        .saveNewBoard(this.state.name)
         .then(data => {
           this.setState({ err: null });
-          resolve();
+          console.log('Board Save', data);
+
+          boardApi
+            .saveBoard(data.id, this.props.board.boardData)
+            .then(data => {
+              console.log('Board First version Save', data);
+              resolve();
+            })
+            .catch(response => console.log(response));
+
+          this.props.dispatch(BoardAction.setBoardMetaData(data));
         })
         .catch(response => {
           if (response.status === 422) {

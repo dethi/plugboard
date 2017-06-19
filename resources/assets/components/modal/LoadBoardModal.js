@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import Modal from './Modal';
 
+import BoardAction from '../../actions/boardActions';
+
 import boardApi from '../../api/board';
 
 class LoadBoardModal extends Component {
@@ -12,15 +14,19 @@ class LoadBoardModal extends Component {
     this.state = {
       modalName: 'BOARD_LOAD',
       boards: null,
-      boardId: null
+      boardId: null,
+      loading: false
     };
   }
 
   onDisplay = () => {
-    console.log('Display');
+    this.setState({ loading: true });
     boardApi.getBoards().then(boards => {
       console.log(boards);
-      this.setState({ boards: boards });
+      this.setState({
+        boards: boards,
+        loading: false
+      });
     });
   };
 
@@ -29,8 +35,19 @@ class LoadBoardModal extends Component {
   };
 
   onApply = () => {
-    // Change store
-    console.log(this.state);
+    if (this.state.boardId === null) return;
+
+    boardApi.getBoard(this.state.boardId).then(board => {
+      console.log(board);
+
+      const boardMetaData = { ...board };
+      delete boardMetaData.versions;
+
+      const versionData = board.versions[board.versions.length - 1];
+      const boardData = JSON.parse(versionData.data);
+
+      this.props.dispatch(BoardAction.loadBoard(boardMetaData, boardData));
+    });
   };
 
   selectBoard = id => {
@@ -50,7 +67,7 @@ class LoadBoardModal extends Component {
         </a>
       </div>
     ));*/
-    const { boards } = this.state;
+    const { boards, loading } = this.state;
 
     return (
       <Modal
@@ -58,9 +75,12 @@ class LoadBoardModal extends Component {
         title="Load Board"
         content={
           <div>
-            <span className="icon is-large">
-              <i className="fa fa-spinner fa-pulse" />
-            </span>
+            {loading &&
+              <div className="has-text-centered">
+                <span className="icon is-large">
+                  <i className="fa fa-spinner fa-pulse" />
+                </span>
+              </div>}
             {/*<div className="field has-addons">
               <p className="control">
                 <input className="input" type="text" placeholder="Recherche" />
@@ -76,12 +96,26 @@ class LoadBoardModal extends Component {
             {boards &&
               <div className="parent is-loading">
                 {boards.length === 0
-                  ? <div className="notification is-warning is-fullwidth">
-                      You don't have any saved boards
+                  ? <div className="has-text-centered">
+                      <div className="notification is-warning">
+                        <p>You don't have any saved boards</p>
+                      </div>
                     </div>
-                  : <p>
-                      lallala
-                    </p>}
+                  : <div>
+                      {/* Nice Display when preview will be here */
+                      boards.map(board => (
+                        <div key={board.id} className="child">
+                          <a onClick={() => this.selectBoard(board.id)}>
+                            {board.title}
+                            {/*<img
+                              src={preview.src}
+                              alt={preview.name}
+                              className={this.state.boardId === preview.id ? 'box' : ''}
+                            />*/}
+                          </a>
+                        </div>
+                      ))}
+                    </div>}
               </div>}
           </div>
         }

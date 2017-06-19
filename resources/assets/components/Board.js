@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 
 import PaletteAction from '../actions/paletteActions';
 import BoardAction from '../actions/boardActions';
+import ModalAction from '../actions/modalActions';
+
+import boardApi from '../api/board';
 
 import BoardController from '../libs/board/controller/boardController';
 import { evalutateBoard } from '../engine/engine';
@@ -33,9 +36,6 @@ class Board extends Component {
         this.stop();
       }
     } else if (nextProps.step !== this.props.step) {
-      // Ugly !!!!!
-      this.onBoardUpdate();
-
       this.nextStep();
     } else if (nextProps.rotate !== this.props.rotate) {
       this.rotate();
@@ -46,13 +46,35 @@ class Board extends Component {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
     } else if (nextProps.board.clear !== this.props.board.clear) {
       this.clearBoard();
+    } else if (nextProps.board.prepare !== this.props.board.prepare) {
+      this.prepareBoard();
+    } else if (
+      nextProps.board.boardMetaData !== this.props.board.boardMetaData
+    ) {
+      console.log('RELOAD');
+      this.boardController.loadFromBoard(nextProps.board.boardData);
     }
   }
 
-  onBoardUpdate = () => {
+  prepareBoard = () => {
     this.props.dispatch(
-      BoardAction.updatePreview(this.boardController.toPng())
+      BoardAction.updateBoard(
+        this.boardController.exportBoard(),
+        this.boardController.toPng()
+      )
     );
+
+    if (!this.props.board.boardMetaData) {
+      this.props.dispatch(ModalAction.displayModal('BOARD_SAVE'));
+      return;
+    }
+
+    boardApi
+      .saveBoard(
+        this.props.board.boardMetaData.id,
+        this.boardController.exportBoard()
+      )
+      .catch(response => console.log(response));
   };
 
   rotate = () => {
@@ -100,6 +122,8 @@ class Board extends Component {
   };
 
   render() {
+    const { boardMetaData } = this.props.board;
+
     const style = {
       overflow: 'auto',
       maxHeight: '100%',
@@ -107,6 +131,7 @@ class Board extends Component {
     };
     return (
       <div>
+        {boardMetaData && <div>{boardMetaData.title}</div>}
         <div className="column">
           <div style={style}>
             <canvas ref="canvas" />
