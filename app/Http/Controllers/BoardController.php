@@ -17,7 +17,7 @@ class BoardController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|alpha_dash|between:1,255'
+            'title' => 'required|alpha_dash|max:255'
         ]);
 
         $board = new Board();
@@ -30,7 +30,7 @@ class BoardController extends Controller
     public function show($id)
     {
         return Auth::user()->boards()->with(['versions' => function ($query) {
-            $query->latest()->first();
+            return $query->latest()->first();
         }])->findOrFail($id);
     }
 
