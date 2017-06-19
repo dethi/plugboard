@@ -44,7 +44,11 @@ class SaveNewBoardModal extends Component {
           console.log('Board Save', data);
 
           boardApi
-            .saveBoard(data.id, this.props.board.boardData)
+            .saveBoard(
+              data.id,
+              this.props.board.boardData,
+              this.props.board.preview
+            )
             .then(data => {
               console.log('Board First version Save', data);
               resolve();

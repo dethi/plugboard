@@ -18,10 +18,12 @@ const board = (state = {}, action) => {
         boardMetaData: action.boardMetaData
       };
     case 'LOAD_BOARD':
+      if (!state.prepare) state.load = 0;
       return {
         ...state,
         boardMetaData: action.boardMetaData,
-        boardData: action.boardData
+        boardData: action.boardData,
+        load: state.load + 1
       };
     case 'UPDATE_BOARD':
       return {
