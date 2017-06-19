@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Modal from './Modal';
 
-import SaveBoard from '../../api/saveBoard';
+import boardApi from '../../api/board';
 
-export default class LoadBoardModal extends Component {
+class LoadBoardModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      modalName: 'BOARD_LOAD',
       boardId: null
     };
   }
 
   onDisplay = () => {
     console.log('Display');
-    SaveBoard.loadBoard().then(board => {
+    boardApi.getBoards().then(board => {
       console.log(board);
     });
   };
@@ -49,7 +51,7 @@ export default class LoadBoardModal extends Component {
 
     return (
       <Modal
-        modalName="BOARD_LOAD"
+        modalName={this.state.modalName}
         title="Load Board"
         content={
           <div>
@@ -78,3 +80,5 @@ export default class LoadBoardModal extends Component {
     );
   }
 }
+
+export default connect()(LoadBoardModal);

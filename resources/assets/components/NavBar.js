@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import UserAction from '../actions/userActions';
 import ModalAction from '../actions/modalActions';
 
 function GuestMenu(props) {
@@ -65,10 +64,18 @@ class NavBar extends Component {
   };
 
   handleSaving = () => {
+    if (this.props.user === null) {
+      this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
+      return;
+    }
     this.props.dispatch(ModalAction.displayModal('BOARD_SAVE'));
   };
 
   handleLoading = () => {
+    if (this.props.user === null) {
+      this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
+      return;
+    }
     this.props.dispatch(ModalAction.displayModal('BOARD_LOAD'));
   };
 

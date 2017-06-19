@@ -6,7 +6,7 @@ import Modal from './Modal';
 import Text from '../fields/Text';
 import TextArea from '../fields/TextArea';
 
-import SaveBoard from '../../api/saveBoard';
+import boardApi from '../../api/board';
 
 class SaveNewBoardModal extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class SaveNewBoardModal extends Component {
 
   onApply = () => {
     // Change store ? Call Api ?
-    SaveBoard.saveBoard(null);
+    boardApi.saveBoard(null);
     console.log(this.state);
   };
 
