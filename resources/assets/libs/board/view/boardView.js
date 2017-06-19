@@ -164,7 +164,7 @@ export default class BoardView {
     const linkA = this.elecElements[inputInfo[0]].linkElements[inputInfo[1]];
     const linkB = this.elecElements[outputInfo[0]].linkElements[outputInfo[1]];
 
-    const link = new LinkLine(linkA, linkB, this.gridSize / 5);
+    const link = new LinkLine(linkA, linkB);
 
     linkA.linkLines.push(link);
     linkB.linkLines.push(link);
