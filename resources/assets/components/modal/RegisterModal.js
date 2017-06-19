@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 
-import UserAction from '../../actions/userActions';
 import Authentification from '../../api/authentification';
 
 class RegisterModal extends Component {

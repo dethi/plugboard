@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-const saveBoard = board => {
-  return new Promise((resolve, reject) => {
-    resolve({ success: true });
-  });
+const saveBoard = title => {
+  return axios
+    .post('/api/board', { title })
+    .then(res => res.data)
+    .catch(err => {
+      throw err.response;
+    });
 };
 
 const loadBoard = () => {

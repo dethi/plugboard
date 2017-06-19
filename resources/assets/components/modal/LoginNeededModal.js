@@ -5,7 +5,6 @@ import Modal from './Modal';
 import ModalAction from '../../actions/modalActions';
 
 class LoginNeededModal extends Component {
-
   constructor(props) {
     super(props);
 
@@ -17,12 +16,12 @@ class LoginNeededModal extends Component {
   displayLogin = () => {
     this.props.dispatch(ModalAction.hideModal(this.state.modalName));
     this.props.dispatch(ModalAction.displayModal('LOGIN'));
-  }
+  };
 
   displayRegister = () => {
     this.props.dispatch(ModalAction.hideModal(this.state.modalName));
     this.props.dispatch(ModalAction.displayModal('REGISTER'));
-  }
+  };
 
   onApply = () => {
     this.displayLogin();
