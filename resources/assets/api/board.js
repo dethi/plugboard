@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const saveBoard = board => {
   return new Promise((resolve, reject) => {
     resolve({ success: true });
@@ -64,7 +66,15 @@ const loadBoard = () => {
   });
 };
 
+const getBoards = () => {
+  return axios.get('/api/board').then(res => res.data).catch(err => {
+    console.log(err);
+    throw err.response;
+  });
+};
+
 export default {
   saveBoard,
-  loadBoard
+  loadBoard,
+  getBoards
 };
