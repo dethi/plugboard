@@ -10,10 +10,15 @@
   
     width: 33%;
      padding: 10px;
+    
 }
 
 
 .board-objectif {
     margin: 10px;
     padding: 10px;
+}
+.element:nth-child(n+3) {
+   opacity: 1;
+   pointer-events:none;
 }
