@@ -8,6 +8,7 @@
     - php-mongodb
     - php-zip
     - php-xml
+    - php-gd
     - composer
   tags: php
 
