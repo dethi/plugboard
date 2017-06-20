@@ -1,54 +1,120 @@
 import { fabric } from 'fabric';
 
+import { GRID_SIZE, LINK_SIZE, LINE_SIZE } from '../constante';
+
+import Vector from '../../utils/vector';
+
 export const LinkType = {
   INPUT: 0,
   OUTPUT: 1
 };
 
 export class LinkLine {
-  constructor(linkA, linkB, linkSize) {
+  constructor(linkA, linkB) {
     this.linkA = linkA;
     this.linkB = linkB;
-    this.linkSize = linkSize;
 
-    this.fabricLine = this.createLine();
-    this.fabricLine.stroke = 'red';
+    this.fabricLines = [];
+    this.refresh();
 
     this.on = false;
   }
 
   refresh() {
     // ULGY !!!!
-    this.linkA.elementView.boardView.fabricCanvas.remove(this.fabricLine);
-    this.fabricLine = this.createLine();
-    this.fabricLine.stroke = this.on ? 'green' : 'red';
-    this.linkA.elementView.boardView.fabricCanvas.add(this.fabricLine);
+    this.fabricLines.forEach(line =>
+      this.linkA.elementView.boardView.fabricCanvas.remove(line));
+
+    this.path = this.linkA.elementView.boardView.controller.gridController.getPath(
+      {
+        x: Math.floor(this.linkA.pos.x / GRID_SIZE),
+        y: Math.floor(this.linkA.pos.y / GRID_SIZE)
+      },
+      {
+        x: Math.floor(this.linkB.pos.x / GRID_SIZE),
+        y: Math.floor(this.linkB.pos.y / GRID_SIZE)
+      }
+    );
+    this.fabricLines = this.createLines(this.on ? 'green' : 'red');
+
+    this.fabricLines.forEach(line =>
+      this.linkA.elementView.boardView.fabricCanvas.add(line));
   }
 
   setState(newState) {
-    this.on = newState === 1;
+    const newOn = newState === 1;
+
+    if (this.on === newOn) return;
+
+    this.on = newOn;
     this.refresh();
   }
 
-  createLine() {
-    return new fabric.Line(
-      [
-        this.linkA.pos.x + this.linkSize / 2,
-        this.linkA.pos.y + this.linkSize / 2 - this.linkSize / 6,
-        this.linkB.pos.x,
-        this.linkB.pos.y + this.linkSize / 2 - this.linkSize / 6
-      ],
-      {
-        strokeWidth: this.linkSize / 3,
-        selectable: false
-      }
+  createLines(color) {
+    const lines = [];
+
+    let curPos = null;
+
+    const linkARealPos = new Vector(
+      Math.floor(this.linkA.pos.x / GRID_SIZE),
+      Math.floor(this.linkA.pos.y / GRID_SIZE)
     );
+
+    const linkBRealPos = new Vector(
+      Math.floor(this.linkB.pos.x / GRID_SIZE),
+      Math.floor(this.linkB.pos.y / GRID_SIZE)
+    );
+
+    let isXAligne = true;
+    let isYAligne = true;
+
+    this.path.forEach(pos => {
+      const realPos = new Vector(
+        pos.x * GRID_SIZE + GRID_SIZE / 2,
+        pos.y * GRID_SIZE + GRID_SIZE / 2
+      );
+
+      if (pos.x !== linkARealPos.x) isXAligne = false;
+      if (isXAligne) {
+        realPos.x = this.linkA.pos.x + LINK_SIZE / 2;
+      } else {
+        if (pos.x === linkBRealPos.x) {
+          realPos.x = this.linkB.pos.x + LINK_SIZE / 2;
+        }
+      }
+
+      if (pos.y !== linkARealPos.y) isYAligne = false;
+      if (isYAligne) {
+        realPos.y = this.linkA.pos.y + LINK_SIZE / 2;
+      } else {
+        if (pos.y === linkBRealPos.y) {
+          realPos.y = this.linkB.pos.y + LINK_SIZE / 2;
+        }
+      }
+
+      if (!curPos) {
+        curPos = realPos;
+        return;
+      }
+
+      lines.push(
+        new fabric.Line([curPos.x, curPos.y, realPos.x, realPos.y], {
+          strokeWidth: LINE_SIZE,
+          selectable: false,
+          stroke: color
+        })
+      );
+      curPos = realPos;
+    });
+
+    return lines;
   }
 
   destroy() {
     this.linkA.linkLines.splice(this.linkA.linkLines.indexOf(this), 1);
     this.linkB.linkLines.splice(this.linkB.linkLines.indexOf(this), 1);
-    this.linkA.elementView.boardView.fabricCanvas.remove(this.fabricLine);
+    this.fabricLines.forEach(line =>
+      this.linkA.elementView.boardView.fabricCanvas.remove(line));
   }
 }
 
@@ -59,6 +125,8 @@ export class LinkView {
     this.linkType = linkType;
     this.linkSize = linkSize;
     this.linkLines = [];
+
+    this.pos = null;
 
     this.fabricRect = new fabric.Rect({
       width: this.linkSize,
@@ -75,6 +143,8 @@ export class LinkView {
   }
 
   move(newPos) {
+    if (this.pos && this.pos.x === newPos.x && this.pos.y === newPos.y) return;
+
     this.pos = newPos;
 
     this.fabricRect.left = this.pos.x;

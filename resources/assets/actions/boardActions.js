@@ -4,14 +4,39 @@ const clearBoard = () => {
   };
 };
 
-const updatePreview = preview => {
+const prepareBoardForSave = () => {
   return {
-    type: 'UPDATE_PREVIEW',
-    preview: preview
+    type: 'PREPARE_BOARD_SAVE'
+  };
+};
+
+const setBoardMetaData = boardMetaData => {
+  return {
+    type: 'SET_BOARD_METADATA',
+    boardMetaData
+  };
+};
+
+const loadBoard = (boardMetaData, boardData) => {
+  return {
+    type: 'LOAD_BOARD',
+    boardMetaData,
+    boardData
+  };
+};
+
+const updateBoard = (boardData, preview) => {
+  return {
+    type: 'UPDATE_BOARD',
+    boardData,
+    preview
   };
 };
 
 export default {
   clearBoard,
-  updatePreview
+  prepareBoardForSave,
+  setBoardMetaData,
+  loadBoard,
+  updateBoard
 };

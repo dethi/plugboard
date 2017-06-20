@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Modal from './Modal';
-import Text from '../fields/Text';
-import TextArea from '../fields/TextArea';
 
-import SaveBoard from '../../api/saveBoard';
+import BoardAction from '../../actions/boardActions';
+
+import boardApi from '../../api/board';
 
 class SaveNewBoardModal extends Component {
   constructor(props) {
@@ -14,29 +14,58 @@ class SaveNewBoardModal extends Component {
 
     this.state = {
       name: '',
-      desc: ''
+      err: null
     };
   }
 
-  updateName = event => {
-    this.setState({ name: event.target.value });
+  handleInputChange = event => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   };
 
-  updateDesc = event => {
-    this.setState({ desc: event.target.value });
-  };
-
-  onCancel = () => {
+  onDisplay = () => {
     this.setState({
       name: '',
-      desc: ''
+      err: null
     });
   };
 
   onApply = () => {
-    // Change store ? Call Api ?
-    SaveBoard.saveBoard(null);
-    console.log(this.state);
+    return new Promise((resolve, reject) => {
+      boardApi
+        .saveNewBoard(this.state.name)
+        .then(data => {
+          this.setState({ err: null });
+          console.log('Board Save', data);
+
+          boardApi
+            .saveBoard(
+              data.id,
+              this.props.board.boardData,
+              this.props.board.preview
+            )
+            .then(data => {
+              console.log('Board First version Save', data);
+              resolve();
+            })
+            .catch(response => console.log(response));
+
+          this.props.dispatch(BoardAction.setBoardMetaData(data));
+        })
+        .catch(response => {
+          if (response.status === 422) {
+            const errFormat = [];
+            Object.values(response.data).forEach(err => errFormat.push(err[0]));
+            this.setState({ err: errFormat });
+            reject();
+          }
+        });
+    });
   };
 
   render() {
@@ -45,26 +74,32 @@ class SaveNewBoardModal extends Component {
         modalName="BOARD_SAVE"
         title="Save new Board"
         content={
-          <div>
+          <div className="content">
             {this.props.board.preview &&
               <div>
                 <img src={this.props.board.preview} alt="Preview" />
               </div>}
-            <Text
-              label="Name"
-              value={this.state.name}
-              onChange={this.updateName}
-            />
-            <TextArea
-              label="Description"
-              value={this.state.desc}
-              onChange={this.updateDesc}
-            />
+            <div className="field">
+              <div className="control">
+                <input
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                  label="Name"
+                  className="input"
+                  name="name"
+                  type="text"
+                  placeholder="Board Name"
+                  required
+                  autoFocus
+                />
+              </div>
+            </div>
           </div>
         }
         success="Save"
         onApply={this.onApply}
-        onCancel={this.onCancel}
+        onDisplay={this.onDisplay}
+        err={this.state.err}
       />
     );
   }

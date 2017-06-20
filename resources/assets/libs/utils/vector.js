@@ -7,4 +7,12 @@ export default class Vector {
   equals(other) {
     return this.x === other.x && this.y === other.y;
   }
+
+  addVector(other) {
+    return new Vector(this.x + other.x, this.y + other.y);
+  }
+
+  add(x, y) {
+    return new Vector(this.x + x, this.y + y);
+  }
 }

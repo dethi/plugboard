@@ -1,22 +1,55 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import Modal from './Modal';
 
-import SaveBoard from '../../api/saveBoard';
+import BoardAction from '../../actions/boardActions';
 
-export default class LoadBoardModal extends Component {
+import boardApi from '../../api/board';
+
+function SelectableElement(props) {
+  return (
+    <a
+      className={classNames('box', {
+        'box-is-active': props.selected
+      })}
+      onClick={props.onClick}
+    >
+      <article className="media">
+        <div className="media-content">
+          <figure className="image">
+            <img src={props.img} alt="Board Preview" />
+          </figure>
+          <div className="content has-text-centered">
+            <strong className="title">{props.title}</strong>
+          </div>
+        </div>
+      </article>
+    </a>
+  );
+}
+
+class LoadBoardModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      boardId: null
+      modalName: 'BOARD_LOAD',
+      boards: null,
+      boardId: null,
+      loading: false
     };
   }
 
   onDisplay = () => {
-    console.log('Display');
-    SaveBoard.loadBoard().then(board => {
-      console.log(board);
+    this.setState({ loading: true });
+    boardApi.getBoards().then(boards => {
+      console.log(boards);
+      this.setState({
+        boards: boards,
+        loading: false
+      });
     });
   };
 
@@ -25,8 +58,19 @@ export default class LoadBoardModal extends Component {
   };
 
   onApply = () => {
-    // Change store
-    console.log(this.state);
+    if (this.state.boardId === null) return;
+
+    boardApi.getBoard(this.state.boardId).then(board => {
+      console.log(board);
+
+      const boardMetaData = { ...board };
+      delete boardMetaData.versions;
+
+      const versionData = board.versions[board.versions.length - 1];
+      const boardData = JSON.parse(versionData.data);
+
+      this.props.dispatch(BoardAction.loadBoard(boardMetaData, boardData));
+    });
   };
 
   selectBoard = id => {
@@ -35,25 +79,21 @@ export default class LoadBoardModal extends Component {
   };
 
   render() {
-    /*const Previews = this.props.previews.map(preview => (
-      <div key={preview.id} className="child">
-        <a onClick={() => this.selectBoard(preview.id)}>
-          <img
-            src={preview.src}
-            alt={preview.name}
-            className={this.state.boardId === preview.id ? 'box' : ''}
-          />
-        </a>
-      </div>
-    ));*/
+    const { boards, loading } = this.state;
 
     return (
       <Modal
-        modalName="BOARD_LOAD"
+        modalName={this.state.modalName}
         title="Load Board"
         content={
-          <div>
-            <div className="field has-addons">
+          <div className="load-board-modal">
+            {loading &&
+              <div className="has-text-centered">
+                <span className="icon is-large">
+                  <i className="fa fa-spinner fa-pulse" />
+                </span>
+              </div>}
+            {/*<div className="field has-addons">
               <p className="control">
                 <input className="input" type="text" placeholder="Recherche" />
               </p>
@@ -64,10 +104,27 @@ export default class LoadBoardModal extends Component {
                   </span>
                 </button>
               </p>
-            </div>
-            <div className="parent">
-              {/*Previews*/}
-            </div>
+            </div>*/}
+            {boards &&
+              <div>
+                {boards.length === 0
+                  ? <div className="has-text-centered">
+                      <div className="notification is-warning">
+                        <p>You don't have any saved boards</p>
+                      </div>
+                    </div>
+                  : <div className="parent">
+                      {boards.map(board => (
+                        <SelectableElement
+                          key={board.id}
+                          title={board.title}
+                          img={board.preview_url}
+                          selected={board.id === this.state.boardId}
+                          onClick={() => this.selectBoard(board.id)}
+                        />
+                      ))}
+                    </div>}
+              </div>}
           </div>
         }
         success="Load"
@@ -78,3 +135,5 @@ export default class LoadBoardModal extends Component {
     );
   }
 }
+
+export default connect()(LoadBoardModal);

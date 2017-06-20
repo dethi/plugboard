@@ -31,7 +31,6 @@ store.subscribe(() => {
 
 ReactDOM.render(
   <Provider store={store}>
-
     <BrowserRouter>
       <div>
         <Route exact={true} path="/" component={Index} />

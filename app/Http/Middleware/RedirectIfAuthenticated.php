@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
             if ($request->ajax()) {
                 return response([
                     'code' => 'guest_only',
-                    'error' => 'Guest only'
+                    'status' => 'Guest only'
                 ], 403);
             }
             return redirect('/app');

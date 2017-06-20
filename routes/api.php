@@ -15,4 +15,12 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'auth', 'middleware' => ['guest:api']], function () {
     Route::post('/login', 'AuthController@login');
+    Route::post('/register', 'AuthController@register');
+});
+
+Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
+    Route::get('', 'BoardController@index');
+    Route::get('{id}', 'BoardController@show');
+    Route::post('', 'BoardController@create');
+    Route::post('{id}/version', 'BoardController@add_version');
 });

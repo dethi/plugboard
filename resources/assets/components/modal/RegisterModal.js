@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 
-import UserAction from '../../actions/userActions';
 import Authentification from '../../api/authentification';
 
-class LoginModal extends Component {
+class RegisterModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      name: '',
       email: '',
       password: '',
+      password_confirmation: '',
       err: null
     };
   }
@@ -28,17 +29,23 @@ class LoginModal extends Component {
 
   onCancel = () => {
     this.setState({
+      name: '',
       email: '',
       password: '',
+      password_confirmation: '',
       err: null
     });
   };
 
   onApply = () => {
     return new Promise((resolve, reject) => {
-      Authentification.login(this.state.email, this.state.password)
-        .then(user => {
-          this.props.dispatch(UserAction.login(user));
+      Authentification.register(
+        this.state.name,
+        this.state.email,
+        this.state.password,
+        this.state.password_confirmation
+      )
+        .then(data => {
           this.setState({ err: null });
           resolve();
         })
@@ -47,12 +54,8 @@ class LoginModal extends Component {
             const errFormat = [];
             Object.values(response.data).forEach(err => errFormat.push(err[0]));
             this.setState({ err: errFormat });
+            reject();
           }
-          if (response.status === 401) {
-            this.setState({ err: [response.data.status] });
-          }
-
-          reject();
         });
     });
   };
@@ -60,10 +63,28 @@ class LoginModal extends Component {
   render() {
     return (
       <Modal
-        modalName="LOGIN"
-        title="Login"
+        modalName="REGISTER"
+        title="Register"
         content={
           <div className="content">
+            <div className="field">
+              <div className="control has-icon">
+                <input
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                  className="input"
+                  name="name"
+                  type="text"
+                  placeholder="User Name"
+                  required
+                  autoFocus
+                />
+                <span className="icon is-small">
+                  <i className="fa fa-user" />
+                </span>
+              </div>
+            </div>
+
             <div className="field">
               <div className="control has-icon">
                 <input
@@ -74,7 +95,6 @@ class LoginModal extends Component {
                   type="email"
                   placeholder="Email"
                   required
-                  autoFocus
                 />
                 <span className="icon is-small">
                   <i className="fa fa-envelope" />
@@ -100,15 +120,24 @@ class LoginModal extends Component {
             </div>
 
             <div className="field">
-              <p className="has-text-centered">
-                <a className="button is-link" href="/password/reset">
-                  Forgot Password?
-                </a>
-              </p>
+              <div className="control has-icon">
+                <input
+                  value={this.state.password_confirmation}
+                  onChange={this.handleInputChange}
+                  className="input"
+                  name="password_confirmation"
+                  type="password"
+                  placeholder="Confirm Password"
+                  required
+                />
+                <span className="icon is-small">
+                  <i className="fa fa-lock" />
+                </span>
+              </div>
             </div>
           </div>
         }
-        success="Login"
+        success="Register"
         onApply={this.onApply}
         onCancel={this.onCancel}
         err={this.state.err}
@@ -117,4 +146,4 @@ class LoginModal extends Component {
   }
 }
 
-export default connect()(LoginModal);
+export default connect()(RegisterModal);

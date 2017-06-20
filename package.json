@@ -9,7 +9,7 @@
     "fix": "eslint --fix --ext .js resources/assets/"
   },
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.16.1",
     "bulma": "^0.4.0",
     "classnames": "^2.2.5",
     "fabric": "^1.7.9",

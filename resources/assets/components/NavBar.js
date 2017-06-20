@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import UserAction from '../actions/userActions';
 import ModalAction from '../actions/modalActions';
+import BoardAction from '../actions/boardActions';
 
 function GuestMenu(props) {
   return (
     <div className="nav-right nav-menu">
-      <a className="nav-item is-tab" href="/register">
+      <a className="nav-item is-tab" onClick={props.onRegister}>
         Register
       </a>
       <a className="nav-item is-tab" onClick={props.onLogin}>
@@ -20,7 +20,8 @@ function GuestMenu(props) {
 }
 
 GuestMenu.PropTypes = {
-  onLogin: PropTypes.func.isRequired
+  onLogin: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired
 };
 
 function LoggedMenu(props) {
@@ -51,8 +52,12 @@ class NavBar extends Component {
     this.props.dispatch(ModalAction.displayModal('LOGIN'));
   };
 
+  handleRegister = () => {
+    this.props.dispatch(ModalAction.displayModal('REGISTER'));
+  };
+
   handleLogout = () => {
-    this.props.dispatch(UserAction.logout());
+    this.props.dispatch(ModalAction.displayModal('LOGOUT'));
   };
 
   handleDelete = () => {
@@ -60,10 +65,19 @@ class NavBar extends Component {
   };
 
   handleSaving = () => {
-    this.props.dispatch(ModalAction.displayModal('BOARD_SAVE'));
+    if (this.props.user === null) {
+      this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
+      return;
+    }
+
+    this.props.dispatch(BoardAction.prepareBoardForSave());
   };
 
   handleLoading = () => {
+    if (this.props.user === null) {
+      this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
+      return;
+    }
     this.props.dispatch(ModalAction.displayModal('BOARD_LOAD'));
   };
 
@@ -117,7 +131,10 @@ class NavBar extends Component {
           </div>
 
           {!this.props.user
-            ? <GuestMenu onLogin={this.handleLogin} />
+            ? <GuestMenu
+                onLogin={this.handleLogin}
+                onRegister={this.handleRegister}
+              />
             : <LoggedMenu
                 onLogout={this.handleLogout}
                 user={this.props.user}
