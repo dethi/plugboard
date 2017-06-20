@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
-
+//Doit être encapsuler dans une modal
 export default class ItemDetails extends Component {
   render() {
     return (
-      <div className="modal">
-        <div className="modal-background" />
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">Modal title</p>
-            <button className="delete" />
-          </header>
-          <section className="modal-card-body">
-            <figure className="image is-128x128">
-              <img
-                src="http://bulma.io/images/placeholders/128x128.png"
-                alt="screenshot"
-              />
-            </figure>
-            <div className="has-text-centered">
-              Challenge 1
+      <div className="card">
+        <div className="card-image">
+          <figure className="image is-square">
+            <img
+              src="http://bulma.io/images/placeholders/256x256.png"
+              alt="screenshot"
+            />
+          </figure>
+        </div>
+        <div className="card-content">
+          <div className="media">
+            <div className="media-right">
+              <div className="icon">
+                <i className="fa fa-star-o" />
+                <i className="fa fa-star-o" />
+                <i className="fa fa-star-o" />
+              </div>
             </div>
-            <p>Blabla description</p>
-          </section>
+          </div>
+          <div className="content has-text-centered">
+            <h1 className="title is-1 is-spaced">
+              Challenge 1
+            </h1>
+            <h2 className="subtitle is-4">
+              Voici la description
+            </h2>
+          </div>
         </div>
       </div>
     );
