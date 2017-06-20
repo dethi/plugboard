@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Board extends Model
@@ -10,6 +11,17 @@ class Board extends Model
     use HybridRelations;
 
     protected $connection = 'mysql';
+
+    protected $hidden = [
+        'last_version_id', 'preview_path'
+    ];
+
+    protected $appends = ['preview_url'];
+
+    public function getPreviewUrlAttribute()
+    {
+        return Storage::url($this->preview_path);
+    }
 
     public function user()
     {
