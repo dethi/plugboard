@@ -102,16 +102,11 @@ class LoadBoardModal extends Component {
                       </div>
                     </div>
                   : <div>
-                      {/* Nice Display when preview will be here */
-                      boards.map(board => (
+                      {boards.map(board => (
                         <div key={board.id} className="child">
                           <a onClick={() => this.selectBoard(board.id)}>
                             {board.title}
-                            {/*<img
-                              src={preview.src}
-                              alt={preview.name}
-                              className={this.state.boardId === preview.id ? 'box' : ''}
-                            />*/}
+                            <img src={board.preview_url} alt="Board Preview" />
                           </a>
                         </div>
                       ))}
