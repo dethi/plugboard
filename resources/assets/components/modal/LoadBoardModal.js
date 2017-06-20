@@ -1,11 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import Modal from './Modal';
 
 import BoardAction from '../../actions/boardActions';
 
 import boardApi from '../../api/board';
+
+function SelectableElement(props) {
+  return (
+    <a
+      className={classNames('box', {
+        'box-is-active': props.selected
+      })}
+      onClick={props.onClick}
+    >
+      <article className="media">
+        <div className="media-content">
+          <figure className="image">
+            <img src={props.img} alt="Board Preview" />
+          </figure>
+          <div className="content has-text-centered">
+            <strong className="title">{props.title}</strong>
+          </div>
+        </div>
+      </article>
+    </a>
+  );
+}
 
 class LoadBoardModal extends Component {
   constructor(props) {
@@ -56,17 +79,6 @@ class LoadBoardModal extends Component {
   };
 
   render() {
-    /*const Previews = this.props.previews.map(preview => (
-      <div key={preview.id} className="child">
-        <a onClick={() => this.selectBoard(preview.id)}>
-          <img
-            src={preview.src}
-            alt={preview.name}
-            className={this.state.boardId === preview.id ? 'box' : ''}
-          />
-        </a>
-      </div>
-    ));*/
     const { boards, loading } = this.state;
 
     return (
@@ -74,7 +86,7 @@ class LoadBoardModal extends Component {
         modalName={this.state.modalName}
         title="Load Board"
         content={
-          <div>
+          <div className="load-board-modal">
             {loading &&
               <div className="has-text-centered">
                 <span className="icon is-large">
@@ -94,21 +106,22 @@ class LoadBoardModal extends Component {
               </p>
             </div>*/}
             {boards &&
-              <div className="parent is-loading">
+              <div>
                 {boards.length === 0
                   ? <div className="has-text-centered">
                       <div className="notification is-warning">
                         <p>You don't have any saved boards</p>
                       </div>
                     </div>
-                  : <div>
+                  : <div className="parent">
                       {boards.map(board => (
-                        <div key={board.id} className="child">
-                          <a onClick={() => this.selectBoard(board.id)}>
-                            {board.title}
-                            <img src={board.preview_url} alt="Board Preview" />
-                          </a>
-                        </div>
+                        <SelectableElement
+                          key={board.id}
+                          title={board.title}
+                          img={board.preview_url}
+                          selected={board.id === this.state.boardId}
+                          onClick={() => this.selectBoard(board.id)}
+                        />
                       ))}
                     </div>}
               </div>}

@@ -28,6 +28,9 @@ php artisan key:generate
 
 # run migration
 php artisan migrate
+
+# link storage
+php artisan storage:link
 ```
 
 ### Front-End
