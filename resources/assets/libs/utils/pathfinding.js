@@ -101,8 +101,8 @@ export default class Pathfinding {
     let next = path[1];
     let last;
 
-    let dx = start.x - next.x;
-    let dy = start.y - next.y;
+    let dx = next.x - start.x;
+    let dy = next.y - start.y;
     let ldx;
     let ldy;
 
