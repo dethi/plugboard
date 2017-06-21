@@ -16,7 +16,7 @@ if [ $TRAVIS_BRANCH == 'develop' ]; then
     )
 
     git remote add deploy 'deploy@plugboard.xyz:~/plugboard_beta'
-    ssh-agent bash -c 'ssh-add "$DEPLOY_KEY" && git push --force deploy develop:master'
+    ssh-agent bash -c 'ssh-add "$DEPLOY_KEY" && git push --force deploy master'
 
     echo '=== Deployment completed!'
 fi

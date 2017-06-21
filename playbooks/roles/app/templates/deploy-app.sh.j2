@@ -16,7 +16,7 @@ if [ $TRAVIS_BRANCH == '{{app.git_branch}}' ]; then
     )
 
     git remote add deploy 'deploy@plugboard.xyz:~/{{app.app_id}}'
-    ssh-agent bash -c 'ssh-add "$DEPLOY_KEY" && git push --force deploy {{app.git_branch}}:master'
+    ssh-agent bash -c 'ssh-add "$DEPLOY_KEY" && git push --force deploy master'
 
     echo '=== Deployment completed!'
 fi
