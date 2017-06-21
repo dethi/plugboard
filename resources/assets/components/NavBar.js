@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 import ModalAction from '../actions/modalActions';
 import BoardAction from '../actions/boardActions';
@@ -28,14 +29,14 @@ GuestMenu.PropTypes = {
 function LoggedMenu(props) {
   return (
     <div className="nav-right nav-menu">
-      <a className="nav-item is-tab">
-        {/*
+      {/*
         <figure className="image is-24x24" style={{ marginRight: '8px' }}>
           <img src={props.profile} alt="Profile" />
         </figure>
         */}
+      <NavLink className="nav-item is-tab" to="/profile">
         {props.user.name}
-      </a>
+      </NavLink>
       <a className="nav-item is-tab" onClick={props.onLogout}>
         Log out
       </a>

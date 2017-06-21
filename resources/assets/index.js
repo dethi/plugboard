@@ -16,7 +16,7 @@ import App from './components/App';
 import Index from './components/home';
 import Contact from './components/Contact';
 import ListObjectif from './components/objectif/ListObjectif';
-
+import Profile from './components/Profile';
 import './css/app.scss';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -42,6 +42,7 @@ ReactDOM.render(
         <Route path="/app" component={App} />
         <Route path="/contact" component={Contact} />
         <Route path="/objectif" component={ListObjectif} />
+        <Route path="/profile" component={Profile} />
       </div>
     </BrowserRouter>
   </Provider>,

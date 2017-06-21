@@ -135,6 +135,7 @@ textarea {
     max-height: 300px;
 }
 
+
 .board-title {
     width: 20%;
     padding: 5px;
@@ -164,6 +165,18 @@ textarea {
 .on-canvas-left
 {
     left: 0px;
+}
+
+
+
+.profile {
+  .image-is-centered {
+    margin-bottom: 10px;
+  }
+}
+.image-is-centered {
+  margin-right: auto;
+  margin-left: auto;
 }
 
 // html, body {
