@@ -33,6 +33,10 @@ class Profile extends Component {
         <div className="columns">
           <div className="column is-one-quarter" />
           <div className="column is-half">
+            <h3 className="level-profile title is-3 has-text-centered">
+              Level 3
+            </h3>
+            <progress className="progress " value="15" max="100">15%</progress>
             <table className="table">
               <thead>
                 <tr>
