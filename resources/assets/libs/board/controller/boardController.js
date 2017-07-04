@@ -83,11 +83,12 @@ export default class BoardController {
     const elId = this.gridController.get(oldPos);
     const el = this.board.elements[elId];
 
-    if (!this.gridController.canMove(el, newPos)) return false;
+    if (!this.gridController.canMove(el, this.board.specs[el.specName], newPos))
+      return false;
 
     el.pos = newPos;
 
-    this.gridController.moveElement(el, oldPos);
+    this.gridController.moveElement(el, this.board.specs[el.specName], oldPos);
     this.boardView.moveElement(elId, newPos);
 
     return true;
@@ -154,7 +155,7 @@ export default class BoardController {
     this.board.elements[newElId] = newEl;
     this.boardView.addElement(pos, newEl, spec);
 
-    this.gridController.setElement(newEl);
+    this.gridController.setElement(newEl, spec);
 
     if (this.board.specs[spec.name] === undefined) this.addInSpecs(spec);
 
@@ -166,7 +167,7 @@ export default class BoardController {
   removeElement(elId) {
     const el = this.board.elements[elId];
 
-    this.gridController.freeEl(el);
+    this.gridController.freeEl(el, this.board.specs[el.specName]);
 
     // Unlink Output
     Object.keys(el.output).forEach(outputName => {
