@@ -24,3 +24,8 @@ Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::post('', 'BoardController@create');
     Route::post('{id}/version', 'BoardController@add_version');
 });
+
+Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () {
+    Route::get('', 'ComponentController@index');
+    Route::post('', 'ComponentController@create');
+});

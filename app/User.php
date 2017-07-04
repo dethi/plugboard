@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Board');
     }
+
+    public function components()
+    {
+        return $this->hasMany('App\Component');
+    }
 }
