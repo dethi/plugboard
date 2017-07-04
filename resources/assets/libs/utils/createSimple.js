@@ -11,11 +11,11 @@ export function createSimplePalette() {
   palette.push(new OutputElementSpec());
 
   palette.push(
-    new GateElementSpec('GATE_NOT', ['A'], ['B'], 'Not', [[0, 1], [1, 0]])
+    new GateElementSpec('GATE_NOT', ['A'], ['B'], 'red', [[0, 1], [1, 0]])
   );
 
   palette.push(
-    new GateElementSpec('GATE_AND', ['A', 'B'], ['C'], 'And', [
+    new GateElementSpec('GATE_AND', ['A', 'B'], ['C'], 'red', [
       [0, 0, 0],
       [0, 1, 0],
       [1, 0, 0],
@@ -24,7 +24,7 @@ export function createSimplePalette() {
   );
 
   palette.push(
-    new GateElementSpec('GATE_OR', ['A', 'B'], ['C'], 'Or', [
+    new GateElementSpec('GATE_OR', ['A', 'B'], ['C'], 'red', [
       [0, 0, 0],
       [0, 1, 1],
       [1, 0, 1],
@@ -33,7 +33,7 @@ export function createSimplePalette() {
   );
 
   palette.push(
-    new GateElementSpec('GATE_XOR', ['A', 'B'], ['C'], 'Xor', [
+    new GateElementSpec('GATE_XOR', ['A', 'B'], ['C'], 'red', [
       [0, 0, 0],
       [0, 1, 1],
       [1, 0, 1],

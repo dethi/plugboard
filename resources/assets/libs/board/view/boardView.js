@@ -134,15 +134,15 @@ export default class BoardView {
     this.incIsLoading(1);
 
     newElementView.placeOnBoard(this, pos);
-    newElementView.initComponent().then(() => {
-      this.elecElements[elementModel.id] = newElementView;
+    newElementView.initComponent();
 
-      newElementView.getFabricElements().forEach(el => {
-        this.fabricCanvas.add(el);
-      });
+    this.elecElements[elementModel.id] = newElementView;
 
-      this.incIsLoading(-1);
+    newElementView.getFabricElements().forEach(el => {
+      this.fabricCanvas.add(el);
     });
+
+    this.incIsLoading(-1);
   }
 
   removeElement(elId) {

@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import PaletteAction from '../../actions/paletteActions';
-import { createSimplePalette } from '../../libs/utils/createSimple';
-import { ImageElementProvider } from '../../libs/utils/imageElementProvider';
+import PaletteAction from '../actions/paletteActions';
+import { createSimplePalette } from '../libs/utils/createSimple';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -17,11 +16,11 @@ function SelectableElement(props) {
       })}
       onClick={props.onClick}
     >
-      <figure className="media-left">
+      {/*<figure className="media-left">
         <p className="image is-24x24">
           <img src={props.img} alt={props.name} />
         </p>
-      </figure>
+      </figure>*/}
       {capitalize(props.name)}
     </a>
   );
@@ -66,7 +65,6 @@ class Palette extends Component {
               <SelectableElement
                 key={index}
                 name={e.name}
-                img={ImageElementProvider.getElementImage(e.img)}
                 selected={index === selectedBlueprintIndex}
                 onClick={() => this.updateSelectedBlueprint(index)}
               />

@@ -12,6 +12,7 @@ export default class GridController {
 
   setElement(el) {
     this.set(el.pos, el.id);
+    console.log(el);
   }
 
   canMove(el, newPos) {
