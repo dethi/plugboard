@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 
-import BoardAction from '../../actions/boardActions';
-
 import componentApi from '../../api/component';
 
 class SaveComponent extends Component {

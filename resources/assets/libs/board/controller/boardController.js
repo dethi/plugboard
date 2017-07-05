@@ -8,6 +8,8 @@ import BoardView from '../view/boardView';
 
 import { Element } from '../model/element';
 
+import Vector from '../../utils/vector';
+
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
 export default class BoardController {
@@ -55,7 +57,7 @@ export default class BoardController {
       const el = board.elements[id];
 
       const newEl = this.addElement(
-        el.pos,
+        new Vector(el.pos.x, el.pos.y),
         board.specs[el.specName],
         el.rotate
       );
@@ -63,14 +65,11 @@ export default class BoardController {
       idMapping[id] = newEl.id;
     });
 
-    this.boardView.whenReady(() => {
-      // Add Link
-      Object.keys(board.elements).forEach(id => {
-        const el = board.elements[id];
-        Object.keys(el.input).forEach(inputName => {
-          const outputInfo = el.input[inputName];
-          this.addLink(outputInfo, [idMapping[id], inputName]);
-        });
+    Object.keys(board.elements).forEach(id => {
+      const el = board.elements[id];
+      Object.keys(el.input).forEach(inputName => {
+        const outputInfo = el.input[inputName];
+        this.addLink(outputInfo, [idMapping[id], inputName]);
       });
     });
   }
