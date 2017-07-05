@@ -50,6 +50,25 @@
     }
 }
 
+.save-component {
+    overflow:hidden;
+    padding-top: 10px;
+
+    .range-column {
+        padding: 0;
+    }
+
+    input.range-verticale {
+        -webkit-appearance: slider-vertical;
+        max-width: 50px;
+        margin: auto;
+    }
+
+    input.range-horizontale {
+        margin: auto;
+    }
+}
+
 textarea {
     resize: vertical;
     min-height: 80px;
