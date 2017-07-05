@@ -32,7 +32,7 @@ class ComponentController extends Controller
         return $component;
     }
 
-public function show($id)
+    public function show($id)
     {
         return Auth::user()->components()->with(['versions' => function ($query) {
             return $query->latest()->first();
