@@ -11,7 +11,7 @@ import axios from 'axios';
 import plugboardReducers from './reducers';
 
 import App from './components/App';
-import Index from './components/Index';
+import Index from './components/home';
 import Contact from './components/Contact';
 import './css/app.scss';
 
