@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import PaletteAction from '../actions/paletteActions';
-import { createSimplePalette } from '../libs/utils/createSimple';
+import PaletteAction from '../../actions/paletteActions';
+import { createSimplePalette } from '../../libs/utils/createSimple';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -64,7 +64,7 @@ class Palette extends Component {
             blueprints.map((e, index) => (
               <SelectableElement
                 key={index}
-                name={e.name}
+                name={e.title}
                 selected={index === selectedBlueprintIndex}
                 onClick={() => this.updateSelectedBlueprint(index)}
               />

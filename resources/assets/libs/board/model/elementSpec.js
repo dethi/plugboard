@@ -1,5 +1,6 @@
 export class ElementSpec {
-  constructor(name, input, output, color, dimX, dimY) {
+  constructor(title, name, input, output, color, dimX, dimY) {
+    this.title = title;
     this.name = name;
 
     this.input = input;
@@ -13,7 +14,7 @@ export class ElementSpec {
 
 export class InputElementSpec extends ElementSpec {
   constructor() {
-    super('INPUT', [], ['A'], 'red', 1, 1);
+    super('Input', 'INPUT', [], ['A'], 'red', 1, 1);
 
     this.colorOn = 'green';
   }
@@ -21,15 +22,15 @@ export class InputElementSpec extends ElementSpec {
 
 export class OutputElementSpec extends ElementSpec {
   constructor() {
-    super('OUTPUT', ['A'], [], 'red', 1, 1);
+    super('Output', 'OUTPUT', ['A'], [], 'red', 1, 1);
 
     this.colorOn = 'green';
   }
 }
 
 export class GateElementSpec extends ElementSpec {
-  constructor(name, input, output, color, truthTable) {
-    super(name, input, output, color, 2, 3);
+  constructor(title, name, input, output, color, truthTable) {
+    super(title, name, input, output, color, 2, 2);
 
     this.truthTable = truthTable;
   }
