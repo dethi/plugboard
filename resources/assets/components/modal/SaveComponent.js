@@ -12,6 +12,8 @@ class SaveComponent extends Component {
 
     this.state = {
       name: '',
+      dimX: 1,
+      dimY: 1,
       err: null
     };
   }
@@ -29,6 +31,8 @@ class SaveComponent extends Component {
   onDisplay = () => {
     this.setState({
       name: '',
+      dimX: 1,
+      dimY: 1,
       err: null
     });
   };
@@ -74,25 +78,51 @@ class SaveComponent extends Component {
         modalName="COMPONENT_SAVE"
         title="Save new Component"
         content={
-          <div className="content">
-            {this.props.board.preview &&
-              <div>
-                <img src={this.props.board.preview} alt="Preview" />
-              </div>}
-            <div className="field">
-              <div className="control">
+          <div className="content save-component">
+            <div className="columns">
+              <div className="column is-10 is-offset-1">
+                {this.props.board.preview &&
+                  <div className="box">
+                    <img src={this.props.board.preview} alt="Preview" />
+                  </div>}
+              </div>
+              <div className="column is-1 range-column">
                 <input
-                  value={this.state.name}
+                  value={this.state.dimY}
                   onChange={this.handleInputChange}
-                  label="Name"
-                  className="input"
-                  name="name"
-                  type="text"
-                  placeholder="Component Name"
+                  name="dimY"
+                  type="range"
+                  min="1"
+                  max="5"
+                  className="range-verticale"
                   required
-                  autoFocus
                 />
               </div>
+            </div>
+            <div className="field">
+              <input
+                value={this.state.dimX}
+                onChange={this.handleInputChange}
+                name="dimX"
+                type="range"
+                min="1"
+                max="3"
+                className="range-horizontale"
+                required
+              />
+            </div>
+            <div className="control">
+              <input
+                value={this.state.name}
+                onChange={this.handleInputChange}
+                label="Name"
+                className="input"
+                name="name"
+                type="text"
+                placeholder="Component Name"
+                required
+                autoFocus
+              />
             </div>
           </div>
         }
