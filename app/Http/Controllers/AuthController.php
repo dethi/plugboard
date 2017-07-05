@@ -41,11 +41,13 @@ class AuthController extends Controller
 
         $input = $request->only('name', 'email', 'password');
 
-        User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => bcrypt($input['password']),
+            'api_token' => str_random(60),
         ]);
-        return ['code' => 'ok', 'status' => 'Successfully created'];
+
+        return $user->makeVisible('api_token');
     }
 }
