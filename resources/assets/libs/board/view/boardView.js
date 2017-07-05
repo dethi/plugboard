@@ -131,8 +131,6 @@ export default class BoardView {
       isInput
     );
 
-    this.incIsLoading(1);
-
     newElementView.placeOnBoard(this, pos);
     newElementView.initComponent();
 
@@ -141,8 +139,6 @@ export default class BoardView {
     newElementView.getFabricElements().forEach(el => {
       this.fabricCanvas.add(el);
     });
-
-    this.incIsLoading(-1);
   }
 
   removeElement(elId) {
@@ -283,23 +279,6 @@ export default class BoardView {
     this.fabricCanvas.clear();
 
     this.addGridLine();
-  }
-
-  incIsLoading(inc) {
-    this.isLoadingInc += inc;
-
-    if (this.isLoadingInc <= 0 && this.thenableIsLoading) {
-      Promise.resolve(this.thenableIsLoading);
-      this.thenableIsLoading = null;
-    }
-  }
-
-  whenReady(func) {
-    this.thenableIsLoading = {
-      then() {
-        func();
-      }
-    };
   }
 
   toPng() {

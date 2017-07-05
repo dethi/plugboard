@@ -45,6 +45,7 @@ export default class EngineController {
           boardRep.output[el.id] = 0;
           break;
         case 'GATE':
+        default:
           const spec = this.board.specs[el.specName];
           boardRep.components[el.id] = {
             specKey: el.specName,
@@ -52,7 +53,6 @@ export default class EngineController {
             output: arrayToLinkObject(spec.output, () => [])
           };
           break;
-        default:
       }
     });
 

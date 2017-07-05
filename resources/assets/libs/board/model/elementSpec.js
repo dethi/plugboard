@@ -29,8 +29,8 @@ export class OutputElementSpec extends ElementSpec {
 }
 
 export class GateElementSpec extends ElementSpec {
-  constructor(title, name, input, output, color, truthTable) {
-    super(title, name, input, output, color, 2, 2);
+  constructor(title, name, input, output, color, truthTable, dimX, dimY) {
+    super(title, name, input, output, color, dimX, dimY);
 
     this.truthTable = truthTable;
   }
