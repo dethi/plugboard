@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import PaletteAction from '../actions/paletteActions';
-import { createSimplePalette } from '../libs/utils/createSimple';
-import { ImageElementProvider } from '../libs/utils/imageElementProvider';
 import PropTypes from 'prop-types';
+
+import PaletteAction from '../../actions/paletteActions';
+import { createSimplePalette } from '../../libs/utils/createSimple';
+import { ImageElementProvider } from '../../libs/utils/imageElementProvider';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);

@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import PaletteAction from '../actions/paletteActions';
-import BoardAction from '../actions/boardActions';
-import ModalAction from '../actions/modalActions';
+import PaletteAction from '../../actions/paletteActions';
+import BoardAction from '../../actions/boardActions';
+import ModalAction from '../../actions/modalActions';
 
-import boardApi from '../api/board';
+import boardApi from '../../api/board';
 
-import BoardController from '../libs/board/controller/boardController';
-import { evalutateBoard } from '../engine/engine';
+import BoardController from '../../libs/board/controller/boardController';
+import { evalutateBoard } from '../../engine/engine';
 
 class Board extends Component {
   constructor(props) {
