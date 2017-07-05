@@ -16,7 +16,7 @@ export function createSimplePalette() {
       'GATE_NOT',
       ['A'],
       ['B'],
-      'red',
+      '#1A936F',
       [[0, 1], [1, 0]],
       1,
       1
@@ -29,7 +29,7 @@ export function createSimplePalette() {
       'GATE_AND',
       ['A', 'B'],
       ['C'],
-      'red',
+      '#1A936F',
       [[0, 0, 0], [0, 1, 0], [1, 0, 0], [1, 1, 1]],
       2,
       2
@@ -42,7 +42,7 @@ export function createSimplePalette() {
       'GATE_OR',
       ['A', 'B'],
       ['C'],
-      'red',
+      '#1A936F',
       [[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]],
       2,
       2
@@ -55,7 +55,7 @@ export function createSimplePalette() {
       'MULTIPLEXEUR_2-1',
       ['A', 'B', 'C'],
       ['D'],
-      'red',
+      '#88D498',
       [
         [0, 0, 0, 0],
         [0, 0, 1, 0],

@@ -4,7 +4,7 @@ import { LinkType, LinkView } from './linkView';
 
 import Vector from '../../utils/vector';
 
-import { GRID_SIZE, LINK_SIZE } from '../constante';
+import { GRID_SIZE, LINK_SIZE, EL_FONT_SIZE } from '../constante';
 
 export default class ElementView {
   constructor(id, rotate, spec, isInput = false) {
@@ -26,6 +26,7 @@ export default class ElementView {
 
     this.fabricElements = [];
     this.fabricRect = null;
+    this.fabricText = null;
   }
 
   initComponent() {
@@ -48,11 +49,25 @@ export default class ElementView {
     this.createInputElements();
     this.createOutputElements();
 
-    this.moveRect(
-      this.fabricRect,
-      GRID_SIZE * this.pos.x,
-      GRID_SIZE * this.pos.y
+    this.moveRect(GRID_SIZE * this.pos.x, GRID_SIZE * this.pos.y);
+
+    const elName = this.spec.name.split('_');
+    let elTitle = this.spec.title.substring(
+      0,
+      4 * Math.min(this.spec.dimX, this.spec.dimY)
     );
+    if (elName[0] === 'INPUT') elTitle = 'I';
+    if (elName[0] === 'OUTPUT') elTitle = 'O';
+
+    this.fabricText = new fabric.Text(elTitle, {
+      fontSize: EL_FONT_SIZE,
+      fontWeight: 'bold',
+      hasControls: false,
+      evented: false
+    });
+    this.fabricElements.push(this.fabricText);
+
+    this.moveText(GRID_SIZE * this.pos.x, GRID_SIZE * this.pos.y);
   }
 
   placeOnBoard(boardView, pos) {
@@ -100,22 +115,39 @@ export default class ElementView {
     this.pos = newPos;
 
     const fabricPos = this.boardView.getFabricPos(this.pos);
-    this.moveRect(this.fabricRect, fabricPos.x, fabricPos.y);
+    this.moveRect(fabricPos.x, fabricPos.y);
+    this.moveText(fabricPos.x, fabricPos.y);
 
     this.moveInputElements();
     this.moveOutputElements();
   }
 
-  moveRect(rect, posX, posY) {
-    rect.left = posX +
+  moveRect(posX, posY) {
+    this.fabricRect.left = posX +
       (this.rotate === 1 ? this.componentSizeY : 0) +
       (this.rotate === 2 ? this.componentSizeX : 0);
 
-    rect.top = posY +
+    this.fabricRect.top = posY +
       (this.rotate === 2 ? this.componentSizeY : 0) +
       (this.rotate === 3 ? this.componentSizeX : 0);
 
-    rect.setCoords();
+    this.fabricRect.setCoords();
+  }
+
+  moveText(posX, posY) {
+    if (!this.fabricText) return;
+
+    this.fabricText.left = posX +
+      (this.rotate === 0 || this.rotate === 2
+        ? this.componentSizeX / 2 - this.fabricText.width / 2
+        : this.componentSizeY / 2 - this.fabricText.width / 2);
+
+    this.fabricText.top = posY +
+      (this.rotate === 0 || this.rotate === 2
+        ? this.componentSizeY / 2 - this.fabricText.height / 2
+        : this.componentSizeX / 2 - this.fabricText.height / 2);
+
+    this.fabricText.setCoords();
   }
 
   increaseRotate() {
