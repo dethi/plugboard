@@ -7,6 +7,7 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import LogoutModal from './LogoutModal';
 import LoginNeededModal from './LoginNeededModal';
+import SaveComponent from './SaveComponent';
 
 export default function ModalContainer(props) {
   return (
@@ -18,6 +19,7 @@ export default function ModalContainer(props) {
       <RegisterModal />
       <LogoutModal />
       <LoginNeededModal />
+      <SaveComponent />
     </div>
   );
 }
