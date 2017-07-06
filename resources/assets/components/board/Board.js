@@ -35,20 +35,39 @@ class Board extends Component {
       } else {
         this.stop();
       }
-    } else if (nextProps.step !== this.props.step) {
+    }
+
+    if (nextProps.step !== this.props.step) {
       this.nextStep();
-    } else if (nextProps.rotate !== this.props.rotate) {
+    }
+
+    if (nextProps.rotate !== this.props.rotate) {
       this.rotate();
-    } else if (
+    }
+
+    if (
       nextProps.palette.selectedBlueprint !==
       this.props.palette.selectedBlueprint
     ) {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
-    } else if (nextProps.board.clear !== this.props.board.clear) {
+    }
+
+    if (nextProps.board.clear !== this.props.board.clear) {
       this.clearBoard();
-    } else if (nextProps.board.prepare !== this.props.board.prepare) {
+    }
+
+    if (nextProps.board.prepare !== this.props.board.prepare) {
       this.prepareBoard();
-    } else if (nextProps.board.load !== this.props.board.load) {
+    }
+
+    if (
+      nextProps.board.prepareForComponent !==
+      this.props.board.prepareForComponent
+    ) {
+      this.prepareBoardForComponent();
+    }
+
+    if (nextProps.board.load !== this.props.board.load) {
       console.log('RELOAD');
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }
@@ -68,6 +87,15 @@ class Board extends Component {
     boardApi
       .saveBoard(this.props.board.boardMetaData.id, boardData, preview)
       .catch(response => console.log(response));
+  };
+
+  prepareBoardForComponent = () => {
+    const truthTable = this.boardController.exportTruthTable();
+    console.log(truthTable);
+
+    this.props.dispatch(BoardAction.updateTruthTable(truthTable));
+
+    this.props.dispatch(ModalAction.displayModal('COMPONENT_SAVE'));
   };
 
   rotate = () => {

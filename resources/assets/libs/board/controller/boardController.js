@@ -12,6 +12,8 @@ import Vector from '../../utils/vector';
 
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 
+import { generateTruthTable } from '../../../engine/engine';
+
 export default class BoardController {
   constructor(canvasHolder, unSelectBlueprint) {
     this.canvasHolder = canvasHolder;
@@ -241,6 +243,11 @@ export default class BoardController {
 
   exportEngineStates() {
     return this.engineController.exportEngineStates();
+  }
+
+  exportTruthTable() {
+    const board = this.engineController.exportForEngine(this.board);
+    return generateTruthTable(board);
   }
 
   applyState(states) {
