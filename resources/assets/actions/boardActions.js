@@ -10,6 +10,12 @@ const prepareBoardForSave = () => {
   };
 };
 
+const prepareBoardForComponent = () => {
+  return {
+    type: 'PREPARE_BOARD_COMPONENT'
+  };
+};
+
 const setBoardMetaData = boardMetaData => {
   return {
     type: 'SET_BOARD_METADATA',
@@ -33,10 +39,19 @@ const updateBoard = (boardData, preview) => {
   };
 };
 
+const updateTruthTable = truthTable => {
+  return {
+    type: 'UPDATE_TRUTHTABLE',
+    truthTable
+  };
+};
+
 export default {
   clearBoard,
   prepareBoardForSave,
+  prepareBoardForComponent,
   setBoardMetaData,
   loadBoard,
-  updateBoard
+  updateBoard,
+  updateTruthTable
 };

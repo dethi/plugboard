@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 
 import componentApi from '../../api/component';
 
+import ComponentEditor from '../../libs/componentEditor/componentEditor';
+
 class SaveComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.componentEditor = null;
 
     this.state = {
       name: '',
       dimX: 1,
       dimY: 1,
+      color: '#88D498',
       err: null
     };
+  }
+
+  componentDidMount() {
+    this.componentEditor = new ComponentEditor(9, 9, this.refs.canvas);
   }
 
   handleInputChange = event => {
@@ -26,6 +34,22 @@ class SaveComponent extends Component {
     this.setState({
       [name]: value
     });
+
+    switch (name) {
+      case 'dimX':
+        this.componentEditor.updateDimX(value);
+        break;
+      case 'dimY':
+        this.componentEditor.updateDimY(value);
+        break;
+      case 'color':
+        this.componentEditor.updateColor(value);
+        break;
+      case 'name':
+        this.componentEditor.updateTitle(value);
+        break;
+      default:
+    }
   };
 
   onDisplay = () => {
@@ -33,6 +57,7 @@ class SaveComponent extends Component {
       name: '',
       dimX: 1,
       dimY: 1,
+      color: '#88D498',
       err: null
     });
   };
@@ -73,6 +98,13 @@ class SaveComponent extends Component {
   };
 
   render() {
+    const style = {
+      overflow: 'auto',
+      maxHeight: '100%',
+      maxWidth: '100%',
+      color: '#88D498'
+    };
+
     return (
       <Modal
         modalName="COMPONENT_SAVE"
@@ -80,11 +112,10 @@ class SaveComponent extends Component {
         content={
           <div className="content save-component">
             <div className="columns">
-              <div className="column is-10 is-offset-1">
-                {this.props.board.preview &&
-                  <div className="box">
-                    <img src={this.props.board.preview} alt="Preview" />
-                  </div>}
+              <div className="column is-8 is-offset-2">
+                <div className="box" style={style}>
+                  <canvas ref="canvas" />
+                </div>
               </div>
               <div className="column is-1 range-column">
                 <input
@@ -93,7 +124,7 @@ class SaveComponent extends Component {
                   name="dimY"
                   type="range"
                   min="1"
-                  max="5"
+                  max="7"
                   className="range-verticale"
                   required
                 />
@@ -106,8 +137,17 @@ class SaveComponent extends Component {
                 name="dimX"
                 type="range"
                 min="1"
-                max="3"
+                max="5"
                 className="range-horizontale"
+                required
+              />
+            </div>
+            <div className="field">
+              <input
+                value={this.state.color}
+                onChange={this.handleInputChange}
+                type="color"
+                name="color"
                 required
               />
             </div>
@@ -135,14 +175,4 @@ class SaveComponent extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    board: state.board
-  };
-};
-
-SaveComponent.propTypes = {
-  board: PropTypes.object.isRequired
-};
-
-export default connect(mapStateToProps)(SaveComponent);
+export default connect()(SaveComponent);

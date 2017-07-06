@@ -51,15 +51,7 @@ export default class ElementView {
 
     this.moveRect(GRID_SIZE * this.pos.x, GRID_SIZE * this.pos.y);
 
-    const elName = this.spec.name.split('_');
-    let elTitle = this.spec.title.substring(
-      0,
-      4 * Math.min(this.spec.dimX, this.spec.dimY)
-    );
-    if (elName[0] === 'INPUT') elTitle = 'I';
-    if (elName[0] === 'OUTPUT') elTitle = 'O';
-
-    this.fabricText = new fabric.Text(elTitle, {
+    this.fabricText = new fabric.Text(this.getTitle(), {
       fontSize: EL_FONT_SIZE,
       fontWeight: 'bold',
       hasControls: false,
@@ -68,6 +60,21 @@ export default class ElementView {
     this.fabricElements.push(this.fabricText);
 
     this.moveText(GRID_SIZE * this.pos.x, GRID_SIZE * this.pos.y);
+  }
+
+  refresh() {
+    this.componentSizeX = GRID_SIZE * this.spec.dimX;
+    this.componentSizeY = GRID_SIZE * this.spec.dimY;
+
+    this.fabricRect.width = this.componentSizeX;
+    this.fabricRect.height = this.componentSizeY;
+    this.fabricRect.angle = 90 * this.rotate;
+    this.fabricRect.fill = this.spec.color;
+    this.fabricRect.dirty = true;
+
+    this.fabricText.text = this.getTitle();
+
+    this.move(this.pos);
   }
 
   placeOnBoard(boardView, pos) {
@@ -271,5 +278,16 @@ export default class ElementView {
     this.boardView.fabricCanvas.renderAll();
 
     this.boardView.controller.setInput(this.id, this.on ? 1 : 0);
+  }
+
+  getTitle() {
+    const elName = this.spec.name.split('_');
+    let elTitle = this.spec.title.substring(
+      0,
+      Math.max(4 * (Math.min(this.spec.dimX, this.spec.dimY) - 1) + 1, 1)
+    );
+    if (elName[0] === 'INPUT') elTitle = 'I';
+    if (elName[0] === 'OUTPUT') elTitle = 'O';
+    return elTitle;
   }
 }

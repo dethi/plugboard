@@ -86,7 +86,7 @@ class NavBar extends Component {
       this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
       return;
     }
-    this.props.dispatch(ModalAction.displayModal('COMPONENT_SAVE'));
+    this.props.dispatch(BoardAction.prepareBoardForComponent());
   };
 
   render() {

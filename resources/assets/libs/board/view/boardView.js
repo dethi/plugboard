@@ -36,9 +36,6 @@ export default class BoardView {
     this.curCusor = null;
     this.curCusorPos = new Vector(0, 0);
 
-    this.thenableIsLoading = null;
-    this.isLoadingInc = 0;
-
     this.fabricCanvas.on('mouse:down', options => {
       switch (this.controller.boardState) {
         case BoardState.ADDING:
@@ -90,7 +87,7 @@ export default class BoardView {
           [this.gridSize * x, 0, this.gridSize * x, this.gridHeight],
           {
             stroke: '#CDCDCD',
-            selectable: false
+            evented: false
           }
         )
       );
@@ -101,7 +98,7 @@ export default class BoardView {
           [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
           {
             stroke: '#CDCDCD',
-            selectable: false
+            evented: false
           }
         )
       );
