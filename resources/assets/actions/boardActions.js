@@ -39,10 +39,10 @@ const updateBoard = (boardData, preview) => {
   };
 };
 
-const updateTruthTable = truthTable => {
+const updateSpec = spec => {
   return {
-    type: 'UPDATE_TRUTHTABLE',
-    truthTable
+    type: 'UPDATE_SPEC',
+    spec
   };
 };
 
@@ -53,5 +53,5 @@ export default {
   setBoardMetaData,
   loadBoard,
   updateBoard,
-  updateTruthTable
+  updateSpec
 };

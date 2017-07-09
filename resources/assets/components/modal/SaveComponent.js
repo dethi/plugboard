@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 
@@ -53,6 +54,13 @@ class SaveComponent extends Component {
   };
 
   onDisplay = () => {
+    const spec = this.props.board.spec;
+
+    spec.color = '#88D498';
+    spec.name = '';
+    spec.title = '';
+    this.componentEditor.setSpec(spec);
+
     this.setState({
       name: '',
       dimX: 1,
@@ -68,7 +76,7 @@ class SaveComponent extends Component {
         .saveNewComponent(this.state.name)
         .then(data => {
           this.setState({ err: null });
-          console.log('Board Save', data);
+          console.log('Component Save', data);
 
           /*boardApi
             .saveBoard(
@@ -175,4 +183,14 @@ class SaveComponent extends Component {
   }
 }
 
-export default connect()(SaveComponent);
+const mapStateToProps = state => {
+  return {
+    board: state.board
+  };
+};
+
+SaveComponent.propTypes = {
+  board: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(SaveComponent);

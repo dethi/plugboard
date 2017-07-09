@@ -90,10 +90,8 @@ class Board extends Component {
   };
 
   prepareBoardForComponent = () => {
-    const truthTable = this.boardController.exportTruthTable();
-    console.log(truthTable);
-
-    this.props.dispatch(BoardAction.updateTruthTable(truthTable));
+    const spec = this.boardController.exportSpec();
+    this.props.dispatch(BoardAction.updateSpec(spec));
 
     this.props.dispatch(ModalAction.displayModal('COMPONENT_SAVE'));
   };
