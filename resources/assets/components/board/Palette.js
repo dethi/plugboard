@@ -17,11 +17,11 @@ function SelectableElement(props) {
       })}
       onClick={props.onClick}
     >
-      {/*<figure className="media-left">
+      <figure className="media-left">
         <p className="image is-24x24">
           <img src={props.img} alt={props.name} />
         </p>
-      </figure>*/}
+      </figure>
       {capitalize(props.name)}
     </a>
   );
@@ -68,6 +68,7 @@ class Palette extends Component {
                 <SelectableElement
                   key={index}
                   name={e.title}
+                  img={e.preview}
                   selected={index === selectedBlueprintIndex}
                   onClick={() => this.updateSelectedBlueprint(index)}
                 />
