@@ -23,7 +23,6 @@ class CreateElComponentsTable extends Migration
             $table->integer('dimY');
             $table->string('color', 10);
             $table->string('truth_table')->nullable();
-            $table->string('preview_path')->nullable();
             $table->timestamps();
         });
     }
