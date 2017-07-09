@@ -14,7 +14,7 @@ export class ElementSpec {
 
 export class InputElementSpec extends ElementSpec {
   constructor() {
-    super('Input', 'INPUT', [], ['A'], 'red', 1, 1);
+    super('Input', 'INPUT', [], ['A'], '#F2666F', 1, 1);
 
     this.colorOn = 'green';
   }
@@ -22,7 +22,7 @@ export class InputElementSpec extends ElementSpec {
 
 export class OutputElementSpec extends ElementSpec {
   constructor() {
-    super('Output', 'OUTPUT', ['A'], [], 'red', 1, 1);
+    super('Output', 'OUTPUT', ['A'], [], '#F2666F', 1, 1);
 
     this.colorOn = 'green';
   }
