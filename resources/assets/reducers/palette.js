@@ -1,4 +1,5 @@
 import { ElementSpec } from '../libs/board/model/elementSpec';
+import ImageElComponentProvider from '../libs/utils/imageElComponentProvider';
 
 const genBlueprintsFromEl = data => {
   const blueprints = [];
@@ -28,7 +29,8 @@ const genBlueprintsFromEl = data => {
         '#90F595',
         JSON.parse(el.truth_table),
         el.dimX,
-        el.dimY
+        el.dimY,
+        ImageElComponentProvider.getElementImage(el.title)
       )
     );
   });
