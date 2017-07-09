@@ -7,6 +7,7 @@ use App\ComponentData;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -70,6 +71,11 @@ class ComponentController extends Controller
             ], 500);
         }
         return $component;
+    }
+
+    public function get_elementaire()
+    {
+        return DB::table('el_components')->get();
     }
 
 

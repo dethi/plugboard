@@ -21,9 +21,35 @@
     min-height: 75px;
 }
 
-.app-palette-item.is-active {
-    color: $primary;
-    font-weight: bold;
+.palette {
+
+    top: 85%;
+    width:40%;
+    max-width: 960px;
+    min-width: 200px;
+    overflow: hidden;
+    margin: 0 auto;
+    left:0px;
+    right:0px;
+
+    p {
+        margin: auto;
+    }
+
+    .box {
+        padding: 5px;
+    }
+
+    .palette-item {
+        width: 60px;
+        height: 60px;
+        margin: 1px;
+    }
+
+    .palette-item.is-active {
+        color: $primary;
+        font-weight: bold;
+    }
 }
 
 .load-board-modal {
