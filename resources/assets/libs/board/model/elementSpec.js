@@ -16,7 +16,7 @@ export class InputElementSpec extends ElementSpec {
   constructor() {
     super('Input', 'INPUT', [], ['A'], '#F2666F', 1, 1);
 
-    this.colorOn = 'green';
+    this.colorOn = '#90F595';
   }
 }
 
@@ -24,7 +24,7 @@ export class OutputElementSpec extends ElementSpec {
   constructor() {
     super('Output', 'OUTPUT', ['A'], [], '#F2666F', 1, 1);
 
-    this.colorOn = 'green';
+    this.colorOn = '#90F595';
   }
 }
 
