@@ -12,7 +12,15 @@ const hideModal = name => {
   };
 };
 
+const displayErrorModal = error => {
+  return {
+    type: 'DISPLAY_ERROR_MODAL',
+    error: error
+  };
+};
+
 export default {
   displayModal,
+  displayErrorModal,
   hideModal
 };

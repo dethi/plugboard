@@ -55,6 +55,7 @@ class SaveComponent extends Component {
 
   onDisplay = () => {
     const spec = this.props.board.spec;
+    console.log(spec);
 
     spec.color = '#88D498';
     spec.name = '';
@@ -78,21 +79,17 @@ class SaveComponent extends Component {
           this.setState({ err: null });
           console.log('Component Save', data);
 
-          /*boardApi
-            .saveBoard(
+          componentApi
+            .saveComponent(
               data.id,
-              this.props.board.boardData,
-              this.props.board.preview
+              this.componentEditor.spec,
+              this.componentEditor.toPng()
             )
             .then(data => {
-              console.log('Board First version Save', data);
+              console.log('Component First version Save', data);
               resolve();
             })
             .catch(response => console.log(response));
-
-          this.props.dispatch(BoardAction.setBoardMetaData(data));
-          */
-          resolve(); // REMOVE ME
         })
         .catch(response => {
           if (response.status === 422) {

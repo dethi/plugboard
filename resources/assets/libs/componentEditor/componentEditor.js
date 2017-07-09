@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 
 import ElementView from './../board/view/elementView';
-import { GRID_SIZE } from '../board/constante';
+import { GRID_SIZE, LINK_SIZE } from '../board/constante';
 
 import Vector from '../utils/vector';
 
@@ -111,5 +111,24 @@ export default class ComponentEditor {
       Math.max(Math.min(pos.x * GRID_SIZE, this.leftMax), this.leftMin),
       Math.max(Math.min(pos.y * GRID_SIZE, this.topMax), this.topMin)
     );
+  }
+
+  toPng() {
+    this.fabricGridLines.forEach(el => this.fabricCanvas.remove(el));
+
+    const margin = LINK_SIZE + 2;
+    const options = {
+      format: 'png',
+      left: this.element.fabricRect.left - margin,
+      top: this.element.fabricRect.top - margin,
+      width: this.element.fabricRect.width + margin * 2,
+      height: this.element.fabricRect.height + margin * 2
+    };
+
+    const res = this.fabricCanvas.toDataURL(options);
+
+    this.fabricGridLines.forEach(el => this.fabricCanvas.add(el));
+
+    return res;
   }
 }
