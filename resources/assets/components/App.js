@@ -61,7 +61,7 @@ class App extends Component {
               getCurCanvas={this.getCurCanvas}
             />
 
-            <Objectif />
+            {/*<Objectif />*/}
             <Palette />
             {/*<Profile />*/}
           </div>
