@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import componentApi from '../../api/component';
+
 import PaletteAction from '../../actions/paletteActions';
-import { createSimplePalette } from '../../libs/utils/createSimple';
 
 function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
     <a
-      className={classNames('panel-block', 'app-palette-item', {
+      className={classNames('panel-block', 'palette-item', {
         'is-active': props.selected
       })}
       onClick={props.onClick}
@@ -37,7 +38,10 @@ class Palette extends Component {
   constructor(props) {
     super(props);
 
-    this.props.dispatch(PaletteAction.addBlueprints(createSimplePalette()));
+    componentApi
+      .getElComponents()
+      .then(data =>
+        this.props.dispatch(PaletteAction.addElementaireBlueprints(data)));
   }
 
   updateSelectedBlueprint = index => {
@@ -55,21 +59,21 @@ class Palette extends Component {
       selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
 
     return (
-      <div className="column is-one-quarter on-canvas on-canvas-right">
-        <nav className="panel">
-          <p className="panel-heading">
-            Components
-          </p>
-          {blueprints &&
-            blueprints.map((e, index) => (
-              <SelectableElement
-                key={index}
-                name={e.title}
-                selected={index === selectedBlueprintIndex}
-                onClick={() => this.updateSelectedBlueprint(index)}
-              />
-            ))}
-        </nav>
+      <div className="column is-one-quarter on-canvas palette">
+        <div className="box">
+          <p className="has-text-centered">Components</p>
+          <nav className="level">
+            {blueprints &&
+              blueprints.map((e, index) => (
+                <SelectableElement
+                  key={index}
+                  name={e.title}
+                  selected={index === selectedBlueprintIndex}
+                  onClick={() => this.updateSelectedBlueprint(index)}
+                />
+              ))}
+          </nav>
+        </div>
       </div>
     );
   }

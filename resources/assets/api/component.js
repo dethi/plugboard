@@ -25,6 +25,16 @@ const getComponents = () => {
   });
 };
 
+const getElComponents = () => {
+  return axios
+    .get('/api/component/elementaire')
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 const getComponent = componentId => {
   return axios
     .get(`/api/component/${componentId}`)
@@ -39,5 +49,6 @@ export default {
   saveNewComponent,
   saveComponent,
   getComponents,
+  getElComponents,
   getComponent
 };
