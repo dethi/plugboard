@@ -50,8 +50,8 @@ class ComponentController extends Controller
 
         $data = new ComponentData();
         $data->data = $request->input('data');
-        $data->component_id = $board->id;
-        $data->preview_path = $component;
+        $data->component_id = $component->id;
+        $data->preview_path = $preview_path;
 
         if (!$data->save()) {
             return response([
@@ -60,16 +60,16 @@ class ComponentController extends Controller
             ], 500);
         }
 
-        $board->last_version_id = $data->_id;
-        $board->preview_path = $data->preview_path;
+        $component->last_version_id = $data->_id;
+        $component->preview_path = $data->preview_path;
 
-        if (!$board->save()) {
+        if (!$component->save()) {
             return response([
                 'code' => 'failed_add_version',
                 'status' => 'Cannot update board in MySQL'
             ], 500);
         }
-        return $board;
+        return $component;
     }
 
 
