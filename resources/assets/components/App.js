@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import NavBar from './NavBar';
 
-import Palette from './Palette';
+import Palette from './board/Palette';
+import Board from './board/Board';
 import Objectif from './objectif/ItemInBoard';
-import Board from './Board';
 
 import ModalContainer from './modal/ModalContainer';
 

@@ -14,7 +14,7 @@ export default class ItemList extends Component {
         </div>
         <div className="card-content">
           <div className="content has-text-centered">
-            <h1 className="title is-4 is-spaced">
+            <h1 className="title is-spaced">
               Challenge 1
             </h1>
           </div>
