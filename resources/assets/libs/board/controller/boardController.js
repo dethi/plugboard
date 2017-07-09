@@ -245,9 +245,63 @@ export default class BoardController {
     return this.engineController.exportEngineStates();
   }
 
-  exportTruthTable() {
-    const board = this.engineController.exportForEngine(this.board);
-    return generateTruthTable(board);
+  exportSpec() {
+    const spec = {};
+
+    // Copy board representation
+    const board = JSON.parse(
+      JSON.stringify(this.engineController.exportForEngine(this.board))
+    );
+
+    // Check that all input are connect
+    let empty = true;
+    Object.keys(board.components).forEach(componentId => {
+      empty = false;
+      Object.keys(board.components[componentId].input).forEach(inputName => {
+        if (board.components[componentId].input[inputName] === 0) {
+          spec.err = 'Some input are not connect';
+        }
+      });
+    });
+    if (empty) spec.err = 'The board need at least one gate';
+
+    if (spec.err !== undefined) return spec;
+
+    // Delete Default input and move registery
+    delete board.input['0'];
+    board.nextRegistery--;
+    Object.keys(board.components).forEach(componentId => {
+      const component = board.components[componentId];
+      Object.keys(component.input).forEach(inputName => {
+        component.input[inputName]--;
+      });
+      Object.keys(component.output).forEach(outputName => {
+        component.output[outputName].forEach(
+          (_, index) => component.output[outputName][index]--
+        );
+      });
+      board.components[componentId] = component;
+    });
+    Object.keys(board.input).forEach(inputId => board.input[inputId]--);
+    Object.keys(board.output).forEach(outputId => board.output[outputId]--);
+
+    // Generate Spec
+    spec.truthTable = generateTruthTable(board);
+    spec.dimX = 1;
+    spec.dimY = 1;
+    spec.input = [];
+    let curChar = 'A';
+    Object.keys(board.input).forEach(() => {
+      spec.input.push(curChar);
+      curChar = String.fromCharCode(curChar.charCodeAt(0) + 1);
+    });
+    spec.output = [];
+    Object.keys(board.output).forEach(() => {
+      spec.output.push(curChar);
+      curChar = String.fromCharCode(curChar.charCodeAt(0) + 1);
+    });
+
+    return spec;
   }
 
   applyState(states) {

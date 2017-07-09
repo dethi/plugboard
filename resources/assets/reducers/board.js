@@ -37,10 +37,10 @@ const board = (state = {}, action) => {
         boardData: action.boardData,
         preview: action.preview
       };
-    case 'UPDATE_TRUTHTABLE':
+    case 'UPDATE_SPEC':
       return {
         ...state,
-        truthTable: action.truthTable
+        spec: action.spec
       };
     default:
       return state;

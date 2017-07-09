@@ -1,6 +1,5 @@
 import { fabric } from 'fabric';
 
-import { GateElementSpec } from './../board/model/elementSpec';
 import ElementView from './../board/view/elementView';
 import { GRID_SIZE } from '../board/constante';
 
@@ -8,27 +7,6 @@ import Vector from '../utils/vector';
 
 export default class ComponentEditor {
   constructor(width, height, el) {
-    // DELETE ME
-    this.spec = new GateElementSpec(
-      '',
-      '',
-      ['A', 'B', 'C'],
-      ['D'],
-      '#88D498',
-      [
-        [0, 0, 0, 0],
-        [0, 0, 1, 0],
-        [0, 1, 0, 1],
-        [0, 1, 1, 0],
-        [1, 0, 0, 0],
-        [1, 0, 1, 1],
-        [1, 1, 0, 1],
-        [1, 1, 1, 1]
-      ],
-      1,
-      1
-    );
-
     this.gridSize = GRID_SIZE;
 
     this.width = width;
@@ -52,6 +30,17 @@ export default class ComponentEditor {
     this.isGridVisible = true;
 
     this.addGrid();
+  }
+
+  setSpec(spec) {
+    this.spec = spec;
+
+    if (this.element !== undefined) {
+      this.element.getFabricElements().forEach(el => {
+        this.fabricCanvas.remove(el);
+      });
+    }
+
     this.addElement();
   }
 
