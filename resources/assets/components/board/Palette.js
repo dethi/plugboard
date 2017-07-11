@@ -29,37 +29,6 @@ function SelectableElement(props) {
   );
 }
 
-/*
-function SelectableElement(props) {
-  const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
-
-  return (
-    <a
-      className={classNames('panel-block', 'palette-item', {
-        'is-active': props.selected
-      })}
-      onClick={props.onClick}
-    >
-      <figure className="media-left">
-        <p className="image is-24x24">
-          <img src={props.img} alt={props.name} />
-        </p>
-      </figure>
-      {capitalize(props.name)}
-    </a>
-  );
-}
-
-
-
-SelectableElement.PropTypes = {
-  selected: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
-  img: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired
-};
-*/
-
 class Palette extends Component {
   constructor(props) {
     super(props);
@@ -68,6 +37,10 @@ class Palette extends Component {
       .getElComponents()
       .then(data =>
         this.props.dispatch(PaletteAction.addElementaireBlueprints(data)));
+
+    componentApi
+      .getSelectedComponents()
+      .then(data => this.props.dispatch(PaletteAction.addBlueprints(data)));
   }
 
   updateSelectedBlueprint = index => {

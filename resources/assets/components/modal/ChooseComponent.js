@@ -7,6 +7,8 @@ import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
 
 import componentApi from '../../api/component';
 
+import PaletteAction from '../../actions/paletteActions';
+
 class ChooseComponent extends Component {
   constructor(props) {
     super(props);
@@ -52,19 +54,23 @@ class ChooseComponent extends Component {
   moveComponent = () => {
     if (!this.state.componentId) return;
 
-    const components = this.state.components;
-    const componentsInPalette = this.state.componentsInPalette;
+    const {
+      components,
+      componentsInPalette,
+      componentIsInPalette,
+      componentId
+    } = this.state;
 
-    if (this.state.componentIsInPalette) {
+    if (componentIsInPalette) {
       componentsInPalette.forEach((el, index) => {
-        if (el.id === this.state.componentId) {
+        if (el.id === componentId) {
           components.push(el);
           componentsInPalette.splice(index, 1);
         }
       });
     } else {
       components.forEach((el, index) => {
-        if (el.id === this.state.componentId) {
+        if (el.id === componentId) {
           componentsInPalette.push(el);
           components.splice(index, 1);
         }
@@ -72,10 +78,14 @@ class ChooseComponent extends Component {
     }
 
     componentApi
-      .selectComponent(this.state.componentId, !this.state.componentIsInPalette)
-      .then(data => console.log(data));
-
-    console.log(componentsInPalette);
+      .selectComponent(componentId, !componentIsInPalette)
+      .then(data => {
+        if (componentIsInPalette) {
+          this.props.dispatch(PaletteAction.removeBlueprints([data]));
+        } else {
+          this.props.dispatch(PaletteAction.addBlueprints([data]));
+        }
+      });
 
     this.setState({
       components: components,
