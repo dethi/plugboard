@@ -18,6 +18,15 @@ const saveComponent = (componentId, data, preview) => {
     });
 };
 
+const selectComponent = (componentId, isSelected) => {
+  return axios
+    .post(`/api/component/${componentId}/select`, { isSelected })
+    .then(res => res.data)
+    .catch(err => {
+      throw err.response;
+    });
+};
+
 const getComponents = () => {
   return axios.get('/api/component').then(res => res.data).catch(err => {
     console.log(err);
@@ -48,6 +57,7 @@ const getComponent = componentId => {
 export default {
   saveNewComponent,
   saveComponent,
+  selectComponent,
   getComponents,
   getElComponents,
   getComponent

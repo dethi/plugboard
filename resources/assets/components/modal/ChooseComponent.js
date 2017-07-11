@@ -71,6 +71,10 @@ class ChooseComponent extends Component {
       });
     }
 
+    componentApi
+      .selectComponent(this.state.componentId, !this.state.componentIsInPalette)
+      .then(data => console.log(data));
+
     console.log(componentsInPalette);
 
     this.setState({
