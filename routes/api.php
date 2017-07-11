@@ -25,7 +25,7 @@ Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::post('{id}/version', 'BoardController@add_version');
 });
 
-Route::group(['prefix' => 'component', 'middleware' => ['guest:api']], function () {
+Route::group(['prefix' => 'component'], function () {
     Route::get('elementaire', 'ComponentController@get_elementaire');
 });
 
