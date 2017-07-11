@@ -9,6 +9,7 @@ import RegisterModal from './RegisterModal';
 import LogoutModal from './LogoutModal';
 import LoginNeededModal from './LoginNeededModal';
 import SaveComponent from './SaveComponent';
+import ChooseComponent from './ChooseComponent';
 
 export default function ModalContainer(props) {
   return (
@@ -22,6 +23,7 @@ export default function ModalContainer(props) {
       <LogoutModal />
       <LoginNeededModal />
       <SaveComponent />
+      <ChooseComponent />
     </div>
   );
 }

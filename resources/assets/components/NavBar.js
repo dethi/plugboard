@@ -89,6 +89,14 @@ class NavBar extends Component {
     this.props.dispatch(BoardAction.prepareBoardForComponent());
   };
 
+  handleChooseComponent = () => {
+    if (this.props.user === null) {
+      this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
+      return;
+    }
+    this.props.dispatch(ModalAction.displayModal('COMPONENT_CHOOSE'));
+  };
+
   render() {
     return (
       <nav className="nav has-shadow app-main-nav">
@@ -139,6 +147,11 @@ class NavBar extends Component {
             <a className="nav-item" onClick={this.handleNewComponent}>
               <span className="icon">
                 <i className="fa fa-ship" />
+              </span>
+            </a>
+            <a className="nav-item" onClick={this.handleChooseComponent}>
+              <span className="icon">
+                <i className="fa fa-book" />
               </span>
             </a>
           </div>
