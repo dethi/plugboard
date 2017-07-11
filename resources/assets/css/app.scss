@@ -37,7 +37,7 @@
     }
 
     .box {
-        padding: 5px;
+        padding: 1px;
     }
 
     .palette-item {
@@ -46,9 +46,19 @@
         margin: 1px;
     }
 
-    .palette-item.is-active {
-        color: $primary;
-        font-weight: bold;
+    .box {
+        margin: auto;
+        margin-bottom: 20px;
+
+        .image {
+            width: 60px;  /* Or whatever */
+            height: 60px; /* Or whatever */
+            margin: auto;  /* Magic! */
+        }
+    }
+
+    .box-is-active {
+        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 2px #1a936f
     }
 }
 

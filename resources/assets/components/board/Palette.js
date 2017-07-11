@@ -8,6 +8,29 @@ import componentApi from '../../api/component';
 import PaletteAction from '../../actions/paletteActions';
 
 function SelectableElement(props) {
+  return (
+    <a
+      className={classNames('box', {
+        'box-is-active': props.selected
+      })}
+      onClick={props.onClick}
+    >
+      <article className="media">
+        <div className="media-content">
+          <figure className="image">
+            <img src={props.img} alt="Component Preview" />
+          </figure>
+          <div className="content has-text-centered">
+            <strong className="title">{props.title}</strong>
+          </div>
+        </div>
+      </article>
+    </a>
+  );
+}
+
+/*
+function SelectableElement(props) {
   const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
@@ -27,12 +50,15 @@ function SelectableElement(props) {
   );
 }
 
+
+
 SelectableElement.PropTypes = {
   selected: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   img: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired
 };
+*/
 
 class Palette extends Component {
   constructor(props) {
@@ -64,6 +90,15 @@ class Palette extends Component {
           <p className="has-text-centered">Components</p>
           <nav className="level">
             {blueprints &&
+              /*blueprints.map((e, index) => (
+                <SelectableElement
+                  key={index}
+                  name={e.title}
+                  img={e.preview}
+                  selected={index === selectedBlueprintIndex}
+                  onClick={() => this.updateSelectedBlueprint(index)}
+                />
+              ))*/
               blueprints.map((e, index) => (
                 <SelectableElement
                   key={index}
