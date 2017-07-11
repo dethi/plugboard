@@ -5,8 +5,6 @@ const genBlueprintsFromEl = data => {
   const blueprints = [];
 
   data.forEach(el => {
-    console.log(el);
-
     let curChar = 'A';
     const input = [];
     for (let i = 0; i < el.nbInput; i++) {
@@ -34,8 +32,6 @@ const genBlueprintsFromEl = data => {
       )
     );
   });
-
-  console.log(blueprints);
   return blueprints;
 };
 

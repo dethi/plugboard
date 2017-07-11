@@ -56,10 +56,6 @@
             margin: auto;  /* Magic! */
         }
     }
-
-    .box-is-active {
-        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 2px #1a936f
-    }
 }
 
 .load-board-modal {
@@ -80,10 +76,42 @@
             margin-bottom: 10px;
         }
     }
+}
 
-    .box-is-active {
-        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 2px #1a936f
+.choose-component-modal {
+    .parent {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
+
+    .vertical-line {
+        border-left: solid;
+    }
+
+    .title {
+        font-size: 25px
+    }
+
+    .box {
+        margin: auto;
+        margin-bottom: 20px;
+
+        .image {
+            width: 80px;  /* Or whatever */
+            height: 80px; /* Or whatever */
+            margin: auto;  /* Magic! */
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-size: 20px
+        }
+    }
+}
+
+.box-is-active {
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 2px #1a936f
 }
 
 .save-component {
