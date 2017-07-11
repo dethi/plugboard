@@ -86,9 +86,13 @@ class ComponentController extends Controller
 
     public function get_selected()
     {
-        return Auth::user()->components()->where('is_selected', true)->with(['versions' => function ($query) {
-            return $query->latest()->first();
-        }])->get();
+        // TODO(dethi): fetch only the latest version. The same solution used
+        // on the board API doesn't work here because the main query returns
+        // more than one result.
+        return Auth::user()->components()
+            ->where('is_selected', true)
+            ->with(['versions'])
+            ->get();
     }
 
     public function get_elementaire()
