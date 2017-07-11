@@ -44,6 +44,16 @@ const getElComponents = () => {
     });
 };
 
+const getSelectedComponents = () => {
+  return axios
+    .get('/api/component/selected')
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 const getComponent = componentId => {
   return axios
     .get(`/api/component/${componentId}`)
@@ -60,5 +70,6 @@ export default {
   selectComponent,
   getComponents,
   getElComponents,
+  getSelectedComponents,
   getComponent
 };

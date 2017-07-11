@@ -84,6 +84,13 @@ class ComponentController extends Controller
         return $component;
     }
 
+    public function get_selected()
+    {
+        return Auth::user()->components()->where('is_selected', true)->with(['versions' => function ($query) {
+            return $query->latest()->first();
+        }])->get();
+    }
+
     public function get_elementaire()
     {
         return DB::table('el_components')->get();

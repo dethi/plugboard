@@ -31,6 +31,7 @@ Route::group(['prefix' => 'component'], function () {
 
 Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () {
     Route::get('', 'ComponentController@index');
+    Route::get('selected', 'ComponentController@get_selected');
     Route::get('{id}', 'ComponentController@show');
     Route::post('', 'ComponentController@create');
     Route::post('{id}/select', 'ComponentController@select');
