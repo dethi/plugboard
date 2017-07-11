@@ -33,6 +33,7 @@ Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () 
     Route::get('', 'ComponentController@index');
     Route::get('{id}', 'ComponentController@show');
     Route::post('', 'ComponentController@create');
+    Route::post('{id}/select', 'ComponentController@select');
     Route::post('{id}/version', 'ComponentController@add_version');
 });
 

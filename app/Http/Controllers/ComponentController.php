@@ -40,6 +40,17 @@ class ComponentController extends Controller
         }])->findOrFail($id);
     }
 
+    public function select(Request $request, $id)
+    {
+        $component = Auth::user()->components()->with(['versions' => function ($query) {
+            return $query->latest()->first();
+        }])->findOrFail($id);
+
+        $component->is_selected = $request->input('isSelected');
+        $component->save();
+        return $component;
+    }
+
     public function add_version(Request $request, $id)
     {
         $component = Auth::user()->components()->findOrFail($id);
