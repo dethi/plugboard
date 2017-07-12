@@ -58,7 +58,7 @@ class Palette extends Component {
       selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
 
     return (
-      <div className="column is-one-quarter on-canvas palette">
+      <div className="on-canvas palette">
         <div className="box">
           <p className="has-text-centered">Components</p>
           <nav className="level">

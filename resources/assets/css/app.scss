@@ -28,7 +28,8 @@
     margin: 0 auto;
     left:0px;
     right:0px;
-    width: 1000px;
+    max-width: 50%;
+    min-width: 20%;
 
     p {
         margin: auto;
@@ -42,6 +43,7 @@
 
     .box {
         padding: 1px;
+        margin: auto;
         margin-bottom: 20px;
 
         .image {
