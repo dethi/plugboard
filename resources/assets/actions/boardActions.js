@@ -23,6 +23,12 @@ const setBoardMetaData = boardMetaData => {
   };
 };
 
+const deleteBoardMetaData = () => {
+  return {
+    type: 'DELETE_BOARD_METADATA'
+  };
+};
+
 const loadBoard = (boardMetaData, boardData) => {
   return {
     type: 'LOAD_BOARD',
@@ -51,6 +57,7 @@ export default {
   prepareBoardForSave,
   prepareBoardForComponent,
   setBoardMetaData,
+  deleteBoardMetaData,
   loadBoard,
   updateBoard,
   updateSpec

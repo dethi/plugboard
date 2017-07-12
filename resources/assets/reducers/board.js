@@ -23,6 +23,9 @@ const board = (state = {}, action) => {
         ...state,
         boardMetaData: action.boardMetaData
       };
+    case 'DELETE_BOARD_METADATA':
+      delete state.boardMetaData;
+      return state;
     case 'LOAD_BOARD':
       if (!state.prepare) state.load = 0;
       return {
