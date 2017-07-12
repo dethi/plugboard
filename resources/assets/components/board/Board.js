@@ -113,7 +113,9 @@ class Board extends Component {
   };
 
   clearBoard = () => {
-    this.boardController.onDelete();
+    if (this.boardController.onDelete()) {
+      this.props.dispatch(BoardAction.deleteBoardMetaData());
+    }
   };
 
   nextStep = () => {
@@ -154,12 +156,15 @@ class Board extends Component {
     };
     return (
       <div>
-        {boardMetaData && <div>{boardMetaData.title}</div>}
         <div className="column">
           <div style={style}>
             <canvas ref="canvas" />
           </div>
         </div>
+        {boardMetaData &&
+          <div className="box on-canvas on-canvas-center board-title">
+            <p className="has-text-centered">{boardMetaData.title}</p>
+          </div>}
       </div>
     );
   }

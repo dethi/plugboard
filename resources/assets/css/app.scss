@@ -24,19 +24,14 @@
 .palette {
 
     top: 85%;
-    max-width: 1000px;
-    min-width: 500px;
     overflow: hidden;
     margin: 0 auto;
     left:0px;
     right:0px;
+    width: 1000px;
 
     p {
         margin: auto;
-    }
-
-    .box {
-        padding: 1px;
     }
 
     .palette-item {
@@ -46,7 +41,7 @@
     }
 
     .box {
-        margin: auto;
+        padding: 1px;
         margin-bottom: 20px;
 
         .image {
@@ -138,16 +133,32 @@ textarea {
     max-height: 300px;
 }
 
+.board-title {
+    width: 20%;
+    padding: 5px;
+}
+
 
 .on-canvas
 {
     position: absolute;
     background-color: white;
 }
+
+.on-canvas-center
+{
+    top: 6%;
+    overflow: hidden;
+    margin: 0 auto;
+    left:0px;
+    right:0px;
+}
+
 .on-canvas-right
 {
     right: 0px;
 }
+
 .on-canvas-left
 {
     left: 0px;
