@@ -77,14 +77,15 @@ class Modal extends Component {
           </section>
           <footer className="modal-card-foot">
             <div>
-              <a
-                className={classNames('button is-success', {
-                  'is-loading': this.state.loading
-                })}
-                onClick={this.handleApply}
-              >
-                {this.props.success}
-              </a>
+              {this.props.success &&
+                <a
+                  className={classNames('button is-success', {
+                    'is-loading': this.state.loading
+                  })}
+                  onClick={this.handleApply}
+                >
+                  {this.props.success}
+                </a>}
               <a className={cancelStyle} onClick={this.handleCancel}>
                 {cancelText}
               </a>

@@ -12,11 +12,20 @@ const board = (state = {}, action) => {
         ...state,
         prepare: state.prepare + 1
       };
+    case 'PREPARE_BOARD_COMPONENT':
+      if (!state.prepareForComponent) state.prepareForComponent = 0;
+      return {
+        ...state,
+        prepareForComponent: state.prepareForComponent + 1
+      };
     case 'SET_BOARD_METADATA':
       return {
         ...state,
         boardMetaData: action.boardMetaData
       };
+    case 'DELETE_BOARD_METADATA':
+      delete state.boardMetaData;
+      return state;
     case 'LOAD_BOARD':
       if (!state.prepare) state.load = 0;
       return {
@@ -30,6 +39,11 @@ const board = (state = {}, action) => {
         ...state,
         boardData: action.boardData,
         preview: action.preview
+      };
+    case 'UPDATE_SPEC':
+      return {
+        ...state,
+        spec: action.spec
       };
     default:
       return state;

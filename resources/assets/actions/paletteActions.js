@@ -1,14 +1,28 @@
 const addBlueprints = blueprints => {
   return {
     type: 'ADD_BLUEPRINTS',
-    blueprints: blueprints
+    blueprints
+  };
+};
+
+const addElementaireBlueprints = blueprints => {
+  return {
+    type: 'ADD_ELEMENTAIRE_BLUEPRINTS',
+    blueprints
+  };
+};
+
+const removeBlueprints = blueprints => {
+  return {
+    type: 'REMOVE_BLUEPRINTS',
+    blueprints
   };
 };
 
 const selectBlueprint = blueprint => {
   return {
     type: 'SELECT_BLUEPRINT',
-    blueprint: blueprint
+    blueprint
   };
 };
 
@@ -20,6 +34,8 @@ const unselecteBlueprint = () => {
 
 export default {
   addBlueprints,
+  addElementaireBlueprints,
+  removeBlueprints,
   selectBlueprint,
   unselecteBlueprint
 };

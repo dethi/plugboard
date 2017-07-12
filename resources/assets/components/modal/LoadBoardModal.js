@@ -1,34 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 
 import Modal from './Modal';
+import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
 
 import BoardAction from '../../actions/boardActions';
 
 import boardApi from '../../api/board';
-
-function SelectableElement(props) {
-  return (
-    <a
-      className={classNames('box', {
-        'box-is-active': props.selected
-      })}
-      onClick={props.onClick}
-    >
-      <article className="media">
-        <div className="media-content">
-          <figure className="image">
-            <img src={props.img} alt="Board Preview" />
-          </figure>
-          <div className="content has-text-centered">
-            <strong className="title">{props.title}</strong>
-          </div>
-        </div>
-      </article>
-    </a>
-  );
-}
 
 class LoadBoardModal extends Component {
   constructor(props) {
@@ -93,18 +71,6 @@ class LoadBoardModal extends Component {
                   <i className="fa fa-spinner fa-pulse" />
                 </span>
               </div>}
-            {/*<div className="field has-addons">
-              <p className="control">
-                <input className="input" type="text" placeholder="Recherche" />
-              </p>
-              <p className="control">
-                <button type="submit" className="button is-primary">
-                  <span className="icon">
-                    <i className="fa fa-search" />
-                  </span>
-                </button>
-              </p>
-            </div>*/}
             {boards &&
               <div>
                 {boards.length === 0
@@ -115,7 +81,7 @@ class LoadBoardModal extends Component {
                     </div>
                   : <div className="parent">
                       {boards.map(board => (
-                        <SelectableElement
+                        <SelectableElementBoxImg
                           key={board.id}
                           title={board.title}
                           img={board.preview_url}

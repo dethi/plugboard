@@ -21,13 +21,12 @@ export default class CursorController {
         );
 
         newCursor.placeOnBoard(this.boardView, new Vector(0, 0));
-        newCursor.initComponent().then(() => {
-          newCursor.getFabricElements().forEach(el => {
-            el.opacity = 0.2;
-          });
-          this.cursors[spec.name] = newCursor;
-          resolve(newCursor);
+        newCursor.initComponent();
+        newCursor.getFabricElements().forEach(el => {
+          el.opacity = 0.2;
         });
+        this.cursors[spec.name] = newCursor;
+        resolve(newCursor);
       } else {
         resolve(this.cursors[`${spec.name}_${rotate}`]);
       }

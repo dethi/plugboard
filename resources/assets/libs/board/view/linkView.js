@@ -9,6 +9,14 @@ export const LinkType = {
   OUTPUT: 1
 };
 
+const fabricLine = (x1, y1, x2, y2, color) => {
+  return new fabric.Line([x1, y1, x2, y2], {
+    strokeWidth: LINE_SIZE,
+    selectable: false,
+    stroke: color
+  });
+};
+
 export class LinkLine {
   constructor(linkA, linkB) {
     this.linkA = linkA;
@@ -65,47 +73,77 @@ export class LinkLine {
       Math.floor(this.linkB.pos.y / GRID_SIZE)
     );
 
-    let isXAligne = true;
-    let isYAligne = true;
+    let isXAligneStart = true;
+    let isYAligneStart = true;
+    let isXAligneEnd = false;
+    let isYAligneEnd = false;
 
-    this.path.forEach(pos => {
-      const realPos = new Vector(
-        pos.x * GRID_SIZE + GRID_SIZE / 2,
-        pos.y * GRID_SIZE + GRID_SIZE / 2
+    if (this.path.length < 2) {
+      lines.push(
+        fabricLine(
+          this.linkA.pos.x + LINK_SIZE / 2,
+          this.linkA.pos.y + LINK_SIZE / 2,
+          this.linkB.pos.x + LINK_SIZE / 2,
+          this.linkB.pos.y + LINK_SIZE / 2,
+          color
+        )
       );
+    } else {
+      this.path.forEach(pos => {
+        const realPos = new Vector(
+          pos.x * GRID_SIZE + GRID_SIZE / 2,
+          pos.y * GRID_SIZE + GRID_SIZE / 2
+        );
 
-      if (pos.x !== linkARealPos.x) isXAligne = false;
-      if (isXAligne) {
-        realPos.x = this.linkA.pos.x + LINK_SIZE / 2;
-      } else {
-        if (pos.x === linkBRealPos.x) {
+        // Aligne line with the link
+        // I'm sure I can opti this shit but to lazy today
+        // 40 degree in my room and I nedd to work on the .NET
+        if (pos.x !== linkARealPos.x) isXAligneStart = false;
+        if (isXAligneStart && !isXAligneEnd) {
+          realPos.x = this.linkA.pos.x + LINK_SIZE / 2;
+        } else {
+          if (pos.x === linkBRealPos.x) isXAligneEnd = true;
+        }
+
+        if (pos.x !== linkBRealPos.x) isXAligneEnd = false;
+        if (isXAligneEnd) {
           realPos.x = this.linkB.pos.x + LINK_SIZE / 2;
         }
-      }
 
-      if (pos.y !== linkARealPos.y) isYAligne = false;
-      if (isYAligne) {
-        realPos.y = this.linkA.pos.y + LINK_SIZE / 2;
-      } else {
-        if (pos.y === linkBRealPos.y) {
+        if (pos.y !== linkARealPos.y) isYAligneStart = false;
+        if (isYAligneStart && !isYAligneEnd) {
+          realPos.y = this.linkA.pos.y + LINK_SIZE / 2;
+        } else {
+          if (pos.y === linkBRealPos.y) isYAligneEnd = true;
+        }
+
+        if (pos.y !== linkBRealPos.y) isYAligneEnd = false;
+        if (isYAligneEnd) {
           realPos.y = this.linkB.pos.y + LINK_SIZE / 2;
         }
-      }
 
-      if (!curPos) {
+        if (!curPos) {
+          curPos = realPos;
+          return;
+        }
+
+        lines.push(fabricLine(curPos.x, curPos.y, realPos.x, realPos.y, color));
         curPos = realPos;
-        return;
-      }
+      });
 
-      lines.push(
-        new fabric.Line([curPos.x, curPos.y, realPos.x, realPos.y], {
-          strokeWidth: LINE_SIZE,
-          selectable: false,
-          stroke: color
-        })
-      );
-      curPos = realPos;
-    });
+      // Create final line if End Link not aligned
+      if (!isXAligneEnd || !isYAligneEnd) {
+        lines.push(
+          fabricLine(
+            curPos.x,
+            curPos.y,
+            this.linkB.pos.x + LINK_SIZE / 2,
+            this.linkB.pos.y + LINK_SIZE / 2,
+            color
+          )
+        );
+      }
+    }
 
     return lines;
   }

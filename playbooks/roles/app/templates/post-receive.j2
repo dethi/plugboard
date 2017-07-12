@@ -36,10 +36,6 @@ echo "=== Link .env"
 mkdir -p "$RELEASE_PATH/bootstrap/cache"
 composer install --no-dev
 echo "=== PHP dependencies installed"
-yarn
-echo "=== Javascript dependencies installed"
-yarn run build
-echo "=== Javascript bundle completed"
 rm -rf "$RELEASE_PATH/storage"
 ln -snf "$STORAGE_PATH" "$RELEASE_PATH/storage"
 php artisan storage:link

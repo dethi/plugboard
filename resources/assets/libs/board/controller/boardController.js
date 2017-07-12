@@ -8,7 +8,11 @@ import BoardView from '../view/boardView';
 
 import { Element } from '../model/element';
 
+import Vector from '../../utils/vector';
+
 import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
+
+import { generateTruthTable } from '../../../engine/engine';
 
 export default class BoardController {
   constructor(canvasHolder, unSelectBlueprint) {
@@ -55,7 +59,7 @@ export default class BoardController {
       const el = board.elements[id];
 
       const newEl = this.addElement(
-        el.pos,
+        new Vector(el.pos.x, el.pos.y),
         board.specs[el.specName],
         el.rotate
       );
@@ -63,14 +67,11 @@ export default class BoardController {
       idMapping[id] = newEl.id;
     });
 
-    this.boardView.whenReady(() => {
-      // Add Link
-      Object.keys(board.elements).forEach(id => {
-        const el = board.elements[id];
-        Object.keys(el.input).forEach(inputName => {
-          const outputInfo = el.input[inputName];
-          this.addLink(outputInfo, [idMapping[id], inputName]);
-        });
+    Object.keys(board.elements).forEach(id => {
+      const el = board.elements[id];
+      Object.keys(el.input).forEach(inputName => {
+        const outputInfo = el.input[inputName];
+        this.addLink(outputInfo, [idMapping[id], inputName]);
       });
     });
   }
@@ -83,11 +84,12 @@ export default class BoardController {
     const elId = this.gridController.get(oldPos);
     const el = this.board.elements[elId];
 
-    if (!this.gridController.canMove(el, newPos)) return false;
+    if (!this.gridController.canMove(el, this.board.specs[el.specName], newPos))
+      return false;
 
     el.pos = newPos;
 
-    this.gridController.moveElement(el, oldPos);
+    this.gridController.moveElement(el, this.board.specs[el.specName], oldPos);
     this.boardView.moveElement(elId, newPos);
 
     return true;
@@ -105,8 +107,10 @@ export default class BoardController {
     const select = this.boardView.fabricCanvas.getActiveObject();
     if (select !== undefined && select !== null) {
       this.removeElement(select.id);
+      return false;
     } else {
       this.clearBoard();
+      return true;
     }
   }
 
@@ -154,7 +158,7 @@ export default class BoardController {
     this.board.elements[newElId] = newEl;
     this.boardView.addElement(pos, newEl, spec);
 
-    this.gridController.setElement(newEl);
+    this.gridController.setElement(newEl, spec);
 
     if (this.board.specs[spec.name] === undefined) this.addInSpecs(spec);
 
@@ -166,7 +170,7 @@ export default class BoardController {
   removeElement(elId) {
     const el = this.board.elements[elId];
 
-    this.gridController.freeEl(el);
+    this.gridController.freeEl(el, this.board.specs[el.specName]);
 
     // Unlink Output
     Object.keys(el.output).forEach(outputName => {
@@ -241,6 +245,65 @@ export default class BoardController {
 
   exportEngineStates() {
     return this.engineController.exportEngineStates();
+  }
+
+  exportSpec() {
+    const spec = {};
+
+    // Copy board representation
+    const board = JSON.parse(
+      JSON.stringify(this.engineController.exportForEngine(this.board))
+    );
+
+    // Check that all input are connect
+    let empty = true;
+    Object.keys(board.components).forEach(componentId => {
+      empty = false;
+      Object.keys(board.components[componentId].input).forEach(inputName => {
+        if (board.components[componentId].input[inputName] === 0) {
+          spec.err = 'Some input are not connect';
+        }
+      });
+    });
+    if (empty) spec.err = 'The board need at least one gate';
+
+    if (spec.err !== undefined) return spec;
+
+    // Delete Default input and move registery
+    delete board.input['0'];
+    board.nextRegistery--;
+    Object.keys(board.components).forEach(componentId => {
+      const component = board.components[componentId];
+      Object.keys(component.input).forEach(inputName => {
+        component.input[inputName]--;
+      });
+      Object.keys(component.output).forEach(outputName => {
+        component.output[outputName].forEach(
+          (_, index) => component.output[outputName][index]--
+        );
+      });
+      board.components[componentId] = component;
+    });
+    Object.keys(board.input).forEach(inputId => board.input[inputId]--);
+    Object.keys(board.output).forEach(outputId => board.output[outputId]--);
+
+    // Generate Spec
+    spec.truthTable = generateTruthTable(board);
+    spec.dimX = 1;
+    spec.dimY = 1;
+    spec.input = [];
+    let curChar = 'A';
+    Object.keys(board.input).forEach(() => {
+      spec.input.push(curChar);
+      curChar = String.fromCharCode(curChar.charCodeAt(0) + 1);
+    });
+    spec.output = [];
+    Object.keys(board.output).forEach(() => {
+      spec.output.push(curChar);
+      curChar = String.fromCharCode(curChar.charCodeAt(0) + 1);
+    });
+
+    return spec;
   }
 
   applyState(states) {

@@ -10,10 +10,22 @@ const prepareBoardForSave = () => {
   };
 };
 
+const prepareBoardForComponent = () => {
+  return {
+    type: 'PREPARE_BOARD_COMPONENT'
+  };
+};
+
 const setBoardMetaData = boardMetaData => {
   return {
     type: 'SET_BOARD_METADATA',
     boardMetaData
+  };
+};
+
+const deleteBoardMetaData = () => {
+  return {
+    type: 'DELETE_BOARD_METADATA'
   };
 };
 
@@ -33,10 +45,20 @@ const updateBoard = (boardData, preview) => {
   };
 };
 
+const updateSpec = spec => {
+  return {
+    type: 'UPDATE_SPEC',
+    spec
+  };
+};
+
 export default {
   clearBoard,
   prepareBoardForSave,
+  prepareBoardForComponent,
   setBoardMetaData,
+  deleteBoardMetaData,
   loadBoard,
-  updateBoard
+  updateBoard,
+  updateSpec
 };

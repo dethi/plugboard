@@ -24,3 +24,18 @@ Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::post('', 'BoardController@create');
     Route::post('{id}/version', 'BoardController@add_version');
 });
+
+Route::group(['prefix' => 'component'], function () {
+    Route::get('elementaire', 'ComponentController@get_elementaire');
+});
+
+Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () {
+    Route::get('', 'ComponentController@index');
+    Route::get('selected', 'ComponentController@get_selected');
+    Route::get('{id}', 'ComponentController@show');
+    Route::post('', 'ComponentController@create');
+    Route::post('{id}/select', 'ComponentController@select');
+    Route::post('{id}/version', 'ComponentController@add_version');
+});
+
+

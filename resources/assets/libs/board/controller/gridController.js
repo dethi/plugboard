@@ -10,22 +10,88 @@ export default class GridController {
     this.myPathFinding = new myPathFinding(this);
   }
 
-  setElement(el) {
-    this.set(el.pos, el.id);
+  setElement(el, spec) {
+    for (
+      let i = 0;
+      i < (el.rotate === 0 || el.rotate === 2 ? spec.dimX : spec.dimY);
+      i++
+    ) {
+      for (
+        let j = 0;
+        j < (el.rotate === 0 || el.rotate === 2 ? spec.dimY : spec.dimX);
+        j++
+      ) {
+        this.set(el.pos.add(i, j), el.id);
+      }
+    }
   }
 
-  canMove(el, newPos) {
-    return this.get(newPos) === null;
+  canMove(el, spec, newPos) {
+    let canMoveRes = true;
+
+    for (
+      let i = 0;
+      i < (el.rotate === 0 || el.rotate === 2 ? spec.dimX : spec.dimY);
+      i++
+    ) {
+      for (
+        let j = 0;
+        j < (el.rotate === 0 || el.rotate === 2 ? spec.dimY : spec.dimX);
+        j++
+      ) {
+        const pos = newPos.add(i, j);
+        if (this.get(pos) !== null && this.get(pos) !== el.id)
+          canMoveRes = false;
+      }
+    }
+
+    return canMoveRes;
   }
 
-  moveElement(el, oldPos) {
-    this.set(el.pos, el.id);
+  moveElement(el, spec, oldPos) {
+    for (
+      let i = 0;
+      i < (el.rotate === 0 || el.rotate === 2 ? spec.dimX : spec.dimY);
+      i++
+    ) {
+      for (
+        let j = 0;
+        j < (el.rotate === 0 || el.rotate === 2 ? spec.dimY : spec.dimX);
+        j++
+      ) {
+        this.set(oldPos.add(i, j), null);
+      }
+    }
 
-    this.set(oldPos, null);
+    for (
+      let i = 0;
+      i < (el.rotate === 0 || el.rotate === 2 ? spec.dimX : spec.dimY);
+      i++
+    ) {
+      for (
+        let j = 0;
+        j < (el.rotate === 0 || el.rotate === 2 ? spec.dimY : spec.dimX);
+        j++
+      ) {
+        this.set(el.pos.add(i, j), el.id);
+      }
+    }
   }
 
-  freeEl(el) {
-    this.set(el.pos, null);
+  freeEl(el, spec) {
+    for (
+      let i = 0;
+      i < (el.rotate === 0 || el.rotate === 2 ? spec.dimX : spec.dimY);
+      i++
+    ) {
+      for (
+        let j = 0;
+        j < (el.rotate === 0 || el.rotate === 2 ? spec.dimY : spec.dimX);
+        j++
+      ) {
+        this.set(el.pos.add(i, j), null);
+      }
+    }
   }
 
   getPath(posA, posB) {

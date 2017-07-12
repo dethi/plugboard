@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import UserAction from '../actions/userActions';
-import Authentification from '../api/authentification';
+import UserAction from '../../actions/userActions';
+import Authentification from '../../api/authentification';
 
 import { NavLink } from 'react-router-dom';
 

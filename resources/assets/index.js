@@ -11,8 +11,9 @@ import axios from 'axios';
 import plugboardReducers from './reducers';
 
 import App from './components/App';
-import Index from './components/Index';
+import Index from './components/home';
 import Contact from './components/Contact';
+import ListObjectif from './components/objectif/ListObjectif';
 import './css/app.scss';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route exact={true} path="/" component={Index} />
         <Route path="/app" component={App} />
         <Route path="/contact" component={Contact} />
+        <Route path="/objectif" component={ListObjectif} />
       </div>
     </BrowserRouter>
   </Provider>,

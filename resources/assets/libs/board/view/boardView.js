@@ -36,9 +36,6 @@ export default class BoardView {
     this.curCusor = null;
     this.curCusorPos = new Vector(0, 0);
 
-    this.thenableIsLoading = null;
-    this.isLoadingInc = 0;
-
     this.fabricCanvas.on('mouse:down', options => {
       switch (this.controller.boardState) {
         case BoardState.ADDING:
@@ -90,7 +87,7 @@ export default class BoardView {
           [this.gridSize * x, 0, this.gridSize * x, this.gridHeight],
           {
             stroke: '#CDCDCD',
-            selectable: false
+            evented: false
           }
         )
       );
@@ -101,7 +98,7 @@ export default class BoardView {
           [0, this.gridSize * x, this.gridWidth, this.gridSize * x],
           {
             stroke: '#CDCDCD',
-            selectable: false
+            evented: false
           }
         )
       );
@@ -131,17 +128,13 @@ export default class BoardView {
       isInput
     );
 
-    this.incIsLoading(1);
-
     newElementView.placeOnBoard(this, pos);
-    newElementView.initComponent().then(() => {
-      this.elecElements[elementModel.id] = newElementView;
+    newElementView.initComponent();
 
-      newElementView.getFabricElements().forEach(el => {
-        this.fabricCanvas.add(el);
-      });
+    this.elecElements[elementModel.id] = newElementView;
 
-      this.incIsLoading(-1);
+    newElementView.getFabricElements().forEach(el => {
+      this.fabricCanvas.add(el);
     });
   }
 
@@ -283,23 +276,6 @@ export default class BoardView {
     this.fabricCanvas.clear();
 
     this.addGridLine();
-  }
-
-  incIsLoading(inc) {
-    this.isLoadingInc += inc;
-
-    if (this.isLoadingInc <= 0 && this.thenableIsLoading) {
-      Promise.resolve(this.thenableIsLoading);
-      this.thenableIsLoading = null;
-    }
-  }
-
-  whenReady(func) {
-    this.thenableIsLoading = {
-      then() {
-        func();
-      }
-    };
   }
 
   toPng() {

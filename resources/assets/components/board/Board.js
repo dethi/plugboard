@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import PaletteAction from '../actions/paletteActions';
-import BoardAction from '../actions/boardActions';
-import ModalAction from '../actions/modalActions';
+import PaletteAction from '../../actions/paletteActions';
+import BoardAction from '../../actions/boardActions';
+import ModalAction from '../../actions/modalActions';
 
-import boardApi from '../api/board';
+import boardApi from '../../api/board';
 
-import BoardController from '../libs/board/controller/boardController';
-import { evalutateBoard } from '../engine/engine';
+import BoardController from '../../libs/board/controller/boardController';
+import { evalutateBoard } from '../../engine/engine';
 
 class Board extends Component {
   constructor(props) {
@@ -35,20 +35,39 @@ class Board extends Component {
       } else {
         this.stop();
       }
-    } else if (nextProps.step !== this.props.step) {
+    }
+
+    if (nextProps.step !== this.props.step) {
       this.nextStep();
-    } else if (nextProps.rotate !== this.props.rotate) {
+    }
+
+    if (nextProps.rotate !== this.props.rotate) {
       this.rotate();
-    } else if (
+    }
+
+    if (
       nextProps.palette.selectedBlueprint !==
       this.props.palette.selectedBlueprint
     ) {
       this.updateSelectedBlueprint(nextProps.palette.selectedBlueprint);
-    } else if (nextProps.board.clear !== this.props.board.clear) {
+    }
+
+    if (nextProps.board.clear !== this.props.board.clear) {
       this.clearBoard();
-    } else if (nextProps.board.prepare !== this.props.board.prepare) {
+    }
+
+    if (nextProps.board.prepare !== this.props.board.prepare) {
       this.prepareBoard();
-    } else if (nextProps.board.load !== this.props.board.load) {
+    }
+
+    if (
+      nextProps.board.prepareForComponent !==
+      this.props.board.prepareForComponent
+    ) {
+      this.prepareBoardForComponent();
+    }
+
+    if (nextProps.board.load !== this.props.board.load) {
       console.log('RELOAD');
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }
@@ -70,6 +89,17 @@ class Board extends Component {
       .catch(response => console.log(response));
   };
 
+  prepareBoardForComponent = () => {
+    const spec = this.boardController.exportSpec();
+
+    if (spec.err === undefined) {
+      this.props.dispatch(BoardAction.updateSpec(spec));
+      this.props.dispatch(ModalAction.displayModal('COMPONENT_SAVE'));
+    } else {
+      this.props.dispatch(ModalAction.displayErrorModal([[spec.err]]));
+    }
+  };
+
   rotate = () => {
     this.boardController.onRotate();
   };
@@ -83,7 +113,9 @@ class Board extends Component {
   };
 
   clearBoard = () => {
-    this.boardController.onDelete();
+    if (this.boardController.onDelete()) {
+      this.props.dispatch(BoardAction.deleteBoardMetaData());
+    }
   };
 
   nextStep = () => {
@@ -124,12 +156,15 @@ class Board extends Component {
     };
     return (
       <div>
-        {boardMetaData && <div>{boardMetaData.title}</div>}
         <div className="column">
           <div style={style}>
             <canvas ref="canvas" />
           </div>
         </div>
+        {boardMetaData &&
+          <div className="box on-canvas on-canvas-center board-title">
+            <p className="has-text-centered">{boardMetaData.title}</p>
+          </div>}
       </div>
     );
   }
