@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+
+import thunk from 'redux-thunk';
 
 import axios from 'axios';
 
@@ -14,12 +16,14 @@ import App from './components/App';
 import Index from './components/home';
 import Contact from './components/Contact';
 import ListObjectif from './components/objectif/ListObjectif';
+
 import './css/app.scss';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const store = createStore(
   plugboardReducers,
+  applyMiddleware(thunk),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

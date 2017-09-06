@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import componentApi from '../../api/component';
-
 import PaletteAction from '../../actions/paletteActions';
 
 function SelectableElement(props) {
@@ -32,15 +30,7 @@ function SelectableElement(props) {
 class Palette extends Component {
   constructor(props) {
     super(props);
-
-    componentApi
-      .getElComponents()
-      .then(data =>
-        this.props.dispatch(PaletteAction.addElementaireBlueprints(data)));
-
-    componentApi
-      .getSelectedComponents()
-      .then(data => this.props.dispatch(PaletteAction.addBlueprints(data)));
+    this.props.dispatch(PaletteAction.addAllBlueprintsAsync());
   }
 
   updateSelectedBlueprint = index => {
