@@ -73,6 +73,14 @@ const palette = (state = {}, action) => {
   const blueprints = state.blueprints || [];
 
   switch (action.type) {
+    case 'SET_BLUEPRINTS':
+      const newBlueprints = [];
+      newBlueprints.push(...genBlueprints(action.blueprints));
+      newBlueprints.push(...genBlueprintsFromElementaire(action.elBlueprints));
+      return {
+        ...state,
+        blueprints: newBlueprints
+      };
     case 'ADD_BLUEPRINTS':
       blueprints.push(...genBlueprints(action.blueprints));
       return {

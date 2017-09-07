@@ -14,18 +14,23 @@ const addElementaireBlueprints = blueprints => {
   };
 };
 
-const addAllBlueprintsAsync = () => {
+const setBlueprints = (elBlueprints, blueprints) => {
+  return {
+    type: 'SET_BLUEPRINTS',
+    elBlueprints,
+    blueprints
+  };
+};
+
+const initPalette = () => {
   return dispatch => {
     componentApi
       .getElComponents()
-      .then(data => dispatch(addElementaireBlueprints(data)));
-
-    componentApi
-      .getSelectedComponents()
-      .then(data => dispatch(addBlueprints(data)));
-
-    // Can return Promise for chain action :)
-    // return Promise.resolve();
+      .then(elBlueprints => {
+        componentApi
+         .getSelectedComponents()
+         .then(blueprints => dispatch(setBlueprints(elBlueprints, blueprints)));
+      });
   };
 };
 
@@ -50,9 +55,8 @@ const unselecteBlueprint = () => {
 };
 
 export default {
-  addAllBlueprintsAsync,
+  initPalette,
   addBlueprints,
-  addElementaireBlueprints,
   removeBlueprints,
   selectBlueprint,
   unselecteBlueprint

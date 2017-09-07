@@ -30,7 +30,8 @@ function SelectableElement(props) {
 class Palette extends Component {
   constructor(props) {
     super(props);
-    this.props.dispatch(PaletteAction.addAllBlueprintsAsync());
+    this.props.dispatch(PaletteAction.initPalette());
+    console.log(this.props.palette);
   }
 
   updateSelectedBlueprint = index => {
