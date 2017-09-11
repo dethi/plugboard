@@ -17,6 +17,8 @@ export default class ItemList extends Component {
               </figure>
             </div>
             <div className="card-content">
+
+            {/*
               <div className="media">
                 <div className="media-right">
                   <div className="icon">
@@ -26,10 +28,9 @@ export default class ItemList extends Component {
                   </div>
                 </div>
               </div>
+              */}
               <div className="content has-text-centered">
-                <h1 className="title is-3 is-spaced">
                   Challenge 1
-                </h1>
               </div>
             </div>
           </div>
