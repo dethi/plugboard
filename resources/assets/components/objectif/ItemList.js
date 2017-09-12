@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 
 export default class ItemList extends Component {
   render() {
-    console.log(this.props.locked);
     if (!this.props.locked) {
       return (
         <div className=" element">
