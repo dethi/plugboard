@@ -11,19 +11,19 @@ export default class ListObjectif extends Component {
           <div className="columns is-mobile">
             <div className="column is-half is-offset-one-quarter">
               <div className="conteneur">
-                <ItemList />
-                <ItemList />
-                <ItemList />
-                <ItemList />
-                <ItemList />
-                <ItemList />
-                <ItemList />
-                <ItemList />
+                <ItemList locked={true} />
+                <ItemList locked={true} />
+                <ItemList locked={false} />
+                <ItemList locked={false} />
+                <ItemList locked={false} />
+                <ItemList locked={false} />
+                <ItemList locked={false} />
+                <ItemList locked={false} />
               </div>
             </div>
-        </div>
-      </section>
-  </div>  
+          </div>
+        </section>
+      </div>
     );
   }
 }
