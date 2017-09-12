@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 
 import Palette from './board/Palette';
 import Board from './board/Board';
+import ItemInBoard from './objectif/ItemInBoard';
 
 class App extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class App extends Component {
               running={running}
               getCurCanvas={this.getCurCanvas}
             />
+            <ItemInBoard />
             <Palette />
           </div>
         </div>
