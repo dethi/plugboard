@@ -30,8 +30,13 @@ function SelectableElement(props) {
 class Palette extends Component {
   constructor(props) {
     super(props);
-    this.props.dispatch(PaletteAction.initPalette());
-    console.log(this.props.palette);
+    this.props.dispatch(PaletteAction.initPalette(this.props.user != null));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.palette.needToReload !== this.props.palette.needToReload) {
+      nextProps.dispatch(PaletteAction.initPalette(nextProps.user != null));
+    }
   }
 
   updateSelectedBlueprint = index => {
@@ -81,7 +86,8 @@ class Palette extends Component {
 
 const mapStateToProps = state => {
   return {
-    palette: state.palette
+    palette: state.palette,
+    user: state.user
   };
 };
 

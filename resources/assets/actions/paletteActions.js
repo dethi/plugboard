@@ -22,14 +22,17 @@ const setBlueprints = (elBlueprints, blueprints) => {
   };
 };
 
-const initPalette = () => {
+const initPalette = isLogged => {
   return dispatch => {
     componentApi
       .getElComponents()
       .then(elBlueprints => {
-        componentApi
-         .getSelectedComponents()
-         .then(blueprints => dispatch(setBlueprints(elBlueprints, blueprints)));
+        if (isLogged)
+          componentApi
+          .getSelectedComponents()
+          .then(blueprints => dispatch(setBlueprints(elBlueprints, blueprints)));
+        else
+          dispatch(setBlueprints(elBlueprints, []));
       });
   };
 };
