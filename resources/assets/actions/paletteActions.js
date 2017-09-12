@@ -24,16 +24,15 @@ const setBlueprints = (elBlueprints, blueprints) => {
 
 const initPalette = isLogged => {
   return dispatch => {
-    componentApi
-      .getElComponents()
-      .then(elBlueprints => {
-        if (isLogged)
-          componentApi
+    componentApi.getElComponents().then(elBlueprints => {
+      if (isLogged)
+        componentApi
           .getSelectedComponents()
-          .then(blueprints => dispatch(setBlueprints(elBlueprints, blueprints)));
-        else
-          dispatch(setBlueprints(elBlueprints, []));
-      });
+          .then(blueprints =>
+            dispatch(setBlueprints(elBlueprints, blueprints)));
+      else
+        dispatch(setBlueprints(elBlueprints, []));
+    });
   };
 };
 
@@ -60,6 +59,7 @@ const unselecteBlueprint = () => {
 export default {
   initPalette,
   addBlueprints,
+  addElementaireBlueprints,
   removeBlueprints,
   selectBlueprint,
   unselecteBlueprint
