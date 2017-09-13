@@ -16,7 +16,7 @@ import App from './components/App';
 import Index from './components/home';
 import Contact from './components/Contact';
 import ListObjectif from './components/objectif/ListObjectif';
-import Profile from './components/Profile';
+import Profile from './components/profile/Profile';
 import './css/app.scss';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
