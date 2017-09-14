@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import componentApi from '../../api/component';
-import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
+import Element from './Element';
 
 class MyElements extends Component {
   constructor(props) {
@@ -42,10 +42,11 @@ class MyElements extends Component {
                 </div>
               : <div className="parent">
                   {elements.map(element => (
-                    <SelectableElementBoxImg
+                    <Element
                       key={element.id}
                       title={element.title}
                       img={element.preview_url}
+                      isElement={true}
                       selected={element.id === this.state.boardId}
                       onClick={() => this.selectBoard(element.id)}
                     />

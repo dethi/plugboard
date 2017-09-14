@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
 
 import ModalAction from '../actions/modalActions';
 import BoardAction from '../actions/boardActions';
