@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import boardApi from '../../api/board';
-import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
+import Element from './Element';
+import BoardAction from '../../actions/boardActions';
 
 class MyBoards extends Component {
   constructor(props) {
@@ -22,6 +23,21 @@ class MyBoards extends Component {
       });
     });
   }
+  onApply = id => {
+    if (id === null) return;
+
+    boardApi.getBoard(id).then(board => {
+      console.log(board);
+
+      const boardMetaData = { ...board };
+      delete boardMetaData.versions;
+
+      const versionData = board.versions[board.versions.length - 1];
+      const boardData = JSON.parse(versionData.data);
+
+      this.props.dispatch(BoardAction.loadBoard(boardMetaData, boardData));
+    });
+  };
   render() {
     const { boards, loading } = this.state;
     return (
@@ -42,12 +58,12 @@ class MyBoards extends Component {
                 </div>
               : <div className="parent">
                   {boards.map(board => (
-                    <SelectableElementBoxImg
+                    <Element
                       key={board.id}
                       title={board.title}
                       img={board.preview_url}
-                      selected={board.id === this.state.boardId}
-                      onClick={() => this.selectBoard(board.id)}
+                      isElement={false}
+                      onClick={() => this.onApply(board.id)}
                     />
                   ))}
                 </div>}
