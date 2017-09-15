@@ -29,7 +29,12 @@ class Board extends Component {
   componentDidMount() {
     this.boardController = new BoardController(
       this.refs.canvas,
-      this.unSelectBlueprint
+      this.unSelectBlueprint,
+      () => {
+        if (this.props.user && this.props.user !== null) {
+          this.props.dispatch(BoardAction.prepareBoardForSave());
+        }
+      }
     );
   }
 
