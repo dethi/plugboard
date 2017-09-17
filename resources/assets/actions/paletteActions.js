@@ -1,3 +1,5 @@
+import componentApi from '../api/component';
+
 const addBlueprints = blueprints => {
   return {
     type: 'ADD_BLUEPRINTS',
@@ -9,6 +11,28 @@ const addElementaireBlueprints = blueprints => {
   return {
     type: 'ADD_ELEMENTAIRE_BLUEPRINTS',
     blueprints
+  };
+};
+
+const setBlueprints = (elBlueprints, blueprints) => {
+  return {
+    type: 'SET_BLUEPRINTS',
+    elBlueprints,
+    blueprints
+  };
+};
+
+const initPalette = isLogged => {
+  return dispatch => {
+    componentApi.getElComponents().then(elBlueprints => {
+      if (isLogged)
+        componentApi
+          .getSelectedComponents()
+          .then(blueprints =>
+            dispatch(setBlueprints(elBlueprints, blueprints)));
+      else
+        dispatch(setBlueprints(elBlueprints, []));
+    });
   };
 };
 
@@ -33,6 +57,7 @@ const unselecteBlueprint = () => {
 };
 
 export default {
+  initPalette,
   addBlueprints,
   addElementaireBlueprints,
   removeBlueprints,

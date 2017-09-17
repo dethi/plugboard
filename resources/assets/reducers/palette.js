@@ -73,6 +73,15 @@ const palette = (state = {}, action) => {
   const blueprints = state.blueprints || [];
 
   switch (action.type) {
+    case 'SET_BLUEPRINTS':
+      const newBlueprints = [];
+      newBlueprints.push(...genBlueprintsFromElementaire(action.elBlueprints));
+      newBlueprints.push(...genBlueprints(action.blueprints));
+      return {
+        ...state,
+        needToReload: false,
+        blueprints: newBlueprints
+      };
     case 'ADD_BLUEPRINTS':
       blueprints.push(...genBlueprints(action.blueprints));
       return {
@@ -99,6 +108,12 @@ const palette = (state = {}, action) => {
       return {
         ...state,
         selectedBlueprint: null
+      };
+    case 'LOGIN':
+    case 'LOGOUT':
+      return {
+        ...state,
+        needToReload: true
       };
     default:
       return state;

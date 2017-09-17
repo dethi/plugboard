@@ -64,14 +64,19 @@ export default class BoardController {
         el.rotate
       );
 
+      // Map new El id with old id (For delete element)
       idMapping[id] = newEl.id;
     });
 
     Object.keys(board.elements).forEach(id => {
       const el = board.elements[id];
       Object.keys(el.input).forEach(inputName => {
-        const outputInfo = el.input[inputName];
-        this.addLink(outputInfo, [idMapping[id], inputName]);
+        const outputInfo = el.input[inputName]; // 0: Id -- 1: Name
+
+        const inputLink = [idMapping[outputInfo[0]], outputInfo[1]];
+        const outputLink = [idMapping[id], inputName];
+
+        this.addLink(inputLink, outputLink);
       });
     });
   }

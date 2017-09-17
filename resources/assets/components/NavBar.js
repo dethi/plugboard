@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -102,9 +103,9 @@ class NavBar extends Component {
       <nav className="nav has-shadow app-main-nav">
         <div className="container">
           <div className="nav-left">
-            <a className="nav-item">
+            <NavLink className="nav-item" to="/">
               <img src="/static/Plugboard-Green.png" alt="Plugboard logo" />
-            </a>
+            </NavLink>
           </div>
 
           <div className="nav-center">
