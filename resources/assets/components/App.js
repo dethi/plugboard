@@ -5,7 +5,6 @@ import NavBar from './NavBar';
 
 import Palette from './board/Palette';
 import Board from './board/Board';
-import ModalContainer from './modal/ModalContainer';
 
 import UserAction from '../actions/userActions';
 
@@ -44,6 +43,7 @@ class App extends Component {
     return (
       <div>
         <NavBar
+          showControl={true}
           onRotate={this.handleRotate}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
@@ -64,7 +64,6 @@ class App extends Component {
             {/*<Profile />*/}
           </div>
         </div>
-        <ModalContainer />
       </div>
     );
   }
