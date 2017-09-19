@@ -16,6 +16,12 @@ const prepareBoardForComponent = () => {
   };
 };
 
+const prepareContextMenu = () => {
+  return {
+    type: 'PREPARE_CONTEXT_MENU'
+  };
+};
+
 const setBoardMetaData = boardMetaData => {
   return {
     type: 'SET_BOARD_METADATA',
@@ -55,6 +61,7 @@ const updateSpec = spec => {
 export default {
   clearBoard,
   prepareBoardForSave,
+  prepareContextMenu,
   prepareBoardForComponent,
   setBoardMetaData,
   deleteBoardMetaData,

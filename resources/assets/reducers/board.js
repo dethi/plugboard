@@ -18,6 +18,12 @@ const board = (state = {}, action) => {
         ...state,
         prepareForComponent: state.prepareForComponent + 1
       };
+    case 'PREPARE_CONTEXT_MENU':
+      if (!state.prepareContextMenu) state.prepareContextMenu = 0;
+      return {
+        ...state,
+        prepareContextMenu: state.prepareContextMenu + 1
+      };
     case 'SET_BOARD_METADATA':
       return {
         ...state,

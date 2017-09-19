@@ -7,6 +7,7 @@ import ContextMenuBoard from './ContextMenuBoard';
 
 import PaletteAction from '../../actions/paletteActions';
 import BoardAction from '../../actions/boardActions';
+import ContextMenuActions from '../../actions/contextMenuActions';
 import ModalAction from '../../actions/modalActions';
 
 import boardApi from '../../api/board';
@@ -70,6 +71,12 @@ class Board extends Component {
       this.prepareBoardForComponent();
     }
 
+    if (
+      nextProps.board.prepareContextMenu !== this.props.board.prepareContextMenu
+    ) {
+      this.prepareContextMenu();
+    }
+
     if (nextProps.board.load !== this.props.board.load) {
       console.log('RELOAD');
       this.boardController.loadFromBoard(nextProps.board.boardData);
@@ -101,6 +108,12 @@ class Board extends Component {
     } else {
       this.props.dispatch(ModalAction.displayErrorModal([[spec.err]]));
     }
+  };
+
+  prepareContextMenu = () => {
+    const curEl = this.boardController.getCurEl();
+
+    this.props.dispatch(ContextMenuActions.setContextType(curEl === null));
   };
 
   rotate = () => {

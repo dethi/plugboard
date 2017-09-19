@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
+import PropTypes from 'prop-types';
+
+import BoardAction from '../../actions/boardActions';
 
 class ContextMenuBoard extends Component {
-  constructor(props) {
-    super(props);
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.contextMenu);
 
-    this.state = {
-      loading: false
-    };
+    if (nextProps.contextMenu !== this.props.contextMenu) {
+      // this.rotate();
+    }
   }
 
   prepareMenu = () => {
     this.setState({ loading: true });
+
+    this.props.dispatch(BoardAction.prepareContextMenu());
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, typeMenu } = this.props.contextMenu;
 
     return (
       <ContextMenu
@@ -30,27 +35,48 @@ class ContextMenuBoard extends Component {
                 <i className="fa fa-spinner fa-pulse" />
               </span>
             </div>
-          : <div>
-              <MenuItem>
-                <a className="button">
-                  <span className="icon">
-                    <i className="fa fa-trash" />
-                  </span>
-                  <span>Delete</span>
-                </a>
-              </MenuItem>
-              <MenuItem>
-                <a className="button">
-                  <span className="icon">
-                    <i className="fa fa-repeat" />
-                  </span>
-                  <span>Rotate</span>
-                </a>
-              </MenuItem>
-            </div>}
+          : typeMenu
+              ? <div>
+                  <MenuItem>
+                    <a className="button">
+                      <span className="icon">
+                        <i className="fa fa-trash" />
+                      </span>
+                      <span>Clear Board</span>
+                    </a>
+                  </MenuItem>
+                </div>
+              : <div>
+                  <MenuItem>
+                    <a className="button">
+                      <span className="icon">
+                        <i className="fa fa-trash" />
+                      </span>
+                      <span>Delete</span>
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <a className="button">
+                      <span className="icon">
+                        <i className="fa fa-repeat" />
+                      </span>
+                      <span>Rotate</span>
+                    </a>
+                  </MenuItem>
+                </div>}
       </ContextMenu>
     );
   }
 }
 
-export default connect()(ContextMenuBoard);
+const mapStateToProps = state => {
+  return {
+    contextMenu: state.contextMenu
+  };
+};
+
+ContextMenuBoard.propTypes = {
+  contextMenu: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(ContextMenuBoard);
