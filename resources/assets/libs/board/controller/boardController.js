@@ -40,7 +40,6 @@ export default class BoardController {
     this.curId = 1;
 
     this.curMousePos = new Vector(0, 0);
-    this.curEl = null;
 
     this.gridController = new GridController(this.sizeX, this.sizeY);
     this.engineController = new EngineController();
@@ -88,6 +87,10 @@ export default class BoardController {
     return JSON.stringify(this.board);
   }
 
+  getCurEl() {
+    return this.gridController.get(this.curMousePos);
+  }
+
   onElementMove(oldPos, newPos) {
     const elId = this.gridController.get(oldPos);
     const el = this.board.elements[elId];
@@ -107,7 +110,6 @@ export default class BoardController {
     if (pos.equals(this.curMousePos)) return;
 
     this.curMousePos = pos;
-    this.curEl = this.gridController.get(pos);
   }
 
   onClick(pos) {
