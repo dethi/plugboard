@@ -131,14 +131,7 @@ export default class BoardController {
   }
 
   onRotate() {
-    const select = this.boardView.fabricCanvas.getActiveObject();
-    if (select !== undefined && select !== null) {
-      this.rotateElement(select.id);
-    } else {
-      this.rotate += 1;
-      this.rotate %= 4;
-      this.updateCursor(false);
-    }
+    this.rotateElement(this.getCurEl());
   }
 
   onUpdateSelectedBlueprint(blueprint) {

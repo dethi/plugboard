@@ -14,7 +14,6 @@ class App extends Component {
 
     this.state = {
       step: 0,
-      rotating: 0,
       running: false
     };
 
@@ -23,10 +22,6 @@ class App extends Component {
 
   getCurCanvas = () => {
     return this.refs.board.gridController.gridView.fabricCanvas;
-  };
-
-  handleRotate = () => {
-    this.setState({ rotating: this.state.rotating + 1 });
   };
 
   handleNextStep = () => {
@@ -38,13 +33,12 @@ class App extends Component {
   };
 
   render() {
-    const { step, running, rotating } = this.state;
+    const { step, running } = this.state;
 
     return (
       <div>
         <NavBar
           showControl={true}
-          onRotate={this.handleRotate}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
@@ -53,7 +47,6 @@ class App extends Component {
           <div className="columns">
             <Board
               ref="board"
-              rotate={rotating}
               step={step}
               running={running}
               getCurCanvas={this.getCurCanvas}

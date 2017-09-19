@@ -6,6 +6,13 @@ const board = (state = {}, action) => {
         ...state,
         clear: state.clear + 1
       };
+    case 'APPLY_ELEMENT_ACTION':
+      if (!state.applyElementAction) state.applyElementAction = 0;
+      return {
+        ...state,
+        applyElementAction: state.applyElementAction + 1,
+        actionType: action.actionType
+      };
     case 'PREPARE_BOARD_SAVE':
       if (!state.prepare) state.prepare = 0;
       return {

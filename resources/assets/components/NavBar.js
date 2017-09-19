@@ -130,11 +130,6 @@ class NavBar extends Component {
                   <i className="fa fa-trash" />
                 </span>
               </a>
-              <a className="nav-item" onClick={this.props.onRotate}>
-                <span className="icon">
-                  <i className="fa fa-repeat" />
-                </span>
-              </a>
               <a className="nav-item" onClick={this.handleSaving}>
                 <span className="icon">
                   <i className="fa fa-save" />
@@ -156,7 +151,6 @@ class NavBar extends Component {
                 </span>
               </a>
             </div>}
-
           {!this.props.user
             ? <GuestMenu
                 onLogin={this.handleLogin}

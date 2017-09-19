@@ -4,6 +4,13 @@ const clearBoard = () => {
   };
 };
 
+const applyElementAction = actionType => {
+  return {
+    type: 'APPLY_ELEMENT_ACTION',
+    actionType
+  };
+};
+
 const prepareBoardForSave = () => {
   return {
     type: 'PREPARE_BOARD_SAVE'
@@ -60,6 +67,7 @@ const updateSpec = spec => {
 
 export default {
   clearBoard,
+  applyElementAction,
   prepareBoardForSave,
   prepareContextMenu,
   prepareBoardForComponent,
