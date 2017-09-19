@@ -39,6 +39,9 @@ export default class BoardController {
     // Id 0 for default input
     this.curId = 1;
 
+    this.curMousePos = new Vector(0, 0);
+    this.curEl = null;
+
     this.gridController = new GridController(this.sizeX, this.sizeY);
     this.engineController = new EngineController();
     this.cursorController = new CursorController(this.boardView);
@@ -100,9 +103,15 @@ export default class BoardController {
     return true;
   }
 
+  onMouseMove(pos) {
+    if (pos.equals(this.curMousePos)) return;
+
+    this.curMousePos = pos;
+    this.curEl = this.gridController.get(pos);
+  }
+
   onClick(pos) {
     if (!this.selectedSpec || this.gridController.get(pos)) return;
-
     this.addElement(pos, this.selectedSpec, this.rotate);
 
     this.unSelectBlueprint();

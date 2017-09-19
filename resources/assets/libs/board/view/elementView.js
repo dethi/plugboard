@@ -83,19 +83,7 @@ export default class ElementView {
   }
 
   onMove(pos, isCursor = false) {
-    let left = Math.round((pos.x - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
-    left = Math.max(
-      Math.min(left, this.boardView.leftMax),
-      this.boardView.leftMin
-    );
-
-    let top = Math.round((pos.y - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
-    top = Math.max(Math.min(top, this.boardView.topMax), this.boardView.topMin);
-
-    const newPos = new Vector(
-      Math.floor(left / GRID_SIZE),
-      Math.floor(top / GRID_SIZE)
-    );
+    const newPos = this.boardView.mousePosToBoardPos(pos);
 
     if (!isCursor) {
       if (

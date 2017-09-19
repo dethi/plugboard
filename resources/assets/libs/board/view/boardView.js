@@ -47,9 +47,11 @@ export default class BoardView {
     });
 
     this.fabricCanvas.on('mouse:move', options => {
+      const mousePos = this.fabricCanvas.getPointer(options.e);
+      this.controller.onMouseMove(this.mousePosToBoardPos(mousePos));
+
       switch (this.controller.boardState) {
         case BoardState.LINKING:
-          const mousePos = this.fabricCanvas.getPointer(options.e);
           this.updateCreateLink(mousePos);
           break;
         case BoardState.ADDING:
@@ -318,5 +320,18 @@ export default class BoardView {
     };
 
     return this.fabricCanvas.toDataURL(options);
+  }
+
+  mousePosToBoardPos(mousePos) {
+    let left = Math.round((mousePos.x - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
+    left = Math.max(Math.min(left, this.leftMax), this.leftMin);
+
+    let top = Math.round((mousePos.y - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
+    top = Math.max(Math.min(top, this.topMax), this.topMin);
+
+    return new Vector(
+      Math.floor(left / GRID_SIZE),
+      Math.floor(top / GRID_SIZE)
+    );
   }
 }
