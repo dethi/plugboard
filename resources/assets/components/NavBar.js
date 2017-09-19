@@ -183,6 +183,7 @@ NavBar.PropTypes = {
   running: PropTypes.bool.isRequired,
   toggleRun: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
+  showControl: PropTypes.bool.isRequired,
   user: PropTypes.object
 };
 
