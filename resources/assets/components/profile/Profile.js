@@ -34,7 +34,7 @@ class Profile extends Component {
     else toDisplay = <MyElements />;
     return (
       <div>
-        <NavBar showControl={true} />
+        <NavBar showControl={false} />
         <section className="hero is-primary is-bold">
           <div className="hero-body">
             <div className="profile container">
