@@ -57,7 +57,9 @@ class Board extends Component {
       this.clearBoard();
     }
 
-    if (nextProps.board.applyElementAction !== this.props.board.applyElementAction) {
+    if (
+      nextProps.board.applyElementAction !== this.props.board.applyElementAction
+    ) {
       console.log(nextProps.board.actionType);
       this.applyElementAction(nextProps.board.actionType);
     }
@@ -124,7 +126,7 @@ class Board extends Component {
         this.boardController.onRotate();
         break;
       case elementActions.DELETE:
-        //this.boardController.onRotate();
+        this.boardController.onDelete();
         break;
       default:
         break;
@@ -140,9 +142,8 @@ class Board extends Component {
   };
 
   clearBoard = () => {
-    if (this.boardController.onDelete()) {
-      this.props.dispatch(BoardAction.deleteBoardMetaData());
-    }
+    this.boardController.clearBoard();
+    this.props.dispatch(BoardAction.deleteBoardMetaData());
   };
 
   nextStep = () => {
