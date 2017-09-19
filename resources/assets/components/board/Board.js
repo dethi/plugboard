@@ -4,6 +4,7 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import PropTypes from 'prop-types';
 
 import ContextMenuBoard from './ContextMenuBoard';
+import elementActions from './elementActions';
 
 import PaletteAction from '../../actions/paletteActions';
 import BoardAction from '../../actions/boardActions';
@@ -45,10 +46,6 @@ class Board extends Component {
       this.nextStep();
     }
 
-    if (nextProps.rotate !== this.props.rotate) {
-      this.rotate();
-    }
-
     if (
       nextProps.palette.selectedBlueprint !==
       this.props.palette.selectedBlueprint
@@ -58,6 +55,11 @@ class Board extends Component {
 
     if (nextProps.board.clear !== this.props.board.clear) {
       this.clearBoard();
+    }
+
+    if (nextProps.board.applyElementAction !== this.props.board.applyElementAction) {
+      console.log(nextProps.board.actionType);
+      this.applyElementAction(nextProps.board.actionType);
     }
 
     if (nextProps.board.prepare !== this.props.board.prepare) {
@@ -116,8 +118,17 @@ class Board extends Component {
     this.props.dispatch(ContextMenuActions.setContextType(curEl === null));
   };
 
-  rotate = () => {
-    this.boardController.onRotate();
+  applyElementAction = actionType => {
+    switch (actionType) {
+      case elementActions.ROTATE:
+        this.boardController.onRotate();
+        break;
+      case elementActions.DELETE:
+        //this.boardController.onRotate();
+        break;
+      default:
+        break;
+    }
   };
 
   updateSelectedBlueprint = blueprint => {
@@ -199,8 +210,7 @@ Board.propTypes = {
   running: PropTypes.bool.isRequired,
   step: PropTypes.number.isRequired,
   palette: PropTypes.object.isRequired,
-  board: PropTypes.object.isRequired,
-  rotate: PropTypes.number.isRequired
+  board: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(Board);
