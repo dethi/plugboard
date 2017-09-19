@@ -9,13 +9,20 @@ const login = (email, password) => {
     });
 };
 
-const register = (name, email, password, password_confirmation) => {
+const register = (
+  name,
+  email,
+  password,
+  password_confirmation,
+  wants_autosav
+) => {
   return axios
     .post('/api/auth/register', {
       name,
       email,
       password,
-      password_confirmation
+      password_confirmation,
+      wants_autosav
     })
     .then(res => res.data)
     .catch(err => {
