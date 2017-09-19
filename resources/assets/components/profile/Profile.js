@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import NavBarAccueil from '../home/NavBarAccueil';
+import NavBar from '../NavBar';
 import Stat from './Stat.js';
 import MyBoards from './MyBoards.js';
 import MyElements from './MyElements.js';
+
+import UserAction from '../../actions/userActions';
 
 import defaultUserProfilPicture
   from '../../../../public/static/default-user-profile.png';
@@ -18,6 +20,8 @@ class Profile extends Component {
     };
 
     this.changeTab = this.changeTab.bind(this);
+
+    this.props.dispatch(UserAction.init());
   }
 
   changeTab(newTab) {
@@ -30,7 +34,7 @@ class Profile extends Component {
     else toDisplay = <MyElements />;
     return (
       <div>
-        <NavBarAccueil />
+        <NavBar />
         <section className="hero is-primary is-bold">
           <div className="hero-body">
             <div className="profile container">
