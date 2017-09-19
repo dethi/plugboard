@@ -14,7 +14,6 @@ class RegisterModal extends Component {
       email: '',
       password: '',
       password_confirmation: '',
-      wants_autosav: 'false',
 
       err: null
     };
@@ -28,7 +27,6 @@ class RegisterModal extends Component {
     this.setState({
       [name]: value
     });
-    console.log('state', this.state);
   };
 
   onCancel = () => {
@@ -37,7 +35,6 @@ class RegisterModal extends Component {
       email: '',
       password: '',
       password_confirmation: '',
-      wants_autosav: '',
       err: null
     });
   };
@@ -48,8 +45,7 @@ class RegisterModal extends Component {
         this.state.name,
         this.state.email,
         this.state.password,
-        this.state.password_confirmation,
-        this.state.wants_autosav
+        this.state.password_confirmation
       )
         .then(user => {
           console.log(user);
@@ -141,20 +137,6 @@ class RegisterModal extends Component {
                 <span className="icon is-small">
                   <i className="fa fa-lock" />
                 </span>
-              </div>
-            </div>
-            <div className="field">
-              <div className="control">
-
-                <label className="checkbox">
-                  <input
-                    checked={this.state.wants_autosav === true ? 'checked' : ''}
-                    onChange={this.handleInputChange}
-                    type="checkbox"
-                    name="wants_autosav"
-                  />
-                </label>
-                Activer la sauvegarde automatique
               </div>
             </div>
           </div>

@@ -37,17 +37,16 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'wants_autosav' => 'required|boolean'
         ]);
 
-        $input = $request->only('name', 'email', 'password', 'wants_autosav');
+        $input = $request->only('name', 'email', 'password');
 
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => bcrypt($input['password']),
             'api_token' => str_random(60),
-            'wants_autosav' => $input['wants_autosav']
+            'wants_autosav' => false
         ]);
 
         return $user->makeVisible('api_token');
