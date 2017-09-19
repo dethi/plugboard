@@ -120,14 +120,7 @@ export default class BoardController {
   }
 
   onDelete() {
-    const select = this.boardView.fabricCanvas.getActiveObject();
-    if (select !== undefined && select !== null) {
-      this.removeElement(select.id);
-      return false;
-    } else {
-      this.clearBoard();
-      return true;
-    }
+    this.removeElement(this.getCurEl());
   }
 
   onRotate() {

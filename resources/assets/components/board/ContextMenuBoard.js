@@ -4,6 +4,7 @@ import { ContextMenu, MenuItem } from 'react-contextmenu';
 import PropTypes from 'prop-types';
 
 import BoardAction from '../../actions/boardActions';
+import ModalAction from '../../actions/modalActions';
 
 import elementActions from './elementActions';
 
@@ -21,6 +22,10 @@ class ContextMenuBoard extends Component {
     this.setState({ loading: true });
 
     this.props.dispatch(BoardAction.prepareContextMenu());
+  };
+
+  handleClearBoard = () => {
+    this.props.dispatch(ModalAction.displayModal('BOARD_CLEAR'));
   };
 
   handleElementAction = actionType => {
@@ -45,7 +50,7 @@ class ContextMenuBoard extends Component {
           : typeMenu
               ? <div>
                   <MenuItem>
-                    <a className="button">
+                    <a className="button" onClick={this.handleClearBoard}>
                       <span className="icon">
                         <i className="fa fa-trash" />
                       </span>
