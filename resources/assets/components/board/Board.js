@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ContextMenuTrigger } from 'react-contextmenu';
 import PropTypes from 'prop-types';
+
+import ContextMenuBoard from './ContextMenuBoard';
 
 import PaletteAction from '../../actions/paletteActions';
 import BoardAction from '../../actions/boardActions';
@@ -156,11 +159,13 @@ class Board extends Component {
     };
     return (
       <div>
-        <div className="column">
+        <ContextMenuTrigger id="bard_context_menu" className="column">
           <div style={style}>
             <canvas ref="canvas" />
           </div>
-        </div>
+        </ContextMenuTrigger>
+        <ContextMenuBoard />
+
         {boardMetaData &&
           <div className="box on-canvas on-canvas-center board-title">
             <p className="has-text-centered">{boardMetaData.title}</p>
