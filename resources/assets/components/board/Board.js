@@ -35,7 +35,7 @@ class Board extends Component {
         if (
           this.props.user &&
           this.props.user !== null &&
-          this.props.user.wants_autosav === 0
+          this.props.user.wants_autosav === 1
         ) {
           this.props.dispatch(BoardAction.prepareBoardForSave());
         }
