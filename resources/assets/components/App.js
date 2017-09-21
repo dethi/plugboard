@@ -9,9 +9,7 @@ import Board from './board/Board';
 import UserAction from '../actions/userActions';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
+  componentWillMount() {
     this.state = {
       step: 0,
       running: false
@@ -19,7 +17,6 @@ class App extends Component {
 
     this.props.dispatch(UserAction.init());
   }
-
   getCurCanvas = () => {
     return this.refs.board.gridController.gridView.fabricCanvas;
   };
