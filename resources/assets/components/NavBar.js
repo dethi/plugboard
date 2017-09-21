@@ -107,50 +107,53 @@ class NavBar extends Component {
               <img src="/static/Plugboard-Green.png" alt="Plugboard logo" />
             </NavLink>
           </div>
-          {this.props.showControl &&
-            <div className="nav-center">
-              <a className="nav-item" onClick={this.props.onNextStep}>
-                <span className="icon">
-                  <i className="fa fa-step-forward" />
-                </span>
-              </a>
-              <a className="nav-item">
-                <span className="icon">
-                  <i
-                    className={classNames('fa', {
-                      'fa-play': !this.props.running,
-                      'fa-stop': this.props.running
-                    })}
-                    onClick={this.props.toggleRun}
-                  />
-                </span>
-              </a>
-              <a className="nav-item" onClick={this.handleClearBoard}>
-                <span className="icon">
-                  <i className="fa fa-trash" />
-                </span>
-              </a>
-              <a className="nav-item" onClick={this.handleSaving}>
-                <span className="icon">
-                  <i className="fa fa-save" />
-                </span>
-              </a>
-              <a className="nav-item" onClick={this.handleLoading}>
-                <span className="icon">
-                  <i className="fa fa-folder-open" />
-                </span>
-              </a>
-              <a className="nav-item" onClick={this.handleNewComponent}>
-                <span className="icon">
-                  <i className="fa fa-ship" />
-                </span>
-              </a>
-              <a className="nav-item" onClick={this.handleChooseComponent}>
-                <span className="icon">
-                  <i className="fa fa-book" />
-                </span>
-              </a>
-            </div>}
+          {this.props.showControl
+            ? <div className="nav-center">
+                <a className="nav-item" onClick={this.props.onNextStep}>
+                  <span className="icon">
+                    <i className="fa fa-step-forward" />
+                  </span>
+                </a>
+                <a className="nav-item">
+                  <span className="icon">
+                    <i
+                      className={classNames('fa', {
+                        'fa-play': !this.props.running,
+                        'fa-stop': this.props.running
+                      })}
+                      onClick={this.props.toggleRun}
+                    />
+                  </span>
+                </a>
+                <a className="nav-item" onClick={this.handleClearBoard}>
+                  <span className="icon">
+                    <i className="fa fa-trash" />
+                  </span>
+                </a>
+                <a className="nav-item" onClick={this.handleSaving}>
+                  <span className="icon">
+                    <i className="fa fa-save" />
+                  </span>
+                </a>
+                <a className="nav-item" onClick={this.handleLoading}>
+                  <span className="icon">
+                    <i className="fa fa-folder-open" />
+                  </span>
+                </a>
+                <a className="nav-item" onClick={this.handleNewComponent}>
+                  <span className="icon">
+                    <i className="fa fa-ship" />
+                  </span>
+                </a>
+                <a className="nav-item" onClick={this.handleChooseComponent}>
+                  <span className="icon">
+                    <i className="fa fa-book" />
+                  </span>
+                </a>
+              </div>
+            : <NavLink className="nav-item is-tab" to="/app">
+                Go to the App
+              </NavLink>}
           {!this.props.user
             ? <GuestMenu
                 onLogin={this.handleLogin}

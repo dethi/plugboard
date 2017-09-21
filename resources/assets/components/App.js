@@ -7,15 +7,12 @@ import Palette from './board/Palette';
 import Board from './board/Board';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
+  componentWillMount() {
     this.state = {
       step: 0,
       running: false
     };
   }
-
   getCurCanvas = () => {
     return this.refs.board.gridController.gridView.fabricCanvas;
   };
