@@ -15,11 +15,13 @@ class General extends Component {
       new_password: '',
       new_password_confirmation: '',
       wants_autosav: this.props.user.wants_autosav,
-
-      err: null
+      err: null,
+      success: null
     };
   }
+
   onApply = () => {
+    this.setState({ err: null, success: null });
     return new Promise((resolve, reject) => {
       Profile.update(
         this.state.name,
@@ -30,11 +32,8 @@ class General extends Component {
       )
         .then(updated_user => {
           console.log(updated_user);
-          this.props.dispatch(UserAction.login(updated_user));
-
-          //this.setState({ user: updated_user });
-          console.log('state', this.state);
-
+          this.props.dispatch(UserAction.update(updated_user));
+          this.setState({ success: 'Profile updated!' });
           resolve();
         })
         .catch(response => {
@@ -42,7 +41,9 @@ class General extends Component {
             const errFormat = [];
             Object.values(response.data).forEach(err => errFormat.push(err[0]));
             this.setState({ err: errFormat });
-            reject();
+          }
+          if (response.status === 401) {
+            this.setState({ err: [response.data.status] });
           }
         });
     });
@@ -59,7 +60,14 @@ class General extends Component {
   render() {
     return (
       <div>
-
+        {this.state.success &&
+          <div className="notification is-primary">
+            <p>{this.state.success}</p>
+          </div>}
+        {this.state.err &&
+          <div className="notification is-danger">
+            {this.state.err.map(err => <p key={err}>{err}</p>)}
+          </div>}
         <div className="content">
           <div className="field">
             <div className="control has-icon">
@@ -82,13 +90,12 @@ class General extends Component {
           <div className="field">
             <div className="control has-icon">
               <input
-                value={this.state.password}
+                value={this.state.old_password}
                 onChange={this.handleInputChange}
                 className="input"
-                name="password"
+                name="old_password"
                 type="password"
                 placeholder="Current Password"
-                required
               />
               <span className="icon is-small">
                 <i className="fa fa-lock" />
@@ -98,10 +105,10 @@ class General extends Component {
           <div className="field">
             <div className="control has-icon">
               <input
-                value={this.state.password}
+                value={this.state.new_password}
                 onChange={this.handleInputChange}
                 className="input"
-                name="password"
+                name="new_password"
                 type="password"
                 placeholder="New Password"
                 required
@@ -111,14 +118,13 @@ class General extends Component {
               </span>
             </div>
           </div>
-
           <div className="field">
             <div className="control has-icon">
               <input
-                value={this.state.password_confirmation}
+                value={this.state.new_password_confirmation}
                 onChange={this.handleInputChange}
                 className="input"
-                name="password_confirmation"
+                name="new_password_confirmation"
                 type="password"
                 placeholder="Confirm New Password"
                 required
@@ -128,11 +134,12 @@ class General extends Component {
               </span>
             </div>
           </div>
+
           <div className="field">
             <div className="control">
               <label className="checkbox">
                 <input
-                  checked={this.state.wants_autosav === 1 ? 'checked' : ''}
+                  checked={this.state.wants_autosav ? 'checked' : ''}
                   onChange={this.handleInputChange}
                   type="checkbox"
                   name="wants_autosav"
@@ -141,11 +148,11 @@ class General extends Component {
               Activer la sauvegarde automatique
             </div>
           </div>
-        </div>
-        <div className="control">
-          <button className="button is-primary" onClick={this.onApply}>
-            Update
-          </button>
+          <div className="control">
+            <button className="button is-primary" onClick={this.onApply}>
+              Update
+            </button>
+          </div>
         </div>
       </div>
     );

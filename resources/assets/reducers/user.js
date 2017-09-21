@@ -11,6 +11,7 @@ const user = (state = null, action) => {
         localStorage.removeItem(localStorageAuthKey);
         return null;
       }
+    case 'UPDATE':
     case 'LOGIN':
       localStorage.setItem(localStorageAuthKey, JSON.stringify(action.user));
       return action.user;
