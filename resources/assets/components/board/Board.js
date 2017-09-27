@@ -82,7 +82,6 @@ class Board extends Component {
     }
 
     if (nextProps.board.load !== this.props.board.load) {
-      console.log('RELOAD');
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }
   }

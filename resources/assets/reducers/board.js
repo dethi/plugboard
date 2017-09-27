@@ -40,7 +40,7 @@ const board = (state = {}, action) => {
       delete state.boardMetaData;
       return state;
     case 'LOAD_BOARD':
-      if (!state.prepare) state.load = 0;
+      if (!state.load) state.load = 0;
       return {
         ...state,
         boardMetaData: action.boardMetaData,
