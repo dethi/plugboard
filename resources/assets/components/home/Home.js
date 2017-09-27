@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import UserAction from '../../actions/userActions';
-
-class Home extends Component {
-  constructor(props) {
-    super(props);
-
-    this.props.dispatch(UserAction.init());
-  }
-
+export default class Home extends Component {
   render() {
     return (
       <div className="hero-body">
@@ -29,5 +20,3 @@ class Home extends Component {
     );
   }
 }
-
-export default connect()(Home);

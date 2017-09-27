@@ -20,6 +20,8 @@ import ListObjectif from './components/objectif/ListObjectif';
 import Profile from './components/profile/Profile';
 import './css/app.scss';
 
+import UserAction from './actions/userActions';
+
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const store = createStore(
@@ -34,6 +36,8 @@ store.subscribe(() => {
     ? state.user.api_token
     : null;
 });
+
+store.dispatch(UserAction.init());
 
 ReactDOM.render(
   <div>
