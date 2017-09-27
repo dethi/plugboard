@@ -56,7 +56,11 @@ class Palette extends Component {
     return (
       <div className="on-canvas palette">
         <div className="box">
-          <p className="has-text-centered">Components</p>
+          <p className="component-name has-text-centered">
+            {selectedBlueprint != null
+              ? selectedBlueprint.title
+              : 'Select a component'}
+          </p>
           <nav className="level">
             {blueprints &&
               /*blueprints.map((e, index) => (
