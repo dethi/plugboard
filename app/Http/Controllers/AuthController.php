@@ -46,6 +46,7 @@ class AuthController extends Controller
             'email' => $input['email'],
             'password' => bcrypt($input['password']),
             'api_token' => str_random(60),
+            'wants_autosav' => false
         ]);
 
         return $user->makeVisible('api_token');

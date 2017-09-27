@@ -27,9 +27,19 @@ class Board extends Component {
   }
 
   componentDidMount() {
+    console.log('user', this.props.user);
     this.boardController = new BoardController(
       this.refs.canvas,
-      this.unSelectBlueprint
+      this.unSelectBlueprint,
+      () => {
+        if (
+          this.props.user &&
+          this.props.user !== null &&
+          this.props.user.wants_autosav === 1
+        ) {
+          this.props.dispatch(BoardAction.prepareBoardForSave());
+        }
+      }
     );
   }
 
@@ -203,7 +213,8 @@ class Board extends Component {
 const mapStateToProps = state => {
   return {
     palette: state.palette,
-    board: state.board
+    board: state.board,
+    user: state.user
   };
 };
 
@@ -211,7 +222,8 @@ Board.propTypes = {
   running: PropTypes.bool.isRequired,
   step: PropTypes.number.isRequired,
   palette: PropTypes.object.isRequired,
-  board: PropTypes.object.isRequired
+  board: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
 export default connect(mapStateToProps)(Board);

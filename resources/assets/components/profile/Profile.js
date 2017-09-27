@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NavBar from '../NavBar';
-import Stat from './Stat.js';
-import MyBoards from './MyBoards.js';
-import MyElements from './MyElements.js';
+import Stat from './Stat';
+import MyBoards from './MyBoards';
+import MyElements from './MyElements';
+import General from './General';
 
 import defaultUserProfilPicture
   from '../../../../public/static/default-user-profile.png';
@@ -14,7 +15,7 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      curTab: 'stat'
+      curTab: 'general'
     };
 
     this.changeTab = this.changeTab.bind(this);
@@ -27,6 +28,7 @@ class Profile extends Component {
     let toDisplay = <div />;
     if (this.state.curTab === 'stat') toDisplay = <Stat />;
     else if (this.state.curTab === 'boards') toDisplay = <MyBoards />;
+    else if (this.state.curTab === 'general') toDisplay = <General />;
     else toDisplay = <MyElements />;
     return (
       <div>
@@ -54,6 +56,9 @@ class Profile extends Component {
         </section>
         <div className="tabs is-centered">
           <ul>
+            <li className={this.state.curTab === 'general' && 'is-active'}>
+              <a onClick={() => this.changeTab('general')}>General</a>
+            </li>
             <li className={this.state.curTab === 'stat' && 'is-active'}>
               <a onClick={() => this.changeTab('stat')}>Mes statistiques</a>
             </li>
