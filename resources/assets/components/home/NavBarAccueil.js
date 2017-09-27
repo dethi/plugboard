@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-
-import UserAction from '../../actions/userActions';
-import Authentification from '../../api/authentification';
-
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class NavBarAccueil extends Component {
+import ModalAction from '../../actions/modalActions';
+
+class NavBarAccueil extends Component {
   handleLogin = () => {
-    Authentification.login('test', 'test').then(user => {
-      this.props.dispatch(UserAction.login(user));
-    });
+    this.props.dispatch(ModalAction.displayModal('LOGIN'));
+  };
+
+  handleLogout = () => {
+    this.props.dispatch(ModalAction.displayModal('LOGOUT'));
   };
 
   render() {
@@ -38,9 +40,13 @@ export default class NavBarAccueil extends Component {
               Contact
             </NavLink>
             <span className="nav-item">
-              <a className="button is-default" href="/login">
-                Login
-              </a>
+              {!this.props.user
+                ? <a className="button is-default" onClick={this.handleLogin}>
+                    Login
+                  </a>
+                : <a className="button is-default" onClick={this.handleLogout}>
+                    Logout
+                  </a>}
             </span>
           </div>
         </div>
@@ -48,3 +54,15 @@ export default class NavBarAccueil extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+NavBarAccueil.PropTypes = {
+  user: PropTypes.object
+};
+
+export default connect(mapStateToProps)(NavBarAccueil);
