@@ -27,6 +27,7 @@ class ComponentController extends Controller
         $component = new Component();
         $component->title = $request->input('title');
         $component->spec_name = str_replace(' ', '_', strtoupper($request->input('title')));
+        $component->type = 3;
         $component->user_id = Auth::id();
         $component->is_selected = false;
         $component->save();

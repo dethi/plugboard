@@ -28,6 +28,7 @@ class ElComponentTableSeeder extends Seeder
         $component = new ElComponent();
         $component->title = 'Input';
         $component->spec_name = 'INPUT';
+        $component->type = 0;
         $component->nbInput = 0;
         $component->nbOutput = 1;
         $component->dimX = 1;
@@ -38,6 +39,7 @@ class ElComponentTableSeeder extends Seeder
         $component = new ElComponent();
         $component->title = 'Output';
         $component->spec_name = 'OUTPUT';
+        $component->type = 1;
         $component->nbInput = 1;
         $component->nbOutput = 0;
         $component->dimX = 1;
@@ -48,6 +50,7 @@ class ElComponentTableSeeder extends Seeder
         $component = new ElComponent();
         $component->title = 'Not';
         $component->spec_name = 'GATE_NOT';
+        $component->type = 2;
         $component->nbInput = 1;
         $component->nbOutput = 1;
         $component->dimX = 1;
@@ -59,6 +62,7 @@ class ElComponentTableSeeder extends Seeder
         $component = new ElComponent();
         $component->title = 'And';
         $component->spec_name = 'GATE_AND';
+        $component->type = 2;
         $component->nbInput = 2;
         $component->nbOutput = 1;
         $component->dimX = 2;
@@ -70,6 +74,7 @@ class ElComponentTableSeeder extends Seeder
         $component = new ElComponent();
         $component->title = 'Or';
         $component->spec_name = 'GATE_OR';
+        $component->type = 2;
         $component->nbInput = 2;
         $component->nbOutput = 1;
         $component->dimX = 2;
