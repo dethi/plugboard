@@ -10,6 +10,10 @@ class NavBarAccueil extends Component {
     this.props.dispatch(ModalAction.displayModal('LOGIN'));
   };
 
+  handleRegister = () => {
+    this.props.dispatch(ModalAction.displayModal('REGISTER'));
+  };
+
   handleLogout = () => {
     this.props.dispatch(ModalAction.displayModal('LOGOUT'));
   };
@@ -41,9 +45,17 @@ class NavBarAccueil extends Component {
             </NavLink>
             <span className="nav-item">
               {!this.props.user
-                ? <a className="button is-default" onClick={this.handleLogin}>
-                    Login
-                  </a>
+                ? <div className="nav-item-home-login">
+                    <a
+                      className="button is-default"
+                      onClick={this.handleRegister}
+                    >
+                      Register
+                    </a>
+                    <a className="button is-default" onClick={this.handleLogin}>
+                      Login
+                    </a>
+                  </div>
                 : <a className="button is-default" onClick={this.handleLogout}>
                     Logout
                   </a>}

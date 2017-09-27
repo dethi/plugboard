@@ -6,8 +6,6 @@ import NavBar from './NavBar';
 import Palette from './board/Palette';
 import Board from './board/Board';
 
-import UserAction from '../actions/userActions';
-
 class App extends Component {
   constructor(props) {
     super(props);
