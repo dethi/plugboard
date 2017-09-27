@@ -88,7 +88,13 @@ export default class BoardController {
   }
 
   getCurEl() {
-    return this.gridController.get(this.curMousePos);
+    const curElId = this.gridController.get(this.curMousePos);
+    if (curElId == null) return curElId;
+
+    const curEl = this.board.elements[curElId];
+    const curSpec = this.board.specs[curEl.specName];
+
+    return curSpec.type;
   }
 
   onElementMove(oldPos, newPos) {

@@ -21,6 +21,7 @@ const genBlueprintsFromElementaire = data => {
       new ElementSpec(
         el.title,
         el.spec_name,
+        el.type,
         input,
         output,
         el.color,
@@ -45,6 +46,7 @@ const genBlueprints = data => {
       new ElementSpec(
         el.title,
         el.spec_name,
+        el.type,
         versionData.input,
         versionData.output,
         versionData.color,
