@@ -8,6 +8,39 @@ import ModalAction from '../../actions/modalActions';
 
 import elementActions from './elementActions';
 
+function DefaultMenu(props) {
+  return (
+    <div>
+      <MenuItem>
+        <a
+          className="button"
+          onClick={() => props.onElementAction(elementActions.ROTATE)}
+        >
+          <span className="icon">
+            <i className="fa fa-repeat" />
+          </span>
+          <span>Rotate</span>
+        </a>
+      </MenuItem>
+      <MenuItem>
+        <a
+          className="button"
+          onClick={() => props.onElementAction(elementActions.DELETE)}
+        >
+          <span className="icon">
+            <i className="fa fa-trash" />
+          </span>
+          <span>Delete</span>
+        </a>
+      </MenuItem>
+    </div>
+  );
+}
+
+DefaultMenu.PropTypes = {
+  onElementAction: PropTypes.func.isRequired
+};
+
 class ContextMenuBoard extends Component {
   /*
   componentWillReceiveProps(nextProps) {
@@ -47,43 +80,49 @@ class ContextMenuBoard extends Component {
                 <i className="fa fa-spinner fa-pulse" />
               </span>
             </div>
-          : typeMenu
-              ? <div>
-                  <MenuItem>
-                    <a className="button" onClick={this.handleClearBoard}>
-                      <span className="icon">
-                        <i className="fa fa-trash" />
-                      </span>
-                      <span>Clear Board</span>
-                    </a>
-                  </MenuItem>
-                </div>
-              : <div>
-                  <MenuItem>
-                    <a
-                      className="button"
-                      onClick={() =>
-                        this.handleElementAction(elementActions.ROTATE)}
-                    >
-                      <span className="icon">
-                        <i className="fa fa-repeat" />
-                      </span>
-                      <span>Rotate</span>
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a
-                      className="button"
-                      onClick={() =>
-                        this.handleElementAction(elementActions.DELETE)}
-                    >
-                      <span className="icon">
-                        <i className="fa fa-trash" />
-                      </span>
-                      <span>Delete</span>
-                    </a>
-                  </MenuItem>
-                </div>}
+          : (() => {
+              switch (typeMenu) {
+                case -1:
+                  return (
+                    <div>
+                      <MenuItem>
+                        <a className="button" onClick={this.handleClearBoard}>
+                          <span className="icon">
+                            <i className="fa fa-trash" />
+                          </span>
+                          <span>Clear Board</span>
+                        </a>
+                      </MenuItem>
+                    </div>
+                  );
+                case 0:
+                case 1:
+                  return (
+                    <div>
+                      <MenuItem>
+                        <a
+                          className="button"
+                          onClick={() =>
+                            this.handleElementAction(elementActions.RENAME)}
+                        >
+                          <span className="icon">
+                            <i className="fa fa-pencil" />
+                          </span>
+                          <span>Rename</span>
+                        </a>
+                      </MenuItem>
+                      <DefaultMenu onElementAction={this.handleElementAction} />
+                    </div>
+                  );
+                case 2:
+                case 3:
+                  return (
+                    <DefaultMenu onElementAction={this.handleElementAction} />
+                  );
+                default:
+                  return <div />;
+              }
+            })()}
       </ContextMenu>
     );
   }

@@ -114,9 +114,9 @@ class Board extends Component {
   };
 
   prepareContextMenu = () => {
-    const curEl = this.boardController.getCurEl();
+    const curElType = this.boardController.getCurElType();
 
-    this.props.dispatch(ContextMenuActions.setContextType(curEl === null));
+    this.props.dispatch(ContextMenuActions.setContextType(curElType));
   };
 
   applyElementAction = actionType => {
