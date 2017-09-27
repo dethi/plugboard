@@ -36,8 +36,6 @@ const genBlueprintsFromElementaire = data => {
 };
 
 const genBlueprints = data => {
-  console.log(data);
-
   const blueprints = [];
 
   data.forEach(el => {
