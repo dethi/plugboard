@@ -6,8 +6,6 @@ import Stat from './Stat.js';
 import MyBoards from './MyBoards.js';
 import MyElements from './MyElements.js';
 
-import UserAction from '../../actions/userActions';
-
 import defaultUserProfilPicture
   from '../../../../public/static/default-user-profile.png';
 
@@ -20,8 +18,6 @@ class Profile extends Component {
     };
 
     this.changeTab = this.changeTab.bind(this);
-
-    this.props.dispatch(UserAction.init());
   }
 
   changeTab(newTab) {

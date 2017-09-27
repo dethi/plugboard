@@ -16,8 +16,6 @@ class App extends Component {
       step: 0,
       running: false
     };
-
-    this.props.dispatch(UserAction.init());
   }
 
   getCurCanvas = () => {
@@ -51,10 +49,7 @@ class App extends Component {
               running={running}
               getCurCanvas={this.getCurCanvas}
             />
-
-            {/*<Objectif />*/}
             <Palette />
-            {/*<Profile />*/}
           </div>
         </div>
       </div>
