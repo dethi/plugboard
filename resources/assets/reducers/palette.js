@@ -40,7 +40,7 @@ const genBlueprints = data => {
   const blueprints = [];
 
   data.forEach(el => {
-    const versionData = el.versions[0].data;
+    const versionData = el.versions[el.versions.length - 1].data;
 
     blueprints.push(
       new ElementSpec(
