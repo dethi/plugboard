@@ -39,10 +39,9 @@ class NavBarAccueil extends Component {
             <a className="nav-item">
               FAQ
             </a>
-
-            <NavLink className="nav-item" to="/contact">
+            <a className="nav-item">
               Contact
-            </NavLink>
+            </a>
             <span className="nav-item">
               {!this.props.user
                 ? <div className="nav-item-home-login">
