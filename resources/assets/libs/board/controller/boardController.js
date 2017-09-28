@@ -15,8 +15,7 @@ import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
 import { generateTruthTable } from '../../../engine/engine';
 
 export default class BoardController {
-  constructor(canvasHolder, unSelectBlueprint, save) {
-    this.save = save;
+  constructor(canvasHolder, unSelectBlueprint) {
     this.nbAction = 0;
     this.canvasHolder = canvasHolder;
     this.unSelectBlueprint = unSelectBlueprint;
@@ -34,13 +33,6 @@ export default class BoardController {
     this.initNewBoard();
   }
 
-  checkIfBoardShouldBeSaved() {
-    this.nbAction++;
-    if (this.nbAction > 10) {
-      this.nbAction = 0;
-      this.save();
-    }
-  }
   initNewBoard() {
     this.board = new Board();
     this.boardState = BoardState.NONE;
@@ -107,7 +99,6 @@ export default class BoardController {
     if (!this.gridController.canMove(el, this.board.specs[el.specName], newPos))
       return false;
 
-    this.checkIfBoardShouldBeSaved();
     el.pos = newPos;
 
     this.gridController.moveElement(el, this.board.specs[el.specName], oldPos);
@@ -130,12 +121,10 @@ export default class BoardController {
   }
 
   onDelete() {
-    this.checkIfBoardShouldBeSaved();
     this.removeElement(this.getCurEl());
   }
 
   onRotate() {
-    this.checkIfBoardShouldBeSaved();
     this.rotateElement(this.getCurEl());
   }
 
@@ -157,7 +146,6 @@ export default class BoardController {
   }
 
   onFinishLink(inputInfo, outputInfo) {
-    this.checkIfBoardShouldBeSaved();
     this.boardState = BoardState.NONE;
     this.addLink(inputInfo, outputInfo);
   }
@@ -167,7 +155,6 @@ export default class BoardController {
   }
 
   addElement(pos, spec, rotate) {
-    this.checkIfBoardShouldBeSaved();
     const newElId = this.curId++;
     const newEl = new Element(newElId, pos, spec, rotate);
 

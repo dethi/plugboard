@@ -22,7 +22,8 @@ class Board extends Component {
 
     this.boardController = null;
     this.state = {
-      timerId: null
+      timerId: null,
+      successfullSaving: false
     };
   }
 
@@ -30,17 +31,28 @@ class Board extends Component {
     console.log('user', this.props.user);
     this.boardController = new BoardController(
       this.refs.canvas,
-      this.unSelectBlueprint,
-      () => {
-        if (
-          this.props.user &&
-          this.props.user !== null &&
-          this.props.user.wants_autosav === 1
-        ) {
-          this.props.dispatch(BoardAction.prepareBoardForSave());
-        }
-      }
+      this.unSelectBlueprint
     );
+
+    const autoSav = () => {
+      if (
+        Object.keys(this.props.board).length !== 0 &&
+        this.props.user &&
+        this.props.user !== null &&
+        this.props.user.wants_autosav === true
+      ) {
+        this.props.dispatch(BoardAction.prepareBoardForSave());
+      }
+    };
+    const timerAutoSavId = setInterval(autoSav, 60000);
+    this.setState({ timerAutoSavId });
+  }
+
+  componentWillUnmount() {
+    if (this.state.timerAutoSavId !== null) {
+      clearInterval(this.state.timerAutoSavId);
+      this.setState({ timerAutoSavId: null });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,7 +122,12 @@ class Board extends Component {
 
     boardApi
       .saveBoard(this.props.board.boardMetaData.id, boardData, preview)
-      .catch(response => console.log(response));
+      .then(response => {
+        this.setState({ successfullSaving: true });
+        setTimeout(() => this.setState({ successfullSaving: false }), 5000);
+      })
+      .catch(response =>
+        console.log('Error during saving of the board', response));
   };
 
   prepareBoardForComponent = () => {
@@ -186,7 +203,6 @@ class Board extends Component {
 
   render() {
     const { boardMetaData } = this.props.board;
-
     const style = {
       overflow: 'auto',
       maxHeight: '100%',
@@ -203,8 +219,13 @@ class Board extends Component {
 
         {boardMetaData &&
           <div className="box on-canvas on-canvas-center board-title">
-            <p className="has-text-centered">{boardMetaData.title}</p>
+            <p className="has-text-centered">
+              {boardMetaData.title}
+              {' '}
+              {this.state.successfullSaving && ' - Successfully updated !'}
+            </p>
           </div>}
+
       </div>
     );
   }
