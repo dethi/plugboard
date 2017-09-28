@@ -29,6 +29,12 @@ Route::group(['prefix' => 'component'], function () {
     Route::get('elementaire', 'ComponentController@get_elementaire');
 });
 
+
+Route::group(['prefix' => 'profile', 'middleware' => ['auth:api']], function () {
+    Route::post('update', 'ProfileController@update');
+});
+
+
 Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () {
     Route::get('', 'ComponentController@index');
     Route::get('selected', 'ComponentController@get_selected');

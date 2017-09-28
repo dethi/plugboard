@@ -14,6 +14,7 @@ class RegisterModal extends Component {
       email: '',
       password: '',
       password_confirmation: '',
+
       err: null
     };
   }

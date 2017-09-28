@@ -16,6 +16,7 @@ import { generateTruthTable } from '../../../engine/engine';
 
 export default class BoardController {
   constructor(canvasHolder, unSelectBlueprint) {
+    this.nbAction = 0;
     this.canvasHolder = canvasHolder;
     this.unSelectBlueprint = unSelectBlueprint;
 
