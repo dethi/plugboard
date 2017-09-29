@@ -63,6 +63,7 @@ export default class BoardController {
       const newEl = this.addElement(
         new Vector(el.pos.x, el.pos.y),
         board.specs[el.specName],
+        el.name,
         el.rotate
       );
 
@@ -124,7 +125,13 @@ export default class BoardController {
 
   onClick(pos) {
     if (!this.selectedSpec || this.gridController.get(pos)) return;
-    this.addElement(pos, this.selectedSpec, this.rotate);
+
+    this.addElement(
+      pos,
+      this.selectedSpec,
+      this.selectedSpec.title,
+      this.rotate
+    );
 
     this.unSelectBlueprint();
   }
@@ -135,6 +142,10 @@ export default class BoardController {
 
   onRotate() {
     this.rotateElement(this.getCurEl());
+  }
+
+  onRename(newName) {
+    this.renameElement(this.getCurEl(), newName);
   }
 
   onUpdateSelectedBlueprint(blueprint) {
@@ -163,9 +174,9 @@ export default class BoardController {
     this.boardState = BoardState.NONE;
   }
 
-  addElement(pos, spec, rotate) {
+  addElement(pos, spec, name, rotate) {
     const newElId = this.curId++;
-    const newEl = new Element(newElId, pos, spec, rotate);
+    const newEl = new Element(newElId, name, pos, spec, rotate);
 
     this.board.elements[newElId] = newEl;
     this.boardView.addElement(pos, newEl, spec);
@@ -214,6 +225,13 @@ export default class BoardController {
     el.rotate %= 4;
 
     this.boardView.rotateElement(elId);
+  }
+
+  renameElement(elId, newName) {
+    const el = this.board.elements[elId];
+    el.name = newName;
+
+    this.boardView.renameElement(elId, newName);
   }
 
   updateCursor(resetPos = true) {

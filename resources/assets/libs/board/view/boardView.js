@@ -123,8 +123,10 @@ export default class BoardView {
 
   addElement(pos, elementModel, spec) {
     const isInput = elementModel.specName === 'INPUT';
+
     const newElementView = new ElementView(
       elementModel.id,
+      elementModel.name,
       elementModel.rotate,
       spec,
       isInput
@@ -152,6 +154,11 @@ export default class BoardView {
 
   rotateElement(elId) {
     this.elecElements[elId].increaseRotate();
+    this.fabricCanvas.renderAll();
+  }
+
+  renameElement(elId, newName) {
+    this.elecElements[elId].rename(newName);
     this.fabricCanvas.renderAll();
   }
 

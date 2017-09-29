@@ -60,8 +60,10 @@ class Board extends Component {
     if (
       nextProps.board.applyElementAction !== this.props.board.applyElementAction
     ) {
-      console.log(nextProps.board.actionType);
-      this.applyElementAction(nextProps.board.actionType);
+      this.applyElementAction(
+        nextProps.board.actionType,
+        nextProps.board.actionArgs
+      );
     }
 
     if (nextProps.board.prepare !== this.props.board.prepare) {
@@ -119,13 +121,16 @@ class Board extends Component {
     this.props.dispatch(ContextMenuActions.setContextType(curElType));
   };
 
-  applyElementAction = actionType => {
+  applyElementAction = (actionType, actionArgs) => {
     switch (actionType) {
       case elementActions.ROTATE:
         this.boardController.onRotate();
         break;
       case elementActions.DELETE:
         this.boardController.onDelete();
+        break;
+      case elementActions.RENAME:
+        this.boardController.onRename(actionArgs);
         break;
       default:
         break;
