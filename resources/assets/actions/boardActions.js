@@ -4,10 +4,11 @@ const clearBoard = () => {
   };
 };
 
-const applyElementAction = actionType => {
+const applyElementAction = (actionType, actionArgs) => {
   return {
     type: 'APPLY_ELEMENT_ACTION',
-    actionType
+    actionType,
+    actionArgs
   };
 };
 

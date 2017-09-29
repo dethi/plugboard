@@ -11,7 +11,8 @@ const board = (state = {}, action) => {
       return {
         ...state,
         applyElementAction: state.applyElementAction + 1,
-        actionType: action.actionType
+        actionType: action.actionType,
+        actionArgs: action.actionArgs
       };
     case 'PREPARE_BOARD_SAVE':
       if (!state.prepare) state.prepare = 0;

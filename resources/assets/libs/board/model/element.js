@@ -1,6 +1,7 @@
 export class Element {
-  constructor(id, pos, spec, rotate) {
+  constructor(id, name, pos, spec, rotate) {
     this.id = id;
+    this.name = name;
     this.specName = spec.name;
 
     this.pos = pos;

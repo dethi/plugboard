@@ -15,6 +15,7 @@ export default class CursorController {
       if (!this.cursors[`${spec.name}_${rotate}`]) {
         const newCursor = new ElementView(
           this.curCursorId++,
+          spec.title,
           rotate,
           spec,
           false
