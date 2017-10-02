@@ -59,6 +59,11 @@ const board = (state = {}, action) => {
         ...state,
         spec: action.spec
       };
+    case 'GET_BOARDS':
+      return {
+        ...state,
+        boards: action.boards
+      };
     default:
       return state;
   }

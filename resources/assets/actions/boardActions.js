@@ -1,3 +1,5 @@
+import boardApi from '../api/board';
+
 const clearBoard = () => {
   return {
     type: 'CLEAR_BOARD'
@@ -51,6 +53,20 @@ const loadBoard = (boardMetaData, boardData) => {
   };
 };
 
+const loadBoardAsync = boardId => {
+  return dispatch => {
+    boardApi.getBoard(boardId).then(board => {
+      const boardMetaData = { ...board };
+      delete boardMetaData.versions;
+
+      const versionData = board.versions[board.versions.length - 1];
+      const boardData = JSON.parse(versionData.data);
+
+      dispatch(loadBoard(boardMetaData, boardData));
+    });
+  };
+};
+
 const updateBoard = (boardData, preview) => {
   return {
     type: 'UPDATE_BOARD',
@@ -66,6 +82,24 @@ const updateSpec = spec => {
   };
 };
 
+const getBoards = boards => {
+  return {
+    type: 'GET_BOARDS',
+    boards
+  };
+};
+
+const getBoardsAsync = () => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      boardApi.getBoards().then(boards => {
+        dispatch(getBoards(boards));
+        resolve();
+      });
+    });
+  };
+};
+
 export default {
   clearBoard,
   applyElementAction,
@@ -74,7 +108,8 @@ export default {
   prepareBoardForComponent,
   setBoardMetaData,
   deleteBoardMetaData,
-  loadBoard,
+  loadBoardAsync,
   updateBoard,
-  updateSpec
+  updateSpec,
+  getBoardsAsync
 };
