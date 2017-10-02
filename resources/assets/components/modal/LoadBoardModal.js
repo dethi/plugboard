@@ -7,8 +7,6 @@ import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
 
 import BoardAction from '../../actions/boardActions';
 
-import boardApi from '../../api/board';
-
 class LoadBoardModal extends Component {
   constructor(props) {
     super(props);

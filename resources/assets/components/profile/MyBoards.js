@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import boardApi from '../../api/board';
 import Element from './Element';
+
 import BoardAction from '../../actions/boardActions';
 
 class MyBoards extends Component {
@@ -13,33 +14,26 @@ class MyBoards extends Component {
       loading: false
     };
   }
+
   componentDidMount() {
     this.setState({ loading: true });
-    boardApi.getBoards().then(boards => {
-      console.log(boards);
+    this.props.dispatch(BoardAction.getBoardsAsync()).then(() => {
       this.setState({
-        boards: boards,
         loading: false
       });
     });
   }
+
   onApply = id => {
     if (id === null) return;
 
-    boardApi.getBoard(id).then(board => {
-      console.log(board);
-
-      const boardMetaData = { ...board };
-      delete boardMetaData.versions;
-
-      const versionData = board.versions[board.versions.length - 1];
-      const boardData = JSON.parse(versionData.data);
-
-      this.props.dispatch(BoardAction.loadBoard(boardMetaData, boardData));
-    });
+    this.props.dispatch(BoardAction.loadBoardAsync(id));
   };
+
   render() {
-    const { boards, loading } = this.state;
+    const { loading } = this.state;
+    const { boards } = this.props.board;
+
     return (
       <div>
         {loading &&
@@ -75,8 +69,15 @@ class MyBoards extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    board: state.board
   };
 };
+
+MyBoards.propTypes = {
+  user: PropTypes.object.isRequired,
+  board: PropTypes.object.isRequired
+};
+
 
 export default connect(mapStateToProps)(MyBoards);
