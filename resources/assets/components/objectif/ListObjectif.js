@@ -1,8 +1,30 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import ObjectifAction from '../../actions/objectifActions';
 import ItemList from './ItemList';
 import NavBarAccueil from '../home/NavBarAccueil';
 
-export default class ListObjectif extends Component {
+class ListObjectif extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false
+    };
+  }
+
+    componentDidMount() {
+
+    this.setState({ loading: true });
+    this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
+  }
+
   render() {
     return (
       <div id="landing">
@@ -27,3 +49,16 @@ export default class ListObjectif extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
+
+
+ListObjectif.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(ListObjectif);
