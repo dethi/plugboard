@@ -96,8 +96,6 @@ export default class BoardController {
   }
 
   onElementMove(oldPos, newPos) {
-    console.log(newPos);
-
     const elId = this.gridController.get(oldPos);
     const el = this.board.elements[elId];
 
