@@ -1,9 +1,11 @@
+import { GRID_SIZE_LIMIT } from '../constante';
+
 import myPathFinding from '../../utils/pathfinding';
 
 export default class GridController {
   constructor() {
-    this.sizeX = 1000;
-    this.sizeY = 1000;
+    this.sizeX = GRID_SIZE_LIMIT;
+    this.sizeY = GRID_SIZE_LIMIT;
 
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
 
@@ -27,8 +29,9 @@ export default class GridController {
   }
 
   canMove(el, spec, newPos) {
-    let canMoveRes = true;
+    if (!this.isInBound(newPos)) return false;
 
+    let canMoveRes = true;
     for (
       let i = 0;
       i < (el.rotate === 0 || el.rotate === 2 ? spec.dimX : spec.dimY);
@@ -44,7 +47,6 @@ export default class GridController {
           canMoveRes = false;
       }
     }
-
     return canMoveRes;
   }
 
