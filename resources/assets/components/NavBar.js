@@ -61,10 +61,6 @@ class NavBar extends Component {
     this.props.dispatch(ModalAction.displayModal('LOGOUT'));
   };
 
-  handleClearBoard = () => {
-    this.props.dispatch(ModalAction.displayModal('BOARD_CLEAR'));
-  };
-
   handleSaving = () => {
     if (this.props.user === null) {
       this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
@@ -123,11 +119,6 @@ class NavBar extends Component {
                       })}
                       onClick={this.props.toggleRun}
                     />
-                  </span>
-                </a>
-                <a className="nav-item" onClick={this.handleClearBoard}>
-                  <span className="icon">
-                    <i className="fa fa-trash" />
                   </span>
                 </a>
                 <a className="nav-item" onClick={this.handleSaving}>

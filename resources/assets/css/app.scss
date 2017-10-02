@@ -220,11 +220,11 @@ textarea {
     }
 }
 
-// html, body {
-//     height: 100%;
-//     overflow: hidden;
-// }
+.disable-scroll {
+    height: 100%;
+    overflow: hidden;
+}
 
-// .columns, .column {
-//     overflow: scroll !important;
-// }
+.columns, .column {
+    overflow: auto !important;
+}

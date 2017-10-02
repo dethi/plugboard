@@ -10,7 +10,7 @@ import { Element } from '../model/element';
 
 import Vector from '../../utils/vector';
 
-import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
+import { GRID_SIZE_X, GRID_SIZE_Y, MOVE_SPEED } from '../constante';
 
 import { generateTruthTable } from '../../../engine/engine';
 
@@ -152,16 +152,16 @@ export default class BoardController {
     console.log(dir);
     switch (dir) {
       case 'up':
-        this.boardView.onMove(new Vector(0, -1));
+        this.boardView.onMove(new Vector(0, -1 * MOVE_SPEED));
         break;
       case 'down':
-        this.boardView.onMove(new Vector(0, 1));
+        this.boardView.onMove(new Vector(0, 1 * MOVE_SPEED));
         break;
       case 'left':
-        this.boardView.onMove(new Vector(-1, 0));
+        this.boardView.onMove(new Vector(-1 * MOVE_SPEED, 0));
         break;
       case 'right':
-        this.boardView.onMove(new Vector(1, 0));
+        this.boardView.onMove(new Vector(1 * MOVE_SPEED, 0));
         break;
       default:
         break;
