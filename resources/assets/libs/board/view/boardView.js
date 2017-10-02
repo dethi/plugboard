@@ -136,6 +136,11 @@ export default class BoardView {
     this.fabricCanvas.renderAll();
   }
 
+  resetPosBoard() {
+    this.curBoardPos = new Vector(GRID_SIZE_LIMIT / 2, GRID_SIZE_LIMIT / 2);
+    this.onMove(new Vector(0, 0));
+  }
+
   addElement(pos, elementModel, spec) {
     const isInput = elementModel.specName === 'INPUT';
 
@@ -297,6 +302,7 @@ export default class BoardView {
   clear() {
     this.elecElements = {};
     this.fabricCanvas.clear();
+    this.curBoardPos = new Vector(GRID_SIZE_LIMIT / 2, GRID_SIZE_LIMIT / 2);
 
     this.addGridLine();
   }
@@ -309,11 +315,12 @@ export default class BoardView {
     let maxY = 0;
 
     Object.keys(this.elecElements).forEach(id => {
-      const el = this.elecElements[id];
-      if (el.pos.x > maxX) maxX = el.pos.x;
-      if (el.pos.x < minX) minX = el.pos.x;
-      if (el.pos.y > maxY) maxY = el.pos.y;
-      if (el.pos.y < minY) minY = el.pos.y;
+      const pos = this.elecElements[id].pos.minusVector(this.curBoardPos);
+
+      if (pos.x > maxX) maxX = pos.x;
+      if (pos.x < minX) minX = pos.x;
+      if (pos.y > maxY) maxY = pos.y;
+      if (pos.y < minY) minY = pos.y;
     });
 
     if (maxX === 0) {
@@ -334,10 +341,10 @@ export default class BoardView {
 
     const options = {
       format: 'png',
-      left: minX - GRID_SIZE / 2,
-      top: minY - GRID_SIZE / 2,
-      width: maxX - minX + GRID_SIZE,
-      height: maxY - minY + GRID_SIZE
+      left: minX - GRID_SIZE * 2.5,
+      top: minY - GRID_SIZE * 2.5,
+      width: maxX - minX + GRID_SIZE * 5,
+      height: maxY - minY + GRID_SIZE * 5
     };
 
     return this.fabricCanvas.toDataURL(options);

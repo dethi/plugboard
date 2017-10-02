@@ -155,6 +155,9 @@ export default class BoardController {
       case 'right':
         this.boardView.onMove(new Vector(1 * MOVE_SPEED, 0));
         break;
+      case 'center':
+        this.boardView.resetPosBoard();
+        break;
       default:
         break;
     }
