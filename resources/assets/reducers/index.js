@@ -4,6 +4,7 @@ import palette from './palette';
 import contextMenu from './contextMenu';
 import modal from './modal';
 import board from './board';
+import objectif from './objectif';
 import component from './component';
 
 const plugboardReducers = combineReducers({
@@ -12,7 +13,8 @@ const plugboardReducers = combineReducers({
   modal,
   board,
   component,
-  contextMenu
+  contextMenu,
+  objectif
 });
 
 export default plugboardReducers;

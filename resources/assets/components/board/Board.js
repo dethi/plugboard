@@ -34,6 +34,7 @@ class Board extends Component {
       this.refs.canvas,
       this.unSelectBlueprint
     );
+
   }
 
   componentWillUnmount() {
@@ -51,7 +52,6 @@ class Board extends Component {
 
     if (nextProps.palette !== this.props.palette) {
       if (Object.keys(this.props.palette).length === 0) {
-        console.log(nextProps.palette.blueprints);
         this.boardController.populateBoardForObjectifs(
           nextProps.palette.blueprints,
           2,
@@ -130,7 +130,12 @@ class Board extends Component {
       this.props.dispatch(ModalAction.displayModal('COMPONENT_SAVE'));
     } else {
       this.props.dispatch(ModalAction.displayErrorModal([[spec.err]]));
-    }
+    }this.setState({ loading: true });
+    this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   prepareContextMenu = () => {
@@ -230,9 +235,11 @@ class Board extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(('satet', state))
   return {
     palette: state.palette,
-    board: state.board
+    board: state.board,
+    objectif: state.objectif
   };
 };
 
@@ -240,7 +247,8 @@ Board.propTypes = {
   running: PropTypes.bool.isRequired,
   step: PropTypes.number.isRequired,
   palette: PropTypes.object.isRequired,
-  board: PropTypes.object.isRequired
+  board: PropTypes.object.isRequired,
+  objectif: PropTypes.object
 };
 
 export default connect(mapStateToProps)(Board);
