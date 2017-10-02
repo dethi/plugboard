@@ -27,10 +27,16 @@ class Board extends Component {
   }
 
   componentDidMount() {
+    document.documentElement.classList.add('disable-scroll');
+
     this.boardController = new BoardController(
       this.refs.canvas,
       this.unSelectBlueprint
     );
+  }
+
+  componentWillUnmount() {
+    document.documentElement.classList.remove('disable-scroll');
   }
 
   componentWillReceiveProps(nextProps) {
