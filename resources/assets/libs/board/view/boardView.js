@@ -36,6 +36,8 @@ export default class BoardView {
     this.curCusor = null;
     this.curCusorPos = new Vector(0, 0);
 
+    this.curBoardPos = new Vector(0, 0);
+
     this.fabricCanvas.on('mouse:down', options => {
       switch (this.controller.boardState) {
         case BoardState.ADDING:
@@ -119,6 +121,12 @@ export default class BoardView {
       Math.max(Math.min(pos.x * GRID_SIZE, this.leftMax), this.leftMin),
       Math.max(Math.min(pos.y * GRID_SIZE, this.topMax), this.topMin)
     );
+  }
+
+  onMove(dir) {
+    this.curBoardPos = this.curBoardPos.addVector(dir);
+
+    console.log(this.curBoardPos);
   }
 
   addElement(pos, elementModel, spec) {

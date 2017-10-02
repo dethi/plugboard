@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import NavBar from './NavBar';
 
 import Palette from './board/Palette';
+import MoveArrow from './board/MoveArrow';
 import Board from './board/Board';
 import ItemInBoard from './objectif/ItemInBoard';
 
@@ -49,6 +50,7 @@ class App extends Component {
               getCurCanvas={this.getCurCanvas}
             />
             <ItemInBoard />
+            <MoveArrow />
             <Palette />
           </div>
         </div>
