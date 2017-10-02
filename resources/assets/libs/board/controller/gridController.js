@@ -1,9 +1,9 @@
 import myPathFinding from '../../utils/pathfinding';
 
 export default class GridController {
-  constructor(sizeX, sizeY) {
-    this.sizeX = sizeX;
-    this.sizeY = sizeY;
+  constructor() {
+    this.sizeX = 1000;
+    this.sizeY = 1000;
 
     this.space = new Array(this.sizeX * this.sizeY).fill(null);
 

@@ -7,15 +7,20 @@ import BoardState from '../controller/boardState';
 
 import Vector from '../../utils/vector';
 
-import { GRID_SIZE, MAX_DIST_LINK } from '../constante';
+import {
+  GRID_SIZE_X,
+  GRID_SIZE_Y,
+  GRID_SIZE,
+  MAX_DIST_LINK
+} from '../constante';
 
 export default class BoardView {
-  constructor(width, height, controller, el) {
+  constructor(controller, el) {
     this.controller = controller;
     this.gridSize = GRID_SIZE;
 
-    this.width = width;
-    this.height = height;
+    this.width = GRID_SIZE_X;
+    this.height = GRID_SIZE_Y;
 
     this.gridWidth = this.width * this.gridSize;
     this.gridHeight = this.height * this.gridSize;
@@ -23,7 +28,8 @@ export default class BoardView {
     this.fabricCanvas = new fabric.Canvas(el, {
       selection: false,
       height: this.gridHeight,
-      width: this.gridWidth
+      width: this.gridWidth,
+      renderOnAddRemove: false
     });
 
     this.leftMin = this.gridSize;
@@ -79,6 +85,7 @@ export default class BoardView {
     });
 
     this.addGridLine();
+    this.fabricCanvas.renderAll();
   }
 
   addGridLine() {
@@ -296,6 +303,7 @@ export default class BoardView {
     this.fabricCanvas.clear();
 
     this.addGridLine();
+    this.fabricCanvas.renderAll();
   }
 
   toPng() {

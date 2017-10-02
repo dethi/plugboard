@@ -10,7 +10,7 @@ import { Element } from '../model/element';
 
 import Vector from '../../utils/vector';
 
-import { GRID_SIZE_X, GRID_SIZE_Y, MOVE_SPEED } from '../constante';
+import { MOVE_SPEED } from '../constante';
 
 import { generateTruthTable } from '../../../engine/engine';
 
@@ -19,15 +19,7 @@ export default class BoardController {
     this.canvasHolder = canvasHolder;
     this.unSelectBlueprint = unSelectBlueprint;
 
-    this.sizeX = GRID_SIZE_X;
-    this.sizeY = GRID_SIZE_Y;
-
-    this.boardView = new BoardView(
-      this.sizeX,
-      this.sizeY,
-      this,
-      this.canvasHolder
-    );
+    this.boardView = new BoardView(this, this.canvasHolder);
 
     this.initNewBoard();
   }
@@ -41,7 +33,7 @@ export default class BoardController {
 
     this.curMousePos = new Vector(0, 0);
 
-    this.gridController = new GridController(this.sizeX, this.sizeY);
+    this.gridController = new GridController();
     this.engineController = new EngineController();
     this.cursorController = new CursorController(this.boardView);
   }
@@ -82,6 +74,7 @@ export default class BoardController {
         this.addLink(inputLink, outputLink);
       });
     });
+    this.boardView.fabricCanvas.renderAll();
   }
 
   exportBoard() {
