@@ -28,8 +28,7 @@ export default class BoardView {
     this.fabricCanvas = new fabric.Canvas(el, {
       selection: false,
       height: this.gridHeight,
-      width: this.gridWidth,
-      renderOnAddRemove: false
+      width: this.gridWidth
     });
 
     this.leftMin = this.gridSize;
@@ -85,7 +84,6 @@ export default class BoardView {
     });
 
     this.addGridLine();
-    this.fabricCanvas.renderAll();
   }
 
   addGridLine() {
@@ -124,17 +122,13 @@ export default class BoardView {
     this.fabricCanvas.renderAll();
   }
 
-  getFabricPos(pos) {
-    return new Vector(
-      Math.max(Math.min(pos.x * GRID_SIZE, this.leftMax), this.leftMin),
-      Math.max(Math.min(pos.y * GRID_SIZE, this.topMax), this.topMin)
-    );
-  }
-
   onMove(dir) {
     this.curBoardPos = this.curBoardPos.addVector(dir);
 
-    console.log(this.curBoardPos);
+    Object.keys(this.elecElements).forEach(id => {
+      const el = this.elecElements[id];
+      el.refresh();
+    });
 
     this.fabricCanvas.renderAll();
   }
@@ -155,9 +149,7 @@ export default class BoardView {
 
     this.elecElements[elementModel.id] = newElementView;
 
-    newElementView.getFabricElements().forEach(el => {
-      this.fabricCanvas.add(el);
-    });
+    this.fabricCanvas.add(...newElementView.getFabricElements());
   }
 
   removeElement(elId) {
@@ -303,7 +295,6 @@ export default class BoardView {
     this.fabricCanvas.clear();
 
     this.addGridLine();
-    this.fabricCanvas.renderAll();
   }
 
   toPng() {
@@ -348,6 +339,14 @@ export default class BoardView {
     return this.fabricCanvas.toDataURL(options);
   }
 
+  getFabricPos(pos) {
+    const boardPos = pos.minusVector(this.curBoardPos);
+    return new Vector(
+      Math.max(Math.min(boardPos.x * GRID_SIZE, this.leftMax), this.leftMin),
+      Math.max(Math.min(boardPos.y * GRID_SIZE, this.topMax), this.topMin)
+    );
+  }
+
   mousePosToBoardPos(mousePos) {
     let left = Math.round((mousePos.x - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
     left = Math.max(Math.min(left, this.leftMax), this.leftMin);
@@ -358,6 +357,6 @@ export default class BoardView {
     return new Vector(
       Math.floor(left / GRID_SIZE),
       Math.floor(top / GRID_SIZE)
-    );
+    ).addVector(this.curBoardPos);
   }
 }
