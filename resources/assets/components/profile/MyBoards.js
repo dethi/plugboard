@@ -79,5 +79,4 @@ MyBoards.propTypes = {
   board: PropTypes.object.isRequired
 };
 
-
 export default connect(mapStateToProps)(MyBoards);
