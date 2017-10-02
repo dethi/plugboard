@@ -96,6 +96,8 @@ export default class BoardController {
   }
 
   onElementMove(oldPos, newPos) {
+    console.log(newPos);
+
     const elId = this.gridController.get(oldPos);
     const el = this.board.elements[elId];
 
@@ -142,7 +144,6 @@ export default class BoardController {
   }
 
   onMove(dir) {
-    console.log(dir);
     switch (dir) {
       case 'up':
         this.boardView.onMove(new Vector(0, -1 * MOVE_SPEED));
