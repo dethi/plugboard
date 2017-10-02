@@ -169,7 +169,7 @@ export class LinkView {
     this.fabricRect = new fabric.Rect({
       width: this.linkSize,
       height: this.linkSize,
-      fill: 'black',
+      fill: this.linkType === LinkType.INPUT ? 'black' : '#606060',
       hasControls: false,
       selectable: false
     });
