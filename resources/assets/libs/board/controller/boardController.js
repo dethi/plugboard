@@ -42,6 +42,25 @@ export default class BoardController {
     this.boardView.clear();
     this.initNewBoard();
   }
+  populateBoardForObjectifs(blueprint, nbOfInput, nbOfOutput) {
+    for (let i = 0; i < nbOfInput; ++i) {
+      this.addElement(
+        new Vector(10, 5 + 3 * i),
+        blueprint[0],
+        (i + 1).toString(),
+        0
+      );
+    }
+
+    for (let i = 0; i < nbOfOutput; ++i) {
+      this.addElement(
+        new Vector(20, 5 + 3 * i),
+        blueprint[1],
+        String.fromCharCode('A'.charCodeAt(0) + i),
+        0
+      );
+    }
+  }
 
   loadFromBoard(board) {
     this.clearBoard();
@@ -51,7 +70,6 @@ export default class BoardController {
     // Add Elements
     Object.keys(board.elements).forEach(id => {
       const el = board.elements[id];
-
       const newEl = this.addElement(
         new Vector(el.pos.x, el.pos.y),
         board.specs[el.specName],

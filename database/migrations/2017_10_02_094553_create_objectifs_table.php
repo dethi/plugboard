@@ -18,6 +18,8 @@ class CreateObjectifsTable extends Migration
             $table->string('title', 30);
             $table->string('truth_table')->nullable();
             $table->text('description');
+            $table->integer('nbInput');
+            $table->integer('nbOutput');
             $table->timestamps();
         });
     }

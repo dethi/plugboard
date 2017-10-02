@@ -49,6 +49,17 @@ class Board extends Component {
       }
     }
 
+    if (nextProps.palette !== this.props.palette) {
+      if (Object.keys(this.props.palette).length === 0) {
+        console.log(nextProps.palette.blueprints);
+        this.boardController.populateBoardForObjectifs(
+          nextProps.palette.blueprints,
+          2,
+          3
+        );
+      }
+    }
+
     if (nextProps.step !== this.props.step) {
       this.nextStep();
     }
