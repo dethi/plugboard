@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import componentApi from '../../api/component';
+import ComponentAction from '../../actions/componentActions';
+
 import Element from './Element';
 
 class MyElements extends Component {
@@ -12,18 +14,20 @@ class MyElements extends Component {
       loading: false
     };
   }
+
   componentDidMount() {
     this.setState({ loading: true });
-    componentApi.getComponents().then(elements => {
-      console.log(elements);
+    this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
       this.setState({
-        elements: elements,
         loading: false
       });
     });
   }
+
   render() {
-    const { elements, loading } = this.state;
+    const { loading } = this.state;
+    const { components } = this.props.component;
+
     return (
       <div>
         {loading &&
@@ -32,16 +36,16 @@ class MyElements extends Component {
               <i className="fa fa-spinner fa-pulse" />
             </span>
           </div>}
-        {elements &&
+        {components &&
           <div>
-            {elements.length === 0
+            {components.length === 0
               ? <div className="has-text-centered">
                   <div className="notification is-warning">
                     <p>You don't have any saved boards</p>
                   </div>
                 </div>
               : <div className="parent">
-                  {elements.map(element => (
+                  {components.map(element => (
                     <Element
                       key={element.id}
                       title={element.title}
@@ -60,8 +64,14 @@ class MyElements extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    component: state.component
   };
+};
+
+MyElements.propTypes = {
+  user: PropTypes.object.isRequired,
+  component: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(MyElements);
