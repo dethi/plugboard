@@ -36,7 +36,10 @@ class MoveArrow extends Component {
             </div>
             <div className="level-right">
               <div className="level-item">
-                <a className="button" onClick={() => this.handleClick('center')}>
+                <a
+                  className="button"
+                  onClick={() => this.handleClick('center')}
+                >
                   <span className="icon">
                     <i className="fa fa-dot-circle-o" />
                   </span>
