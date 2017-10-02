@@ -198,7 +198,11 @@ class Board extends Component {
     };
     return (
       <div>
-        <ContextMenuTrigger id="bard_context_menu" className="column">
+        <ContextMenuTrigger
+          id="bard_context_menu"
+          className="column"
+          holdToDisplay={-1}
+        >
           <div style={style}>
             <canvas ref="canvas" />
           </div>
