@@ -4,6 +4,7 @@ export default class ItemInBoard extends Component {
   render() {
     return (
       <div className="card on-canvas board-objectif">
+        {/* Maybe use a box ? */}
         {/*
         <div className="card-image">
           <figure className="image is-square">

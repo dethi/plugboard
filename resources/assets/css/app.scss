@@ -203,6 +203,23 @@ textarea {
     margin: 5px;
 }
 
+.move-arrow {
+    margin: 10px;
+    margin-top: 15px;
+
+    .box {
+        padding: 2px;
+    }
+
+    .button {
+        margin: 3px;
+    }
+
+    .level {
+        margin: 0px;
+    }
+}
+
 // html, body {
 //     height: 100%;
 //     overflow: hidden;

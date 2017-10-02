@@ -132,6 +132,9 @@ class Board extends Component {
       case elementActions.RENAME:
         this.boardController.onRename(actionArgs);
         break;
+      case elementActions.MOVE:
+        this.boardController.onMove(actionArgs);
+        break;
       default:
         break;
     }

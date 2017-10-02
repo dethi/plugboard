@@ -148,6 +148,26 @@ export default class BoardController {
     this.renameElement(this.getCurEl(), newName);
   }
 
+  onMove(dir) {
+    console.log(dir);
+    switch (dir) {
+      case 'up':
+        this.boardView.onMove(new Vector(0, -1));
+        break;
+      case 'down':
+        this.boardView.onMove(new Vector(0, 1));
+        break;
+      case 'left':
+        this.boardView.onMove(new Vector(-1, 0));
+        break;
+      case 'right':
+        this.boardView.onMove(new Vector(1, 0));
+        break;
+      default:
+        break;
+    }
+  }
+
   onUpdateSelectedBlueprint(blueprint) {
     this.selectedSpec = blueprint;
 
