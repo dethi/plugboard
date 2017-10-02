@@ -29,7 +29,8 @@ export default class BoardView {
     this.fabricCanvas = new fabric.Canvas(el, {
       selection: false,
       height: this.gridHeight,
-      width: this.gridWidth
+      width: this.gridWidth,
+      renderOnAddRemove: false
     });
 
     this.leftMin = this.gridSize;
@@ -115,6 +116,7 @@ export default class BoardView {
     }
 
     this.fabricCanvas.add(...this.fabricGridLines);
+    this.fabricCanvas.renderAll();
   }
 
   toggleGridVisibility() {
@@ -270,6 +272,7 @@ export default class BoardView {
     );
 
     this.fabricCanvas.add(this.linkLine);
+    this.fabricCanvas.renderAll();
   }
 
   finishCreateLink() {
