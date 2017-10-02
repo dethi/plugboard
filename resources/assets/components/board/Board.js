@@ -28,6 +28,7 @@ class Board extends Component {
 
   componentDidMount() {
     document.documentElement.classList.add('disable-scroll');
+    window.scrollTo(0, 0);
 
     this.boardController = new BoardController(
       this.refs.canvas,
