@@ -107,7 +107,8 @@ export default class BoardView {
         )
       );
     }
-    this.fabricGridLines.forEach(el => this.fabricCanvas.add(el));
+
+    this.fabricCanvas.add(...this.fabricGridLines);
   }
 
   toggleGridVisibility() {
@@ -128,10 +129,7 @@ export default class BoardView {
 
     console.log(this.curBoardPos);
 
-    Object.keys(this.elecElements).forEach(id => {
-      const el = this.elecElements[id];
-      this.controller.onElementMove(el.pos, el.pos.addVector(dir));
-    });
+    this.fabricCanvas.renderAll();
   }
 
   addElement(pos, elementModel, spec) {
