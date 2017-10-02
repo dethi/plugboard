@@ -17,7 +17,6 @@ class CreateElComponentsTable extends Migration
             $table->increments('id');
             $table->string('title', 30);
             $table->string('spec_name', 30);
-            $table->integer('type');
             $table->integer('nbInput');
             $table->integer('nbOutput');
             $table->integer('dimX');
