@@ -11,6 +11,7 @@ import {
   GRID_SIZE_X,
   GRID_SIZE_Y,
   GRID_SIZE,
+  GRID_SIZE_LIMIT,
   MAX_DIST_LINK
 } from '../constante';
 
@@ -41,7 +42,7 @@ export default class BoardView {
     this.curCusor = null;
     this.curCusorPos = new Vector(0, 0);
 
-    this.curBoardPos = new Vector(0, 0);
+    this.curBoardPos = new Vector(GRID_SIZE_LIMIT / 2, GRID_SIZE_LIMIT / 2);
 
     this.fabricCanvas.on('mouse:down', options => {
       switch (this.controller.boardState) {
@@ -341,10 +342,7 @@ export default class BoardView {
 
   getFabricPos(pos) {
     const boardPos = pos.minusVector(this.curBoardPos);
-    return new Vector(
-      Math.max(Math.min(boardPos.x * GRID_SIZE, this.leftMax), this.leftMin),
-      Math.max(Math.min(boardPos.y * GRID_SIZE, this.topMax), this.topMin)
-    );
+    return new Vector(boardPos.x * GRID_SIZE, boardPos.y * GRID_SIZE);
   }
 
   mousePosToBoardPos(mousePos) {
