@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class ItemInBoard extends Component {
+class ObjectifInBoard extends Component {
   render() {
+    const { currentObjectif } = this.props.objectif;
     return (
       <div className="card on-canvas board-objectif">
         {/* Maybe use a box ? */}
@@ -17,7 +20,7 @@ export default class ItemInBoard extends Component {
         <div className="card-content">
           <div className="content has-text-centered">
             <h1 className="title is-spaced">
-              Challenge 1
+              {currentObjectif.title}
             </h1>
             <span className="icon is-medium has-text-info">
               <i className="fa fa-play" />
@@ -31,3 +34,15 @@ export default class ItemInBoard extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
+
+ObjectifInBoard.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(ObjectifInBoard);

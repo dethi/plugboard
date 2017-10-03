@@ -24,6 +24,10 @@ class ListObjectif extends Component {
     });
   }
 
+  setCurrentObjectif = objectif => {
+    console.log('1');
+    this.props.dispatch(ObjectifAction.setCurrentObjectif(objectif));
+  };
   render() {
     const { loading } = this.state;
     const { objectifs } = this.props.objectif;
@@ -46,6 +50,10 @@ class ListObjectif extends Component {
                       key={objectif.id}
                       title={objectif.title}
                       locked={true}
+                      onClick={() => {
+                        console.log('coucou');
+                        this.setCurrentObjectif(objectif);
+                      }}
                     />
                   ))}
 
