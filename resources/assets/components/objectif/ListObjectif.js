@@ -15,8 +15,7 @@ class ListObjectif extends Component {
     };
   }
 
-    componentDidMount() {
-
+  componentDidMount() {
     this.setState({ loading: true });
     this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
       this.setState({
@@ -26,21 +25,30 @@ class ListObjectif extends Component {
   }
 
   render() {
+    const { loading } = this.state;
+    const { objectifs } = this.props.objectif;
     return (
       <div id="landing">
         <section className="hero is-fullheight is-dark">
           <NavBarAccueil />
           <div className="columns is-mobile">
             <div className="column is-half is-offset-one-quarter">
+              {loading &&
+                <div className="has-text-centered">
+                  <span className="icon is-large">
+                    <i className="fa fa-spinner fa-pulse" />
+                  </span>
+                </div>}
               <div className="conteneur">
-                <ItemList locked={true} />
-                <ItemList locked={true} />
-                <ItemList locked={false} />
-                <ItemList locked={false} />
-                <ItemList locked={false} />
-                <ItemList locked={false} />
-                <ItemList locked={false} />
-                <ItemList locked={false} />
+                {objectifs &&
+                  objectifs.map(objectif => (
+                    <ItemList
+                      key={objectif.id}
+                      title={objectif.title}
+                      locked={true}
+                    />
+                  ))}
+
               </div>
             </div>
           </div>
@@ -55,7 +63,6 @@ const mapStateToProps = state => {
     objectif: state.objectif
   };
 };
-
 
 ListObjectif.propTypes = {
   objectif: PropTypes.object.isRequired
