@@ -1,8 +1,12 @@
 import objectifApi from '../api/objectif';
 
+const setCurrentObjectif = currentObjectif => {
+  return {
+    type: 'SET_CURRENT_OBJECTIF',
+    currentObjectif
+  };
+};
 const getObjectifs = objectifs => {
-
-        console.log('logg', objectifs);
   return {
     type: 'GET_OBJECTIFS',
     objectifs
@@ -21,5 +25,6 @@ const getObjectifsAsync = () => {
 };
 
 export default {
-  getObjectifsAsync
+  getObjectifsAsync,
+  setCurrentObjectif
 };

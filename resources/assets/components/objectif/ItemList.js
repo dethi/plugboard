@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default class ItemList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false
+    };
+  }
   render() {
     if (!this.props.locked) {
       return (
@@ -24,7 +31,7 @@ export default class ItemList extends Component {
     } else {
       return (
         <div className=" element">
-          <NavLink to="/app">
+          <NavLink to="/app" onClick={this.props.onClick}>
 
             <div className="card">
               <div className="card-image">

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import NavBar from './NavBar';
 
 import Palette from './board/Palette';
 import MoveArrow from './board/MoveArrow';
 import Board from './board/Board';
-import ItemInBoard from './objectif/ItemInBoard';
+import ObjectifInBoard from './objectif/ObjectifInBoard';
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component {
 
   render() {
     const { step, running } = this.state;
-
+    const { currentObjectif } = this.props.objectif;
     return (
       <div>
         <NavBar
@@ -49,8 +50,8 @@ class App extends Component {
               running={running}
               getCurCanvas={this.getCurCanvas}
             />
-            <ItemInBoard />
             <MoveArrow />
+            {currentObjectif && <ObjectifInBoard />}
             <Palette />
           </div>
         </div>
@@ -58,5 +59,13 @@ class App extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
 
-export default connect()(App);
+App.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+export default connect(mapStateToProps)(App);

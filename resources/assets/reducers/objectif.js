@@ -5,6 +5,11 @@ const objectif = (state = {}, action) => {
         ...state,
         objectifs: action.objectifs
       };
+    case 'SET_CURRENT_OBJECTIF':
+      return {
+        ...state,
+        currentObjectif: action.currentObjectif
+      };
     default:
       return state;
   }
