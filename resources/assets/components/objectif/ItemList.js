@@ -49,7 +49,7 @@ export default class ItemList extends Component {
               </div>
               */}
                 <div className="content has-text-centered">
-                  Challenge 1
+                  {this.props.title}
                 </div>
               </div>
             </div>

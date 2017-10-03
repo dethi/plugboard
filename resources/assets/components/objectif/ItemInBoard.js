@@ -31,5 +31,3 @@ export default class ItemInBoard extends Component {
     );
   }
 }
-
-

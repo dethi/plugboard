@@ -34,7 +34,6 @@ class Board extends Component {
       this.refs.canvas,
       this.unSelectBlueprint
     );
-
   }
 
   componentWillUnmount() {
@@ -130,12 +129,7 @@ class Board extends Component {
       this.props.dispatch(ModalAction.displayModal('COMPONENT_SAVE'));
     } else {
       this.props.dispatch(ModalAction.displayErrorModal([[spec.err]]));
-    }this.setState({ loading: true });
-    this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
-      this.setState({
-        loading: false
-      });
-    });
+    }
   };
 
   prepareContextMenu = () => {
@@ -235,7 +229,6 @@ class Board extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(('satet', state))
   return {
     palette: state.palette,
     board: state.board,
