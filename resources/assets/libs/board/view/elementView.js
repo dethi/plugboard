@@ -71,9 +71,10 @@ export default class ElementView {
     this.fabricRect.width = this.componentSizeX;
     this.fabricRect.height = this.componentSizeY;
     this.fabricRect.angle = 90 * this.rotate;
-    this.fabricRect.fill = this.spec.color;
-    this.fabricRect.dirty = true;
 
+    this.fabricRect.fill = this.on ? this.spec.colorOn : this.spec.color;
+
+    this.fabricRect.dirty = true;
     this.fabricText.text = this.getTitle();
 
     this.move(this.pos);
@@ -266,8 +267,9 @@ export default class ElementView {
   }
 
   setOn(isOn) {
-    this.on = isOn;
+    if (this.on === isOn) return;
 
+    this.on = isOn;
     const newColor = isOn ? this.spec.colorOn : this.spec.color;
 
     this.fabricRect.fill = newColor;
