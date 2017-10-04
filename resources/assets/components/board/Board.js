@@ -108,6 +108,13 @@ class Board extends Component {
       this.prepareContextMenu();
     }
 
+    if (
+      nextProps.objectif.prepareCheckObjectif !==
+      this.props.objectif.prepareCheckObjectif
+    ) {
+      console.log('checking objectif');
+    }
+
     if (nextProps.board.load !== this.props.board.load) {
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }

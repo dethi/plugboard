@@ -6,6 +6,13 @@ const setCurrentObjectif = currentObjectif => {
     currentObjectif
   };
 };
+
+const prepareCheckObjectif = () => {
+  return {
+    type: 'PREPARE_CHECK_OBJECTIF'
+  };
+};
+
 const getObjectifs = objectifs => {
   return {
     type: 'GET_OBJECTIFS',
@@ -26,5 +33,6 @@ const getObjectifsAsync = () => {
 
 export default {
   getObjectifsAsync,
-  setCurrentObjectif
+  setCurrentObjectif,
+  prepareCheckObjectif
 };
