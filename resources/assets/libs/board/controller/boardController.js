@@ -45,7 +45,7 @@ export default class BoardController {
   populateBoardForObjectifs(blueprint, nbOfInput, nbOfOutput) {
     for (let i = 0; i < nbOfInput; ++i) {
       this.addElement(
-        new Vector(10, 5 + 3 * i),
+        new Vector(515, 505 + 3 * i),
         blueprint[0],
         (i + 1).toString(),
         0
@@ -54,12 +54,14 @@ export default class BoardController {
 
     for (let i = 0; i < nbOfOutput; ++i) {
       this.addElement(
-        new Vector(20, 5 + 3 * i),
+        new Vector(530, 505 + 3 * i),
         blueprint[1],
         String.fromCharCode('A'.charCodeAt(0) + i),
         0
       );
     }
+
+    this.boardView.fabricCanvas.renderAll();
   }
 
   loadFromBoard(board) {

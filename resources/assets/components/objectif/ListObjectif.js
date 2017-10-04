@@ -16,12 +16,14 @@ class ListObjectif extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
-    this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
-      this.setState({
-        loading: false
+    if (Object.keys(this.props.objectif).length === 0) {
+      this.setState({ loading: true });
+      this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
+        this.setState({
+          loading: false
+        });
       });
-    });
+    }
   }
 
   setCurrentObjectif = objectif => {
