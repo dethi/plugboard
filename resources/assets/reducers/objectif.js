@@ -10,6 +10,12 @@ const objectif = (state = {}, action) => {
         ...state,
         currentObjectif: action.currentObjectif
       };
+    case 'PREPARE_CHECK_OBJECTIF':
+      if (!state.prepareCheckObjectif) state.prepareCheckObjectif = 0;
+      return {
+        ...state,
+        prepareCheckObjectif: state.prepareCheckObjectif + 1
+      };
     default:
       return state;
   }

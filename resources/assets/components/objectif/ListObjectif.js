@@ -15,7 +15,7 @@ class ListObjectif extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (Object.keys(this.props.objectif).length === 0) {
       this.setState({ loading: true });
       this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
@@ -52,10 +52,7 @@ class ListObjectif extends Component {
                       key={objectif.id}
                       title={objectif.title}
                       locked={true}
-                      onClick={() => {
-                        console.log('coucou');
-                        this.setCurrentObjectif(objectif);
-                      }}
+                      onClick={() => this.setCurrentObjectif(objectif)}
                     />
                   ))}
 
