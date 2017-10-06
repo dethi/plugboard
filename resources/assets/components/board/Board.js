@@ -34,26 +34,14 @@ class Board extends Component {
       this.refs.canvas,
       this.unSelectBlueprint
     );
-    this.loadObjectif(this.props.palette);
+
+    this.loadObjectif();
   }
 
   componentWillUnmount() {
     document.documentElement.classList.remove('disable-scroll');
   }
 
-  loadObjectif(palette) {
-    if (Object.keys(palette).length === 0) {
-      return;
-    }
-    const { currentObjectif } = this.props.objectif;
-    if (currentObjectif) {
-      this.boardController.populateBoardForObjectifs(
-        palette.blueprints,
-        currentObjectif.nbInput,
-        currentObjectif.nbOutput
-      );
-    }
-  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.running !== this.props.running) {
       if (nextProps.running) {
@@ -61,10 +49,6 @@ class Board extends Component {
       } else {
         this.stop();
       }
-    }
-
-    if (nextProps.palette !== this.props.palette) {
-      this.loadObjectif(nextProps.palette);
     }
 
     if (nextProps.step !== this.props.step) {
@@ -119,6 +103,18 @@ class Board extends Component {
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }
   }
+
+  loadObjectif = () => {
+    const { currentObjectif } = this.props.objectif;
+
+    if (currentObjectif) {
+      this.boardController.populateBoardForObjectifs(
+        this.props.palette.blueprints,
+        currentObjectif.nbInput,
+        currentObjectif.nbOutput
+      );
+    }
+  };
 
   prepareBoard = () => {
     const boardData = this.boardController.exportBoard();

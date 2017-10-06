@@ -42,6 +42,7 @@ export default class BoardController {
     this.boardView.clear();
     this.initNewBoard();
   }
+
   populateBoardForObjectifs(blueprint, nbOfInput, nbOfOutput) {
     for (let i = 0; i < nbOfInput; ++i) {
       this.addElement(
