@@ -9,7 +9,8 @@ const objectif = (state = {}, action) => {
       return {
         ...state,
         objectifIsLoaded: false,
-        currentObjectif: action.currentObjectif
+        currentObjectif: action.currentObjectif,
+        truthTable: JSON.parse(action.currentObjectif.truth_table)
       };
     case 'PREPARE_CHECK_OBJECTIF':
       if (!state.prepareCheckObjectif) state.prepareCheckObjectif = 0;
