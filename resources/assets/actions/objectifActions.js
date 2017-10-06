@@ -7,6 +7,12 @@ const setCurrentObjectif = currentObjectif => {
   };
 };
 
+const prepareLoadIOs = () => {
+  return {
+    type: 'PREPARE_LOAD_IOS'
+  };
+};
+
 const prepareCheckObjectif = () => {
   return {
     type: 'PREPARE_CHECK_OBJECTIF'
@@ -34,5 +40,6 @@ const getObjectifsAsync = () => {
 export default {
   getObjectifsAsync,
   setCurrentObjectif,
-  prepareCheckObjectif
+  prepareCheckObjectif,
+  prepareLoadIOs
 };

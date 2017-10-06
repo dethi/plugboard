@@ -44,6 +44,8 @@ export default class BoardController {
   }
 
   populateBoardForObjectifs(blueprint, nbOfInput, nbOfOutput) {
+    this.clearBoard();
+
     for (let i = 0; i < nbOfInput; ++i) {
       this.addElement(
         new Vector(515, 505 + 3 * i),
@@ -313,6 +315,49 @@ export default class BoardController {
     return this.engineController.exportEngineStates();
   }
 
+  generateTruthTableForObjectif() {
+    const spec = {};
+
+    // Copy board representation
+    const board = JSON.parse(
+      JSON.stringify(this.engineController.exportForEngine(this.board))
+    );
+
+    // Check that all input are connect
+    let empty = true;
+    Object.keys(board.components).forEach(componentId => {
+      empty = false;
+      Object.keys(board.components[componentId].input).forEach(inputName => {
+        if (board.components[componentId].input[inputName] === 0) {
+          spec.err = 'Some input are not connect';
+        }
+      });
+    });
+    if (empty) spec.err = 'The board need at least one gate';
+
+    if (spec.err !== undefined) return spec;
+
+    // Delete Default input and move registery
+    delete board.input['0'];
+    board.nextRegistery--;
+    Object.keys(board.components).forEach(componentId => {
+      const component = board.components[componentId];
+      Object.keys(component.input).forEach(inputName => {
+        component.input[inputName]--;
+      });
+      Object.keys(component.output).forEach(outputName => {
+        component.output[outputName].forEach(
+          (_, index) => component.output[outputName][index]--
+        );
+      });
+      board.components[componentId] = component;
+    });
+    Object.keys(board.input).forEach(inputId => board.input[inputId]--);
+    Object.keys(board.output).forEach(outputId => board.output[outputId]--);
+
+    // Generate Spec
+    return generateTruthTable(board);
+  }
   exportSpec() {
     const spec = {};
 

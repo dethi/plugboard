@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import ObjectifAction from '../../actions/objectifActions';
+import ObjectifActions from '../../actions/objectifActions';
 
 class ObjectifInBoard extends Component {
   checkObjectif = () => {
     console.log('step 1');
-    this.props.dispatch(ObjectifAction.prepareCheckObjectif());
+    this.props.dispatch(ObjectifActions.prepareCheckObjectif());
   };
+  reloadObjectif = () => {
+    this.props.dispatch(ObjectifActions.prepareLoadIOs());
+  };
+
   render() {
     const { currentObjectif } = this.props.objectif;
     return (
@@ -36,6 +40,11 @@ class ObjectifInBoard extends Component {
               </NavLink>
             </span>
           </div>
+          <a className="level-item" onClick={this.reloadObjectif}>
+            <span className="icon is-medium has-text-info">
+              <i className="fa fa-refresh" />
+            </span>
+          </a>
           <a className="level-item" onClick={this.checkObjectif}>
             <span className="icon is-medium has-text-info">
               <i className="fa fa-play" />

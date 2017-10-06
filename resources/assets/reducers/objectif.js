@@ -8,6 +8,7 @@ const objectif = (state = {}, action) => {
     case 'SET_CURRENT_OBJECTIF':
       return {
         ...state,
+        objectifIsLoaded: false,
         currentObjectif: action.currentObjectif
       };
     case 'PREPARE_CHECK_OBJECTIF':
@@ -15,6 +16,13 @@ const objectif = (state = {}, action) => {
       return {
         ...state,
         prepareCheckObjectif: state.prepareCheckObjectif + 1
+      };
+    case 'PREPARE_LOAD_IOS':
+      if (!state.prepareLoadIOs) state.prepareLoadIOs = 0;
+      return {
+        ...state,
+        objectifIsLoaded: true,
+        prepareLoadIOs: state.prepareLoadIOs + 1
       };
     default:
       return state;
