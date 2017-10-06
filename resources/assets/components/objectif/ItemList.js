@@ -30,7 +30,7 @@ export default class ItemList extends Component {
       );
     } else {
       return (
-        <div className=" element">
+        <div className="column is-one-third">
           <NavLink to="/app" onClick={this.props.onClick}>
 
             <div className="card">

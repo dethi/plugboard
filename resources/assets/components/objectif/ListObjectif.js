@@ -37,7 +37,7 @@ class ListObjectif extends Component {
       <div id="landing">
         <section className="hero is-fullheight is-dark">
           <NavBarAccueil />
-          <div className="columns is-mobile">
+          <div className="columns">
             <div className="column is-half is-offset-one-quarter">
               {loading &&
                 <div className="has-text-centered">
@@ -45,7 +45,7 @@ class ListObjectif extends Component {
                     <i className="fa fa-spinner fa-pulse" />
                   </span>
                 </div>}
-              <div className="conteneur">
+              <div className="columns is-multiline">
                 {objectifs &&
                   objectifs.map(objectif => (
                     <ItemList
