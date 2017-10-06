@@ -4,7 +4,6 @@
 
 @import "./landing.scss";
 @import "./_utils.scss";
-@import "./objectif.scss";
 
 
 .app {
@@ -227,4 +226,9 @@ textarea {
 
 .columns, .column {
     overflow: auto !important;
+}
+
+.board-objectif {
+    margin: 10px;
+    padding: 10px;
 }
