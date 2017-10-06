@@ -141,6 +141,13 @@ class NavBar extends Component {
                     <i className="fa fa-book" />
                   </span>
                 </a>
+                <div className="nav-item">
+                  <span className="icon has-text-info">
+                    <NavLink to="/objectif">
+                      <i className="fa fa-list" />
+                    </NavLink>
+                  </span>
+                </div>
               </div>
             : <NavLink className="nav-item is-tab" to="/app">
                 Board

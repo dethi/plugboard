@@ -17,6 +17,8 @@ import boardApi from '../../api/board';
 import BoardController from '../../libs/board/controller/boardController';
 import { evalutateBoard } from '../../engine/engine';
 
+import { checkTruthTables } from '../../libs/utils/objectif';
+
 class Board extends Component {
   constructor(props) {
     super(props);
@@ -126,7 +128,6 @@ class Board extends Component {
 
   loadIOsForObjectif = () => {
     const { currentObjectif } = this.props.objectif;
-    console.log(this.props.palette);
     this.boardController.populateBoardForObjectifs(
       this.props.palette.blueprints,
       currentObjectif.nbInput,
@@ -135,11 +136,12 @@ class Board extends Component {
   };
 
   prepareCheckObjectif = () => {
-    console.log('board', this.props.board);
-    console.log('checking objectif');
-    console.log('objectif', this.props.objectif);
-    const truth = this.boardController.generateTruthTableForObjectif();
-    console.log('truth', truth);
+    const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
+    const { truthTable } = this.props.objectif;
+    let success = true;
+    console.log('i', truthTable.length);
+    if (checkTruthTables(truthTable, truthTableOfBoard)) console.log('Youhou');
+    else console.log('BOUUUH');
   };
 
   prepareBoard = () => {

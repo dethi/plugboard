@@ -97,11 +97,35 @@ class ObjectifsTableSeeder extends Seeder
     public function run()
     {
         $objectif = new Objectif();
-        $objectif->title = 'Porte Non-ET';
-        $objectif->description = 'Réalisez une porte non-et';
+        $objectif->title = 'NAND Gate';
+        $objectif->description = 'Réalisez une porte NON-ET';
         $objectif->nbInput = 2;
         $objectif->nbOutput = 1;
-        $objectif->truth_table = '[[0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 0]]';
+        $objectif->truth_table = '[[0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 0]]';
+        $objectif->save();
+
+        $objectif = new Objectif();
+        $objectif->title = 'NOR Gate';
+        $objectif->description = 'Réalisez une porte NON-OU';
+        $objectif->nbInput = 2;
+        $objectif->nbOutput = 1;
+        $objectif->truth_table = '[[0, 0, 1], [1, 0, 0], [0, 1, 0], [1, 1, 0]]';
+        $objectif->save();
+
+        $objectif = new Objectif();
+        $objectif->title = 'XOR Gate';
+        $objectif->description = 'Réalisez une porte OU exclusif';
+        $objectif->nbInput = 2;
+        $objectif->nbOutput = 1;
+        $objectif->truth_table = '[[0, 0, 0], [1, 0, 1], [0, 1, 1], [1, 1, 0]]';
+        $objectif->save();
+
+        $objectif = new Objectif();
+        $objectif->title = 'XNOR Gate';
+        $objectif->description = 'Réalisez une porte NON-OU exclusif';
+        $objectif->nbInput = 2;
+        $objectif->nbOutput = 1;
+        $objectif->truth_table = '[[0, 0, 1], [1, 0, 0], [0, 1, 0], [1, 1, 1]]';
         $objectif->save();
     }
 }
