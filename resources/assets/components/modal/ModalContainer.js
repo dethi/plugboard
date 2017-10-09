@@ -11,6 +11,7 @@ import LoginNeededModal from './LoginNeededModal';
 import SaveComponent from './SaveComponent';
 import ChooseComponent from './ChooseComponent';
 import RenameCompModal from './RenameCompModal';
+import ObjectifSuccessModal from './ObjectifSuccessModal';
 
 export default function ModalContainer(props) {
   return (
@@ -26,6 +27,7 @@ export default function ModalContainer(props) {
       <SaveComponent />
       <ChooseComponent />
       <RenameCompModal />
+      <ObjectifSuccessModal />
     </div>
   );
 }

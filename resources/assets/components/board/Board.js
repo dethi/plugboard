@@ -138,10 +138,12 @@ class Board extends Component {
   prepareCheckObjectif = () => {
     const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
     const { truthTable } = this.props.objectif;
-    let success = true;
-    console.log('i', truthTable.length);
-    if (checkTruthTables(truthTable, truthTableOfBoard)) console.log('Youhou');
-    else console.log('BOUUUH');
+    if (checkTruthTables(truthTable, truthTableOfBoard)) {
+      console.log('Youhou');
+      this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
+    } else {
+      console.log('BOUUUH');
+    }
   };
 
   prepareBoard = () => {
