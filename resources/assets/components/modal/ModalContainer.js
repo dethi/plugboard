@@ -12,6 +12,7 @@ import SaveComponent from './SaveComponent';
 import ChooseComponent from './ChooseComponent';
 import RenameCompModal from './RenameCompModal';
 import ObjectifSuccessModal from './ObjectifSuccessModal';
+import ObjectifInfoModal from './ObjectifInfoModal';
 
 export default function ModalContainer(props) {
   return (
@@ -28,6 +29,7 @@ export default function ModalContainer(props) {
       <ChooseComponent />
       <RenameCompModal />
       <ObjectifSuccessModal />
+      <ObjectifInfoModal />
     </div>
   );
 }

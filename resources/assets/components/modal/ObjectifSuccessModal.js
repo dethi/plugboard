@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 
-import BoardAction from '../../actions/boardActions';
+import ModalAction from '../../actions/modalActions';
 import ObjectifAction from '../../actions/objectifActions';
 
 class ObjectifSuccessModal extends Component {
@@ -18,7 +18,9 @@ class ObjectifSuccessModal extends Component {
             this.props.objectif.objectifs[currentObjectif.id]
           )
         );
-      this.props.dispatch(ObjectifAction.prepareLoadIOs());
+
+      this.props.dispatch(ObjectifAction.setObjectifAsCompleted());
+      this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
     };
 
     return (

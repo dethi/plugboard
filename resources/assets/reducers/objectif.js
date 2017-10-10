@@ -5,6 +5,11 @@ const objectif = (state = {}, action) => {
         ...state,
         objectifs: action.objectifs
       };
+    case 'OBJECTIF_COMPLETED':
+      return {
+        ...state,
+        objectifIsLoaded: false
+      };
     case 'SET_CURRENT_OBJECTIF':
       return {
         ...state,

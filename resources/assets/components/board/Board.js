@@ -10,7 +10,6 @@ import PaletteAction from '../../actions/paletteActions';
 import BoardAction from '../../actions/boardActions';
 import ContextMenuActions from '../../actions/contextMenuActions';
 import ModalAction from '../../actions/modalActions';
-import ObjectifActions from '../../actions/objectifActions';
 
 import boardApi from '../../api/board';
 
@@ -37,9 +36,6 @@ class Board extends Component {
       this.refs.canvas,
       this.unSelectBlueprint
     );
-    if (this.props.objectif.currentObjectif) {
-      this.props.dispatch(ObjectifActions.prepareLoadIOs());
-    }
   }
 
   componentWillUnmount() {
@@ -103,22 +99,10 @@ class Board extends Component {
       this.prepareCheckObjectif();
     }
 
-    //Make sure that the palette is load before loading the objectif
-    if (
-      Object.keys(this.props.palette).length === 0 &&
-      nextProps.palette !== this.props.palette
-    ) {
-      if (this.props.objectif.currentObjectif) {
-        this.props.dispatch(ObjectifActions.prepareLoadIOs());
-      }
-    }
-
     if (
       nextProps.objectif.prepareLoadIOs !== this.props.objectif.prepareLoadIOs
     ) {
-      // if palette is empty, wait for the nextProps
-      if (Object.keys(this.props.palette).length !== 0)
-        this.loadIOsForObjectif();
+      this.loadIOsForObjectif();
     }
 
     if (nextProps.board.load !== this.props.board.load) {
@@ -139,7 +123,6 @@ class Board extends Component {
     const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
     const { truthTable } = this.props.objectif;
     if (checkTruthTables(truthTable, truthTableOfBoard)) {
-      console.log('Youhou');
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
     } else {
       console.log('BOUUUH');
