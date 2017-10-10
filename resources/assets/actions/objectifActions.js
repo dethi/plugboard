@@ -13,6 +13,11 @@ const prepareLoadIOs = () => {
   };
 };
 
+const setObjectifAsCompleted = () => {
+  return {
+    type: 'OBJECTIF_COMPLETED'
+  };
+};
 const prepareCheckObjectif = () => {
   return {
     type: 'PREPARE_CHECK_OBJECTIF'
@@ -41,5 +46,6 @@ export default {
   getObjectifsAsync,
   setCurrentObjectif,
   prepareCheckObjectif,
-  prepareLoadIOs
+  prepareLoadIOs,
+  setObjectifAsCompleted
 };

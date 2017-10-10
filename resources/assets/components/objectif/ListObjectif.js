@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import ObjectifAction from '../../actions/objectifActions';
+import ModalAction from '../../actions/modalActions';
 import ItemList from './ItemList';
 import NavBarAccueil from '../home/NavBarAccueil';
 
@@ -29,6 +30,8 @@ class ListObjectif extends Component {
   setCurrentObjectif = objectif => {
     console.log('1');
     this.props.dispatch(ObjectifAction.setCurrentObjectif(objectif));
+
+    this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
   };
   render() {
     const { loading } = this.state;

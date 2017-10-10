@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import ObjectifActions from '../../actions/objectifActions';
+import ModalAction from '../../actions/modalActions';
 
 class ObjectifInBoard extends Component {
   checkObjectif = () => {
@@ -12,6 +13,10 @@ class ObjectifInBoard extends Component {
   };
   reloadObjectif = () => {
     this.props.dispatch(ObjectifActions.prepareLoadIOs());
+  };
+
+  showInfo = () => {
+    this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
   };
 
   render() {
@@ -50,7 +55,7 @@ class ObjectifInBoard extends Component {
               <i className="fa fa-play" />
             </span>
           </a>
-          <a className="level-item">
+          <a className="level-item" onClick={this.showInfo}>
             <span className="icon is-medium has-text-info">
               <i className="fa fa-info-circle" />
             </span>
