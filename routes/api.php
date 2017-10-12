@@ -31,6 +31,7 @@ Route::group(['prefix' => 'objectif', 'middleware' => 'auth:api'], function () {
 
 Route::group(['prefix' => 'completedObjectif', 'middleware' => 'auth:api'], function () {
     Route::post('{objectif}', 'CompletedObjectifController@setObjectifAsCompleted');
+    Route::get('maxCompletedObjectif', 'CompletedObjectifController@getMaxCompletedObjectif');
 });
 
 Route::group(['prefix' => 'component'], function () {

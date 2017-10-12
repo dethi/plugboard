@@ -144,7 +144,7 @@ class NavBar extends Component {
                 <div className="nav-item">
                   <span className="icon has-text-info">
                     <NavLink to="/objectif">
-                      <i className="fa fa-list" />
+                      <i className="fa fa-arrows-h" />
                     </NavLink>
                   </span>
                 </div>

@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class ItemList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false
-    };
-  }
+class ObjectifInList extends Component {
   render() {
-    if (!this.props.locked) {
+    console.log(this.props.id);
+    const { maxCompletedObjectif } = this.props.objectif;
+    if (
+      this.props.id > maxCompletedObjectif.objectif_id + 1 ||
+      (!maxCompletedObjectif && this.props.id > 1)
+    ) {
       return (
-        <div className=" element">
+        <div className="column is-one-third">
           <div className="card">
             <div className="card-image">
               <figure className="image is-square">
@@ -66,3 +66,15 @@ export default class ItemList extends Component {
     }
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
+
+ObjectifInList.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(ObjectifInList);

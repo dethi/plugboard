@@ -4,19 +4,14 @@ import { connect } from 'react-redux';
 
 import ObjectifAction from '../../actions/objectifActions';
 import ModalAction from '../../actions/modalActions';
-import ItemList from './ItemList';
+import ObjectifInList from './ObjectifInList';
 import NavBarAccueil from '../home/NavBarAccueil';
 
 class ListObjectif extends Component {
-  constructor(props) {
-    super(props);
-
+  componentWillMount() {
     this.state = {
       loading: false
     };
-  }
-
-  componentWillMount() {
     if (Object.keys(this.props.objectif).length === 0) {
       this.setState({ loading: true });
       this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
@@ -24,18 +19,23 @@ class ListObjectif extends Component {
           loading: false
         });
       });
+      this.props
+        .dispatch(ObjectifAction.getMaxCompletedObjectifAsync())
+        .then(() => {
+          console.log('final', this.props.objectif);
+        });
     }
   }
 
   setCurrentObjectif = objectif => {
-    console.log('1');
     this.props.dispatch(ObjectifAction.setCurrentObjectif(objectif));
 
     this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
   };
+
   render() {
     const { loading } = this.state;
-    const { objectifs } = this.props.objectif;
+    const { objectifs, maxCompletedObjectif } = this.props.objectif;
     return (
       <div id="landing">
         <section className="hero is-fullheight is-dark">
@@ -50,9 +50,11 @@ class ListObjectif extends Component {
                 </div>}
               <div className="columns is-multiline">
                 {objectifs &&
+                  (maxCompletedObjectif === '' || maxCompletedObjectif) &&
                   objectifs.map(objectif => (
-                    <ItemList
+                    <ObjectifInList
                       key={objectif.id}
+                      id={objectif.id}
                       title={objectif.title}
                       locked={true}
                       onClick={() => this.setCurrentObjectif(objectif)}

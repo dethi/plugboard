@@ -5,15 +5,22 @@ import PropTypes from 'prop-types';
 import Modal from './Modal';
 
 import ObjectifAction from '../../actions/objectifActions';
+import BoardAction from '../../actions/boardActions';
 
 class ObjectifInfoModal extends Component {
   render() {
     const { currentObjectif, objectifIsLoaded } = this.props.objectif;
+
     const onApply = () => {
-      // this.props.dispatch(BoardAction.clearBoard());
-      // this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
       if (!objectifIsLoaded)
         this.props.dispatch(ObjectifAction.prepareLoadIOs());
+    };
+
+    const onCancel = () => {
+      if (!objectifIsLoaded) {
+        this.props.dispatch(BoardAction.clearBoard());
+        this.props.dispatch(ObjectifAction.setCurrentObjectif(null));
+      }
     };
 
     return (
@@ -38,6 +45,7 @@ class ObjectifInfoModal extends Component {
           }
           success={objectifIsLoaded ? '' : 'Start'}
           onApply={onApply}
+          onCancel={onCancel}
         />
       </div>
     );

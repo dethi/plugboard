@@ -10,6 +10,7 @@ import PaletteAction from '../../actions/paletteActions';
 import BoardAction from '../../actions/boardActions';
 import ContextMenuActions from '../../actions/contextMenuActions';
 import ModalAction from '../../actions/modalActions';
+import ObjectifAction from '../../actions/objectifActions';
 
 import boardApi from '../../api/board';
 
@@ -121,8 +122,12 @@ class Board extends Component {
 
   prepareCheckObjectif = () => {
     const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
-    const { truthTable } = this.props.objectif;
+    const { truthTable, currentObjectif } = this.props.objectif;
     if (checkTruthTables(truthTable, truthTableOfBoard)) {
+      this.props.dispatch(
+        ObjectifAction.setObjectifAsCompletedAsync(currentObjectif)
+      );
+      this.props.dispatch(ObjectifAction.getMaxCompletedObjectifAsync());
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
     } else {
       console.log('BOUUUH');

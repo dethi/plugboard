@@ -7,6 +7,19 @@ const getObjectifs = () => {
   });
 };
 
+const getMaxCompletedObjectif = () => {
+  return axios
+    .get('/api/completedObjectif/maxCompletedObjectif')
+    .then(res => {
+      console.log(res);
+      return res.data;
+    })
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 const setObjectifAsCompleted = boardId => {
   console.log('here', boardId);
   return axios
@@ -20,5 +33,6 @@ const setObjectifAsCompleted = boardId => {
 
 export default {
   getObjectifs,
-  setObjectifAsCompleted
+  setObjectifAsCompleted,
+  getMaxCompletedObjectif
 };

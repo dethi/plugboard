@@ -8,14 +8,16 @@ const objectif = (state = {}, action) => {
     case 'OBJECTIF_COMPLETED':
       return {
         ...state,
-        objectifIsLoaded: false
+        maxCompletedObjectif: action.maxCompletedObjectif
       };
     case 'SET_CURRENT_OBJECTIF':
       return {
         ...state,
         objectifIsLoaded: false,
         currentObjectif: action.currentObjectif,
-        truthTable: JSON.parse(action.currentObjectif.truth_table)
+        truthTable: action.currentObjectif
+          ? JSON.parse(action.currentObjectif.truth_table)
+          : null
       };
     case 'PREPARE_CHECK_OBJECTIF':
       if (!state.prepareCheckObjectif) state.prepareCheckObjectif = 0;
@@ -29,6 +31,11 @@ const objectif = (state = {}, action) => {
         ...state,
         objectifIsLoaded: true,
         prepareLoadIOs: state.prepareLoadIOs + 1
+      };
+    case 'GET_MAX_COMPLETED_OBJECTIF':
+      return {
+        ...state,
+        maxCompletedObjectif: action.maxCompletedObjectif
       };
     default:
       return state;
