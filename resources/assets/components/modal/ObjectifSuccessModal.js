@@ -9,14 +9,11 @@ import ObjectifAction from '../../actions/objectifActions';
 
 class ObjectifSuccessModal extends Component {
   render() {
-    const { currentObjectif } = this.props.objectif;
+    const { currentObjectif, objectifs } = this.props.objectif;
     const onApply = () => {
       // this.props.dispatch(BoardAction.clearBoard());
 
       if (currentObjectif) {
-        this.props.dispatch(
-          ObjectifAction.setObjectifAsCompletedAsync(currentObjectif)
-        );
         this.props.dispatch(
           ObjectifAction.setCurrentObjectif(
             this.props.objectif.objectifs[currentObjectif.id]
@@ -48,7 +45,11 @@ class ObjectifSuccessModal extends Component {
               </div>
             </article>
           }
-          success="Next Objectif"
+          success={
+            currentObjectif && currentObjectif.id < objectifs.length
+              ? 'Next Objectif'
+              : ''
+          }
           onApply={onApply}
         />
       </div>

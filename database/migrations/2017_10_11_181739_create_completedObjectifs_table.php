@@ -25,7 +25,7 @@ class CreateCompletedObjectifsTable extends Migration
             $table->foreign('objectif_id')->references('id')
                 ->on('objectifs')->onDelete('cascade');
 
-            $table->integer('score');
+            $table->integer('score')->default(0);
            
         });
     }

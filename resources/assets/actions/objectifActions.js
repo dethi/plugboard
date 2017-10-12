@@ -13,19 +13,23 @@ const prepareLoadIOs = () => {
   };
 };
 
-const setObjectifAsCompleted = () => {
+const setObjectifAsCompleted = maxCompletedObjectif => {
   return {
-    type: 'OBJECTIF_COMPLETED'
+    type: 'OBJECTIF_COMPLETED',
+    maxCompletedObjectif
   };
 };
+// Call the api directly from Board.js ?
 
 const setObjectifAsCompletedAsync = objectif => {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      objectifApi.setObjectifAsCompleted(objectif.id).then(() => {
-        dispatch(setObjectifAsCompleted());
-        resolve();
-      });
+      objectifApi
+        .setObjectifAsCompleted(objectif.id)
+        .then(maxCompletedObjectif => {
+          dispatch(setObjectifAsCompleted(maxCompletedObjectif));
+          resolve();
+        });
     }).catch(response => console.log(response));
   };
 };
@@ -54,11 +58,30 @@ const getObjectifsAsync = () => {
   };
 };
 
+const getMaxCompletedObjectif = maxCompletedObjectif => {
+  return {
+    type: 'GET_MAX_COMPLETED_OBJECTIF',
+    maxCompletedObjectif
+  };
+};
+
+const getMaxCompletedObjectifAsync = () => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      objectifApi.getMaxCompletedObjectif().then(maxCompletedObjectif => {
+        dispatch(getMaxCompletedObjectif(maxCompletedObjectif));
+        resolve();
+      });
+    });
+  };
+};
+
 export default {
   getObjectifsAsync,
   setCurrentObjectif,
   prepareCheckObjectif,
   prepareLoadIOs,
   setObjectifAsCompleted,
-  setObjectifAsCompletedAsync
+  setObjectifAsCompletedAsync,
+  getMaxCompletedObjectifAsync
 };
