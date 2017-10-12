@@ -18,6 +18,18 @@ const setObjectifAsCompleted = () => {
     type: 'OBJECTIF_COMPLETED'
   };
 };
+
+const setObjectifAsCompletedAsync = objectif => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      objectifApi.setObjectifAsCompleted(objectif.id).then(() => {
+        dispatch(setObjectifAsCompleted());
+        resolve();
+      });
+    }).catch(response => console.log(response));
+  };
+};
+
 const prepareCheckObjectif = () => {
   return {
     type: 'PREPARE_CHECK_OBJECTIF'
@@ -47,5 +59,6 @@ export default {
   setCurrentObjectif,
   prepareCheckObjectif,
   prepareLoadIOs,
-  setObjectifAsCompleted
+  setObjectifAsCompleted,
+  setObjectifAsCompletedAsync
 };

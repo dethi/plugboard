@@ -29,6 +29,10 @@ Route::group(['prefix' => 'objectif', 'middleware' => 'auth:api'], function () {
     Route::get('', 'ObjectifController@index');
 });
 
+Route::group(['prefix' => 'completedObjectif', 'middleware' => 'auth:api'], function () {
+    Route::post('{objectif}', 'CompletedObjectifController@setObjectifAsCompleted');
+});
+
 Route::group(['prefix' => 'component'], function () {
     Route::get('elementaire', 'ComponentController@get_elementaire');
 });
