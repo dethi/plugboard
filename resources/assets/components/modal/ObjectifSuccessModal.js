@@ -12,14 +12,18 @@ class ObjectifSuccessModal extends Component {
     const { currentObjectif } = this.props.objectif;
     const onApply = () => {
       // this.props.dispatch(BoardAction.clearBoard());
-      if (currentObjectif)
+
+      if (currentObjectif) {
+        this.props.dispatch(
+          ObjectifAction.setObjectifAsCompletedAsync(currentObjectif)
+        );
         this.props.dispatch(
           ObjectifAction.setCurrentObjectif(
             this.props.objectif.objectifs[currentObjectif.id]
           )
         );
+      }
 
-      this.props.dispatch(ObjectifAction.setObjectifAsCompleted());
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
     };
 

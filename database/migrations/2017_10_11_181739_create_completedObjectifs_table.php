@@ -13,7 +13,7 @@ class CreateCompletedObjectifsTable extends Migration
      */
    public function up()
     {
-        Schema::create('completedObjectifs', function (Blueprint $table) {
+        Schema::create('completed_objectifs', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
 
@@ -37,6 +37,6 @@ class CreateCompletedObjectifsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('completedObjectifs');
+        Schema::dropIfExists('completed_objectifs');
     }
 }
