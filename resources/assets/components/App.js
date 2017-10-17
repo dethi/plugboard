@@ -8,6 +8,7 @@ import Palette from './board/Palette';
 import MoveArrow from './board/MoveArrow';
 import Board from './board/Board';
 import ObjectifInBoard from './objectif/ObjectifInBoard';
+import ListObjectif from './objectif/ListObjectif';
 
 class App extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class App extends Component {
             />
             <MoveArrow />
             {currentObjectif && <ObjectifInBoard />}
+            <ListObjectif />
             <Palette />
           </div>
         </div>

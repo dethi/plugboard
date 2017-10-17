@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 
 class ObjectifInList extends Component {
   render() {
-    console.log(this.props.id);
     const { maxCompletedObjectif } = this.props.objectif;
     if (
       this.props.id > maxCompletedObjectif.objectif_id + 1 ||
       (!maxCompletedObjectif && this.props.id > 1)
     ) {
       return (
-        <div className="column is-one-third">
+        <div className="column is-half ">
           <div className="card">
             <div className="card-image">
               <figure className="image is-square">
@@ -30,7 +29,7 @@ class ObjectifInList extends Component {
       );
     } else {
       return (
-        <div className="column is-one-third">
+        <div className="column is-half ">
           <NavLink to="/app" onClick={this.props.onClick}>
 
             <div className="card">

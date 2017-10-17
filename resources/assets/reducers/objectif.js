@@ -37,6 +37,12 @@ const objectif = (state = {}, action) => {
         ...state,
         maxCompletedObjectif: action.maxCompletedObjectif
       };
+    case 'SHOW_QUICKVIEW':
+      return {
+        ...state,
+        showQuickView: action.showQuickView
+      };
+
     default:
       return state;
   }

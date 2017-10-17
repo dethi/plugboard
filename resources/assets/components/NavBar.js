@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import ModalAction from '../actions/modalActions';
 import BoardAction from '../actions/boardActions';
+import ObjectifAction from '../actions/objectifActions';
 
 function GuestMenu(props) {
   return (
@@ -94,6 +95,10 @@ class NavBar extends Component {
     this.props.dispatch(ModalAction.displayModal('COMPONENT_CHOOSE'));
   };
 
+  showObjectifQuickView = () => {
+    this.props.dispatch(ObjectifAction.showQuickView(true));
+  };
+
   render() {
     return (
       <nav className="nav has-shadow app-main-nav">
@@ -141,13 +146,11 @@ class NavBar extends Component {
                     <i className="fa fa-book" />
                   </span>
                 </a>
-                <div className="nav-item">
+                <a className="nav-item" onClick={this.showObjectifQuickView}>
                   <span className="icon has-text-info">
-                    <NavLink to="/objectif">
-                      <i className="fa fa-arrows-h" />
-                    </NavLink>
+                    <i className="fa fa-list" />
                   </span>
-                </div>
+                </a>
               </div>
             : <NavLink className="nav-item is-tab" to="/app">
                 Board
