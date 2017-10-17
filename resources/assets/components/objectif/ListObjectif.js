@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import ObjectifAction from '../../actions/objectifActions';
 import ModalAction from '../../actions/modalActions';
 import ObjectifInList from './ObjectifInList';
-import NavBarAccueil from '../home/NavBarAccueil';
 
 class ListObjectif extends Component {
   componentWillMount() {
@@ -33,38 +33,57 @@ class ListObjectif extends Component {
     this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
   };
 
+  toggleQuickView = show => {
+    this.props.dispatch(ObjectifAction.showQuickView(show));
+  };
+
   render() {
     const { loading } = this.state;
-    const { objectifs, maxCompletedObjectif } = this.props.objectif;
+    const {
+      objectifs,
+      maxCompletedObjectif,
+      showQuickView
+    } = this.props.objectif;
     return (
-      <div id="landing">
-        <section className="hero is-fullheight is-dark">
-          <NavBarAccueil />
-          <div className="columns">
-            <div className="column is-half is-offset-one-quarter">
-              {loading &&
-                <div className="has-text-centered">
-                  <span className="icon is-large">
-                    <i className="fa fa-spinner fa-pulse" />
-                  </span>
-                </div>}
-              <div className="columns is-multiline">
-                {objectifs &&
-                  (maxCompletedObjectif === '' || maxCompletedObjectif) &&
-                  objectifs.map(objectif => (
-                    <ObjectifInList
-                      key={objectif.id}
-                      id={objectif.id}
-                      title={objectif.title}
-                      locked={true}
-                      onClick={() => this.setCurrentObjectif(objectif)}
-                    />
-                  ))}
+      <div
+        id="quickviewDefault"
+        className={classNames('quickview', {
+          'is-active': showQuickView
+        })}
+      >
+        <header className="quickview-header">
+          <p className="title">Objectifs</p>
+          <span
+            className="delete"
+            onClick={() => this.toggleQuickView(false)}
+          />
+        </header>
 
-              </div>
+        <div className="quickview-body">
+          <div className="quickview-block">
+            {loading &&
+              <div className="has-text-centered">
+                <span className="icon is-large">
+                  <i className="fa fa-spinner fa-pulse" />
+                </span>
+              </div>}
+            <div className="columns is-multiline">
+              {objectifs &&
+                (maxCompletedObjectif === '' || maxCompletedObjectif) &&
+                objectifs.map(objectif => (
+                  <ObjectifInList
+                    key={objectif.id}
+                    id={objectif.id}
+                    title={objectif.title}
+                    locked={true}
+                    onClick={() => this.setCurrentObjectif(objectif)}
+                  />
+                ))}
             </div>
           </div>
-        </section>
+        </div>
+
+        <footer className="quickview-footer" />
       </div>
     );
   }

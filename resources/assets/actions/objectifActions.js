@@ -13,6 +13,13 @@ const prepareLoadIOs = () => {
   };
 };
 
+const showQuickView = showQuickView => {
+  return {
+    type: 'SHOW_QUICKVIEW',
+    showQuickView
+  };
+};
+
 const setObjectifAsCompleted = maxCompletedObjectif => {
   return {
     type: 'OBJECTIF_COMPLETED',
@@ -83,5 +90,6 @@ export default {
   prepareLoadIOs,
   setObjectifAsCompleted,
   setObjectifAsCompletedAsync,
-  getMaxCompletedObjectifAsync
+  getMaxCompletedObjectifAsync,
+  showQuickView
 };

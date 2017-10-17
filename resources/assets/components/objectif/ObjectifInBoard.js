@@ -38,13 +38,6 @@ class ObjectifInBoard extends Component {
         </h1>
 
         <nav className="level">
-          <div className="level-item">
-            <span className="icon is-medium has-text-info">
-              <NavLink to="/objectif">
-                <i className="fa fa-list" />
-              </NavLink>
-            </span>
-          </div>
           <a className="level-item" onClick={this.reloadObjectif}>
             <span className="icon is-medium has-text-info">
               <i className="fa fa-refresh" />
