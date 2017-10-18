@@ -122,8 +122,8 @@ class Board extends Component {
 
   prepareCheckObjectif = () => {
     const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
-    const { truthTable, currentObjectif } = this.props.objectif;
-    if (checkTruthTables(truthTable, truthTableOfBoard)) {
+    const { currentObjectif } = this.props.objectif;
+    if (checkTruthTables(currentObjectif.truth_table, truthTableOfBoard)) {
       this.props.dispatch(
         ObjectifAction.setObjectifAsCompletedAsync(currentObjectif)
       );

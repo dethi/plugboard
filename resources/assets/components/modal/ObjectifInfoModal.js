@@ -6,10 +6,15 @@ import Modal from './Modal';
 
 import ObjectifAction from '../../actions/objectifActions';
 import BoardAction from '../../actions/boardActions';
+import TruthTable from '../util/TruthTable';
 
 class ObjectifInfoModal extends Component {
   render() {
-    const { currentObjectif, objectifIsLoaded } = this.props.objectif;
+    console.log(this.props.objectif);
+    const {
+      currentObjectif,
+      objectifIsLoaded
+    } = this.props.objectif;
 
     const onApply = () => {
       if (!objectifIsLoaded) {
@@ -32,12 +37,7 @@ class ObjectifInfoModal extends Component {
           title={currentObjectif ? currentObjectif.title : ''}
           content={
             <div>
-              <figure className="image is-square">
-                <img
-                  src="http://bulma.io/images/placeholders/256x256.png"
-                  alt="screenshot"
-                />
-              </figure>
+              {currentObjectif ? <TruthTable objectif={currentObjectif} /> : ''}
               <div className="has-text-centered">
                 <h2 className="subtitle is-4">
                   {currentObjectif ? currentObjectif.description : ''}
