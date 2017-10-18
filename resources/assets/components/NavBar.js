@@ -96,7 +96,9 @@ class NavBar extends Component {
   };
 
   showObjectifQuickView = () => {
-    this.props.dispatch(ObjectifAction.showQuickView(true));
+    this.props.dispatch(
+      ObjectifAction.showQuickView(!this.props.objectif.showQuickView)
+    );
   };
 
   render() {
@@ -172,7 +174,8 @@ class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    objectif: state.objectif
   };
 };
 
@@ -182,7 +185,8 @@ NavBar.PropTypes = {
   toggleRun: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
   showControl: PropTypes.bool.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  objectif: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(NavBar);
