@@ -59,7 +59,7 @@ class ListObjectif extends Component {
           />
         </header>
 
-        <div className="quickview-body">
+        <div className="quickview-body scrollable">
           <div className="quickview-block">
             {loading &&
               <div className="has-text-centered">

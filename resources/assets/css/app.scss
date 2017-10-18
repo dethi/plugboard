@@ -233,3 +233,16 @@ textarea {
     margin: 10px;
     padding: 10px;
 }
+
+.quickview-body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 10px;
+}
+
+.objectif-locked {
+    opacity: 0.7;
+    background-color: #D3D3D3;
+    pointer-events: none;
+    cursor: default;
+}

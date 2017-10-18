@@ -12,8 +12,10 @@ class ObjectifInfoModal extends Component {
     const { currentObjectif, objectifIsLoaded } = this.props.objectif;
 
     const onApply = () => {
-      if (!objectifIsLoaded)
+      if (!objectifIsLoaded) {
         this.props.dispatch(ObjectifAction.prepareLoadIOs());
+        this.props.dispatch(ObjectifAction.showQuickView(false));
+      }
     };
 
     const onCancel = () => {
