@@ -45,6 +45,13 @@ const deleteBoardMetaData = () => {
   };
 };
 
+const setCurrentTruthTable = currentTruthTable => {
+  return {
+    type: 'SET_CURRENT_TRUTHTABLE',
+    currentTruthTable
+  };
+};
+
 const loadBoard = (boardMetaData, boardData) => {
   return {
     type: 'LOAD_BOARD',
@@ -111,5 +118,6 @@ export default {
   loadBoardAsync,
   updateBoard,
   updateSpec,
-  getBoardsAsync
+  getBoardsAsync,
+  setCurrentTruthTable
 };

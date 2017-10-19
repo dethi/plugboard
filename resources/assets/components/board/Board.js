@@ -123,6 +123,7 @@ class Board extends Component {
   prepareCheckObjectif = () => {
     const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
     const { currentObjectif } = this.props.objectif;
+    this.props.dispatch(BoardAction.setCurrentTruthTable(truthTableOfBoard));
     if (checkTruthTables(currentObjectif.truth_table, truthTableOfBoard)) {
       this.props.dispatch(
         ObjectifAction.setObjectifAsCompletedAsync(currentObjectif)
@@ -130,7 +131,7 @@ class Board extends Component {
       this.props.dispatch(ObjectifAction.getMaxCompletedObjectifAsync());
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
     } else {
-      console.log('BOUUUH');
+      this.props.dispatch(ModalAction.displayModal('OBJECTIF_FAIL'));
     }
   };
 

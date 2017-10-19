@@ -64,6 +64,11 @@ const board = (state = {}, action) => {
         ...state,
         boards: action.boards
       };
+    case 'SET_CURRENT_TRUTHTABLE':
+      return {
+        ...state,
+        currentTruthTable: action.currentTruthTable
+      };
     default:
       return state;
   }

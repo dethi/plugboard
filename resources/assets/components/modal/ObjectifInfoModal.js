@@ -10,7 +10,6 @@ import TruthTable from '../util/TruthTable';
 
 class ObjectifInfoModal extends Component {
   render() {
-    console.log(this.props.objectif);
     const {
       currentObjectif,
       objectifIsLoaded
