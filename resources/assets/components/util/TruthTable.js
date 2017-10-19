@@ -20,7 +20,13 @@ export default function TruthTable(props) {
           <tr key={i}>
             {row.map((value, j) => (
               <th key={j}>
-                {value}
+                {!props.truthTableFromBoard ||
+                  (props.truthTableFromBoard &&
+                    props.truthTableFromBoard[i][j] === value)
+                  ? value
+                  : <strong>
+                      {props.truthTableFromBoard[i][j] + ' should be ' + value}
+                    </strong>}
               </th>
             ))}
           </tr>

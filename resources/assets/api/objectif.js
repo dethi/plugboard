@@ -10,10 +10,7 @@ const getObjectifs = () => {
 const getMaxCompletedObjectif = () => {
   return axios
     .get('/api/completedObjectif/maxCompletedObjectif')
-    .then(res => {
-      console.log(res);
-      return res.data;
-    })
+    .then(res => res.data)
     .catch(err => {
       console.log(err);
       throw err.response;
@@ -21,7 +18,6 @@ const getMaxCompletedObjectif = () => {
 };
 
 const setObjectifAsCompleted = boardId => {
-  console.log('here', boardId);
   return axios
     .post(`/api/completedObjectif/${boardId}`)
     .then(res => res.data)

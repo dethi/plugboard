@@ -19,11 +19,7 @@ class ListObjectif extends Component {
           loading: false
         });
       });
-      this.props
-        .dispatch(ObjectifAction.getMaxCompletedObjectifAsync())
-        .then(() => {
-          console.log('final', this.props.objectif);
-        });
+      this.props.dispatch(ObjectifAction.getMaxCompletedObjectifAsync());
     }
   }
 
