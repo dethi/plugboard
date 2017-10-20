@@ -8,14 +8,19 @@ class ObjectifInList extends Component {
     const { maxCompletedObjectif } = this.props.objectif;
 
     const locked = this.props.id > maxCompletedObjectif.objectif_id + 1;
+    const done = this.props.id <= maxCompletedObjectif.objectif_id;
     return (
       <div className="column is-10 is-offset-1 ">
         <a
-          className={classNames('box', {
+          className={classNames('box', 'has-ribbon-left', {
             'objectif-locked': locked
           })}
           onClick={!locked && this.props.onClick}
         >
+          {done &&
+            <div className="ribbon is-primary is-small">
+              {this.props.score}
+            </div>}
           <article className="media">
             <div className="media-left">
               <span className="icon is-large">
@@ -30,7 +35,7 @@ class ObjectifInList extends Component {
                 />
               </span>
             </div>
-            <div className="media-content">
+            <div className="media-content on-bottom">
               <div className="title has-text-centered">
                 {this.props.title}
               </div>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 
 import ObjectifActions from '../../actions/objectifActions';
 import ModalAction from '../../actions/modalActions';
@@ -23,16 +22,6 @@ class ObjectifInBoard extends Component {
     const { currentObjectif } = this.props.objectif;
     return (
       <div className="box on-canvas board-objectif">
-        {/* Maybe use a box ? */}
-        {/*
-        <div className="card-image">
-          <figure className="image is-square">
-            <img
-              src="http://bulma.io/images/placeholders/256x256.png"
-              alt="screenshot"
-            />
-          </figure>
-        </div>*/}
         <h1 className="title has-text-centered is-spaced">
           {currentObjectif.title}
         </h1>

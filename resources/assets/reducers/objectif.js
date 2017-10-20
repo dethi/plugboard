@@ -5,6 +5,7 @@ const objectif = (state = {}, action) => {
         ...state,
         objectifs: action.objectifs
       };
+    // Not usefull anymore
     case 'OBJECTIF_COMPLETED':
       return {
         ...state,
