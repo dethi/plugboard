@@ -1,5 +1,23 @@
 import objectifApi from '../api/objectif';
 
+const getObjectifs = objectifs => {
+  return {
+    type: 'GET_OBJECTIFS',
+    objectifs
+  };
+};
+
+const getObjectifsAsync = () => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      objectifApi.getObjectifs().then(objectifs => {
+        dispatch(getObjectifs(objectifs));
+        resolve();
+      });
+    });
+  };
+};
+
 const setCurrentObjectif = currentObjectif => {
   return {
     type: 'SET_CURRENT_OBJECTIF',
@@ -20,23 +38,22 @@ const showQuickView = showQuickView => {
   };
 };
 
-const setObjectifAsCompleted = maxCompletedObjectif => {
+// Not usefulll anymore
+const setObjectifAsCompleted = objectif => {
   return {
     type: 'OBJECTIF_COMPLETED',
-    maxCompletedObjectif
+    objectif
   };
 };
 // Call the api directly from Board.js ?
 
-const setObjectifAsCompletedAsync = objectif => {
+const setObjectifAsCompletedAsync = (objectif, score) => {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      objectifApi
-        .setObjectifAsCompleted(objectif.id)
-        .then(maxCompletedObjectif => {
-          dispatch(setObjectifAsCompleted(maxCompletedObjectif));
-          resolve();
-        });
+      objectifApi.setObjectifAsCompleted(objectif.id, score).then(objectifs => {
+        dispatch(getObjectifs(objectifs));
+        resolve();
+      });
     }).catch(response => console.log(response));
   };
 };
@@ -44,24 +61,6 @@ const setObjectifAsCompletedAsync = objectif => {
 const prepareCheckObjectif = () => {
   return {
     type: 'PREPARE_CHECK_OBJECTIF'
-  };
-};
-
-const getObjectifs = objectifs => {
-  return {
-    type: 'GET_OBJECTIFS',
-    objectifs
-  };
-};
-
-const getObjectifsAsync = () => {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      objectifApi.getObjectifs().then(objectifs => {
-        dispatch(getObjectifs(objectifs));
-        resolve();
-      });
-    });
   };
 };
 

@@ -1157,6 +1157,10 @@ bulma-quickview@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/bulma-quickview/-/bulma-quickview-0.0.1.tgz#03ab307260ef979597a13c1946dba2c4966c1ea1"
 
+bulma-ribbon@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/bulma-ribbon/-/bulma-ribbon-0.0.1.tgz#cf31a00e2b042b98d74871ef5be81ed8714a63a6"
+
 bulma@^0.4.0:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/bulma/-/bulma-0.4.4.tgz#182a3d9fb15026b4602aa8da3cf42140bfb9bb2c"

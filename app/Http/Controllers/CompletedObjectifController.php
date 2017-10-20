@@ -8,24 +8,38 @@ use App\CompletedObjectif;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 class CompletedObjectifController extends Controller
 {
     
-    public function setObjectifAsCompleted(Request $request, Objectif $objectif)
+    public function setObjectifAsCompleted(Request $request)
     {
+        $this->validate($request, [
+            'boardId' => 'required',
+            'score' => 'required'
+        ]);
+
+        $input = $request->only('boardId', 'score');
+
         $completedObjectif = CompletedObjectif::where('user_id', '=', Auth::user()->id)
-                                ->where('objectif_id', '=', $objectif->id)->first();
+                                ->where('objectif_id', '=', $input['boardId'])->first();
 
         if ($completedObjectif === null) {
             $completedObjectif = new CompletedObjectif();
             $completedObjectif->user_id = Auth::user()->id;
-            $completedObjectif->objectif_id = $objectif->id;
-            $completedObjectif->save();
+            $completedObjectif->objectif_id = $input['boardId'];
+            $completedObjectif->score = $input['score'];
         }
         else {
-            $completedObjectif->touch();
+            $completedObjectif->score = $input['score'];
         }
-        return $this->getMaxCompletedObjectif($request);
+
+        $completedObjectif->save();
+         return DB::table('objectifs')
+                    ->leftJoin('completed_objectifs', 'objectifs.id', '=', 'completed_objectifs.objectif_id')
+                    ->select('objectifs.*' , 'completed_objectifs.score as score')
+                    ->get();
     }
 
     public function getMaxCompletedObjectif(Request $request) {

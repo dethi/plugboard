@@ -126,7 +126,10 @@ class Board extends Component {
     this.props.dispatch(BoardAction.setCurrentTruthTable(truthTableOfBoard));
     if (checkTruthTables(currentObjectif.truth_table, truthTableOfBoard)) {
       this.props.dispatch(
-        ObjectifAction.setObjectifAsCompletedAsync(currentObjectif)
+        ObjectifAction.setObjectifAsCompletedAsync(
+          currentObjectif,
+          this.boardController.nbRemove === 0 ? 100 : 0
+        )
       );
       this.props.dispatch(ObjectifAction.getMaxCompletedObjectifAsync());
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));

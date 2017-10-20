@@ -18,6 +18,7 @@ export default class BoardController {
   constructor(canvasHolder, unSelectBlueprint) {
     this.canvasHolder = canvasHolder;
     this.unSelectBlueprint = unSelectBlueprint;
+    this.nbRemove = 0;
 
     this.boardView = new BoardView(this, this.canvasHolder);
 
@@ -39,6 +40,7 @@ export default class BoardController {
   }
 
   clearBoard() {
+    this.nbRemove = 0;
     this.boardView.clear();
     this.initNewBoard();
   }
@@ -255,6 +257,8 @@ export default class BoardController {
     this.boardView.removeElement(elId);
 
     this.engineController.setDirty();
+    this.nbRemove++;
+    console.log('rm', this.nbRemove);
   }
 
   rotateElement(elId) {

@@ -12,7 +12,8 @@ class ObjectifInfoModal extends Component {
   render() {
     const {
       currentObjectif,
-      objectifIsLoaded
+      objectifIsLoaded,
+      maxCompletedObjectif
     } = this.props.objectif;
 
     const onApply = () => {
@@ -29,18 +30,29 @@ class ObjectifInfoModal extends Component {
       }
     };
 
+    const done = currentObjectif &&
+      currentObjectif.id <= maxCompletedObjectif.objectif_id;
     return (
       <div>
         <Modal
           modalName="OBJECTIF_INFO"
           title={currentObjectif ? currentObjectif.title : ''}
           content={
-            <div>
-              {currentObjectif ? <TruthTable objectif={currentObjectif} /> : ''}
-              <div className="has-text-centered">
-                <h2 className="subtitle is-4">
-                  {currentObjectif ? currentObjectif.description : ''}
-                </h2>
+            <div className="has-ribbon">
+              <div className="box">
+                <div className="has-text-centered">
+                  <h2 className="subtitle is-4">
+                    {currentObjectif ? currentObjectif.description : ''}
+                  </h2>
+                </div>
+                {done &&
+                  <div className="ribbon is-primary">
+                    {currentObjectif.score}
+                  </div>}
+                {currentObjectif
+                  ? <TruthTable objectif={currentObjectif} />
+                  : ''}
+
               </div>
             </div>
           }

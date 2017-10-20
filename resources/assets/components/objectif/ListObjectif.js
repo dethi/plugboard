@@ -71,6 +71,7 @@ class ListObjectif extends Component {
                     key={objectif.id}
                     id={objectif.id}
                     title={objectif.title}
+                    score={objectif.score}
                     locked={true}
                     onClick={() => this.setCurrentObjectif(objectif)}
                   />
