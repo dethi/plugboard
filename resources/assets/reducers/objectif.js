@@ -1,9 +1,18 @@
 const objectif = (state = {}, action) => {
   switch (action.type) {
     case 'GET_OBJECTIFS':
+      const maxCompletedObjectif = action.objectifs.reduce(
+        function(prev, curr) {
+          return curr.id > prev.id && curr.score != null ? curr : prev;
+        }
+      );
       return {
         ...state,
-        objectifs: action.objectifs
+        objectifs: action.objectifs,
+        maxCompletedObjectifId: maxCompletedObjectif &&
+          maxCompletedObjectif.score !== null
+          ? maxCompletedObjectif.id
+          : 0
       };
     // Not usefull anymore
     case 'OBJECTIF_COMPLETED':
@@ -34,11 +43,6 @@ const objectif = (state = {}, action) => {
         ...state,
         objectifIsLoaded: true,
         prepareLoadIOs: state.prepareLoadIOs + 1
-      };
-    case 'GET_MAX_COMPLETED_OBJECTIF':
-      return {
-        ...state,
-        maxCompletedObjectif: action.maxCompletedObjectif
       };
     case 'SHOW_QUICKVIEW':
       return {
