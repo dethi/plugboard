@@ -10,16 +10,23 @@ import ObjectifInList from './ObjectifInList';
 class ListObjectif extends Component {
   componentWillMount() {
     this.state = {
-      loading: false
+      loading: false,
+      maxCompletedObjectif: null
     };
     if (Object.keys(this.props.objectif).length === 0) {
       this.setState({ loading: true });
       this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
+        let maxCompletedObjectif = this.props.objectif.objectifs.reduce(
+          function(prev, curr) {
+            return curr.id > prev.id && curr.score != null ? curr : prev;
+          }
+        );
+
         this.setState({
-          loading: false
+          loading: false,
+          maxCompletedObjectif: maxCompletedObjectif
         });
       });
-      this.props.dispatch(ObjectifAction.getMaxCompletedObjectifAsync());
     }
   }
 
@@ -37,9 +44,9 @@ class ListObjectif extends Component {
     const { loading } = this.state;
     const {
       objectifs,
-      maxCompletedObjectif,
       showQuickView
     } = this.props.objectif;
+
     return (
       <div
         id="quickviewDefault"
@@ -65,14 +72,12 @@ class ListObjectif extends Component {
               </div>}
             <div className="columns is-multiline">
               {objectifs &&
-                (maxCompletedObjectif === '' || maxCompletedObjectif) &&
                 objectifs.map(objectif => (
                   <ObjectifInList
                     key={objectif.id}
                     id={objectif.id}
                     title={objectif.title}
                     score={objectif.score}
-                    locked={true}
                     onClick={() => this.setCurrentObjectif(objectif)}
                   />
                 ))}

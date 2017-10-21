@@ -24,14 +24,13 @@ class CompletedObjectifController extends Controller
 
         $completedObjectif = CompletedObjectif::where('user_id', '=', Auth::user()->id)
                                 ->where('objectif_id', '=', $input['boardId'])->first();
-
+        
         if ($completedObjectif === null) {
             $completedObjectif = new CompletedObjectif();
             $completedObjectif->user_id = Auth::user()->id;
             $completedObjectif->objectif_id = $input['boardId'];
-            $completedObjectif->score = $input['score'];
         }
-        else {
+        if ($completedObjectif->score < $input['score']) {
             $completedObjectif->score = $input['score'];
         }
 

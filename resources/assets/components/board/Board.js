@@ -131,7 +131,6 @@ class Board extends Component {
           this.boardController.nbRemove === 0 ? 100 : 0
         )
       );
-      this.props.dispatch(ObjectifAction.getMaxCompletedObjectifAsync());
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
     } else {
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_FAIL'));

@@ -12,8 +12,7 @@ class ObjectifInfoModal extends Component {
   render() {
     const {
       currentObjectif,
-      objectifIsLoaded,
-      maxCompletedObjectif
+      objectifIsLoaded
     } = this.props.objectif;
 
     const onApply = () => {
@@ -30,8 +29,6 @@ class ObjectifInfoModal extends Component {
       }
     };
 
-    const done = currentObjectif &&
-      currentObjectif.id <= maxCompletedObjectif.objectif_id;
     return (
       <div>
         <Modal
@@ -45,7 +42,8 @@ class ObjectifInfoModal extends Component {
                     {currentObjectif ? currentObjectif.description : ''}
                   </h2>
                 </div>
-                {done &&
+                {currentObjectif &&
+                  currentObjectif.score &&
                   <div className="ribbon is-primary">
                     {currentObjectif.score}
                   </div>}

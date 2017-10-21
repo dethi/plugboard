@@ -5,10 +5,11 @@ import classNames from 'classnames';
 
 class ObjectifInList extends Component {
   render() {
-    const { maxCompletedObjectif } = this.props.objectif;
-
-    const locked = this.props.id > maxCompletedObjectif.objectif_id + 1;
-    const done = this.props.id <= maxCompletedObjectif.objectif_id;
+    const { maxCompletedObjectifId } = this.props.objectif;
+    const done = this.props.score !== null;
+    const unlocked = this.props.id === maxCompletedObjectifId + 1 &&
+      this.props.score === null;
+    const locked = !done && !unlocked;
     return (
       <div className="column is-10 is-offset-1 ">
         <a
@@ -27,10 +28,8 @@ class ObjectifInList extends Component {
                 <i
                   className={classNames('fa', {
                     'fa-lock': locked,
-                    'fa-check': this.props.id <=
-                      maxCompletedObjectif.objectif_id,
-                    'fa-unlock': this.props.id ===
-                      maxCompletedObjectif.objectif_id + 1
+                    'fa-check': done,
+                    'fa-unlock': unlocked
                   })}
                 />
               </span>

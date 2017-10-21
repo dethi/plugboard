@@ -64,24 +64,6 @@ const prepareCheckObjectif = () => {
   };
 };
 
-const getMaxCompletedObjectif = maxCompletedObjectif => {
-  return {
-    type: 'GET_MAX_COMPLETED_OBJECTIF',
-    maxCompletedObjectif
-  };
-};
-
-const getMaxCompletedObjectifAsync = () => {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      objectifApi.getMaxCompletedObjectif().then(maxCompletedObjectif => {
-        dispatch(getMaxCompletedObjectif(maxCompletedObjectif));
-        resolve();
-      });
-    });
-  };
-};
-
 export default {
   getObjectifsAsync,
   setCurrentObjectif,
@@ -89,6 +71,5 @@ export default {
   prepareLoadIOs,
   setObjectifAsCompleted,
   setObjectifAsCompletedAsync,
-  getMaxCompletedObjectifAsync,
   showQuickView
 };
