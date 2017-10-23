@@ -10,25 +10,32 @@ class ObjectifFailModal extends Component {
     const {
       currentObjectif
     } = this.props.objectif;
-
     return (
       <div>
         <Modal
           modalName="OBJECTIF_FAIL"
           title={currentObjectif ? currentObjectif.title : ''}
           content={
-            <div>
-              {currentObjectif
-                ? <TruthTable
-                    objectif={currentObjectif}
-                    truthTableFromBoard={this.props.board.currentTruthTable}
-                  />
-                : ''}
+            <div className="box">
               <div className="has-text-centered">
                 <h2 className="subtitle is-4">
-                  {currentObjectif ? currentObjectif.description : ''}
+                  {this.props.board.currentTruthTable &&
+                    this.props.board.currentTruthTable.err !== undefined
+                    ? this.props.board.currentTruthTable.err
+                    : 'Some outputs are not correct'}
                 </h2>
               </div>
+              {this.props.board.currentTruthTable &&
+                this.props.board.currentTruthTable.err === undefined &&
+                currentObjectif
+                ? <TruthTable
+                    objectif={currentObjectif}
+                    truthTableFromBoard={
+                      this.props.board.currentTruthTable.truthTable
+                    }
+                  />
+                : ''}
+
             </div>
           }
           success="Fix"

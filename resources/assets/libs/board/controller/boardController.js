@@ -360,8 +360,10 @@ export default class BoardController {
     Object.keys(board.output).forEach(outputId => board.output[outputId]--);
 
     // Generate Spec
-    return generateTruthTable(board);
+    spec.truthTable = generateTruthTable(board);
+    return spec;
   }
+
   exportSpec() {
     const spec = {};
 

@@ -121,10 +121,13 @@ class Board extends Component {
   };
 
   prepareCheckObjectif = () => {
-    const truthTableOfBoard = this.boardController.generateTruthTableForObjectif();
+    const spec = this.boardController.generateTruthTableForObjectif();
     const { currentObjectif } = this.props.objectif;
-    this.props.dispatch(BoardAction.setCurrentTruthTable(truthTableOfBoard));
-    if (checkTruthTables(currentObjectif.truth_table, truthTableOfBoard)) {
+    this.props.dispatch(BoardAction.setCurrentTruthTable(spec));
+    if (
+      spec.err === undefined &&
+      checkTruthTables(currentObjectif.truth_table, spec.truthTable)
+    ) {
       this.props.dispatch(
         ObjectifAction.setObjectifAsCompletedAsync(
           currentObjectif,
