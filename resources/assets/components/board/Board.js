@@ -17,7 +17,7 @@ import boardApi from '../../api/board';
 import BoardController from '../../libs/board/controller/boardController';
 import { evalutateBoard } from '../../engine/engine';
 
-import { checkTruthTables } from '../../libs/utils/objectif';
+import { checkTruthTables, computeScore } from '../../libs/utils/objectif';
 
 class Board extends Component {
   constructor(props) {
@@ -101,9 +101,10 @@ class Board extends Component {
     }
 
     if (
-      nextProps.objectif.prepareLoadIOs !== this.props.objectif.prepareLoadIOs
+      nextProps.objectif.prepareStartObjectif !==
+      this.props.objectif.prepareStartObjectif
     ) {
-      this.loadIOsForObjectif();
+      this.startObjectif();
     }
 
     if (nextProps.board.load !== this.props.board.load) {
@@ -111,7 +112,7 @@ class Board extends Component {
     }
   }
 
-  loadIOsForObjectif = () => {
+  startObjectif = () => {
     const { currentObjectif } = this.props.objectif;
     this.boardController.populateBoardForObjectifs(
       this.props.palette.blueprints,
@@ -128,11 +129,12 @@ class Board extends Component {
       spec.err === undefined &&
       checkTruthTables(currentObjectif.truth_table, spec.truthTable)
     ) {
+      const score = computeScore(
+        this.props.objectif.startTime,
+        this.boardController.nbRemove
+      );
       this.props.dispatch(
-        ObjectifAction.setObjectifAsCompletedAsync(
-          currentObjectif,
-          this.boardController.nbRemove === 0 ? 100 : 0
-        )
+        ObjectifAction.setObjectifAsCompletedAsync(currentObjectif, score)
       );
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
     } else {

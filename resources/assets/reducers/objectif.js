@@ -1,24 +1,27 @@
+const getMaxCompletedObjectif = objectifs => {
+  const maxCompletedObjectif = objectifs.reduce(function(prev, curr) {
+    return curr.id > prev.id && curr.score != null ? curr : prev;
+  });
+  return maxCompletedObjectif && maxCompletedObjectif.score !== null
+    ? maxCompletedObjectif.id
+    : 0;
+};
+
 const objectif = (state = {}, action) => {
   switch (action.type) {
     case 'GET_OBJECTIFS':
-      const maxCompletedObjectif = action.objectifs.reduce(
-        function(prev, curr) {
-          return curr.id > prev.id && curr.score != null ? curr : prev;
-        }
-      );
       return {
         ...state,
         objectifs: action.objectifs,
-        maxCompletedObjectifId: maxCompletedObjectif &&
-          maxCompletedObjectif.score !== null
-          ? maxCompletedObjectif.id
-          : 0
+        maxCompletedObjectifId: getMaxCompletedObjectif(action.objectifs)
       };
-    // Not usefull anymore
     case 'OBJECTIF_COMPLETED':
       return {
         ...state,
-        maxCompletedObjectif: action.maxCompletedObjectif
+        objectifs: action.objectifs,
+        finishTime: Date.now(),
+        score: action.score,
+        maxCompletedObjectifId: getMaxCompletedObjectif(action.objectifs)
       };
     case 'SET_CURRENT_OBJECTIF':
       return {
@@ -37,12 +40,13 @@ const objectif = (state = {}, action) => {
         ...state,
         prepareCheckObjectif: state.prepareCheckObjectif + 1
       };
-    case 'PREPARE_LOAD_IOS':
-      if (!state.prepareLoadIOs) state.prepareLoadIOs = 0;
+    case 'PREPARE_START_OBJECTIF':
+      if (!state.prepareStartObjectif) state.prepareStartObjectif = 0;
       return {
         ...state,
+        startTime: Date.now(),
         objectifIsLoaded: true,
-        prepareLoadIOs: state.prepareLoadIOs + 1
+        prepareStartObjectif: state.prepareStartObjectif + 1
       };
     case 'SHOW_QUICKVIEW':
       return {

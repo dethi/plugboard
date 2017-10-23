@@ -17,7 +17,7 @@ class ObjectifInfoModal extends Component {
 
     const onApply = () => {
       if (!objectifIsLoaded) {
-        this.props.dispatch(ObjectifAction.prepareLoadIOs());
+        this.props.dispatch(ObjectifAction.prepareStartObjectif());
         this.props.dispatch(ObjectifAction.showQuickView(false));
       }
     };
