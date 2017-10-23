@@ -9,10 +9,8 @@ import ObjectifAction from '../../actions/objectifActions';
 
 class ObjectifSuccessModal extends Component {
   render() {
-    const { currentObjectif, objectifs } = this.props.objectif;
+    const { currentObjectif, objectifs, score } = this.props.objectif;
     const onApply = () => {
-      // this.props.dispatch(BoardAction.clearBoard());
-
       if (currentObjectif) {
         this.props.dispatch(
           ObjectifAction.setCurrentObjectif(
@@ -20,10 +18,8 @@ class ObjectifSuccessModal extends Component {
           )
         );
       }
-
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
     };
-
     return (
       <div>
         <Modal
@@ -37,10 +33,27 @@ class ObjectifSuccessModal extends Component {
                 </span>
               </div>
               <div className="media-content">
-                <div className="content ">
+                <div className="content">
                   <h2>
                     Congratulations! Objectif completed!
                   </h2>
+                  <table className="table is-bordered">
+                    <tbody>
+                      {score &&
+                        score.scores.map((value, i) => (
+                          <tr key={i}>
+                            <th>{value.name}</th>
+                            <th>{value.value}</th>
+                            <th>{value.point > 0 ? '+' + value.point : 0}</th>
+                          </tr>
+                        ))}
+                      <tr>
+                        <th>Total</th>
+                        <th />
+                        <th>{score && score.total}</th>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </article>

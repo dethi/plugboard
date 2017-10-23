@@ -25,9 +25,9 @@ const setCurrentObjectif = currentObjectif => {
   };
 };
 
-const prepareLoadIOs = () => {
+const prepareStartObjectif = () => {
   return {
-    type: 'PREPARE_LOAD_IOS'
+    type: 'PREPARE_START_OBJECTIF'
   };
 };
 
@@ -38,22 +38,23 @@ const showQuickView = showQuickView => {
   };
 };
 
-// Not usefulll anymore
-const setObjectifAsCompleted = objectif => {
+const setObjectifAsCompleted = (objectifs, score) => {
   return {
     type: 'OBJECTIF_COMPLETED',
-    objectif
+    objectifs,
+    score
   };
 };
-// Call the api directly from Board.js ?
 
 const setObjectifAsCompletedAsync = (objectif, score) => {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      objectifApi.setObjectifAsCompleted(objectif.id, score).then(objectifs => {
-        dispatch(getObjectifs(objectifs));
-        resolve();
-      });
+      objectifApi
+        .setObjectifAsCompleted(objectif.id, score.total)
+        .then(objectifs => {
+          dispatch(setObjectifAsCompleted(objectifs, score));
+          resolve();
+        });
     }).catch(response => console.log(response));
   };
 };
@@ -68,7 +69,7 @@ export default {
   getObjectifsAsync,
   setCurrentObjectif,
   prepareCheckObjectif,
-  prepareLoadIOs,
+  prepareStartObjectif,
   setObjectifAsCompleted,
   setObjectifAsCompletedAsync,
   showQuickView
