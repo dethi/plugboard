@@ -10,11 +10,12 @@ class ObjectifInBoard extends Component {
     this.props.dispatch(ObjectifActions.prepareCheckObjectif());
   };
   reloadObjectif = () => {
-    this.props.dispatch(ObjectifActions.prepareStartObjectif());
+    const { currentObjectif } = this.props.objectif;
+    this.props.dispatch(ObjectifActions.prepareStartObjectif(currentObjectif));
   };
 
   showInfo = () => {
-    this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
+    this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO_DETAIL'));
   };
 
   render() {

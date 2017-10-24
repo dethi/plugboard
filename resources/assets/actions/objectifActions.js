@@ -18,16 +18,17 @@ const getObjectifsAsync = () => {
   };
 };
 
-const setCurrentObjectif = currentObjectif => {
+const setObjectifForModalInfo = objectif => {
   return {
-    type: 'SET_CURRENT_OBJECTIF',
-    currentObjectif
+    type: 'SET_OBJECTIF_FOR_MODAL_INFO',
+    objectif
   };
 };
 
-const prepareStartObjectif = () => {
+const prepareStartObjectif = objectif => {
   return {
-    type: 'PREPARE_START_OBJECTIF'
+    type: 'PREPARE_START_OBJECTIF',
+    objectif
   };
 };
 
@@ -43,6 +44,12 @@ const setObjectifAsCompleted = (objectifs, score) => {
     type: 'OBJECTIF_COMPLETED',
     objectifs,
     score
+  };
+};
+
+const exitObjectifMode = () => {
+  return {
+    type: 'EXIT_OBJECTIF_MODE'
   };
 };
 
@@ -67,10 +74,11 @@ const prepareCheckObjectif = () => {
 
 export default {
   getObjectifsAsync,
-  setCurrentObjectif,
   prepareCheckObjectif,
   prepareStartObjectif,
   setObjectifAsCompleted,
   setObjectifAsCompletedAsync,
-  showQuickView
+  showQuickView,
+  exitObjectifMode,
+  setObjectifForModalInfo
 };

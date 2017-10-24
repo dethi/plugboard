@@ -6,19 +6,20 @@ import Modal from './Modal';
 
 import ModalAction from '../../actions/modalActions';
 import ObjectifAction from '../../actions/objectifActions';
+import BoardAction from '../../actions/boardActions';
 
 class ObjectifSuccessModal extends Component {
   render() {
     const { currentObjectif, objectifs, score } = this.props.objectif;
     const onApply = () => {
-      if (currentObjectif) {
-        this.props.dispatch(
-          ObjectifAction.setCurrentObjectif(
-            this.props.objectif.objectifs[currentObjectif.id]
-          )
-        );
-      }
-      this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
+      this.props.dispatch(BoardAction.clearBoard());
+      this.props.dispatch(ObjectifAction.exitObjectifMode());
+      this.props.dispatch(
+        ObjectifAction.setObjectifForModalInfo(
+          this.props.objectif.objectifs[currentObjectif.id]
+        )
+      );
+      this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO_START'));
     };
     return (
       <div>

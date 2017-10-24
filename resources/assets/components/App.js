@@ -34,7 +34,7 @@ class App extends Component {
 
   render() {
     const { step, running } = this.state;
-    const { currentObjectif } = this.props.objectif;
+    const { inObjectifMode } = this.props.objectif;
     return (
       <div>
         <NavBar
@@ -52,7 +52,7 @@ class App extends Component {
               getCurCanvas={this.getCurCanvas}
             />
             <MoveArrow />
-            {currentObjectif && <ObjectifInBoard />}
+            {inObjectifMode && <ObjectifInBoard />}
             <ListObjectif />
             <Palette />
           </div>
