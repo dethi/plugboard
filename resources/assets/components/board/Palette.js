@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import PaletteAction from '../../actions/paletteActions';
+import elementType from '../../libs/board/model/elementType';
 
 function SelectableElement(props) {
   return (
@@ -50,9 +51,9 @@ class Palette extends Component {
   render() {
     const { blueprints, selectedBlueprint } = this.props.palette;
     let selectedBlueprintIndex = -1;
+    console.log(blueprints);
     if (blueprints)
       selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
-
     return (
       <div className="on-canvas palette">
         <div className="box">
@@ -72,15 +73,21 @@ class Palette extends Component {
                   onClick={() => this.updateSelectedBlueprint(index)}
                 />
               ))*/
-              blueprints.map((e, index) => (
-                <SelectableElement
-                  key={index}
-                  name={e.title}
-                  img={e.preview}
-                  selected={index === selectedBlueprintIndex}
-                  onClick={() => this.updateSelectedBlueprint(index)}
-                />
-              ))}
+              //TODO: use the ElementType enum
+              blueprints.map(
+                (e, index) =>
+                  (!this.props.objectif.inObjectifMode ||
+                    (this.props.objectif.inObjectifMode &&
+                      e.type !== 0 &&
+                      e.type !== 1)) &&
+                  <SelectableElement
+                    key={index}
+                    name={e.title}
+                    img={e.preview}
+                    selected={index === selectedBlueprintIndex}
+                    onClick={() => this.updateSelectedBlueprint(index)}
+                  />
+              )}
           </nav>
         </div>
       </div>
@@ -91,12 +98,14 @@ class Palette extends Component {
 const mapStateToProps = state => {
   return {
     palette: state.palette,
-    user: state.user
+    user: state.user,
+    objectif: state.objectif
   };
 };
 
 Palette.PropTypes = {
-  palette: PropTypes.object.isRequired
+  palette: PropTypes.object.isRequired,
+  objectif: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(Palette);
