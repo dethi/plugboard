@@ -19,20 +19,21 @@ const objectif = (state = {}, action) => {
       return {
         ...state,
         objectifs: action.objectifs,
-        finishTime: Date.now(),
         score: action.score,
         maxCompletedObjectifId: getMaxCompletedObjectif(action.objectifs)
       };
-    case 'SET_CURRENT_OBJECTIF':
+    case 'EXIT_OBJECTIF_MODE':
       return {
         ...state,
-        objectifIsLoaded: false,
-        currentObjectif: action.currentObjectif
-          ? {
-              ...action.currentObjectif,
-              truth_table: JSON.parse(action.currentObjectif.truth_table)
-            }
-          : null
+        inObjectifMode: false
+      };
+    case 'SET_OBJECTIF_FOR_MODAL_INFO':
+      return {
+        ...state,
+        objectifForModalInfoStart: {
+          ...action.objectif,
+          truth_table: JSON.parse(action.objectif.truth_table)
+        }
       };
     case 'PREPARE_CHECK_OBJECTIF':
       if (!state.prepareCheckObjectif) state.prepareCheckObjectif = 0;
@@ -45,7 +46,8 @@ const objectif = (state = {}, action) => {
       return {
         ...state,
         startTime: Date.now(),
-        objectifIsLoaded: true,
+        currentObjectif: action.objectif,
+        inObjectifMode: true,
         prepareStartObjectif: state.prepareStartObjectif + 1
       };
     case 'SHOW_QUICKVIEW':

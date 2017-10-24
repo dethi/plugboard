@@ -30,10 +30,9 @@ class ListObjectif extends Component {
     }
   }
 
-  setCurrentObjectif = objectif => {
-    this.props.dispatch(ObjectifAction.setCurrentObjectif(objectif));
-
-    this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO'));
+  setObjectifForModalInfo = objectif => {
+    this.props.dispatch(ObjectifAction.setObjectifForModalInfo(objectif));
+    this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO_START'));
   };
 
   toggleQuickView = show => {
@@ -78,7 +77,7 @@ class ListObjectif extends Component {
                     id={objectif.id}
                     title={objectif.title}
                     score={objectif.score}
-                    onClick={() => this.setCurrentObjectif(objectif)}
+                    onClick={() => this.setObjectifForModalInfo(objectif)}
                   />
                 ))}
             </div>

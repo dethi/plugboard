@@ -113,16 +113,17 @@ class Board extends Component {
   }
 
   startObjectif = () => {
-    const { currentObjectif } = this.props.objectif;
+    const { objectifForModalInfoStart } = this.props.objectif;
     this.boardController.populateBoardForObjectifs(
       this.props.palette.blueprints,
-      currentObjectif.nbInput,
-      currentObjectif.nbOutput
+      objectifForModalInfoStart.nbInput,
+      objectifForModalInfoStart.nbOutput
     );
   };
 
   prepareCheckObjectif = () => {
     const spec = this.boardController.generateTruthTableForObjectif();
+
     const { currentObjectif } = this.props.objectif;
     this.props.dispatch(BoardAction.setCurrentTruthTable(spec));
     if (

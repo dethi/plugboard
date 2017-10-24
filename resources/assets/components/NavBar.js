@@ -107,7 +107,7 @@ class NavBar extends Component {
 
   handleGoToProfile = () => {
     this.props.dispatch(BoardAction.clearBoard());
-    this.props.dispatch(ObjectifAction.setCurrentObjectif(null));
+    this.props.dispatch(ObjectifAction.exitObjectifMode());
   };
 
   render() {
