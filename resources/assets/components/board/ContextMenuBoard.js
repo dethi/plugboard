@@ -30,11 +30,13 @@ function DefaultMenu(props) {
         icon="fa-repeat"
         title="Rotate"
       />
-      <ContextMenuItem
-        onClick={() => props.onElementAction(elementActions.DELETE)}
-        icon="fa-trash"
-        title="Delete"
-      />
+      {!props.inObjectifMode &&
+        props.isIO &&
+        <ContextMenuItem
+          onClick={() => props.onElementAction(elementActions.DELETE)}
+          icon="fa-trash"
+          title="Delete"
+        />}
     </div>
   );
 }
@@ -73,6 +75,7 @@ class ContextMenuBoard extends Component {
 
   render() {
     const { loading, typeMenu } = this.props.contextMenu;
+    const { inObjectifMode } = this.props.objectif;
 
     return (
       <ContextMenu
@@ -101,18 +104,27 @@ class ContextMenuBoard extends Component {
                 case 1:
                   return (
                     <div>
-                      <ContextMenuItem
-                        onClick={this.handleRenameComp}
-                        icon="fa-pencil"
-                        title="Rename"
+                      {!inObjectifMode &&
+                        <ContextMenuItem
+                          onClick={this.handleRenameComp}
+                          icon="fa-pencil"
+                          title="Rename"
+                        />}
+                      <DefaultMenu
+                        inObjectifMode={inObjectifMode}
+                        isIO={true}
+                        onElementAction={this.handleElementAction}
                       />
-                      <DefaultMenu onElementAction={this.handleElementAction} />
                     </div>
                   );
                 case 2:
                 case 3:
                   return (
-                    <DefaultMenu onElementAction={this.handleElementAction} />
+                    <DefaultMenu
+                      inObjectifMode={inObjectifMode}
+                      isIO={false}
+                      onElementAction={this.handleElementAction}
+                    />
                   );
                 default:
                   return <div />;
@@ -125,12 +137,14 @@ class ContextMenuBoard extends Component {
 
 const mapStateToProps = state => {
   return {
-    contextMenu: state.contextMenu
+    contextMenu: state.contextMenu,
+    objectif: state.objectif
   };
 };
 
 ContextMenuBoard.propTypes = {
-  contextMenu: PropTypes.object.isRequired
+  contextMenu: PropTypes.object.isRequired,
+  objectif: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(ContextMenuBoard);
