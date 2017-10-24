@@ -34,7 +34,11 @@ function LoggedMenu(props) {
           <img src={props.profile} alt="Profile" />
         </figure>
         */}
-      <NavLink className="nav-item is-tab" to="/profile">
+      <NavLink
+        className="nav-item is-tab"
+        to="/profile"
+        onClick={props.onGoToProfile}
+      >
         {props.user.name}
       </NavLink>
       <a className="nav-item is-tab" onClick={props.onLogout}>
@@ -101,6 +105,11 @@ class NavBar extends Component {
     );
   };
 
+  handleGoToProfile = () => {
+    this.props.dispatch(BoardAction.clearBoard());
+    this.props.dispatch(ObjectifAction.setCurrentObjectif(null));
+  };
+
   render() {
     return (
       <nav className="nav has-shadow app-main-nav">
@@ -149,7 +158,7 @@ class NavBar extends Component {
                   </span>
                 </a>
                 <a className="nav-item" onClick={this.showObjectifQuickView}>
-                  <span className="icon has-text-info">
+                  <span className="icon">
                     <i className="fa fa-list" />
                   </span>
                 </a>
@@ -165,6 +174,7 @@ class NavBar extends Component {
             : <LoggedMenu
                 onLogout={this.handleLogout}
                 user={this.props.user}
+                onGoToProfile={this.handleGoToProfile}
               />}
         </div>
       </nav>

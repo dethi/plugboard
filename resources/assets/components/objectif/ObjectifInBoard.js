@@ -7,11 +7,10 @@ import ModalAction from '../../actions/modalActions';
 
 class ObjectifInBoard extends Component {
   checkObjectif = () => {
-    console.log('step 1');
     this.props.dispatch(ObjectifActions.prepareCheckObjectif());
   };
   reloadObjectif = () => {
-    this.props.dispatch(ObjectifActions.prepareLoadIOs());
+    this.props.dispatch(ObjectifActions.prepareStartObjectif());
   };
 
   showInfo = () => {
@@ -28,17 +27,17 @@ class ObjectifInBoard extends Component {
 
         <nav className="level">
           <a className="level-item" onClick={this.reloadObjectif}>
-            <span className="icon is-medium has-text-info">
+            <span className="icon is-medium">
               <i className="fa fa-refresh" />
             </span>
           </a>
           <a className="level-item" onClick={this.checkObjectif}>
-            <span className="icon is-medium has-text-info">
+            <span className="icon is-medium">
               <i className="fa fa-play" />
             </span>
           </a>
           <a className="level-item" onClick={this.showInfo}>
-            <span className="icon is-medium has-text-info">
+            <span className="icon is-medium">
               <i className="fa fa-info-circle" />
             </span>
           </a>
