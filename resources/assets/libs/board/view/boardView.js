@@ -168,6 +168,7 @@ export default class BoardView {
     this.elecElements[elId].destroy();
 
     delete this.elecElements[elId];
+    this.fabricCanvas.renderAll();
   }
 
   rotateElement(elId) {
