@@ -23,6 +23,8 @@ function ContextMenuItem(props) {
 }
 
 function DefaultMenu(props) {
+  const showContextMenu = (props.inObjectifMode && !props.isIO) ||
+    !props.inObjectifMode;
   return (
     <div>
       <ContextMenuItem
@@ -30,8 +32,7 @@ function DefaultMenu(props) {
         icon="fa-repeat"
         title="Rotate"
       />
-      {!props.inObjectifMode &&
-        props.isIO &&
+      {showContextMenu &&
         <ContextMenuItem
           onClick={() => props.onElementAction(elementActions.DELETE)}
           icon="fa-trash"
