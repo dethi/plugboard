@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import PaletteAction from '../../actions/paletteActions';
-import elementType from '../../libs/board/model/elementType';
+import { ElementType } from '../../libs/board/model/elementType';
 
 function SelectableElement(props) {
   return (
@@ -51,7 +51,7 @@ class Palette extends Component {
   render() {
     const { blueprints, selectedBlueprint } = this.props.palette;
     let selectedBlueprintIndex = -1;
-    console.log(blueprints);
+
     if (blueprints)
       selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
     return (
@@ -73,13 +73,12 @@ class Palette extends Component {
                   onClick={() => this.updateSelectedBlueprint(index)}
                 />
               ))*/
-              //TODO: use the ElementType enum
               blueprints.map(
                 (e, index) =>
                   (!this.props.objectif.inObjectifMode ||
                     (this.props.objectif.inObjectifMode &&
-                      e.type !== 0 &&
-                      e.type !== 1)) &&
+                      e.type !== ElementType.INPUT &&
+                      e.type !== ElementType.OUTPUT)) &&
                   <SelectableElement
                     key={index}
                     name={e.title}
