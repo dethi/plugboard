@@ -14,7 +14,7 @@ class ObjectifInfoDetailModal extends Component {
       <div>
         <ObjectifInfoModal
           modalName="OBJECTIF_INFO_DETAIL"
-          objectif={currentObjectif}
+          objectifToDisplay={currentObjectif}
         />
       </div>
     );

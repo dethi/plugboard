@@ -1,26 +1,22 @@
-const getMaxCompletedObjectif = objectifs => {
-  const maxCompletedObjectif = objectifs.reduce(function(prev, curr) {
-    return curr.id > prev.id && curr.score != null ? curr : prev;
-  });
-  return maxCompletedObjectif && maxCompletedObjectif.score !== null
-    ? maxCompletedObjectif.id
-    : 0;
-};
-
 const objectif = (state = {}, action) => {
   switch (action.type) {
     case 'GET_OBJECTIFS':
+      console.log('getObjectif', action.objectifs);
       return {
         ...state,
-        objectifs: action.objectifs,
-        maxCompletedObjectifId: getMaxCompletedObjectif(action.objectifs)
+        objectifs: action.objectifs
+      };
+    case 'GET_SCORES':
+      console.log('getScore', action.scores);
+      return {
+        ...state,
+        scores: action.scores
       };
     case 'OBJECTIF_COMPLETED':
       return {
         ...state,
-        objectifs: action.objectifs,
         score: action.score,
-        maxCompletedObjectifId: getMaxCompletedObjectif(action.objectifs)
+        scores: action.scores
       };
     case 'EXIT_OBJECTIF_MODE':
       return {

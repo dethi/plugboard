@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Modal from './Modal';
-
 import TruthTable from '../util/TruthTable';
 
 class ObjectifInfoModal extends Component {
   render() {
-    let currentObjectif = this.props.objectif;
+    const currentObjectif = this.props.objectifToDisplay;
+    const { scores } = this.props.objectif;
     return (
       <div>
         <Modal
@@ -21,9 +23,9 @@ class ObjectifInfoModal extends Component {
                         {currentObjectif.description}
                       </h2>
                     </div>
-                    {currentObjectif.score &&
+                    {scores[currentObjectif.id - 1].score &&
                       <div className="ribbon is-primary">
-                        {currentObjectif.score}
+                        {scores[currentObjectif.id - 1].score}
                       </div>}
                     <TruthTable objectif={currentObjectif} />
 
@@ -40,4 +42,14 @@ class ObjectifInfoModal extends Component {
   }
 }
 
-export default ObjectifInfoModal;
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
+
+ObjectifInfoModal.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(ObjectifInfoModal);

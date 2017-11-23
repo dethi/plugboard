@@ -22,7 +22,7 @@ class ObjectifInfoStartModal extends Component {
       <div>
         <ObjectifInfoModal
           modalName="OBJECTIF_INFO_START"
-          objectif={objectifForModalInfoStart}
+          objectifToDisplay={objectifForModalInfoStart}
           success="Start"
           onApply={onApply}
         />

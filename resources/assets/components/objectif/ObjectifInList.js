@@ -5,10 +5,11 @@ import classNames from 'classnames';
 
 class ObjectifInList extends Component {
   render() {
-    const { maxCompletedObjectifId } = this.props.objectif;
+    const { scores } = this.props.objectif;
     const done = this.props.score !== null;
-    const unlocked = this.props.id === maxCompletedObjectifId + 1 &&
-      this.props.score === null;
+    const unlocked = (scores.length === 0 && this.props.id === 1) ||
+      (scores.length !== 0 &&
+        this.props.id === scores[scores.length - 1].objectif_id + 1);
     const locked = !done && !unlocked;
     return (
       <div className="column is-10 is-offset-1 ">

@@ -16,15 +16,10 @@ class ListObjectif extends Component {
     if (Object.keys(this.props.objectif).length === 0) {
       this.setState({ loading: true });
       this.props.dispatch(ObjectifAction.getObjectifsAsync()).then(() => {
-        let maxCompletedObjectif = this.props.objectif.objectifs.reduce(
-          function(prev, curr) {
-            return curr.id > prev.id && curr.score != null ? curr : prev;
-          }
-        );
-
-        this.setState({
-          loading: false,
-          maxCompletedObjectif: maxCompletedObjectif
+        this.props.dispatch(ObjectifAction.getScoresAsync()).then(() => {
+          this.setState({
+            loading: false
+          });
         });
       });
     }
@@ -43,8 +38,10 @@ class ListObjectif extends Component {
     const { loading } = this.state;
     const {
       objectifs,
-      showQuickView
+      showQuickView,
+      scores
     } = this.props.objectif;
+    console.log('props', this.props.objectif);
 
     return (
       <div
@@ -63,24 +60,28 @@ class ListObjectif extends Component {
 
         <div className="quickview-body scrollable">
           <div className="quickview-block">
-            {loading &&
-              <div className="has-text-centered">
-                <span className="icon is-large">
-                  <i className="fa fa-spinner fa-pulse" />
-                </span>
-              </div>}
-            <div className="columns is-multiline">
-              {objectifs &&
-                objectifs.map(objectif => (
-                  <ObjectifInList
-                    key={objectif.id}
-                    id={objectif.id}
-                    title={objectif.title}
-                    score={objectif.score}
-                    onClick={() => this.setObjectifForModalInfo(objectif)}
-                  />
-                ))}
-            </div>
+            {loading
+              ? <div className="has-text-centered">
+                  <span className="icon is-large">
+                    <i className="fa fa-spinner fa-pulse" />
+                  </span>
+                </div>
+              : <div className="columns is-multiline">
+                  {objectifs &&
+                    objectifs.map(objectif => (
+                      <ObjectifInList
+                        key={objectif.id}
+                        id={objectif.id}
+                        title={objectif.title}
+                        score={
+                          scores[objectif.id - 1]
+                            ? scores[objectif.id - 1].score
+                            : null
+                        }
+                        onClick={() => this.setObjectifForModalInfo(objectif)}
+                      />
+                    ))}
+                </div>}
           </div>
         </div>
 
