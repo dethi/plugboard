@@ -1,4 +1,5 @@
 import objectifApi from '../api/objectif';
+import { localStorageAuthKey } from './../global';
 
 const getObjectifs = objectifs => {
   return {
@@ -14,6 +15,32 @@ const getObjectifsAsync = () => {
         dispatch(getObjectifs(objectifs));
         resolve();
       });
+    });
+  };
+};
+
+const getScores = scores => {
+  return {
+    type: 'GET_SCORES',
+    scores
+  };
+};
+
+const getScoresAsync = () => {
+  const value = localStorage.getItem(localStorageAuthKey);
+  console.log('value', value);
+
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      if (value) {
+        objectifApi.getScores().then(scores => {
+          dispatch(getScores(scores));
+          resolve();
+        });
+      } else {
+        dispatch(getScores([]));
+        resolve();
+      }
     });
   };
 };
@@ -39,10 +66,10 @@ const showQuickView = showQuickView => {
   };
 };
 
-const setObjectifAsCompleted = (objectifs, score) => {
+const setObjectifAsCompleted = (scores, score) => {
   return {
     type: 'OBJECTIF_COMPLETED',
-    objectifs,
+    scores,
     score
   };
 };
@@ -58,8 +85,8 @@ const setObjectifAsCompletedAsync = (objectif, score) => {
     return new Promise((resolve, reject) => {
       objectifApi
         .setObjectifAsCompleted(objectif.id, score.total)
-        .then(objectifs => {
-          dispatch(setObjectifAsCompleted(objectifs, score));
+        .then(scores => {
+          dispatch(setObjectifAsCompleted(scores, score));
           resolve();
         });
     }).catch(response => console.log(response));
@@ -74,6 +101,7 @@ const prepareCheckObjectif = () => {
 
 export default {
   getObjectifsAsync,
+  getScoresAsync,
   prepareCheckObjectif,
   prepareStartObjectif,
   setObjectifAsCompleted,

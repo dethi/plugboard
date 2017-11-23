@@ -7,6 +7,16 @@ const getObjectifs = () => {
   });
 };
 
+const getScores = () => {
+  return axios
+    .get('/api/completedObjectif/scores')
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 const setObjectifAsCompleted = (objectifId, score) => {
   return axios
     .post('/api/completedObjectif', { objectifId, score })
@@ -19,5 +29,6 @@ const setObjectifAsCompleted = (objectifId, score) => {
 
 export default {
   getObjectifs,
-  setObjectifAsCompleted
+  setObjectifAsCompleted,
+  getScores
 };

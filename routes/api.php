@@ -25,11 +25,12 @@ Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::post('{id}/version', 'BoardController@add_version');
 });
 
-Route::group(['prefix' => 'objectif', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'objectif', 'middleware' => 'guest:api'], function () {
     Route::get('', 'ObjectifController@index');
 });
 
 Route::group(['prefix' => 'completedObjectif', 'middleware' => 'auth:api'], function () {
+    Route::get('scores', 'CompletedObjectifController@getScoresByUser');
     Route::post('', 'CompletedObjectifController@setObjectifAsCompleted');
 });
 

@@ -35,14 +35,15 @@ class CompletedObjectifController extends Controller
         }
 
         $completedObjectif->save();
-         return DB::table('objectifs')
-                    ->leftJoin('completed_objectifs', 'objectifs.id', '=', 'completed_objectifs.objectif_id')
-                    ->select('objectifs.*' , 'completed_objectifs.score as score')
-                    ->get();
+         return $this->getScoresByUser();
     }
 
     public function getMaxCompletedObjectif(Request $request) {
        return CompletedObjectif::where('user_id', '=', Auth::user()->id)->orderBy('objectif_id', 'desc')->first();
+    }
+
+     public function getScoresByUser() {
+       return CompletedObjectif::where('user_id', '=', Auth::user()->id)->get();
     }
 
 }
