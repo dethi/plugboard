@@ -12,7 +12,7 @@ const objectif = (state = {}, action) => {
         ...state,
         scores: action.scores
       };
-    case 'OBJECTIF_COMPLETED':
+    case 'SET_SCORE':
       return {
         ...state,
         score: action.score,

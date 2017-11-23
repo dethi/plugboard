@@ -8,18 +8,15 @@ const getObjectifs = () => {
 };
 
 const getScores = () => {
-  return axios
-    .get('/api/completedObjectif/scores')
-    .then(res => res.data)
-    .catch(err => {
-      console.log(err);
-      throw err.response;
-    });
+  return axios.get('/api/score/scores').then(res => res.data).catch(err => {
+    console.log(err);
+    throw err.response;
+  });
 };
 
-const setObjectifAsCompleted = (objectifId, score) => {
+const setScore = (objectifId, score) => {
   return axios
-    .post('/api/completedObjectif', { objectifId, score })
+    .post('/api/score', { objectifId, score })
     .then(res => res.data)
     .catch(err => {
       console.log(err);
@@ -29,6 +26,6 @@ const setObjectifAsCompleted = (objectifId, score) => {
 
 export default {
   getObjectifs,
-  setObjectifAsCompleted,
+  setScore,
   getScores
 };

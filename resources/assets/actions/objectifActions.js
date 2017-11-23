@@ -66,9 +66,9 @@ const showQuickView = showQuickView => {
   };
 };
 
-const setObjectifAsCompleted = (scores, score) => {
+const setScore = (scores, score) => {
   return {
-    type: 'OBJECTIF_COMPLETED',
+    type: 'SET_SCORE',
     scores,
     score
   };
@@ -80,15 +80,13 @@ const exitObjectifMode = () => {
   };
 };
 
-const setObjectifAsCompletedAsync = (objectif, score) => {
+const setScoreAsync = (objectif, score) => {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      objectifApi
-        .setObjectifAsCompleted(objectif.id, score.total)
-        .then(scores => {
-          dispatch(setObjectifAsCompleted(scores, score));
-          resolve();
-        });
+      objectifApi.setScore(objectif.id, score.total).then(scores => {
+        dispatch(setScore(scores, score));
+        resolve();
+      });
     }).catch(response => console.log(response));
   };
 };
@@ -104,8 +102,7 @@ export default {
   getScoresAsync,
   prepareCheckObjectif,
   prepareStartObjectif,
-  setObjectifAsCompleted,
-  setObjectifAsCompletedAsync,
+  setScoreAsync,
   showQuickView,
   exitObjectifMode,
   setObjectifForModalInfo

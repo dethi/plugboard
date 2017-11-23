@@ -134,9 +134,7 @@ class Board extends Component {
         this.props.objectif.startTime,
         this.boardController.nbRemove
       );
-      this.props.dispatch(
-        ObjectifAction.setObjectifAsCompletedAsync(currentObjectif, score)
-      );
+      this.props.dispatch(ObjectifAction.setScoreAsync(currentObjectif, score));
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
     } else {
       this.props.dispatch(ModalAction.displayModal('OBJECTIF_FAIL'));
