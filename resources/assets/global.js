@@ -1,3 +1,4 @@
-export default {
-  localStorageAuthKey: 'plugboard:auth'
+export const LocalStorageKey = {
+  AUTH: 'plugboard:auth',
+  SCORE: 'plugboard:score'
 };
