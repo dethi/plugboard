@@ -7,9 +7,9 @@ const getObjectifs = () => {
   });
 };
 
-const setObjectifAsCompleted = (boardId, score) => {
+const setObjectifAsCompleted = (objectifId, score) => {
   return axios
-    .post('/api/completedObjectif', { boardId, score })
+    .post('/api/completedObjectif', { objectifId, score })
     .then(res => res.data)
     .catch(err => {
       console.log(err);

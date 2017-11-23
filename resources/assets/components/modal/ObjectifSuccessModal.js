@@ -45,7 +45,7 @@ class ObjectifSuccessModal extends Component {
                           <tr key={i}>
                             <th>{value.name}</th>
                             <th>{value.value}</th>
-                            <th>{value.point > 0 ? '+' + value.point : 0}</th>
+                            <th>{value.score > 0 ? '+' + value.score : 0}</th>
                           </tr>
                         ))}
                       <tr>
