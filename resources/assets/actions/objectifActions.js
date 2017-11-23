@@ -1,5 +1,5 @@
 import objectifApi from '../api/objectif';
-import { localStorageAuthKey } from './../global';
+import { LocalStorageKey  } from './../global';
 
 const getObjectifs = objectifs => {
   return {
@@ -27,21 +27,27 @@ const getScores = scores => {
 };
 
 const getScoresAsync = () => {
-  const value = localStorage.getItem(localStorageAuthKey);
-  console.log('value', value);
-
+  const user = localStorage.getItem(LocalStorageKey.AUTH);
   return dispatch => {
     return new Promise((resolve, reject) => {
-      if (value) {
+      if (user) {
         objectifApi.getScores().then(scores => {
           dispatch(getScores(scores));
           resolve();
         });
       } else {
-        dispatch(getScores([]));
-        resolve();
+        const scores = localStorage.getItem(LocalStorageKey.SCORE);
+        try {
+          dispatch(getScores(scores ? JSON.parse(scores): []));
+          resolve();
+        } catch (SyntaxError) {
+          // We cannot recover the scores, so we remove it.
+          localStorage.removeItem(LocalStorageKey.SCORE);
+          dispatch(getScores(JSON.parse([])));
+          resolve();
+        }
       }
-    });
+    }).catch(response => console.log(response));
   };
 };
 
@@ -81,12 +87,39 @@ const exitObjectifMode = () => {
 };
 
 const setScoreAsync = (objectif, score) => {
+  const user = localStorage.getItem(LocalStorageKey.AUTH);
   return dispatch => {
     return new Promise((resolve, reject) => {
-      objectifApi.setScore(objectif.id, score.total).then(scores => {
-        dispatch(setScore(scores, score));
-        resolve();
-      });
+      if (user) {
+        objectifApi.setScore(objectif.id, score.total).then(scores => {
+          dispatch(setScore(scores, score));
+          resolve();
+        });
+      } else {
+        let value = localStorage.getItem(LocalStorageKey.SCORE);
+        try {
+          const scores = value ? JSON.parse(value) : [];
+          if (
+            scores[score.objectif_id - 1] &&
+            scores[score.objectif_id - 1].score > score.total
+          ) {
+            scores[score.objectif_id - 1] = score.total;
+          } else {
+            scores.push({
+              objectif_id: objectif.id,
+              score: score.total
+            });
+          }
+          localStorage.setItem(LocalStorageKey.SCORE, JSON.stringify(scores));
+          dispatch(setScore(scores, score));
+          resolve();
+        } catch (SyntaxError) {
+          // We cannot recover the scores, so we remove it.
+          localStorage.removeItem(LocalStorageKey.SCORE);
+          dispatch(setScore([], score));
+          resolve();
+        }
+      }
     }).catch(response => console.log(response));
   };
 };

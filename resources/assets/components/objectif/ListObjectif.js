@@ -40,7 +40,7 @@ class ListObjectif extends Component {
       showQuickView,
       scores
     } = this.props.objectif;
-    console.log('props', this.props.objectif);
+    console.log('propsList', this.props.objectif);
 
     return (
       <div
