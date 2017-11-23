@@ -24,8 +24,19 @@ const setScore = (objectifId, score) => {
     });
 };
 
+const setScores = scores => {
+  return axios
+    .post('/api/score/scores', { scores })
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 export default {
   getObjectifs,
   setScore,
-  getScores
+  getScores,
+  setScores
 };

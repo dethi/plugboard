@@ -1,5 +1,5 @@
 import objectifApi from '../api/objectif';
-import { LocalStorageKey  } from './../global';
+import { LocalStorageKey } from './../global';
 
 const getObjectifs = objectifs => {
   return {
@@ -26,6 +26,12 @@ const getScores = scores => {
   };
 };
 
+const emptyScores = () => {
+  return {
+    type: 'EMPTY_SCORES'
+  };
+};
+
 const getScoresAsync = () => {
   const user = localStorage.getItem(LocalStorageKey.AUTH);
   return dispatch => {
@@ -38,7 +44,7 @@ const getScoresAsync = () => {
       } else {
         const scores = localStorage.getItem(LocalStorageKey.SCORE);
         try {
-          dispatch(getScores(scores ? JSON.parse(scores): []));
+          dispatch(getScores(scores ? JSON.parse(scores) : []));
           resolve();
         } catch (SyntaxError) {
           // We cannot recover the scores, so we remove it.
@@ -124,6 +130,24 @@ const setScoreAsync = (objectif, score) => {
   };
 };
 
+const setScores = scores => {
+  return {
+    type: 'SET_SCORES',
+    scores
+  };
+};
+
+const setScoresAsync = scores => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      objectifApi.setScores(scores).then(scores => {
+        dispatch(setScores(scores));
+        resolve();
+      });
+    }).catch(response => console.log(response));
+  };
+};
+
 const prepareCheckObjectif = () => {
   return {
     type: 'PREPARE_CHECK_OBJECTIF'
@@ -138,5 +162,7 @@ export default {
   setScoreAsync,
   showQuickView,
   exitObjectifMode,
-  setObjectifForModalInfo
+  setObjectifForModalInfo,
+  setScoresAsync,
+  emptyScores
 };

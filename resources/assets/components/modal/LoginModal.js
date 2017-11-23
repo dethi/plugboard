@@ -39,7 +39,6 @@ class LoginModal extends Component {
     return new Promise((resolve, reject) => {
       Authentification.login(this.state.email, this.state.password)
         .then(user => {
-          console.log(user);
           this.props.dispatch(UserAction.login(user));
           this.props.dispatch(ObjectifAction.getScoresAsync()).then(() => {
             this.setState({ err: null });

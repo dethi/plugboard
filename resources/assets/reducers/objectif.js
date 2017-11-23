@@ -1,13 +1,13 @@
+import { LocalStorageKey } from './../global';
+
 const objectif = (state = {}, action) => {
   switch (action.type) {
     case 'GET_OBJECTIFS':
-      console.log('getObjectif', action.objectifs);
       return {
         ...state,
         objectifs: action.objectifs
       };
     case 'GET_SCORES':
-      console.log('getScore', action.scores);
       return {
         ...state,
         scores: action.scores
@@ -18,10 +18,23 @@ const objectif = (state = {}, action) => {
         score: action.score,
         scores: action.scores
       };
+    case 'SET_SCORES':
+      return {
+        ...state,
+        scores: action.scores
+      };
+    case 'EMPTY_SCORES':
+      localStorage.removeItem(LocalStorageKey.SCORE);
+      return {
+        ...state,
+        scores: []
+      };
     case 'EXIT_OBJECTIF_MODE':
       return {
         ...state,
-        inObjectifMode: false
+        inObjectifMode: false,
+        objectifForModalInfoStart: null,
+        currentObjectif: null
       };
     case 'SET_OBJECTIF_FOR_MODAL_INFO':
       return {
