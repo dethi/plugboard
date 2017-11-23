@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompletedObjectifsTable extends Migration
+class CreateScoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCompletedObjectifsTable extends Migration
      */
    public function up()
     {
-        Schema::create('completed_objectifs', function (Blueprint $table) {
+        Schema::create('scores', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
 
@@ -37,6 +37,6 @@ class CreateCompletedObjectifsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('completed_objectifs');
+        Schema::dropIfExists('scores');
     }
 }

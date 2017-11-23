@@ -10,8 +10,7 @@ import ObjectifInList from './ObjectifInList';
 class ListObjectif extends Component {
   componentWillMount() {
     this.state = {
-      loading: false,
-      maxCompletedObjectif: null
+      loading: false
     };
     if (Object.keys(this.props.objectif).length === 0) {
       this.setState({ loading: true });

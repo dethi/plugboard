@@ -23,7 +23,7 @@ class ObjectifInfoModal extends Component {
                         {currentObjectif.description}
                       </h2>
                     </div>
-                    {scores[currentObjectif.id - 1].score &&
+                    {scores[currentObjectif.id - 1] &&
                       <div className="ribbon is-primary">
                         {scores[currentObjectif.id - 1].score}
                       </div>}
