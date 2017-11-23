@@ -35,15 +35,28 @@ class ScoreController extends Controller
         }
 
         $score->save();
-         return $this->getScoresByUser();
+        return $this->getScoresByUser();
     }
-/*
-    public function getMaxCompletedObjectif(Request $request) {
-       return CompletedObjectif::where('user_id', '=', Auth::user()->id)->orderBy('objectif_id', 'desc')->first();
+
+    public function setScores(Request $request)
+    {
+        $this->validate($request, [
+            'scores' => 'required'
+        ]);
+        $input = $request->only('scores');
+        foreach ($input['scores'] as $score) {
+            $el = new Score();
+            $el->user_id = Auth::user()->id;
+            $el->objectif_id = $score['objectif_id'];
+            $el->score = $score['score'];
+            $el->save();
+        }
+
+        return $this->getScoresByUser();
     }
-*/
-     public function getScoresByUser() {
-       return Score::where('user_id', '=', Auth::user()->id)->get();
+
+    public function getScoresByUser() {
+        return Score::where('user_id', '=', Auth::user()->id)->get();
     }
 
 }

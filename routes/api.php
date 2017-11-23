@@ -31,7 +31,8 @@ Route::group(['prefix' => 'objectif'], function () {
 
 Route::group(['prefix' => 'score', 'middleware' => 'auth:api'], function () {
     Route::get('scores', 'ScoreController@getScoresByUser');
-   Route::post('', 'ScoreController@setScore');
+    Route::post('', 'ScoreController@setScore');
+    Route::post('scores', 'ScoreController@setScores');
 });
 
 Route::group(['prefix' => 'component'], function () {

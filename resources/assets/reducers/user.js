@@ -1,7 +1,6 @@
 import { LocalStorageKey } from './../global';
 
 const user = (state = null, action) => {
-  console.log('auuuth', LocalStorageKey);
   switch (action.type) {
     case 'INIT_AUTH':
       const value = localStorage.getItem(LocalStorageKey.AUTH);
