@@ -98,7 +98,8 @@ class ObjectifsTableSeeder extends Seeder
     {
         $objectif = new Objectif();
         $objectif->title = 'NAND Gate';
-        $objectif->description = 'Réalisez une porte NON-ET';
+        $objectif->description = 'Realize a NAND Gate';
+        $objectif->IONames = 'I1, I2, O';
         $objectif->nbInput = 2;
         $objectif->nbOutput = 1;
         $objectif->truth_table = '[[0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 0]]';
@@ -106,7 +107,8 @@ class ObjectifsTableSeeder extends Seeder
 
         $objectif = new Objectif();
         $objectif->title = 'NOR Gate';
-        $objectif->description = 'Réalisez une porte NON-OU';
+        $objectif->description = 'Realize a NOR Gate';
+        $objectif->IONames = 'I1, I2, O';
         $objectif->nbInput = 2;
         $objectif->nbOutput = 1;
         $objectif->truth_table = '[[0, 0, 1], [1, 0, 0], [0, 1, 0], [1, 1, 0]]';
@@ -114,7 +116,8 @@ class ObjectifsTableSeeder extends Seeder
 
         $objectif = new Objectif();
         $objectif->title = 'XOR Gate';
-        $objectif->description = 'Réalisez une porte OU exclusif';
+        $objectif->description = 'Realize a XOR Gate';
+        $objectif->IONames = 'I1, I2, O';
         $objectif->nbInput = 2;
         $objectif->nbOutput = 1;
         $objectif->truth_table = '[[0, 0, 0], [1, 0, 1], [0, 1, 1], [1, 1, 0]]';
@@ -122,10 +125,29 @@ class ObjectifsTableSeeder extends Seeder
 
         $objectif = new Objectif();
         $objectif->title = 'XNOR Gate';
-        $objectif->description = 'Réalisez une porte NON-OU exclusif';
+        $objectif->description = 'Realize a XNOR Gate';
+        $objectif->IONames = 'I1, I2, O';
         $objectif->nbInput = 2;
         $objectif->nbOutput = 1;
         $objectif->truth_table = '[[0, 0, 1], [1, 0, 0], [0, 1, 0], [1, 1, 1]]';
+        $objectif->save();
+
+        $objectif = new Objectif();
+        $objectif->title = 'Half Adder';
+        $objectif->description = 'Realize a half adder. It adds two single binary digits (I1 and I2). It has two output: sum (S) and carry (C).';
+        $objectif->IONames = 'I1, I2, C, S';
+        $objectif->nbInput = 2;
+        $objectif->nbOutput = 2;
+        $objectif->truth_table = '[[0, 0, 0, 0], [1, 0, 0, 1], [0, 1, 0, 1], [1, 1, 1, 0]]';
+        $objectif->save();
+
+        $objectif = new Objectif();
+        $objectif->title = 'Full Adder';
+        $objectif->description = 'Realize a full adder. It adds binary numbers (I1 and I2)  and accounts for values carried in as well as out. It has two output: sum and carry.';
+        $objectif->IONames = 'I1, I2, Ci, Co, S';
+        $objectif->nbInput = 3;
+        $objectif->nbOutput = 2;
+        $objectif->truth_table = '[[0, 0, 0, 0, 0], [1, 0, 0, 0, 1], [0, 1, 0, 0, 1], [1, 1, 0, 1, 0], [0, 0, 1, 0, 1], [1, 0, 1, 1, 0], [0, 1,1, 1, 0], [1, 1, 1, 1, 1]]';
         $objectif->save();
     }
 }

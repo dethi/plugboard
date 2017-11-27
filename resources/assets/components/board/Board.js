@@ -116,6 +116,7 @@ class Board extends Component {
     const { objectifForModalInfoStart } = this.props.objectif;
     this.boardController.populateBoardForObjectifs(
       this.props.palette.blueprints,
+      objectifForModalInfoStart.IONames,
       objectifForModalInfoStart.nbInput,
       objectifForModalInfoStart.nbOutput
     );
