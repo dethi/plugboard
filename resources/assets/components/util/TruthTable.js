@@ -1,16 +1,16 @@
 import React from 'react';
 
 export default function TruthTable(props) {
-  const { truth_table, nbInput, nbOutput } = props.objectif;
+  const { truth_table, nbInput, nbOutput, IONames } = props.objectif;
+
+  const IONAmesArray = IONames.split(',');
   return (
     <table className="table is-bordered">
       <thead>
         <tr>
           {Array.apply(null, Array(nbInput + nbOutput)).map((item, i) => (
             <th key={i}>
-              {i < nbInput
-                ? (i + 1).toString()
-                : String.fromCharCode('A'.charCodeAt(0) + i - nbInput)}
+              {IONAmesArray[i]}
             </th>
           ))}
         </tr>

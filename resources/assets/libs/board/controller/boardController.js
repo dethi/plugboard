@@ -45,23 +45,23 @@ export default class BoardController {
     this.initNewBoard();
   }
 
-  populateBoardForObjectifs(blueprint, nbOfInput, nbOfOutput) {
+  populateBoardForObjectifs(blueprint, IONAmes, nbOfInput, nbOfOutput) {
     this.clearBoard();
 
+    const IONAmesArray = IONAmes.split(',');
     for (let i = 0; i < nbOfInput; ++i) {
       this.addElement(
         new Vector(515, 505 + 3 * i),
         blueprint[0],
-        (i + 1).toString(),
+        IONAmesArray[i],
         0
       );
     }
-
     for (let i = 0; i < nbOfOutput; ++i) {
       this.addElement(
         new Vector(530, 505 + 3 * i),
         blueprint[1],
-        String.fromCharCode('A'.charCodeAt(0) + i),
+        IONAmesArray[nbOfInput + i],
         0
       );
     }
