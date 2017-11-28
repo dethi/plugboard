@@ -114,6 +114,8 @@ class Board extends Component {
 
   startObjectif = () => {
     const { objectifForModalInfoStart } = this.props.objectif;
+
+    this.props.dispatch(BoardAction.setCurrentTruthTable(null));
     this.boardController.populateBoardForObjectifs(
       this.props.palette.blueprints,
       objectifForModalInfoStart.IONames,
