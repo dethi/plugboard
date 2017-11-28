@@ -16,7 +16,7 @@ class CreateObjectifsTable extends Migration
         Schema::create('objectifs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 30);
-            $table->string('truth_table')->nullable();
+            $table->longText('truth_table')->nullable();
             $table->text('description');
             $table->text('IONames');
             $table->integer('nbInput');
