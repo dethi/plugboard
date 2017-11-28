@@ -14,22 +14,19 @@ class ObjectifInfoModal extends Component {
         <Modal
           modalName={this.props.modalName}
           title={currentObjectif ? currentObjectif.title : ''}
+          ribbon={
+            currentObjectif && scores[currentObjectif.id - 1]
+              ? scores[currentObjectif.id - 1].score
+              : null
+          }
           content={
             currentObjectif
-              ? <div className="has-ribbon">
-                  <div className="box">
-                    <div className="has-text-centered">
-                      <h2 className="subtitle is-4">
-                        {currentObjectif.description}
-                      </h2>
-                    </div>
-                    {scores[currentObjectif.id - 1] &&
-                      <div className="ribbon is-primary">
-                        {scores[currentObjectif.id - 1].score}
-                      </div>}
-                    <TruthTable objectif={currentObjectif} />
+              ? <div>
+                  <h2 className="subtitle is-4 marginForRibbon">
+                    {currentObjectif.description}
+                  </h2>
+                  <TruthTable objectif={currentObjectif} />
 
-                  </div>
                 </div>
               : ''
           }

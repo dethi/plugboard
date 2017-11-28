@@ -14,7 +14,7 @@ class ObjectifInList extends Component {
     return (
       <div className="column is-10 is-offset-1 ">
         <a
-          className={classNames('box', 'has-ribbon-left', {
+          className={classNames('box', 'has-ribbon', {
             'objectif-locked': locked
           })}
           onClick={!locked && this.props.onClick}

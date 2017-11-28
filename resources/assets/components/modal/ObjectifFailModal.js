@@ -16,7 +16,7 @@ class ObjectifFailModal extends Component {
           modalName="OBJECTIF_FAIL"
           title={currentObjectif ? currentObjectif.title : ''}
           content={
-            <div className="box">
+            <div className="">
               <div className="has-text-centered">
                 <h2 className="subtitle is-4">
                   {this.props.board.currentTruthTable &&
