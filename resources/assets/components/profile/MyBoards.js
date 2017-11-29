@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Element from './Element';
+
 import BoardAction from '../../actions/boardActions';
 import boardApi from '../../api/board';
 

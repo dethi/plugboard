@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import classNames from 'classnames';
 
 export default function Element(props) {
   return (
@@ -25,6 +26,16 @@ export default function Element(props) {
             >
               Delete
             </a>
+            <div className="columns is-centered">
+              <div className="column is-half">
+                <a
+                  className="has-text-center button is-medium is-info has-margin"
+                  onClick={props.onClick}
+                >
+                  {!props.share ? 'Share' : 'Make private'}
+                </a>
+              </div>
+            </div>
 
           </div>
         </div>
