@@ -71,7 +71,6 @@ export default class BoardController {
 
   loadFromBoard(board) {
     this.clearBoard();
-
     const idMapping = {};
 
     // Add Elements
@@ -92,6 +91,7 @@ export default class BoardController {
       const el = board.elements[id];
       Object.keys(el.input).forEach(inputName => {
         const outputInfo = el.input[inputName]; // 0: Id -- 1: Name
+        if (!outputInfo) return;
 
         const inputLink = [idMapping[outputInfo[0]], outputInfo[1]];
         const outputLink = [idMapping[id], inputName];
