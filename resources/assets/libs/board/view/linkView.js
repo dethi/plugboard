@@ -45,8 +45,7 @@ export class LinkLine {
     );
     this.fabricLines = this.createLines(this.on ? 'green' : 'red');
 
-    this.fabricLines.forEach(line =>
-      this.linkA.elementView.boardView.fabricCanvas.add(line));
+    this.linkA.elementView.boardView.fabricCanvas.add(...this.fabricLines);
   }
 
   setState(newState) {
@@ -169,7 +168,7 @@ export class LinkView {
     this.fabricRect = new fabric.Rect({
       width: this.linkSize,
       height: this.linkSize,
-      fill: 'black',
+      fill: this.linkType === LinkType.INPUT ? 'black' : '#606060',
       hasControls: false,
       selectable: false
     });

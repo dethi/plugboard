@@ -25,6 +25,16 @@ Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::post('{id}/version', 'BoardController@add_version');
 });
 
+Route::group(['prefix' => 'objectif'], function () {
+    Route::get('', 'ObjectifController@index');
+});
+
+Route::group(['prefix' => 'score', 'middleware' => 'auth:api'], function () {
+    Route::get('scores', 'ScoreController@getScoresByUser');
+    Route::post('', 'ScoreController@setScore');
+    Route::post('scores', 'ScoreController@setScores');
+});
+
 Route::group(['prefix' => 'component'], function () {
     Route::get('elementaire', 'ComponentController@get_elementaire');
 });

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from './Modal';
+import PropTypes from 'prop-types';
 
+import Modal from './Modal';
 import UserAction from '../../actions/userActions';
 import Authentification from '../../api/authentification';
+import ObjectifAction from '../../actions/objectifActions';
 
 class RegisterModal extends Component {
   constructor(props) {
@@ -47,8 +49,11 @@ class RegisterModal extends Component {
         this.state.password_confirmation
       )
         .then(user => {
-          console.log(user);
           this.props.dispatch(UserAction.login(user));
+          const { scores } = this.props.objectif;
+          if (scores.length > 0) {
+            this.props.dispatch(ObjectifAction.setScoresAsync(scores));
+          }
           this.setState({ err: null });
           resolve();
         })
@@ -149,4 +154,14 @@ class RegisterModal extends Component {
   }
 }
 
-export default connect()(RegisterModal);
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
+
+RegisterModal.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(RegisterModal);

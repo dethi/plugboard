@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import NavBar from './NavBar';
 
 import Palette from './board/Palette';
+import MoveArrow from './board/MoveArrow';
 import Board from './board/Board';
-import Objectif from './objectif/ItemInBoard';
-
-import ModalContainer from './modal/ModalContainer';
-
-import UserAction from '../actions/userActions';
+import ObjectifInBoard from './objectif/ObjectifInBoard';
+import ListObjectif from './objectif/ListObjectif';
 
 class App extends Component {
   constructor(props) {
@@ -17,19 +16,12 @@ class App extends Component {
 
     this.state = {
       step: 0,
-      rotating: 0,
       running: false
     };
-
-    this.props.dispatch(UserAction.init());
   }
 
   getCurCanvas = () => {
     return this.refs.board.gridController.gridView.fabricCanvas;
-  };
-
-  handleRotate = () => {
-    this.setState({ rotating: this.state.rotating + 1 });
   };
 
   handleNextStep = () => {
@@ -41,12 +33,12 @@ class App extends Component {
   };
 
   render() {
-    const { step, running, rotating } = this.state;
-
+    const { step, running } = this.state;
+    const { inObjectifMode } = this.props.objectif;
     return (
       <div>
         <NavBar
-          onRotate={this.handleRotate}
+          showControl={true}
           onNextStep={this.handleNextStep}
           toggleRun={this.toggleRun}
           running={running}
@@ -55,21 +47,27 @@ class App extends Component {
           <div className="columns">
             <Board
               ref="board"
-              rotate={rotating}
               step={step}
               running={running}
               getCurCanvas={this.getCurCanvas}
             />
-
-            {/*<Objectif />*/}
+            <MoveArrow />
+            {inObjectifMode && <ObjectifInBoard />}
+            <ListObjectif />
             <Palette />
-            {/*<Profile />*/}
           </div>
         </div>
-        <ModalContainer />
       </div>
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    objectif: state.objectif
+  };
+};
 
-export default connect()(App);
+App.propTypes = {
+  objectif: PropTypes.object.isRequired
+};
+export default connect(mapStateToProps)(App);

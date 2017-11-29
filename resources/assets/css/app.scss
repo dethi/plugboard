@@ -1,10 +1,11 @@
 @import "./_variables.scss";
 @import "~bulma";
+@import "~bulma-quickview/quickview";
+@import "~bulma-ribbon/ribbon";
 @import "~font-awesome/scss/font-awesome.scss";
 
 @import "./landing.scss";
 @import "./_utils.scss";
-@import "./objectif.scss";
 
 
 .app {
@@ -19,6 +20,13 @@
 
 .app-home-nav {
     min-height: 75px;
+}
+
+.nav-item-home-login {
+    a {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 }
 
 .palette {
@@ -39,6 +47,10 @@
         width: 60px;
         height: 60px;
         margin: 1px;
+    }
+
+    .component-name {
+        margin-bottom: 5px; 
     }
 
     .box {
@@ -140,6 +152,14 @@ textarea {
     padding: 5px;
 }
 
+.board-context-menu {
+    padding: 4px;
+
+    a {
+        margin: 2px;
+        width: 100%;
+    }
+}
 
 .on-canvas
 {
@@ -166,11 +186,76 @@ textarea {
     left: 0px;
 }
 
-// html, body {
-//     height: 100%;
-//     overflow: hidden;
-// }
+.level-profile {
+    margin-top: 10px;
+}
+.profile {
+  .image-is-centered {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+}
+.image-is-centered {
+  margin-right: auto;
+  margin-left: auto;
+}
 
-// .columns, .column {
-//     overflow: scroll !important;
-// }
+.has-margin {
+    margin: 5px;
+}
+
+.move-arrow {
+    margin: 10px;
+    margin-top: 15px;
+
+    .box {
+        padding: 2px;
+    }
+
+    .button {
+        margin: 2px;
+    }
+
+    .level {
+        margin: 0px;
+    }
+}
+
+.disable-scroll {
+    height: 100%;
+    overflow: hidden;
+}
+
+.columns, .column {
+    overflow: auto !important;
+}
+
+.board-objectif {
+    margin: 10px;
+    padding: 10px;
+}
+
+.quickview-body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 10px;
+}
+
+.objectif-locked {
+    opacity: 0.7;
+    background-color: #D3D3D3;
+    pointer-events: none;
+    cursor: default;
+}
+
+.redCell {
+    background-color: #CD5C5C;
+}
+
+.headerCell {
+    background-color: #f2f2f2;
+}
+
+.marginForRibbon {
+    margin-right: 35px
+}

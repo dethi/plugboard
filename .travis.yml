@@ -4,6 +4,7 @@ language: php
 php:
 - '7.1'
 before_install:
+- pyenv global 3.5
 - echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 - cp .env.example .env
 - mkdir -p bootstrap/cache
@@ -13,7 +14,7 @@ before_install:
 - mkdir -p storage/framework/views
 - mkdir -p storage/logs
 install:
-- pip install ansible
+- pip3 install ansible
 - composer install --prefer-dist
 - npm install -g yarn
 - yarn

@@ -10,7 +10,7 @@ import { Element } from '../model/element';
 
 import Vector from '../../utils/vector';
 
-import { GRID_SIZE_X, GRID_SIZE_Y } from '../constante';
+import { MOVE_SPEED } from '../constante';
 
 import { generateTruthTable } from '../../../engine/engine';
 
@@ -18,16 +18,9 @@ export default class BoardController {
   constructor(canvasHolder, unSelectBlueprint) {
     this.canvasHolder = canvasHolder;
     this.unSelectBlueprint = unSelectBlueprint;
+    this.nbRemove = 0;
 
-    this.sizeX = GRID_SIZE_X;
-    this.sizeY = GRID_SIZE_Y;
-
-    this.boardView = new BoardView(
-      this.sizeX,
-      this.sizeY,
-      this,
-      this.canvasHolder
-    );
+    this.boardView = new BoardView(this, this.canvasHolder);
 
     this.initNewBoard();
   }
@@ -39,14 +32,41 @@ export default class BoardController {
     // Id 0 for default input
     this.curId = 1;
 
-    this.gridController = new GridController(this.sizeX, this.sizeY);
+    this.curMousePos = new Vector(0, 0);
+
+    this.gridController = new GridController();
     this.engineController = new EngineController();
     this.cursorController = new CursorController(this.boardView);
   }
 
   clearBoard() {
+    this.nbRemove = 0;
     this.boardView.clear();
     this.initNewBoard();
+  }
+
+  populateBoardForObjectifs(blueprint, IONAmes, nbOfInput, nbOfOutput) {
+    this.clearBoard();
+
+    const IONAmesArray = IONAmes.split(',');
+    for (let i = 0; i < nbOfInput; ++i) {
+      this.addElement(
+        new Vector(515, 505 + 3 * i),
+        blueprint[0],
+        IONAmesArray[i],
+        0
+      );
+    }
+    for (let i = 0; i < nbOfOutput; ++i) {
+      this.addElement(
+        new Vector(530, 505 + 3 * i),
+        blueprint[1],
+        IONAmesArray[nbOfInput + i],
+        0
+      );
+    }
+
+    this.boardView.fabricCanvas.renderAll();
   }
 
   loadFromBoard(board) {
@@ -57,27 +77,47 @@ export default class BoardController {
     // Add Elements
     Object.keys(board.elements).forEach(id => {
       const el = board.elements[id];
-
       const newEl = this.addElement(
         new Vector(el.pos.x, el.pos.y),
         board.specs[el.specName],
+        el.name,
         el.rotate
       );
 
+      // Map new El id with old id (For delete element)
       idMapping[id] = newEl.id;
     });
 
     Object.keys(board.elements).forEach(id => {
       const el = board.elements[id];
       Object.keys(el.input).forEach(inputName => {
-        const outputInfo = el.input[inputName];
-        this.addLink(outputInfo, [idMapping[id], inputName]);
+        const outputInfo = el.input[inputName]; // 0: Id -- 1: Name
+
+        const inputLink = [idMapping[outputInfo[0]], outputInfo[1]];
+        const outputLink = [idMapping[id], inputName];
+
+        this.addLink(inputLink, outputLink);
       });
     });
+    this.boardView.fabricCanvas.renderAll();
   }
 
   exportBoard() {
     return JSON.stringify(this.board);
+  }
+
+  getCurEl() {
+    return this.gridController.get(this.curMousePos);
+  }
+
+  getCurElType() {
+    const curElId = this.gridController.get(this.curMousePos);
+    if (curElId == null) return -1;
+
+    const curEl = this.board.elements[curElId];
+    const curSpec = this.board.specs[curEl.specName];
+
+    return curSpec.type;
   }
 
   onElementMove(oldPos, newPos) {
@@ -95,33 +135,56 @@ export default class BoardController {
     return true;
   }
 
+  onMouseMove(pos) {
+    if (pos.equals(this.curMousePos)) return;
+
+    this.curMousePos = pos;
+  }
+
   onClick(pos) {
     if (!this.selectedSpec || this.gridController.get(pos)) return;
 
-    this.addElement(pos, this.selectedSpec, this.rotate);
+    this.addElement(
+      pos,
+      this.selectedSpec,
+      this.selectedSpec.title,
+      this.rotate
+    );
 
     this.unSelectBlueprint();
   }
 
   onDelete() {
-    const select = this.boardView.fabricCanvas.getActiveObject();
-    if (select !== undefined && select !== null) {
-      this.removeElement(select.id);
-      return false;
-    } else {
-      this.clearBoard();
-      return true;
-    }
+    this.removeElement(this.getCurEl());
   }
 
   onRotate() {
-    const select = this.boardView.fabricCanvas.getActiveObject();
-    if (select !== undefined && select !== null) {
-      this.rotateElement(select.id);
-    } else {
-      this.rotate += 1;
-      this.rotate %= 4;
-      this.updateCursor(false);
+    this.rotateElement(this.getCurEl());
+  }
+
+  onRename(newName) {
+    this.renameElement(this.getCurEl(), newName);
+  }
+
+  onMove(dir) {
+    switch (dir) {
+      case 'up':
+        this.boardView.onMove(new Vector(0, -1 * MOVE_SPEED));
+        break;
+      case 'down':
+        this.boardView.onMove(new Vector(0, 1 * MOVE_SPEED));
+        break;
+      case 'left':
+        this.boardView.onMove(new Vector(-1 * MOVE_SPEED, 0));
+        break;
+      case 'right':
+        this.boardView.onMove(new Vector(1 * MOVE_SPEED, 0));
+        break;
+      case 'center':
+        this.boardView.resetPosBoard();
+        break;
+      default:
+        break;
     }
   }
 
@@ -151,9 +214,9 @@ export default class BoardController {
     this.boardState = BoardState.NONE;
   }
 
-  addElement(pos, spec, rotate) {
+  addElement(pos, spec, name, rotate) {
     const newElId = this.curId++;
-    const newEl = new Element(newElId, pos, spec, rotate);
+    const newEl = new Element(newElId, name, pos, spec, rotate);
 
     this.board.elements[newElId] = newEl;
     this.boardView.addElement(pos, newEl, spec);
@@ -194,6 +257,8 @@ export default class BoardController {
     this.boardView.removeElement(elId);
 
     this.engineController.setDirty();
+    this.nbRemove++;
+    console.log('rm', this.nbRemove);
   }
 
   rotateElement(elId) {
@@ -202,6 +267,13 @@ export default class BoardController {
     el.rotate %= 4;
 
     this.boardView.rotateElement(elId);
+  }
+
+  renameElement(elId, newName) {
+    const el = this.board.elements[elId];
+    el.name = newName;
+
+    this.boardView.renameElement(elId, newName);
   }
 
   updateCursor(resetPos = true) {
@@ -245,6 +317,51 @@ export default class BoardController {
 
   exportEngineStates() {
     return this.engineController.exportEngineStates();
+  }
+
+  generateTruthTableForObjectif() {
+    const spec = {};
+
+    // Copy board representation
+    const board = JSON.parse(
+      JSON.stringify(this.engineController.exportForEngine(this.board))
+    );
+
+    // Check that all input are connect
+    let empty = true;
+    Object.keys(board.components).forEach(componentId => {
+      empty = false;
+      Object.keys(board.components[componentId].input).forEach(inputName => {
+        if (board.components[componentId].input[inputName] === 0) {
+          spec.err = 'Some input are not connect';
+        }
+      });
+    });
+    if (empty) spec.err = 'The board need at least one gate';
+
+    if (spec.err !== undefined) return spec;
+
+    // Delete Default input and move registery
+    delete board.input['0'];
+    board.nextRegistery--;
+    Object.keys(board.components).forEach(componentId => {
+      const component = board.components[componentId];
+      Object.keys(component.input).forEach(inputName => {
+        component.input[inputName]--;
+      });
+      Object.keys(component.output).forEach(outputName => {
+        component.output[outputName].forEach(
+          (_, index) => component.output[outputName][index]--
+        );
+      });
+      board.components[componentId] = component;
+    });
+    Object.keys(board.input).forEach(inputId => board.input[inputId]--);
+    Object.keys(board.output).forEach(outputId => board.output[outputId]--);
+
+    // Generate Spec
+    spec.truthTable = generateTruthTable(board);
+    return spec;
   }
 
   exportSpec() {

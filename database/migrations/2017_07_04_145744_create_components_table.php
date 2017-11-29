@@ -17,6 +17,7 @@ class CreateComponentsTable extends Migration
             $table->increments('id');
             $table->string('title', 30);
             $table->string('spec_name', 30);
+            $table->integer('type');
             $table->integer('user_id')->unsigned();
             $table->boolean('is_selected');
             $table->string('last_version_id')->nullable();

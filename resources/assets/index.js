@@ -1,25 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+
+import thunk from 'redux-thunk';
 
 import axios from 'axios';
 
 import plugboardReducers from './reducers';
 
 import App from './components/App';
+import ModalContainer from './components/modal/ModalContainer';
 import Index from './components/home';
 import Contact from './components/Contact';
-import ListObjectif from './components/objectif/ListObjectif';
+import Profile from './components/profile/Profile';
 import './css/app.scss';
+
+import UserAction from './actions/userActions';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const store = createStore(
   plugboardReducers,
+  applyMiddleware(thunk),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
@@ -30,16 +36,21 @@ store.subscribe(() => {
     : null;
 });
 
+store.dispatch(UserAction.init());
+
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <div>
-        <Route exact={true} path="/" component={Index} />
-        <Route path="/app" component={App} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/objectif" component={ListObjectif} />
-      </div>
-    </BrowserRouter>
-  </Provider>,
+  <div>
+    <Provider store={store}>
+      <BrowserRouter>
+        <div>
+          <Route exact={true} path="/" component={Index} />
+          <Route path="/app" component={App} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/profile" component={Profile} />
+          <ModalContainer />
+        </div>
+      </BrowserRouter>
+    </Provider>
+  </div>,
   document.getElementById('root')
 );

@@ -68,7 +68,11 @@ class Modal extends Component {
             <p className="modal-card-title">{this.props.title}</p>
             <button onClick={this.handleCancel} className="delete" />
           </header>
-          <section className="modal-card-body">
+          <section className="modal-card-body has-ribbon">
+            {this.props.ribbon &&
+              <div className="ribbon is-primary">
+                {this.props.ribbon}
+              </div>}
             {this.props.content}
             {this.props.err &&
               <div className="notification is-danger">

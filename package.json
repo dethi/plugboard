@@ -11,17 +11,21 @@
   "dependencies": {
     "axios": "^0.16.1",
     "bulma": "^0.4.0",
+    "bulma-quickview": "^0.0.1",
+    "bulma-ribbon": "^0.0.1",
     "classnames": "^2.2.5",
     "fabric": "^1.7.9",
     "font-awesome": "^4.7.0",
     "prop-types": "^15.5.10",
     "react": "^15.4.2",
+    "react-contextmenu": "^2.7.0",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-tabs": "^0.8.2",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

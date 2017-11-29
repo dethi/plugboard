@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
 
 import BoardAction from '../../actions/boardActions';
-
-import boardApi from '../../api/board';
 
 class LoadBoardModal extends Component {
   constructor(props) {
@@ -14,7 +13,6 @@ class LoadBoardModal extends Component {
 
     this.state = {
       modalName: 'BOARD_LOAD',
-      boards: null,
       boardId: null,
       loading: false
     };
@@ -22,10 +20,9 @@ class LoadBoardModal extends Component {
 
   onDisplay = () => {
     this.setState({ loading: true });
-    boardApi.getBoards().then(boards => {
-      console.log(boards);
+
+    this.props.dispatch(BoardAction.getBoardsAsync()).then(() => {
       this.setState({
-        boards: boards,
         loading: false
       });
     });
@@ -37,18 +34,7 @@ class LoadBoardModal extends Component {
 
   onApply = () => {
     if (this.state.boardId === null) return;
-
-    boardApi.getBoard(this.state.boardId).then(board => {
-      console.log(board);
-
-      const boardMetaData = { ...board };
-      delete boardMetaData.versions;
-
-      const versionData = board.versions[board.versions.length - 1];
-      const boardData = JSON.parse(versionData.data);
-
-      this.props.dispatch(BoardAction.loadBoard(boardMetaData, boardData));
-    });
+    this.props.dispatch(BoardAction.loadBoardAsync(this.state.boardId));
   };
 
   selectBoard = id => {
@@ -57,7 +43,8 @@ class LoadBoardModal extends Component {
   };
 
   render() {
-    const { boards, loading } = this.state;
+    const { loading } = this.state;
+    const { boards } = this.props.board;
 
     return (
       <Modal
@@ -102,4 +89,14 @@ class LoadBoardModal extends Component {
   }
 }
 
-export default connect()(LoadBoardModal);
+const mapStateToProps = state => {
+  return {
+    board: state.board
+  };
+};
+
+LoadBoardModal.propTypes = {
+  board: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps)(LoadBoardModal);

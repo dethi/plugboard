@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import UserAction from '../../actions/userActions';
-import Authentification from '../../api/authentification';
+import ModalAction from '../../actions/modalActions';
 
-import { NavLink } from 'react-router-dom';
-
-export default class NavBarAccueil extends Component {
+class NavBarAccueil extends Component {
   handleLogin = () => {
-    Authentification.login('test', 'test').then(user => {
-      this.props.dispatch(UserAction.login(user));
-    });
+    this.props.dispatch(ModalAction.displayModal('LOGIN'));
+  };
+
+  handleRegister = () => {
+    this.props.dispatch(ModalAction.displayModal('REGISTER'));
+  };
+
+  handleLogout = () => {
+    this.props.dispatch(ModalAction.displayModal('LOGOUT'));
   };
 
   render() {
@@ -33,14 +38,25 @@ export default class NavBarAccueil extends Component {
             <a className="nav-item">
               FAQ
             </a>
-
-            <NavLink className="nav-item" to="/contact">
+            <a className="nav-item">
               Contact
-            </NavLink>
+            </a>
             <span className="nav-item">
-              <a className="button is-default" href="/login">
-                Login
-              </a>
+              {!this.props.user
+                ? <div className="nav-item-home-login">
+                    <a
+                      className="button is-default"
+                      onClick={this.handleRegister}
+                    >
+                      Register
+                    </a>
+                    <a className="button is-default" onClick={this.handleLogin}>
+                      Login
+                    </a>
+                  </div>
+                : <a className="button is-default" onClick={this.handleLogout}>
+                    Logout
+                  </a>}
             </span>
           </div>
         </div>
@@ -48,3 +64,15 @@ export default class NavBarAccueil extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+NavBarAccueil.PropTypes = {
+  user: PropTypes.object
+};
+
+export default connect(mapStateToProps)(NavBarAccueil);

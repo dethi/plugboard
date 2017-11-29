@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import Modal from './Modal';
 import SelectableElementBoxImg from '../util/SelectableElementBoxImg';
 
-import componentApi from '../../api/component';
-
-import PaletteAction from '../../actions/paletteActions';
+import ComponentAction from '../../actions/componentActions';
 
 class ChooseComponent extends Component {
   constructor(props) {
@@ -23,10 +21,10 @@ class ChooseComponent extends Component {
     };
   }
 
-  onDisplay = () => {
-    this.setState({ loading: true });
-    componentApi.getComponents().then(data => {
-      console.log(data);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.component !== this.props.component) {
+      const data = nextProps.component.components;
+
       const components = [];
       const componentsInPalette = [];
 
@@ -37,7 +35,16 @@ class ChooseComponent extends Component {
 
       this.setState({
         components: components,
-        componentsInPalette: componentsInPalette,
+        componentsInPalette: componentsInPalette
+      });
+    }
+  }
+
+  onDisplay = () => {
+    this.setState({ loading: true });
+
+    this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
+      this.setState({
         loading: false
       });
     });
@@ -48,7 +55,6 @@ class ChooseComponent extends Component {
       componentId: id,
       componentIsInPalette: use
     });
-    console.log(id);
   };
 
   moveComponent = () => {
@@ -77,15 +83,9 @@ class ChooseComponent extends Component {
       });
     }
 
-    componentApi
-      .selectComponent(componentId, !componentIsInPalette)
-      .then(data => {
-        if (componentIsInPalette) {
-          this.props.dispatch(PaletteAction.removeBlueprints([data]));
-        } else {
-          this.props.dispatch(PaletteAction.addBlueprints([data]));
-        }
-      });
+    this.props.dispatch(
+      ComponentAction.selectComponent(componentId, componentIsInPalette)
+    );
 
     this.setState({
       components: components,
@@ -188,12 +188,14 @@ class ChooseComponent extends Component {
 
 const mapStateToProps = state => {
   return {
-    board: state.board
+    board: state.board,
+    component: state.component
   };
 };
 
 ChooseComponent.propTypes = {
-  board: PropTypes.object.isRequired
+  board: PropTypes.object.isRequired,
+  component: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(ChooseComponent);

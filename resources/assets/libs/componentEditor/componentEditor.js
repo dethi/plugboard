@@ -45,7 +45,7 @@ export default class ComponentEditor {
   }
 
   addElement() {
-    this.element = new ElementView(0, 0, this.spec, false);
+    this.element = new ElementView(0, '', 0, this.spec, false);
     this.element.placeOnBoard(this, new Vector(1, 1));
     this.element.initComponent();
     this.element.getFabricElements().forEach(el => {
@@ -102,7 +102,7 @@ export default class ComponentEditor {
   }
 
   updateTitle(title) {
-    this.spec.title = title;
+    this.element.rename(title);
     this.updateEl();
   }
 

@@ -3,10 +3,15 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 
 import UserAction from '../../actions/userActions';
+import BoardAction from '../../actions/boardActions';
+import ObjectifAction from '../../actions/objectifActions';
 
 class LogoutModal extends Component {
-  onCancel = () => {
+  onApply = () => {
     this.props.dispatch(UserAction.logout());
+    this.props.dispatch(ObjectifAction.emptyScores());
+    this.props.dispatch(BoardAction.clearBoard());
+    this.props.dispatch(ObjectifAction.exitObjectifMode());
   };
 
   render() {
@@ -14,10 +19,10 @@ class LogoutModal extends Component {
       <Modal
         modalName="LOGOUT"
         title="Logout"
-        success="No"
-        cancelText="Yes"
+        success="Yes"
+        cancelText="No"
         content="Are you sure you want to logout?"
-        onCancel={this.onCancel}
+        onApply={this.onApply}
       />
     );
   }

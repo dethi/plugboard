@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 
 import UserAction from '../../actions/userActions';
+import ObjectifAction from '../../actions/objectifActions';
 import Authentification from '../../api/authentification';
 
 class LoginModal extends Component {
@@ -38,10 +39,11 @@ class LoginModal extends Component {
     return new Promise((resolve, reject) => {
       Authentification.login(this.state.email, this.state.password)
         .then(user => {
-          console.log(user);
           this.props.dispatch(UserAction.login(user));
-          this.setState({ err: null });
-          resolve();
+          this.props.dispatch(ObjectifAction.getScoresAsync()).then(() => {
+            this.setState({ err: null });
+            resolve();
+          });
         })
         .catch(response => {
           if (response.status === 422) {

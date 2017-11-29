@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import componentApi from '../../api/component';
-
 import PaletteAction from '../../actions/paletteActions';
+import { ElementType } from '../../libs/board/model/elementType';
 
 function SelectableElement(props) {
   return (
@@ -32,15 +31,13 @@ function SelectableElement(props) {
 class Palette extends Component {
   constructor(props) {
     super(props);
+    this.props.dispatch(PaletteAction.initPalette(this.props.user != null));
+  }
 
-    componentApi
-      .getElComponents()
-      .then(data =>
-        this.props.dispatch(PaletteAction.addElementaireBlueprints(data)));
-
-    componentApi
-      .getSelectedComponents()
-      .then(data => this.props.dispatch(PaletteAction.addBlueprints(data)));
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.palette.needToReload !== this.props.palette.needToReload) {
+      nextProps.dispatch(PaletteAction.initPalette(nextProps.user != null));
+    }
   }
 
   updateSelectedBlueprint = index => {
@@ -54,13 +51,17 @@ class Palette extends Component {
   render() {
     const { blueprints, selectedBlueprint } = this.props.palette;
     let selectedBlueprintIndex = -1;
+
     if (blueprints)
       selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
-
     return (
       <div className="on-canvas palette">
         <div className="box">
-          <p className="has-text-centered">Components</p>
+          <p className="component-name has-text-centered">
+            {selectedBlueprint != null
+              ? selectedBlueprint.title
+              : 'Select a component'}
+          </p>
           <nav className="level">
             {blueprints &&
               /*blueprints.map((e, index) => (
@@ -72,15 +73,20 @@ class Palette extends Component {
                   onClick={() => this.updateSelectedBlueprint(index)}
                 />
               ))*/
-              blueprints.map((e, index) => (
-                <SelectableElement
-                  key={index}
-                  name={e.title}
-                  img={e.preview}
-                  selected={index === selectedBlueprintIndex}
-                  onClick={() => this.updateSelectedBlueprint(index)}
-                />
-              ))}
+              blueprints.map(
+                (e, index) =>
+                  (!this.props.objectif.inObjectifMode ||
+                    (this.props.objectif.inObjectifMode &&
+                      e.type !== ElementType.INPUT &&
+                      e.type !== ElementType.OUTPUT)) &&
+                  <SelectableElement
+                    key={index}
+                    name={e.title}
+                    img={e.preview}
+                    selected={index === selectedBlueprintIndex}
+                    onClick={() => this.updateSelectedBlueprint(index)}
+                  />
+              )}
           </nav>
         </div>
       </div>
@@ -90,12 +96,15 @@ class Palette extends Component {
 
 const mapStateToProps = state => {
   return {
-    palette: state.palette
+    palette: state.palette,
+    user: state.user,
+    objectif: state.objectif
   };
 };
 
 Palette.PropTypes = {
-  palette: PropTypes.object.isRequired
+  palette: PropTypes.object.isRequired,
+  objectif: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(Palette);

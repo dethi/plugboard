@@ -6,6 +6,14 @@ const board = (state = {}, action) => {
         ...state,
         clear: state.clear + 1
       };
+    case 'APPLY_ELEMENT_ACTION':
+      if (!state.applyElementAction) state.applyElementAction = 0;
+      return {
+        ...state,
+        applyElementAction: state.applyElementAction + 1,
+        actionType: action.actionType,
+        actionArgs: action.actionArgs
+      };
     case 'PREPARE_BOARD_SAVE':
       if (!state.prepare) state.prepare = 0;
       return {
@@ -18,6 +26,12 @@ const board = (state = {}, action) => {
         ...state,
         prepareForComponent: state.prepareForComponent + 1
       };
+    case 'PREPARE_CONTEXT_MENU':
+      if (!state.prepareContextMenu) state.prepareContextMenu = 0;
+      return {
+        ...state,
+        prepareContextMenu: state.prepareContextMenu + 1
+      };
     case 'SET_BOARD_METADATA':
       return {
         ...state,
@@ -27,7 +41,7 @@ const board = (state = {}, action) => {
       delete state.boardMetaData;
       return state;
     case 'LOAD_BOARD':
-      if (!state.prepare) state.load = 0;
+      if (!state.load) state.load = 0;
       return {
         ...state,
         boardMetaData: action.boardMetaData,
@@ -44,6 +58,16 @@ const board = (state = {}, action) => {
       return {
         ...state,
         spec: action.spec
+      };
+    case 'GET_BOARDS':
+      return {
+        ...state,
+        boards: action.boards
+      };
+    case 'SET_CURRENT_TRUTHTABLE':
+      return {
+        ...state,
+        currentTruthTable: action.currentTruthTable
       };
     default:
       return state;

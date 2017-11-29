@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ContextMenuTrigger } from 'react-contextmenu';
 import PropTypes from 'prop-types';
+
+import ContextMenuBoard from './ContextMenuBoard';
+import elementActions from './elementActions';
 
 import PaletteAction from '../../actions/paletteActions';
 import BoardAction from '../../actions/boardActions';
+import ContextMenuActions from '../../actions/contextMenuActions';
 import ModalAction from '../../actions/modalActions';
+import ObjectifAction from '../../actions/objectifActions';
 
 import boardApi from '../../api/board';
 
 import BoardController from '../../libs/board/controller/boardController';
 import { evalutateBoard } from '../../engine/engine';
+
+import { checkTruthTables, computeScore } from '../../libs/utils/objectif';
 
 class Board extends Component {
   constructor(props) {
@@ -22,10 +30,17 @@ class Board extends Component {
   }
 
   componentDidMount() {
+    document.documentElement.classList.add('disable-scroll');
+    window.scrollTo(0, 0);
+
     this.boardController = new BoardController(
       this.refs.canvas,
       this.unSelectBlueprint
     );
+  }
+
+  componentWillUnmount() {
+    document.documentElement.classList.remove('disable-scroll');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,10 +56,6 @@ class Board extends Component {
       this.nextStep();
     }
 
-    if (nextProps.rotate !== this.props.rotate) {
-      this.rotate();
-    }
-
     if (
       nextProps.palette.selectedBlueprint !==
       this.props.palette.selectedBlueprint
@@ -54,6 +65,15 @@ class Board extends Component {
 
     if (nextProps.board.clear !== this.props.board.clear) {
       this.clearBoard();
+    }
+
+    if (
+      nextProps.board.applyElementAction !== this.props.board.applyElementAction
+    ) {
+      this.applyElementAction(
+        nextProps.board.actionType,
+        nextProps.board.actionArgs
+      );
     }
 
     if (nextProps.board.prepare !== this.props.board.prepare) {
@@ -67,11 +87,62 @@ class Board extends Component {
       this.prepareBoardForComponent();
     }
 
+    if (
+      nextProps.board.prepareContextMenu !== this.props.board.prepareContextMenu
+    ) {
+      this.prepareContextMenu();
+    }
+
+    if (
+      nextProps.objectif.prepareCheckObjectif !==
+      this.props.objectif.prepareCheckObjectif
+    ) {
+      this.prepareCheckObjectif();
+    }
+
+    if (
+      nextProps.objectif.prepareStartObjectif !==
+      this.props.objectif.prepareStartObjectif
+    ) {
+      this.startObjectif();
+    }
+
     if (nextProps.board.load !== this.props.board.load) {
-      console.log('RELOAD');
       this.boardController.loadFromBoard(nextProps.board.boardData);
     }
   }
+
+  startObjectif = () => {
+    const { objectifForModalInfoStart } = this.props.objectif;
+
+    this.props.dispatch(BoardAction.setCurrentTruthTable(null));
+    this.boardController.populateBoardForObjectifs(
+      this.props.palette.blueprints,
+      objectifForModalInfoStart.IONames,
+      objectifForModalInfoStart.nbInput,
+      objectifForModalInfoStart.nbOutput
+    );
+  };
+
+  prepareCheckObjectif = () => {
+    const spec = this.boardController.generateTruthTableForObjectif();
+
+    const { currentObjectif } = this.props.objectif;
+    this.props.dispatch(BoardAction.setCurrentTruthTable(spec));
+    if (
+      spec.err === undefined &&
+      checkTruthTables(currentObjectif.truth_table, spec.truthTable)
+    ) {
+      const score = computeScore(
+        this.props.objectif.startTime,
+        this.boardController.nbRemove
+      );
+      this.props.dispatch(ObjectifAction.setScoreAsync(currentObjectif, score));
+      this.props.dispatch(ModalAction.displayModal('OBJECTIF_SUCCESS'));
+    } else {
+      this.props.dispatch(ModalAction.displayModal('OBJECTIF_FAIL'));
+    }
+  };
 
   prepareBoard = () => {
     const boardData = this.boardController.exportBoard();
@@ -100,8 +171,29 @@ class Board extends Component {
     }
   };
 
-  rotate = () => {
-    this.boardController.onRotate();
+  prepareContextMenu = () => {
+    const curElType = this.boardController.getCurElType();
+
+    this.props.dispatch(ContextMenuActions.setContextType(curElType));
+  };
+
+  applyElementAction = (actionType, actionArgs) => {
+    switch (actionType) {
+      case elementActions.ROTATE:
+        this.boardController.onRotate();
+        break;
+      case elementActions.DELETE:
+        this.boardController.onDelete();
+        break;
+      case elementActions.RENAME:
+        this.boardController.onRename(actionArgs);
+        break;
+      case elementActions.MOVE:
+        this.boardController.onMove(actionArgs);
+        break;
+      default:
+        break;
+    }
   };
 
   updateSelectedBlueprint = blueprint => {
@@ -113,9 +205,8 @@ class Board extends Component {
   };
 
   clearBoard = () => {
-    if (this.boardController.onDelete()) {
-      this.props.dispatch(BoardAction.deleteBoardMetaData());
-    }
+    this.boardController.clearBoard();
+    this.props.dispatch(BoardAction.deleteBoardMetaData());
   };
 
   nextStep = () => {
@@ -156,11 +247,17 @@ class Board extends Component {
     };
     return (
       <div>
-        <div className="column">
+        <ContextMenuTrigger
+          id="bard_context_menu"
+          className="column"
+          holdToDisplay={-1}
+        >
           <div style={style}>
             <canvas ref="canvas" />
           </div>
-        </div>
+        </ContextMenuTrigger>
+        <ContextMenuBoard />
+
         {boardMetaData &&
           <div className="box on-canvas on-canvas-center board-title">
             <p className="has-text-centered">{boardMetaData.title}</p>
@@ -173,7 +270,8 @@ class Board extends Component {
 const mapStateToProps = state => {
   return {
     palette: state.palette,
-    board: state.board
+    board: state.board,
+    objectif: state.objectif
   };
 };
 
@@ -182,7 +280,7 @@ Board.propTypes = {
   step: PropTypes.number.isRequired,
   palette: PropTypes.object.isRequired,
   board: PropTypes.object.isRequired,
-  rotate: PropTypes.number.isRequired
+  objectif: PropTypes.object
 };
 
 export default connect(mapStateToProps)(Board);

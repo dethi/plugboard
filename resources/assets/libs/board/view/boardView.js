@@ -7,15 +7,21 @@ import BoardState from '../controller/boardState';
 
 import Vector from '../../utils/vector';
 
-import { GRID_SIZE, MAX_DIST_LINK } from '../constante';
+import {
+  GRID_SIZE_X,
+  GRID_SIZE_Y,
+  GRID_SIZE,
+  GRID_SIZE_LIMIT,
+  MAX_DIST_LINK
+} from '../constante';
 
 export default class BoardView {
-  constructor(width, height, controller, el) {
+  constructor(controller, el) {
     this.controller = controller;
     this.gridSize = GRID_SIZE;
 
-    this.width = width;
-    this.height = height;
+    this.width = GRID_SIZE_X;
+    this.height = GRID_SIZE_Y;
 
     this.gridWidth = this.width * this.gridSize;
     this.gridHeight = this.height * this.gridSize;
@@ -23,7 +29,8 @@ export default class BoardView {
     this.fabricCanvas = new fabric.Canvas(el, {
       selection: false,
       height: this.gridHeight,
-      width: this.gridWidth
+      width: this.gridWidth,
+      renderOnAddRemove: false
     });
 
     this.leftMin = this.gridSize;
@@ -36,6 +43,8 @@ export default class BoardView {
     this.curCusor = null;
     this.curCusorPos = new Vector(0, 0);
 
+    this.curBoardPos = new Vector(GRID_SIZE_LIMIT / 2, GRID_SIZE_LIMIT / 2);
+
     this.fabricCanvas.on('mouse:down', options => {
       switch (this.controller.boardState) {
         case BoardState.ADDING:
@@ -47,9 +56,11 @@ export default class BoardView {
     });
 
     this.fabricCanvas.on('mouse:move', options => {
+      const mousePos = this.fabricCanvas.getPointer(options.e);
+      this.controller.onMouseMove(this.mousePosToBoardPos(mousePos));
+
       switch (this.controller.boardState) {
         case BoardState.LINKING:
-          const mousePos = this.fabricCanvas.getPointer(options.e);
           this.updateCreateLink(mousePos);
           break;
         case BoardState.ADDING:
@@ -103,7 +114,9 @@ export default class BoardView {
         )
       );
     }
-    this.fabricGridLines.forEach(el => this.fabricCanvas.add(el));
+
+    this.fabricCanvas.add(...this.fabricGridLines);
+    this.fabricCanvas.renderAll();
   }
 
   toggleGridVisibility() {
@@ -112,17 +125,28 @@ export default class BoardView {
     this.fabricCanvas.renderAll();
   }
 
-  getFabricPos(pos) {
-    return new Vector(
-      Math.max(Math.min(pos.x * GRID_SIZE, this.leftMax), this.leftMin),
-      Math.max(Math.min(pos.y * GRID_SIZE, this.topMax), this.topMin)
-    );
+  onMove(dir) {
+    this.curBoardPos = this.curBoardPos.addVector(dir);
+
+    Object.keys(this.elecElements).forEach(id => {
+      const el = this.elecElements[id];
+      el.refresh();
+    });
+
+    this.fabricCanvas.renderAll();
+  }
+
+  resetPosBoard() {
+    this.curBoardPos = new Vector(GRID_SIZE_LIMIT / 2, GRID_SIZE_LIMIT / 2);
+    this.onMove(new Vector(0, 0));
   }
 
   addElement(pos, elementModel, spec) {
     const isInput = elementModel.specName === 'INPUT';
+
     const newElementView = new ElementView(
       elementModel.id,
+      elementModel.name,
       elementModel.rotate,
       spec,
       isInput
@@ -133,9 +157,7 @@ export default class BoardView {
 
     this.elecElements[elementModel.id] = newElementView;
 
-    newElementView.getFabricElements().forEach(el => {
-      this.fabricCanvas.add(el);
-    });
+    this.fabricCanvas.add(...newElementView.getFabricElements());
   }
 
   removeElement(elId) {
@@ -150,6 +172,11 @@ export default class BoardView {
 
   rotateElement(elId) {
     this.elecElements[elId].increaseRotate();
+    this.fabricCanvas.renderAll();
+  }
+
+  renameElement(elId, newName) {
+    this.elecElements[elId].rename(newName);
     this.fabricCanvas.renderAll();
   }
 
@@ -250,6 +277,7 @@ export default class BoardView {
     );
 
     this.fabricCanvas.add(this.linkLine);
+    this.fabricCanvas.renderAll();
   }
 
   finishCreateLink() {
@@ -274,6 +302,7 @@ export default class BoardView {
   clear() {
     this.elecElements = {};
     this.fabricCanvas.clear();
+    this.curBoardPos = new Vector(GRID_SIZE_LIMIT / 2, GRID_SIZE_LIMIT / 2);
 
     this.addGridLine();
   }
@@ -286,11 +315,12 @@ export default class BoardView {
     let maxY = 0;
 
     Object.keys(this.elecElements).forEach(id => {
-      const el = this.elecElements[id];
-      if (el.pos.x > maxX) maxX = el.pos.x;
-      if (el.pos.x < minX) minX = el.pos.x;
-      if (el.pos.y > maxY) maxY = el.pos.y;
-      if (el.pos.y < minY) minY = el.pos.y;
+      const pos = this.elecElements[id].pos.minusVector(this.curBoardPos);
+
+      if (pos.x > maxX) maxX = pos.x;
+      if (pos.x < minX) minX = pos.x;
+      if (pos.y > maxY) maxY = pos.y;
+      if (pos.y < minY) minY = pos.y;
     });
 
     if (maxX === 0) {
@@ -311,12 +341,30 @@ export default class BoardView {
 
     const options = {
       format: 'png',
-      left: minX - GRID_SIZE / 2,
-      top: minY - GRID_SIZE / 2,
-      width: maxX - minX + GRID_SIZE,
-      height: maxY - minY + GRID_SIZE
+      left: minX - GRID_SIZE * 2.5,
+      top: minY - GRID_SIZE * 2.5,
+      width: maxX - minX + GRID_SIZE * 5,
+      height: maxY - minY + GRID_SIZE * 5
     };
 
     return this.fabricCanvas.toDataURL(options);
+  }
+
+  getFabricPos(pos) {
+    const boardPos = pos.minusVector(this.curBoardPos);
+    return new Vector(boardPos.x * GRID_SIZE, boardPos.y * GRID_SIZE);
+  }
+
+  mousePosToBoardPos(mousePos) {
+    let left = Math.round((mousePos.x - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
+    left = Math.max(Math.min(left, this.leftMax), this.leftMin);
+
+    let top = Math.round((mousePos.y - GRID_SIZE / 2) / GRID_SIZE) * GRID_SIZE;
+    top = Math.max(Math.min(top, this.topMax), this.topMin);
+
+    return new Vector(
+      Math.floor(left / GRID_SIZE),
+      Math.floor(top / GRID_SIZE)
+    ).addVector(this.curBoardPos);
   }
 }

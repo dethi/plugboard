@@ -2,6 +2,7 @@ export class ElementSpec {
   constructor(
     title,
     name,
+    type,
     input,
     output,
     color,
@@ -13,6 +14,8 @@ export class ElementSpec {
   ) {
     this.title = title;
     this.name = name;
+
+    this.type = type;
 
     this.input = input;
     this.output = output;

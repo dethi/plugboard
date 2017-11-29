@@ -21,6 +21,7 @@ const genBlueprintsFromElementaire = data => {
       new ElementSpec(
         el.title,
         el.spec_name,
+        el.type,
         input,
         output,
         el.color,
@@ -36,17 +37,16 @@ const genBlueprintsFromElementaire = data => {
 };
 
 const genBlueprints = data => {
-  console.log(data);
-
   const blueprints = [];
 
   data.forEach(el => {
-    const versionData = el.versions[0].data;
+    const versionData = el.versions[el.versions.length - 1].data;
 
     blueprints.push(
       new ElementSpec(
         el.title,
         el.spec_name,
+        el.type,
         versionData.input,
         versionData.output,
         versionData.color,
@@ -73,6 +73,15 @@ const palette = (state = {}, action) => {
   const blueprints = state.blueprints || [];
 
   switch (action.type) {
+    case 'SET_BLUEPRINTS':
+      const newBlueprints = [];
+      newBlueprints.push(...genBlueprintsFromElementaire(action.elBlueprints));
+      newBlueprints.push(...genBlueprints(action.blueprints));
+      return {
+        ...state,
+        needToReload: false,
+        blueprints: newBlueprints
+      };
     case 'ADD_BLUEPRINTS':
       blueprints.push(...genBlueprints(action.blueprints));
       return {
@@ -99,6 +108,12 @@ const palette = (state = {}, action) => {
       return {
         ...state,
         selectedBlueprint: null
+      };
+    case 'LOGIN':
+    case 'LOGOUT':
+      return {
+        ...state,
+        needToReload: true
       };
     default:
       return state;
