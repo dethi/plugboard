@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import ComponentAction from '../../actions/componentActions';
 import componentApi from '../../api/component';
+
 import Element from './Element';
 
 class MyComponents extends Component {
@@ -11,8 +12,17 @@ class MyComponents extends Component {
     super(props);
 
     this.state = {
-      loading: false
+      loading: false,
+      components: null
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+
+    if (nextProps.component !== this.props.component) {
+      this.setState({ components: nextProps.component.components });
+    }
   }
 
   componentDidMount() {
@@ -47,10 +57,22 @@ class MyComponents extends Component {
         }
       });
   };
+  onApply = element => {
+    if (element === null) return;
+
+    componentApi.shareComponent(element.id, !element.share);
+
+    const components = this.state.components;
+    Object.keys(components).forEach(id => {
+      const com = components[id];
+      if (com.id === element.id) components[id].share = !element.share;
+    });
+
+    this.setState({ components: components });
+  };
 
   render() {
-    const { loading } = this.state;
-    const { components } = this.props.component;
+    const { loading, components } = this.state;
 
     return (
       <div className="list-element-profile">
@@ -83,6 +105,9 @@ class MyComponents extends Component {
                       title={element.title}
                       img={element.preview_url}
                       onDelete={() => this.onDelete(element.id)}
+                      isElement={true}
+                      share={element.share === true}
+                      onClick={() => this.onApply(element)}
                     />
                   ))}
                 </div>}

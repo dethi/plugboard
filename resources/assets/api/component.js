@@ -27,6 +27,15 @@ const selectComponent = (componentId, isSelected) => {
     });
 };
 
+const shareComponent = (componentId, isShare) => {
+  return axios
+    .post(`/api/component/${componentId}/share`, { isShare })
+    .then(res => res.data)
+    .catch(err => {
+      throw err.response;
+    });
+};
+
 const getComponents = () => {
   return axios.get('/api/component').then(res => res.data).catch(err => {
     console.log(err);
@@ -78,6 +87,7 @@ export default {
   saveNewComponent,
   saveComponent,
   selectComponent,
+  shareComponent,
   getComponents,
   getElComponents,
   getSelectedComponents,

@@ -25,6 +25,7 @@ class Profile extends Component {
   changeTab(newTab) {
     this.setState({ curTab: newTab });
   }
+
   render() {
     if (this.props.user === null) {
       return <Redirect to="/app" />;
