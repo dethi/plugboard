@@ -28,12 +28,12 @@ export default function Element(props) {
                   to="/app"
                   onClick={props.onClick}
                 >
-                  Editer
+                  Edit
                 </NavLink>
                 <a
                   className="has-text-center button is-medium is-danger has-margin"
                 >
-                  Supprimer
+                  Delete
                 </a>
               </div>
             </div>

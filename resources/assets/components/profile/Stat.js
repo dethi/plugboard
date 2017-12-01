@@ -6,23 +6,23 @@ class Stats extends Component {
     return (
       <div>
         <h3 className="level-profile title is-3 has-text-centered">
-          Level 3
+          Goal 3
         </h3>
         <progress className="progress " value="15" max="100">15%</progress>
         <table className="table">
           <thead>
             <tr>
-              <th>Donnée</th>
-              <th>Valeur</th>
+              <th>Name</th>
+              <th>Value</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th>Circuit créé</th>
+              <th>Board created</th>
               <th>35</th>
             </tr>
             <tr>
-              <th>Etoile débloquée</th>
+              <th>Total Score</th>
               <th>15</th>
             </tr>
           </tbody>
