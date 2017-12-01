@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
+
 import NavBar from '../NavBar';
 import Stat from './Stat.js';
 import MyBoards from './MyBoards.js';
 import MyElements from './MyElements.js';
-
 import defaultUserProfilPicture
   from '../../../../public/static/default-user-profile.png';
 
@@ -24,6 +25,9 @@ class Profile extends Component {
     this.setState({ curTab: newTab });
   }
   render() {
+    if (this.props.user === null) {
+      return <Redirect to="/app" />;
+    }
     let toDisplay = <div />;
     if (this.state.curTab === 'stat') toDisplay = <Stat />;
     else if (this.state.curTab === 'boards') toDisplay = <MyBoards />;
