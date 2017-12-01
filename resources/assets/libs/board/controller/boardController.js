@@ -25,6 +25,10 @@ export default class BoardController {
     this.initNewBoard();
   }
 
+  dispose() {
+    this.boardView.dispose();
+  }
+
   initNewBoard() {
     this.board = new Board();
     this.boardState = BoardState.NONE;
