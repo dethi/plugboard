@@ -29,7 +29,7 @@ class MyElements extends Component {
     const { components } = this.props.component;
 
     return (
-      <div>
+      <div className="list-element-profile">
         {loading &&
           <div className="has-text-centered">
             <span className="icon is-large">

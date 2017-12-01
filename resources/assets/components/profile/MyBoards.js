@@ -35,7 +35,7 @@ class MyBoards extends Component {
     const { boards } = this.props.board;
 
     return (
-      <div>
+      <div className="list-element-profile">
         {loading &&
           <div className="has-text-centered">
             <span className="icon is-large">
