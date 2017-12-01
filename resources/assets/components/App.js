@@ -20,10 +20,6 @@ class App extends Component {
     };
   }
 
-  getCurCanvas = () => {
-    return this.refs.board.gridController.gridView.fabricCanvas;
-  };
-
   handleNextStep = () => {
     this.setState({ step: this.state.step + 1 });
   };
@@ -45,12 +41,7 @@ class App extends Component {
         />
         <div className="app">
           <div className="columns">
-            <Board
-              ref="board"
-              step={step}
-              running={running}
-              getCurCanvas={this.getCurCanvas}
-            />
+            <Board step={step} running={running} />
             <MoveArrow />
             {inObjectifMode && <ObjectifInBoard />}
             <ListObjectif />
