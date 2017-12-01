@@ -8,7 +8,15 @@ import ModalAction from '../../actions/modalActions';
 import ObjectifInList from './ObjectifInList';
 
 class ListObjectif extends Component {
+  constructor(props) {
+    super(props);
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
   componentWillMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
     this.state = {
       loading: false
     };
@@ -24,6 +32,10 @@ class ListObjectif extends Component {
     }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
   setObjectifForModalInfo = objectif => {
     this.props.dispatch(ObjectifAction.setObjectifForModalInfo(objectif));
     this.props.dispatch(ModalAction.displayModal('OBJECTIF_INFO_START'));
@@ -32,6 +44,26 @@ class ListObjectif extends Component {
   toggleQuickView = show => {
     this.props.dispatch(ObjectifAction.showQuickView(show));
   };
+
+  /**
+     * Alert if clicked on outside of element
+     */
+  handleClickOutside = event => {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      const {
+        showQuickView
+      } = this.props.objectif;
+      if (showQuickView)
+        this.props.dispatch(ObjectifAction.showQuickView(false));
+    }
+  };
+
+  /**
+     * Set the wrapper ref
+     */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
 
   render() {
     const { loading } = this.state;
@@ -43,6 +75,7 @@ class ListObjectif extends Component {
 
     return (
       <div
+        ref={this.setWrapperRef}
         id="quickviewDefault"
         className={classNames('quickview', {
           'is-active': showQuickView
