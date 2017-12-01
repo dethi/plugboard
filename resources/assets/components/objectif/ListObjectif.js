@@ -49,7 +49,7 @@ class ListObjectif extends Component {
         })}
       >
         <header className="quickview-header">
-          <p className="title">Objectifs</p>
+          <p className="title">Goals</p>
           <span
             className="delete"
             onClick={() => this.toggleQuickView(false)}

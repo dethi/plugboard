@@ -41,7 +41,7 @@ class MyElements extends Component {
             {components.length === 0
               ? <div className="has-text-centered">
                   <div className="notification is-warning">
-                    <p>You don't have any saved boards</p>
+                    <p>You don't have any saved components</p>
                   </div>
                 </div>
               : <div className="parent">

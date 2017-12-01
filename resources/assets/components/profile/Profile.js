@@ -55,13 +55,13 @@ class Profile extends Component {
         <div className="tabs is-centered">
           <ul>
             <li className={this.state.curTab === 'stat' && 'is-active'}>
-              <a onClick={() => this.changeTab('stat')}>Mes statistiques</a>
+              <a onClick={() => this.changeTab('stat')}>Stat</a>
             </li>
             <li className={this.state.curTab === 'boards' && 'is-active'}>
-              <a onClick={() => this.changeTab('boards')}>Mes boards</a>
+              <a onClick={() => this.changeTab('boards')}>Board</a>
             </li>
             <li className={this.state.curTab === 'composants' && 'is-active'}>
-              <a onClick={() => this.changeTab('composants')}>Mes composants</a>
+              <a onClick={() => this.changeTab('composants')}>Component</a>
             </li>
           </ul>
         </div>
