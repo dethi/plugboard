@@ -88,6 +88,10 @@ export default class BoardView {
     this.addGridLine();
   }
 
+  dispose() {
+    this.fabricCanvas.dispose();
+  }
+
   addGridLine() {
     this.fabricGridLines = [];
     this.isGridVisible = true;
