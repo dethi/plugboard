@@ -21,7 +21,7 @@ class Stats extends Component {
     const { scores, objectifs } = this.props.objectif;
     const { components } = this.props.component;
 
-    const maxObjectif = objectifs && scores.length > 0
+    const maxObjectif = objectifs && scores && scores.length > 0
       ? objectifs.find(
           objectif => objectif.id === scores[scores.length - 1].objectif_id
         ).id

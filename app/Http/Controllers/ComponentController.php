@@ -107,8 +107,10 @@ class ComponentController extends Controller
         //
     }
 
-    public function destroy(Component $component)
+    public function destroy($id)
     {
-        //
+        $component = Auth::user()->components()->findOrFail($id);
+        ComponentData::destroy($component->last_version_id);
+        $component->delete();
     }
 }

@@ -64,6 +64,16 @@ const getComponent = componentId => {
     });
 };
 
+const deleteComponent = componentId => {
+  return axios
+    .delete(`/api/component/${componentId}`)
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 export default {
   saveNewComponent,
   saveComponent,
@@ -71,5 +81,6 @@ export default {
   getComponents,
   getElComponents,
   getSelectedComponents,
-  getComponent
+  getComponent,
+  deleteComponent
 };
