@@ -27,44 +27,50 @@ class Stats extends Component {
         ).id
       : 0;
 
-    return (
-      <div>
-        <h3 className="level-profile title is-3 has-text-centered">
-          Goal {maxObjectif}
-        </h3>
-        <progress
-          className="progress "
-          value={maxObjectif}
-          max={objectifs && objectifs.length}
-        >
-          {maxObjectif}%
-        </progress>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>Board created</th>
-              <th>{boards && boards.length}</th>
-            </tr>
-            <tr>
-              <th>Component created</th>
-              <th>{components && components.length}</th>
-            </tr>
-            <tr>
-              <th>Total Score</th>
-              <th>
-                {scores && scores.reduce((a, b) => a + b.score, 0)}
-              </th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
+    const loading = boards && components && objectifs && scores;
+
+    return loading
+      ? <div>
+          <h3 className="level-profile title is-3 has-text-centered">
+            Goal {maxObjectif}
+          </h3>
+          <progress
+            className="progress "
+            value={maxObjectif}
+            max={objectifs && objectifs.length}
+          >
+            {maxObjectif}%
+          </progress>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Board created</th>
+                <th>{boards && boards.length}</th>
+              </tr>
+              <tr>
+                <th>Component created</th>
+                <th>{components && components.length}</th>
+              </tr>
+              <tr>
+                <th>Total Score</th>
+                <th>
+                  {scores && scores.reduce((a, b) => a + b.score, 0)}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      : <div className="has-text-centered">
+          <span className="icon is-large">
+            <i className="fa fa-spinner fa-pulse" />
+          </span>
+        </div>;
   }
 }
 
