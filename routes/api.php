@@ -18,6 +18,10 @@ Route::group(['prefix' => 'auth', 'middleware' => ['guest:api']], function () {
     Route::post('/register', 'AuthController@register');
 });
 
+Route::group(['prefix' => 'auth', 'middleware' => ['auth:api']], function () {
+    Route::post('/update', 'AuthController@update');
+});
+
 Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::get('', 'BoardController@index');
     Route::get('{id}', 'BoardController@show');

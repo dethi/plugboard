@@ -11,6 +11,13 @@ const login = user => {
   };
 };
 
+const update = user => {
+  return {
+    type: 'UPDATE',
+    user: user
+  };
+};
+
 const logout = () => {
   return {
     type: 'LOGOUT'
@@ -20,5 +27,6 @@ const logout = () => {
 export default {
   init,
   login,
+  update,
   logout
 };
