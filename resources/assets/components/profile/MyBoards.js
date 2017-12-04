@@ -11,14 +11,13 @@ class MyBoards extends Component {
     super(props);
 
     this.state = {
-      loading: false,
+      loading: true,
       err: null,
       success: null
     };
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
     this.props.dispatch(BoardAction.getBoardsAsync()).then(() => {
       this.setState({
         loading: false
