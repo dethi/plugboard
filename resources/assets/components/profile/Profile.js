@@ -6,7 +6,7 @@ import { Redirect } from 'react-router';
 import NavBar from '../NavBar';
 import Stat from './Stat.js';
 import MyBoards from './MyBoards.js';
-import MyElements from './MyElements.js';
+import MyComponents from './MyComponents.js';
 import defaultUserProfilPicture
   from '../../../../public/static/default-user-profile.png';
 
@@ -31,7 +31,7 @@ class Profile extends Component {
     let toDisplay = <div />;
     if (this.state.curTab === 'stat') toDisplay = <Stat />;
     else if (this.state.curTab === 'boards') toDisplay = <MyBoards />;
-    else toDisplay = <MyElements />;
+    else toDisplay = <MyComponents />;
     return (
       <div>
         <NavBar showControl={false} />

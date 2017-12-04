@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Element from './Element';
-
 import BoardAction from '../../actions/boardActions';
+import boardApi from '../../api/board';
 
 class MyBoards extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: false
+      loading: false,
+      err: null,
+      success: null
     };
   }
 
@@ -25,9 +27,31 @@ class MyBoards extends Component {
   }
 
   onApply = id => {
-    if (id === null) return;
-
     this.props.dispatch(BoardAction.loadBoardAsync(id));
+  };
+
+  onDelete = id => {
+    boardApi
+      .deleteBoard(id)
+      .then(() => {
+        this.setState({ success: 'Board deleted!' });
+        this.setState({ loading: true });
+        this.props.dispatch(BoardAction.getBoardsAsync()).then(() => {
+          this.setState({
+            loading: false
+          });
+        });
+      })
+      .catch(response => {
+        if (response.status === 422) {
+          const errFormat = [];
+          Object.values(response.data).forEach(err => errFormat.push(err[0]));
+          this.setState({ err: 'An error occured' });
+        }
+        if (response.status === 401) {
+          this.setState({ err: [response.data.status] });
+        }
+      });
   };
 
   render() {
@@ -36,6 +60,14 @@ class MyBoards extends Component {
 
     return (
       <div className="list-element-profile">
+        {this.state.success &&
+          <div className="notification is-primary">
+            <p>{this.state.success}</p>
+          </div>}
+        {this.state.err &&
+          <div className="notification is-danger">
+            {<p>this.state.err</p>}
+          </div>}
         {loading &&
           <div className="has-text-centered">
             <span className="icon is-large">
@@ -57,6 +89,7 @@ class MyBoards extends Component {
                       title={board.title}
                       img={board.preview_url}
                       isElement={false}
+                      onDelete={() => this.onDelete(board.id)}
                       onClick={() => this.onApply(board.id)}
                     />
                   ))}

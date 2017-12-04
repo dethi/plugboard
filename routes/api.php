@@ -23,6 +23,7 @@ Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::get('{id}', 'BoardController@show');
     Route::post('', 'BoardController@create');
     Route::post('{id}/version', 'BoardController@add_version');
+    Route::delete('{id}', 'BoardController@destroy');
 });
 
 Route::group(['prefix' => 'objectif'], function () {
@@ -46,6 +47,7 @@ Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () 
     Route::post('', 'ComponentController@create');
     Route::post('{id}/select', 'ComponentController@select');
     Route::post('{id}/version', 'ComponentController@add_version');
+    Route::delete('{id}', 'ComponentController@destroy');
 });
 
 

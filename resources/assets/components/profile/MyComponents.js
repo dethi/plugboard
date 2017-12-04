@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import ComponentAction from '../../actions/componentActions';
-
+import componentApi from '../../api/component';
 import Element from './Element';
 
-class MyElements extends Component {
+class MyComponents extends Component {
   constructor(props) {
     super(props);
 
@@ -24,12 +24,44 @@ class MyElements extends Component {
     });
   }
 
+  onDelete = id => {
+    componentApi
+      .deleteComponent(id)
+      .then(() => {
+        this.setState({ success: 'Component deleted!' });
+        this.setState({ loading: true });
+        this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
+          this.setState({
+            loading: false
+          });
+        });
+      })
+      .catch(response => {
+        if (response.status === 422) {
+          const errFormat = [];
+          Object.values(response.data).forEach(err => errFormat.push(err[0]));
+          this.setState({ err: 'An error occured' });
+        }
+        if (response.status === 401) {
+          this.setState({ err: [response.data.status] });
+        }
+      });
+  };
+
   render() {
     const { loading } = this.state;
     const { components } = this.props.component;
 
     return (
       <div className="list-element-profile">
+        {this.state.success &&
+          <div className="notification is-primary">
+            <p>{this.state.success}</p>
+          </div>}
+        {this.state.err &&
+          <div className="notification is-danger">
+            {<p>this.state.err</p>}
+          </div>}
         {loading &&
           <div className="has-text-centered">
             <span className="icon is-large">
@@ -50,9 +82,7 @@ class MyElements extends Component {
                       key={element.id}
                       title={element.title}
                       img={element.preview_url}
-                      isElement={true}
-                      selected={element.id === this.state.boardId}
-                      onClick={() => this.selectBoard(element.id)}
+                      onDelete={() => this.onDelete(element.id)}
                     />
                   ))}
                 </div>}
@@ -69,9 +99,9 @@ const mapStateToProps = state => {
   };
 };
 
-MyElements.propTypes = {
+MyComponents.propTypes = {
   user: PropTypes.object.isRequired,
   component: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps)(MyElements);
+export default connect(mapStateToProps)(MyComponents);
