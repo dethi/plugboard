@@ -18,8 +18,6 @@ class MyComponents extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-
     if (nextProps.component !== this.props.component) {
       this.setState({ components: nextProps.component.components });
     }
@@ -74,6 +72,8 @@ class MyComponents extends Component {
   render() {
     const { loading, components } = this.state;
 
+    console.log(components);
+
     return (
       <div className="list-element-profile">
         {this.state.success &&
@@ -106,7 +106,7 @@ class MyComponents extends Component {
                       img={element.preview_url}
                       onDelete={() => this.onDelete(element.id)}
                       isElement={true}
-                      share={element.share === true}
+                      share={Boolean(element.share) === true}
                       onClick={() => this.onApply(element)}
                     />
                   ))}

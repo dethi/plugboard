@@ -63,6 +63,23 @@ const getSelectedComponents = () => {
     });
 };
 
+const getSharedComponents = () => {
+  return axios.get('/api/component/shared').then(res => res.data).catch(err => {
+    console.log(err);
+    throw err.response;
+  });
+};
+
+const getImportedComponents = () => {
+  return axios
+    .get('/api/component/imported')
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 const getComponent = componentId => {
   return axios
     .get(`/api/component/${componentId}`)
@@ -92,5 +109,7 @@ export default {
   getElComponents,
   getSelectedComponents,
   getComponent,
-  deleteComponent
+  deleteComponent,
+  getSharedComponents,
+  getImportedComponents
 };

@@ -52,6 +52,17 @@ class ComponentController extends Controller
         return $component;
     }
 
+    public function share(Request $request, $id)
+    {
+        $component = Auth::user()->components()->with(['versions' => function ($query) {
+            return $query->latest()->first();
+        }])->findOrFail($id);
+
+        $component->share = $request->input('isShare');
+        $component->save();
+        return $component;
+    }
+
     public function add_version(Request $request, $id)
     {
         $component = Auth::user()->components()->findOrFail($id);
@@ -94,6 +105,16 @@ class ComponentController extends Controller
             ->where('is_selected', true)
             ->with(['versions'])
             ->get();
+    }
+
+    public function get_shared()
+    {
+        return DB::table('components')->where('share', true)->get();
+    }
+
+    public function get_imported()
+    {
+        // 
     }
 
     public function get_elementaire()

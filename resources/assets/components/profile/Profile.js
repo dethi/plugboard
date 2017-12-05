@@ -35,6 +35,7 @@ class Profile extends Component {
     else if (this.state.curTab === 'boards') toDisplay = <MyBoards />;
     else if (this.state.curTab === 'general') toDisplay = <General />;
     else toDisplay = <MyComponents />;
+
     return (
       <div>
         <NavBar showControl={false} />
