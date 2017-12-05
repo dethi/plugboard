@@ -26,7 +26,12 @@ class ObjectifInfoModal extends Component {
                     {currentObjectif.description}
                   </h2>
                   <TruthTable objectif={currentObjectif} />
-
+                  {this.props.showHelp &&
+                    <div className="has-text-centered">
+                      <a className="button is-info" href={currentObjectif.help}>
+                        Click here if you need help
+                      </a>
+                    </div>}
                 </div>
               : ''
           }
