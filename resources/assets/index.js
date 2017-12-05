@@ -17,6 +17,7 @@ import ModalContainer from './components/modal/ModalContainer';
 import Index from './components/home';
 import Contact from './components/Contact';
 import Profile from './components/profile/Profile';
+import Community from './components/community/Community';
 import './css/app.scss';
 
 import UserAction from './actions/userActions';
@@ -47,6 +48,7 @@ ReactDOM.render(
           <Route path="/app" component={App} />
           <Route path="/contact" component={Contact} />
           <Route path="/profile" component={Profile} />
+          <Route path="/community" component={Community} />
           <ModalContainer />
         </div>
       </BrowserRouter>

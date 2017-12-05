@@ -20,6 +20,24 @@ const getComponentsAsync = () => {
   };
 };
 
+const getSharedComponents = components => {
+  return {
+    type: 'GET_SHARED_COMPONENTS',
+    components
+  };
+};
+
+const getSharedComponentsAsync = () => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      componentApi.getSharedComponents().then(components => {
+        dispatch(getSharedComponents(components));
+        resolve();
+      });
+    });
+  };
+};
+
 const selectComponent = (componentId, componentIsInPalette) => {
   return dispatch => {
     componentApi
@@ -36,5 +54,6 @@ const selectComponent = (componentId, componentIsInPalette) => {
 
 export default {
   getComponentsAsync,
+  getSharedComponentsAsync,
   selectComponent
 };

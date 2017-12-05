@@ -47,9 +47,12 @@ Route::group(['prefix' => 'component'], function () {
 Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () {
     Route::get('', 'ComponentController@index');
     Route::get('selected', 'ComponentController@get_selected');
+    Route::get('shared', 'ComponentController@get_shared');
+    Route::get('imported', 'ComponentController@get_imported');
     Route::get('{id}', 'ComponentController@show');
     Route::post('', 'ComponentController@create');
     Route::post('{id}/select', 'ComponentController@select');
+    Route::post('{id}/share', 'ComponentController@share');
     Route::post('{id}/version', 'ComponentController@add_version');
     Route::delete('{id}', 'ComponentController@destroy');
 });

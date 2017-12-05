@@ -182,6 +182,11 @@ class NavBar extends Component {
                     <i className="fa fa-list" />
                   </span>
                 </a>
+                <NavLink className="nav-item" to="/community">
+                  <span className="icon">
+                    <i className="fa fa-share-alt" />
+                  </span>
+                </NavLink>
               </div>
             : <NavLink className="nav-item is-tab" to="/app">
                 Board
