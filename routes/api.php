@@ -55,6 +55,7 @@ Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () 
     Route::post('{id}/share', 'ComponentController@share');
     Route::post('{id}/version', 'ComponentController@add_version');
     Route::delete('{id}', 'ComponentController@destroy');
+    Route::post('import/{id}', 'ComponentController@import');
 });
 
 
