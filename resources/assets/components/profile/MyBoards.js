@@ -89,8 +89,8 @@ class MyBoards extends Component {
                       title={board.title}
                       img={board.preview_url}
                       isElement={false}
-                      onDelete={() => this.onDelete(board.id)}
-                      onClick={() => this.onApply(board.id)}
+                      onClickDelete={() => this.onDelete(board.id)}
+                      onClickEdit={() => this.onApply(board.id)}
                     />
                   ))}
                 </div>}
