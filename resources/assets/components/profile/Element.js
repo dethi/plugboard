@@ -12,30 +12,27 @@ export default function Element(props) {
           </figure>
           <div className="content has-text-centered">
             <strong className="title">{props.title}</strong><br />
-            {props.onClick &&
+            {props.onClickEdit &&
               <NavLink
                 className="has-text-center button is-medium is-primary has-margin"
                 to="/app"
-                onClick={props.onClick}
+                onClick={props.onClickEdit}
               >
                 Edit
               </NavLink>}
+            {props.onClickShare &&
+              <a
+                className="has-text-center button is-medium is-info has-margin"
+                onClick={props.onClickShare}
+              >
+                {!props.share ? 'Share' : 'Make private'}
+              </a>}
             <a
               className="has-text-center button is-medium is-danger has-margin"
-              onClick={props.onDelete}
+              onClick={props.onClickDelete}
             >
               Delete
             </a>
-            <div className="columns is-centered">
-              <div className="column is-half">
-                <a
-                  className="has-text-center button is-medium is-info has-margin"
-                  onClick={props.onClick}
-                >
-                  {!props.share ? 'Share' : 'Make private'}
-                </a>
-              </div>
-            </div>
 
           </div>
         </div>
