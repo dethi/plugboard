@@ -260,7 +260,7 @@ textarea {
     margin-right: 35px
 }
 
-.list-element-profile {
+.list-elements {
     .parent {
         display: flex;
         flex-direction: row;
@@ -278,5 +278,8 @@ textarea {
             margin-bottom: 10px;
         }
     }
-    
 }
+
+.title-community, .list-shared-component {
+    margin-top: 25px
+ }

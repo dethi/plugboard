@@ -75,7 +75,7 @@ class MyComponents extends Component {
     console.log(components);
 
     return (
-      <div className="list-element-profile">
+      <div className="list-elements">
         {this.state.success &&
           <div className="notification is-primary">
             <p>{this.state.success}</p>
