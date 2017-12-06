@@ -109,7 +109,10 @@ class ComponentController extends Controller
 
     public function get_shared()
     {
-        return  Component::where('share', true)->with(['versions'])->get();
+        return  Component::where('share', true)->with(['versions'])
+                            ->join('users', 'users.id', '=', 'components.user_id')
+                            ->select('components.*' , 'users.name as name')
+                            ->get();
     }
 
 

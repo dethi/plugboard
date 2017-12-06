@@ -35,13 +35,26 @@ class Community extends Component {
   onApply = element => {
     if (element === null) return;
 
-    componentApi.importComponent(element.id);
+    componentApi
+      .importComponent(element.id)
+      .then(() => {
+        this.setState({ success: 'Component imported!' });
+        this.setState({ loading: true });
+        this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
+          this.setState({
+            loading: false
+          });
+        });
+      })
+      .catch(response => {
+        this.setState({ err: 'An error occured' });
+      });
   };
 
   render() {
     const { loading, components } = this.state;
 
-    console.log(components);
+    console.log(this.state);
 
     return (
       <div>
@@ -60,6 +73,14 @@ class Community extends Component {
         <div className="columns">
           <div className="column is-half is-offset-one-quarter">
             <div className="list-elements list-shared-component">
+              {this.state.success &&
+                <div className="notification is-primary">
+                  <p>{this.state.success}</p>
+                </div>}
+              {this.state.err &&
+                <div className="notification is-danger">
+                  {<p>this.state.err</p>}
+                </div>}
               {loading &&
                 <div className="has-text-centered">
                   <span className="icon is-large">
@@ -81,6 +102,7 @@ class Community extends Component {
                             title={element.title}
                             img={element.preview_url}
                             onClickShare={() => this.onApply(element)}
+                            name={element.name}
                           />
                         ))}
                       </div>}

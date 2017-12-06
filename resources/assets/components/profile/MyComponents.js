@@ -104,9 +104,9 @@ class MyComponents extends Component {
                       key={element.id}
                       title={element.title}
                       img={element.preview_url}
-                      onDelete={() => this.onDelete(element.id)}
                       isElement={true}
                       share={Boolean(element.share) === true}
+                      onClickDelete={() => this.onDelete(element.id)}
                       onClickShare={() => this.onApply(element)}
                     />
                   ))}
