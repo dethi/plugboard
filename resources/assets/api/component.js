@@ -100,6 +100,15 @@ const deleteComponent = componentId => {
     });
 };
 
+const importComponent = componentId => {
+  return axios
+    .post(`/api/component/import/${componentId}`)
+    .then(res => res.data)
+    .catch(err => {
+      throw err.response;
+    });
+};
+
 export default {
   saveNewComponent,
   saveComponent,
@@ -108,8 +117,11 @@ export default {
   getComponents,
   getElComponents,
   getSelectedComponents,
+  getSharedComponents,
+  getImportedComponents,
   getComponent,
   deleteComponent,
   getSharedComponents,
-  getImportedComponents
+  getImportedComponents,
+  importComponent
 };

@@ -5,6 +5,7 @@ import NavBar from '../NavBar';
 import Element from './Element';
 
 import ComponentAction from '../../actions/componentActions';
+import componentApi from '../../api/component';
 
 class Community extends Component {
   constructor(props) {
@@ -30,6 +31,12 @@ class Community extends Component {
       });
     });
   }
+
+  onApply = element => {
+    if (element === null) return;
+
+    componentApi.importComponent(element.id);
+  };
 
   render() {
     const { loading, components } = this.state;

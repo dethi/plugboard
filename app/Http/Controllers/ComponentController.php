@@ -109,9 +109,28 @@ class ComponentController extends Controller
 
     public function get_shared()
     {
-        return DB::table('components')->where('share', true)->get();
+        return  Component::where('share', true)->with(['versions'])->get();
     }
 
+
+    public function import($id) {
+        $component = Component::findOrFail($id);
+        $newComponent = $component->replicate();
+        $newComponent->user_id = Auth::id();
+        $newComponent->share = 0;
+        $newComponent->is_selected = 0;
+        $newComponent->push();
+
+        $component->load('versions');
+        $relations = $component->getRelations();
+        foreach ($relations as $relation) {
+            foreach ($relation as $relationRecord) {
+                $newRelationship = $relationRecord->replicate();
+                $newRelationship->component_id = $newComponent->id;
+                $newRelationship->push();
+            }
+        }
+    }
     public function get_imported()
     {
         // 
