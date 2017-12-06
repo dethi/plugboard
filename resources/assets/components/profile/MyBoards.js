@@ -59,7 +59,7 @@ class MyBoards extends Component {
     const { boards } = this.props.board;
 
     return (
-      <div className="list-element-profile">
+      <div className="list-elements">
         {this.state.success &&
           <div className="notification is-primary">
             <p>{this.state.success}</p>
