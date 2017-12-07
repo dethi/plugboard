@@ -13,12 +13,12 @@ class AddOriginalIdToComponentsTable extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('components', function (Blueprint $table) {
-              $table->integer('originalId')->default(0);  
+            $table->integer('originalId')->nullable()->unsigned();
+            $table->foreign('originalId')->references('id')->on('components');
         });
-
-        DB::table('components')
-        ->update(['originalId' => 0]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -29,6 +29,7 @@ class AddOriginalIdToComponentsTable extends Migration
     public function down()
     {
         Schema::table('components', function (Blueprint $table) {
+            $table->dropForeign(['originalId']);
             $table->dropColumn('originalId');
         });
     }
