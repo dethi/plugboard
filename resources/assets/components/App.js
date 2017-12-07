@@ -29,17 +29,22 @@ const steps = [
   },
   {
     selector: '[data-tour="create-component"]',
-    content: 'Any board can be trasnformed in an component to be reused later!',
+    content: 'Any board can be transformed in an component to be reused later!',
     position: 'bottom'
   },
   {
     selector: '[data-tour="choose-component"]',
-    content: 'You can choose anytime wich component is available in the panel.',
+    content: 'You can choose anytime which component is available in the panel.',
     position: 'bottom'
   },
   {
     selector: '[data-tour="goal"]',
     content: 'The list of goal is available in the side bar menu!',
+    position: 'bottom'
+  },
+  {
+    selector: '[data-tour="share"]',
+    content: 'You can import components shared by the community by clicking on this button!',
     position: 'bottom'
   },
   {
@@ -52,7 +57,7 @@ const steps = [
   },
   {
     selector: '[data-tour="register"]',
-    content: "That's all for now. Don't forget to register an account if you want to save your work!",
+    content: "That's all for now. Don't forget to register an account if you want to save your work and import components shared by the community!",
     position: 'bottom'
   }
 ];

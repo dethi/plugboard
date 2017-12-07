@@ -193,6 +193,7 @@ class NavBar extends Component {
                 <NavLink
                   className="nav-item"
                   to="/community"
+                  data-tour="share"
                   onClick={this.handleClickCommunity}
                 >
                   <span className="icon">
