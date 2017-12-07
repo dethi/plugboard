@@ -8,8 +8,10 @@ export default function Element(props) {
           <figure className="image">
             <img src={props.img} alt="Board Preview" />
           </figure>
-          <div className="content has-text-centered">
-            <strong className="title">{props.title}</strong><br />
+          <div className="content has-text-centered is-size-4	">
+            <strong className="title">{props.title}</strong>
+            {props.originalName && ' by ' + props.originalName}
+            <br />
             {props.onClickEdit &&
               <NavLink
                 className="has-text-center button is-medium is-primary has-margin"

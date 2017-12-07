@@ -15,7 +15,11 @@ class ComponentController extends Controller
 {
     public function index()
     {
-        return Auth::user()->components()->get();
+        return Auth::user()->components()
+                            ->leftjoin('components as cp', 'cp.id', '=', 'components.originalId')
+                            ->leftjoin('users', 'cp.user_id', '=', 'users.id')
+                            ->select('components.*' , 'users.name as original_name')
+                            ->get();
     }
 
     public function create(Request $request)
