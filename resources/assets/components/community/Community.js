@@ -19,7 +19,7 @@ class Community extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.component !== this.props.component) {
-      this.setState({ components: nextProps.component.shared });
+      this.setState({ sharedComponents: nextProps.component.shared });
     }
   }
 
@@ -30,29 +30,27 @@ class Community extends Component {
         loading: false
       });
     });
+
+    this.props.dispatch(ComponentAction.getComponentsAsync());
   }
 
   onApply = element => {
     if (element === null) return;
 
-    componentApi
-      .importComponent(element.id)
-      .then(() => {
-        this.setState({ success: 'Component imported!' });
-        this.setState({ loading: true });
-        this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
-          this.setState({
-            loading: false
-          });
-        });
-      })
-      .catch(response => {
-        this.setState({ err: 'An error occured' });
-      });
+    componentApi.importComponent(element.id).then(() => {
+      this.setState({ success: element.title + ' imported!' });
+      this.props.dispatch(ComponentAction.getComponentsAsync());
+    });
+  };
+
+  onCloseNotif = type => {
+    if (type === 0) this.setState({ success: '' });
+    else this.setState({ err: '' });
   };
 
   render() {
-    const { loading, components } = this.state;
+    const { loading, sharedComponents, components } = this.state;
+    //components.find(component => component.)
 
     console.log(this.state);
 
@@ -75,10 +73,18 @@ class Community extends Component {
             <div className="list-elements list-shared-component">
               {this.state.success &&
                 <div className="notification is-primary">
+                  <button
+                    onClick={() => this.onCloseNotif(0)}
+                    className="delete"
+                  />
                   <p>{this.state.success}</p>
                 </div>}
               {this.state.err &&
                 <div className="notification is-danger">
+                  <button
+                    onClick={() => this.onCloseNotif(1)}
+                    className="delete"
+                  />
                   {<p>this.state.err</p>}
                 </div>}
               {loading &&
@@ -87,16 +93,16 @@ class Community extends Component {
                     <i className="fa fa-spinner fa-pulse" />
                   </span>
                 </div>}
-              {components &&
+              {sharedComponents &&
                 <div>
-                  {components.length === 0
+                  {sharedComponents.length === 0
                     ? <div className="has-text-centered">
                         <div className="notification is-warning">
-                          <p>You don't have any saved components</p>
+                          <p>There is not components to import. Share yours!</p>
                         </div>
                       </div>
                     : <div className="parent">
-                        {components.map(element => (
+                        {sharedComponents.map(element => (
                           <Element
                             key={element.id}
                             title={element.title}

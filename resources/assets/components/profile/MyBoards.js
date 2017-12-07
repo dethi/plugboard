@@ -30,17 +30,12 @@ class MyBoards extends Component {
     this.props.dispatch(BoardAction.loadBoardAsync(id));
   };
 
-  onDelete = id => {
+  onDelete = board => {
     boardApi
-      .deleteBoard(id)
+      .deleteBoard(board.id)
       .then(() => {
-        this.setState({ success: 'Board deleted!' });
-        this.setState({ loading: true });
-        this.props.dispatch(BoardAction.getBoardsAsync()).then(() => {
-          this.setState({
-            loading: false
-          });
-        });
+        this.setState({ success: board.title + ' deleted!' });
+        this.props.dispatch(BoardAction.getBoardsAsync());
       })
       .catch(response => {
         if (response.status === 422) {
@@ -54,6 +49,11 @@ class MyBoards extends Component {
       });
   };
 
+  onCloseNotif = type => {
+    if (type === 0) this.setState({ success: '' });
+    else this.setState({ err: '' });
+  };
+
   render() {
     const { loading } = this.state;
     const { boards } = this.props.board;
@@ -62,10 +62,12 @@ class MyBoards extends Component {
       <div className="list-elements">
         {this.state.success &&
           <div className="notification is-primary">
+            <button onClick={() => this.onCloseNotif(0)} className="delete" />
             <p>{this.state.success}</p>
           </div>}
         {this.state.err &&
           <div className="notification is-danger">
+            <button onClick={() => this.onCloseNotif(1)} className="delete" />
             {<p>this.state.err</p>}
           </div>}
         {loading &&
@@ -89,7 +91,7 @@ class MyBoards extends Component {
                       title={board.title}
                       img={board.preview_url}
                       isElement={false}
-                      onClickDelete={() => this.onDelete(board.id)}
+                      onClickDelete={() => this.onDelete(board)}
                       onClickEdit={() => this.onApply(board.id)}
                     />
                   ))}
