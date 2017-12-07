@@ -35,11 +35,12 @@ class Community extends Component {
   }
 
   onApply = element => {
-    if (element === null) return;
-
-    componentApi.importComponent(element.id).then(() => {
-      this.setState({ success: element.title + ' imported!' });
-      this.props.dispatch(ComponentAction.getComponentsAsync());
+    return new Promise((resolve, reject) => {
+      componentApi.importComponent(element.id).then(() => {
+        this.setState({ success: element.title + ' imported!' });
+        this.props.dispatch(ComponentAction.getComponentsAsync());
+        resolve();
+      });
     });
   };
 
