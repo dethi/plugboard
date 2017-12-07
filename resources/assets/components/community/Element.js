@@ -1,6 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import classNames from 'classnames';
 
 export default function Element(props) {
   return (

@@ -32,17 +32,22 @@ class MyComponents extends Component {
     });
   }
 
-  onDelete = id => {
+  onDelete = element => {
     componentApi
-      .deleteComponent(id)
+      .deleteComponent(element.id)
       .then(() => {
-        this.setState({ success: 'Component deleted!' });
-        this.setState({ loading: true });
-        this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
-          this.setState({
-            loading: false
-          });
-        });
+        this.setState({ success: element.title + ' deleted!' });
+
+        const components = this.state.components;
+        const indexToDelete = components.findIndex(
+          component => component.id === element.id
+        );
+        components.splice(indexToDelete, 1);
+        this.setState({ components: components });
+
+        console.log(components);
+
+        //this.props.dispatch(ComponentAction.getComponentsAsync());
       })
       .catch(response => {
         if (response.status === 422) {
@@ -69,19 +74,25 @@ class MyComponents extends Component {
     this.setState({ components: components });
   };
 
+  onCloseNotif = type => {
+    if (type === 0) this.setState({ success: '' });
+    else this.setState({ err: '' });
+  };
+
   render() {
     const { loading, components } = this.state;
-
     console.log(components);
 
     return (
       <div className="list-elements">
         {this.state.success &&
           <div className="notification is-primary">
+            <button onClick={() => this.onCloseNotif(0)} className="delete" />
             <p>{this.state.success}</p>
           </div>}
         {this.state.err &&
           <div className="notification is-danger">
+            <button onClick={() => this.onCloseNotif(1)} className="delete" />
             {<p>this.state.err</p>}
           </div>}
         {loading &&
@@ -106,7 +117,7 @@ class MyComponents extends Component {
                       img={element.preview_url}
                       isElement={true}
                       share={Boolean(element.share) === true}
-                      onClickDelete={() => this.onDelete(element.id)}
+                      onClickDelete={() => this.onDelete(element)}
                       onClickShare={() => this.onApply(element)}
                     />
                   ))}

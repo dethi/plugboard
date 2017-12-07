@@ -111,6 +111,7 @@ class ComponentController extends Controller
     {
         return  Component::where('share', true)->with(['versions'])
                             ->join('users', 'users.id', '=', 'components.user_id')
+                            ->where('components.user_id', '!=', Auth::user()->id)
                             ->select('components.*' , 'users.name as name')
                             ->get();
     }
