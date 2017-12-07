@@ -45,11 +45,14 @@ class ListObjectif extends Component {
     this.props.dispatch(ObjectifAction.showQuickView(show));
   };
 
-  /**
-     * Alert if clicked on outside of element
-     */
   handleClickOutside = event => {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    const navBarQuickView = document.getElementById('show-goals');
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(event.target) &&
+      navBarQuickView &&
+      !navBarQuickView.contains(event.target)
+    ) {
       const {
         showQuickView
       } = this.props.objectif;

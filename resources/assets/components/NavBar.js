@@ -114,6 +114,13 @@ class NavBar extends Component {
     this.props.dispatch(ObjectifAction.exitObjectifMode());
   };
 
+  handleClickCommunity = e => {
+    if (this.props.user === null) {
+      e.preventDefault();
+      this.props.dispatch(ModalAction.displayModal('LOGIN_NEEDED'));
+    }
+  };
+
   render() {
     return (
       <nav className="nav has-shadow app-main-nav">
@@ -176,17 +183,23 @@ class NavBar extends Component {
                 <a
                   className="nav-item"
                   data-tour="goal"
+                  id="show-goals"
                   onClick={this.showObjectifQuickView}
                 >
                   <span className="icon">
                     <i className="fa fa-list" />
                   </span>
                 </a>
-                <NavLink className="nav-item" to="/community">
+                <NavLink
+                  className="nav-item"
+                  to="/community"
+                  onClick={this.handleClickCommunity}
+                >
                   <span className="icon">
                     <i className="fa fa-share-alt" />
                   </span>
                 </NavLink>
+
               </div>
             : <NavLink className="nav-item is-tab" to="/app">
                 Board
