@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 export default function Element(props) {
   return (
@@ -12,12 +13,16 @@ export default function Element(props) {
             <strong className="title">{props.title}</strong> by {props.name}
             <br />
 
-            <a
-              className="has-text-center button is-medium is-info has-margin"
-              onClick={props.onClickShare}
+            <div
+              className={classNames('has-text-center', 'button', 'is-medium', {
+                'component-already-imported': !props.originalComponent,
+                'is-info': props.originalComponent,
+                'is-primary': !props.originalComponent
+              })}
+              onClick={props.originalComponent ? props.onClickImport : null}
             >
-              Import
-            </a>
+              {props.originalComponent ? 'Import' : 'Imported'}
+            </div>
 
           </div>
         </div>

@@ -121,7 +121,5 @@ export default {
   getImportedComponents,
   getComponent,
   deleteComponent,
-  getSharedComponents,
-  getImportedComponents,
   importComponent
 };
