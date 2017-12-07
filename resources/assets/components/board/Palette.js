@@ -55,7 +55,7 @@ class Palette extends Component {
     if (blueprints)
       selectedBlueprintIndex = blueprints.indexOf(selectedBlueprint);
     return (
-      <div className="on-canvas palette">
+      <div className="on-canvas palette" data-tour="palette">
         <div className="box">
           <p className="component-name has-text-centered">
             {selectedBlueprint != null
