@@ -11,7 +11,11 @@ import ObjectifAction from '../actions/objectifActions';
 function GuestMenu(props) {
   return (
     <div className="nav-right nav-menu">
-      <a className="nav-item is-tab" onClick={props.onRegister}>
+      <a
+        className="nav-item is-tab"
+        data-tour="register"
+        onClick={props.onRegister}
+      >
         Register
       </a>
       <a className="nav-item is-tab" onClick={props.onLogin}>
@@ -115,7 +119,7 @@ class NavBar extends Component {
       <nav className="nav has-shadow app-main-nav">
         <div className="container">
           <div className="nav-left">
-            <NavLink className="nav-item" to="/">
+            <NavLink className="nav-item" to="/" data-tour="logo">
               <img src="/static/Plugboard-Green.png" alt="Plugboard logo" />
             </NavLink>
           </div>
@@ -126,7 +130,7 @@ class NavBar extends Component {
                     <i className="fa fa-step-forward" />
                   </span>
                 </a>
-                <a className="nav-item">
+                <a className="nav-item" data-tour="play">
                   <span className="icon">
                     <i
                       className={classNames('fa', {
@@ -137,7 +141,11 @@ class NavBar extends Component {
                     />
                   </span>
                 </a>
-                <a className="nav-item" onClick={this.handleSaving}>
+                <a
+                  className="nav-item"
+                  data-tour="save"
+                  onClick={this.handleSaving}
+                >
                   <span className="icon">
                     <i className="fa fa-save" />
                   </span>
@@ -147,17 +155,29 @@ class NavBar extends Component {
                     <i className="fa fa-folder-open" />
                   </span>
                 </a>
-                <a className="nav-item" onClick={this.handleNewComponent}>
+                <a
+                  className="nav-item"
+                  data-tour="create-component"
+                  onClick={this.handleNewComponent}
+                >
                   <span className="icon">
                     <i className="fa fa-microchip" />
                   </span>
                 </a>
-                <a className="nav-item" onClick={this.handleChooseComponent}>
+                <a
+                  className="nav-item"
+                  data-tour="choose-component"
+                  onClick={this.handleChooseComponent}
+                >
                   <span className="icon">
                     <i className="fa fa-book" />
                   </span>
                 </a>
-                <a className="nav-item" onClick={this.showObjectifQuickView}>
+                <a
+                  className="nav-item"
+                  data-tour="goal"
+                  onClick={this.showObjectifQuickView}
+                >
                   <span className="icon">
                     <i className="fa fa-list" />
                   </span>
