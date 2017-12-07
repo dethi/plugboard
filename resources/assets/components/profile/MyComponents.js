@@ -118,7 +118,11 @@ class MyComponents extends Component {
                       isElement={true}
                       share={Boolean(element.share) === true}
                       onClickDelete={() => this.onDelete(element)}
-                      onClickShare={() => this.onApply(element)}
+                      onClickShare={
+                        element.originalId === 0
+                          ? () => this.onApply(element)
+                          : null
+                      }
                     />
                   ))}
                 </div>}

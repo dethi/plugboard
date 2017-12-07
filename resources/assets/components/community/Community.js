@@ -26,12 +26,12 @@ class Community extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     this.props.dispatch(ComponentAction.getSharedComponentsAsync()).then(() => {
-      this.setState({
-        loading: false
+      this.props.dispatch(ComponentAction.getComponentsAsync()).then(() => {
+        this.setState({
+          loading: false
+        });
       });
     });
-
-    this.props.dispatch(ComponentAction.getComponentsAsync());
   }
 
   onApply = element => {
@@ -49,10 +49,8 @@ class Community extends Component {
   };
 
   render() {
-    const { loading, sharedComponents, components } = this.state;
-    //components.find(component => component.)
-
-    console.log(this.state);
+    const { loading, sharedComponents } = this.state;
+    const { components } = this.props.component;
 
     return (
       <div>
@@ -94,6 +92,7 @@ class Community extends Component {
                   </span>
                 </div>}
               {sharedComponents &&
+                components &&
                 <div>
                   {sharedComponents.length === 0
                     ? <div className="has-text-centered">
@@ -107,7 +106,14 @@ class Community extends Component {
                             key={element.id}
                             title={element.title}
                             img={element.preview_url}
-                            onClickShare={() => this.onApply(element)}
+                            originalComponent={
+                              components.find(
+                                component => element.id === component.originalId
+                              )
+                                ? false
+                                : true
+                            }
+                            onClickImport={() => this.onApply(element)}
                             name={element.name}
                           />
                         ))}

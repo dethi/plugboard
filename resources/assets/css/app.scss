@@ -283,3 +283,8 @@ textarea {
 .title-community, .list-shared-component {
     margin-top: 25px
  }
+
+ .component-already-imported {
+    pointer-events: none;
+    cursor: default;
+}

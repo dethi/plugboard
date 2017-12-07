@@ -121,6 +121,7 @@ class ComponentController extends Controller
         $component = Component::findOrFail($id);
         $newComponent = $component->replicate();
         $newComponent->user_id = Auth::id();
+        $newComponent->originalId = $id;
         $newComponent->share = 0;
         $newComponent->is_selected = 0;
         $newComponent->push();
