@@ -12,6 +12,7 @@ class ObjectifInfoModal extends Component {
     return (
       <div>
         <Modal
+          id="modal-info"
           modalName={this.props.modalName}
           title={currentObjectif ? currentObjectif.title : ''}
           ribbon={

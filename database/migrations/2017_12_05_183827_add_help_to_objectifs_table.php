@@ -14,7 +14,7 @@ class AddHelpToObjectifsTable extends Migration
     public function up()
     {
         Schema::table('objectifs', function (Blueprint $table) {
-              $table->text('help');
+              $table->text('help')->nullable();
         });
 
          DB::table('objectifs')
