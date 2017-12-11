@@ -2,7 +2,15 @@ server {
     listen 80 {% if nginx_default %}default_server{% endif %};
     listen [::]:80 {% if nginx_default %}default_server{% endif %};
     server_name {{app.app_domain|join(' ')}};
-    return 301 https://$server_name$request_uri;
+
+    location ~ /.well-known {
+        # Letsencrypt challenge
+        root /var/www/{{app.app_id}};
+    }
+
+    location / {
+        return 301 https://$server_name$request_uri;
+    }
 }
 
 server {
@@ -35,13 +43,6 @@ server {
     index index.php index.html;
 
     server_name {{app.app_domain|join(' ')}};
-
-    location ~ /.well-known {
-        # Letsencrypt challenge
-        auth_basic off;
-        root /var/www/{{app.app_id}};
-        allow all;
-    }
 
     location / {
         # First attempt to serve request as file, then as directory,

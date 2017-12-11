@@ -6,4 +6,3 @@
     app_deploy_script_path: '{{playbook_dir}}/../../scripts'
   roles:
     - { role: app, app: '{{apps.plugboard_prod}}', nginx_default: true }
-    - { role: app, app: '{{apps.plugboard_beta}}' }
