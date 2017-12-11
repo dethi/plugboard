@@ -12,6 +12,7 @@ class ObjectifInfoModal extends Component {
     return (
       <div>
         <Modal
+          id="modal-info"
           modalName={this.props.modalName}
           title={currentObjectif ? currentObjectif.title : ''}
           ribbon={
@@ -26,7 +27,12 @@ class ObjectifInfoModal extends Component {
                     {currentObjectif.description}
                   </h2>
                   <TruthTable objectif={currentObjectif} />
-
+                  {this.props.showHelp &&
+                    <div className="has-text-centered">
+                      <a className="button is-info" href={currentObjectif.help}>
+                        Click here if you need help
+                      </a>
+                    </div>}
                 </div>
               : ''
           }

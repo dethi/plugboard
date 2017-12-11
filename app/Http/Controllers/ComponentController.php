@@ -15,7 +15,11 @@ class ComponentController extends Controller
 {
     public function index()
     {
-        return Auth::user()->components()->get();
+        return Auth::user()->components()
+                            ->leftjoin('components as cp', 'cp.id', '=', 'components.originalId')
+                            ->leftjoin('users', 'cp.user_id', '=', 'users.id')
+                            ->select('components.*' , 'users.name as original_name')
+                            ->get();
     }
 
     public function create(Request $request)
@@ -48,6 +52,17 @@ class ComponentController extends Controller
         }])->findOrFail($id);
 
         $component->is_selected = $request->input('isSelected');
+        $component->save();
+        return $component;
+    }
+
+    public function share(Request $request, $id)
+    {
+        $component = Auth::user()->components()->with(['versions' => function ($query) {
+            return $query->latest()->first();
+        }])->findOrFail($id);
+
+        $component->share = $request->input('isShare');
         $component->save();
         return $component;
     }
@@ -96,6 +111,40 @@ class ComponentController extends Controller
             ->get();
     }
 
+    public function get_shared()
+    {
+        return  Component::where('share', true)->with(['versions'])
+                            ->join('users', 'users.id', '=', 'components.user_id')
+                            ->where('components.user_id', '!=', Auth::user()->id)
+                            ->select('components.*' , 'users.name as name')
+                            ->get();
+    }
+
+
+    public function import($id) {
+        $component = Component::findOrFail($id);
+        $newComponent = $component->replicate();
+        $newComponent->user_id = Auth::id();
+        $newComponent->originalId = $id;
+        $newComponent->share = 0;
+        $newComponent->is_selected = 0;
+        $newComponent->push();
+
+        $component->load('versions');
+        $relations = $component->getRelations();
+        foreach ($relations as $relation) {
+            foreach ($relation as $relationRecord) {
+                $newRelationship = $relationRecord->replicate();
+                $newRelationship->component_id = $newComponent->id;
+                $newRelationship->push();
+            }
+        }
+    }
+    public function get_imported()
+    {
+        // 
+    }
+
     public function get_elementaire()
     {
         return DB::table('el_components')->get();
@@ -107,8 +156,10 @@ class ComponentController extends Controller
         //
     }
 
-    public function destroy(Component $component)
+    public function destroy($id)
     {
-        //
+        $component = Auth::user()->components()->findOrFail($id);
+        ComponentData::destroy($component->last_version_id);
+        $component->delete();
     }
 }

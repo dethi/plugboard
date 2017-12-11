@@ -75,8 +75,10 @@ class BoardController extends Controller
         //
     }
 
-    public function destroy(Board $board)
+    public function destroy($id)
     {
-        //
+        $board = Auth::user()->boards()->findOrFail($id);
+        BoardData::destroy($board->last_version_id);
+        $board->delete();  
     }
 }

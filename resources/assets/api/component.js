@@ -27,6 +27,15 @@ const selectComponent = (componentId, isSelected) => {
     });
 };
 
+const shareComponent = (componentId, isShare) => {
+  return axios
+    .post(`/api/component/${componentId}/share`, { isShare })
+    .then(res => res.data)
+    .catch(err => {
+      throw err.response;
+    });
+};
+
 const getComponents = () => {
   return axios.get('/api/component').then(res => res.data).catch(err => {
     console.log(err);
@@ -54,6 +63,23 @@ const getSelectedComponents = () => {
     });
 };
 
+const getSharedComponents = () => {
+  return axios.get('/api/component/shared').then(res => res.data).catch(err => {
+    console.log(err);
+    throw err.response;
+  });
+};
+
+const getImportedComponents = () => {
+  return axios
+    .get('/api/component/imported')
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
 const getComponent = componentId => {
   return axios
     .get(`/api/component/${componentId}`)
@@ -64,12 +90,36 @@ const getComponent = componentId => {
     });
 };
 
+const deleteComponent = componentId => {
+  return axios
+    .delete(`/api/component/${componentId}`)
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+      throw err.response;
+    });
+};
+
+const importComponent = componentId => {
+  return axios
+    .post(`/api/component/import/${componentId}`)
+    .then(res => res.data)
+    .catch(err => {
+      throw err.response;
+    });
+};
+
 export default {
   saveNewComponent,
   saveComponent,
   selectComponent,
+  shareComponent,
   getComponents,
   getElComponents,
   getSelectedComponents,
-  getComponent
+  getSharedComponents,
+  getImportedComponents,
+  getComponent,
+  deleteComponent,
+  importComponent
 };

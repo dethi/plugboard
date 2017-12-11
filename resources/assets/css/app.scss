@@ -259,3 +259,32 @@ textarea {
 .marginForRibbon {
     margin-right: 35px
 }
+
+.list-elements {
+    .parent {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+     .box {
+        margin: auto;
+        margin-bottom: 20px;
+
+        .image {
+            width: 200px;  /* Or whatever */
+            height: 200px; /* Or whatever */
+            margin: auto;  /* Magic! */
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.title-community, .list-shared-component {
+    margin-top: 25px
+ }
+
+ .component-already-imported {
+    pointer-events: none;
+    cursor: default;
+}

@@ -50,7 +50,7 @@
   when: not ssl.stat.exists
 
 - name: '{{app.app_id}} - letsencrypt (no ssl)'
-  raw: 'letsencrypt certonly --agree-tos --email {{letsencrypt_email}} --webroot -w /var/www/{{app.app_id}} -d {{app.app_domain|join("-d ")}}'
+  raw: 'letsencrypt certonly --agree-tos --email {{letsencrypt_email}} --webroot -w /var/www/{{app.app_id}} -d {{app.app_domain|join(" -d ")}}'
   when: not ssl.stat.exists
 
 - name: '{{app.app_id}} - recheck if SSL cert exists'

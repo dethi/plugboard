@@ -14,7 +14,10 @@ class MoveArrow extends Component {
 
   render() {
     return (
-      <div className="on-canvas on-canvas-right move-arrow">
+      <div
+        className="on-canvas on-canvas-right move-arrow"
+        data-tour="move-arrow"
+      >
         <div className="box">
           <div className="has-text-centered">
             <a className="button" onClick={() => this.handleClick('up')}>

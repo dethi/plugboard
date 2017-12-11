@@ -15,6 +15,7 @@ class ObjectifInfoDetailModal extends Component {
         <ObjectifInfoModal
           modalName="OBJECTIF_INFO_DETAIL"
           objectifToDisplay={currentObjectif}
+          showHelp={true}
         />
       </div>
     );

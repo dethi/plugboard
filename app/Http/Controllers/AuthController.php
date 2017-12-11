@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,5 +50,32 @@ class AuthController extends Controller
         ]);
 
         return $user->makeVisible('api_token');
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:255'
+        ]);
+        $input = $request->only('name', 'old_password', 'new_password');
+        $user = Auth::user();
+        if (isset($input['new_password'])) {
+            $this->validate($request, [
+                'old_password' => 'required|min:6',
+                'new_password' => 'required|min:6|confirmed'
+            ]);
+            if (Hash::check($input['old_password'], $user->password)) {
+                $user->password = bcrypt($input['new_password']);
+            }
+            else {
+                return response([
+                    'code' => 'failed_old_password',
+                    'status' => 'Wrong password'
+                ], 401);
+            }
+        }
+        $user->name = $input['name'];
+        $user->save();
+        return $user->makeVisible('api_token');;
     }
 }

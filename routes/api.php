@@ -18,11 +18,16 @@ Route::group(['prefix' => 'auth', 'middleware' => ['guest:api']], function () {
     Route::post('/register', 'AuthController@register');
 });
 
+Route::group(['prefix' => 'auth', 'middleware' => ['auth:api']], function () {
+    Route::post('/update', 'AuthController@update');
+});
+
 Route::group(['prefix' => 'board', 'middleware' => 'auth:api'], function () {
     Route::get('', 'BoardController@index');
     Route::get('{id}', 'BoardController@show');
     Route::post('', 'BoardController@create');
     Route::post('{id}/version', 'BoardController@add_version');
+    Route::delete('{id}', 'BoardController@destroy');
 });
 
 Route::group(['prefix' => 'objectif'], function () {
@@ -42,10 +47,15 @@ Route::group(['prefix' => 'component'], function () {
 Route::group(['prefix' => 'component', 'middleware' => 'auth:api'], function () {
     Route::get('', 'ComponentController@index');
     Route::get('selected', 'ComponentController@get_selected');
+    Route::get('shared', 'ComponentController@get_shared');
+    Route::get('imported', 'ComponentController@get_imported');
     Route::get('{id}', 'ComponentController@show');
     Route::post('', 'ComponentController@create');
     Route::post('{id}/select', 'ComponentController@select');
+    Route::post('{id}/share', 'ComponentController@share');
     Route::post('{id}/version', 'ComponentController@add_version');
+    Route::delete('{id}', 'ComponentController@destroy');
+    Route::post('import/{id}', 'ComponentController@import');
 });
 
 

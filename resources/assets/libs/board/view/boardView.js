@@ -30,7 +30,7 @@ export default class BoardView {
       selection: false,
       height: this.gridHeight,
       width: this.gridWidth,
-      renderOnAddRemove: false
+      renderOnAddRemove: true
     });
 
     this.leftMin = this.gridSize;
@@ -86,6 +86,10 @@ export default class BoardView {
     });
 
     this.addGridLine();
+  }
+
+  dispose() {
+    this.fabricCanvas.dispose();
   }
 
   addGridLine() {

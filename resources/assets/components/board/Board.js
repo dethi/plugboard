@@ -41,6 +41,9 @@ class Board extends Component {
 
   componentWillUnmount() {
     document.documentElement.classList.remove('disable-scroll');
+    this.stop();
+    this.boardController.dispose();
+    this.boardController = null;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -219,6 +222,9 @@ class Board extends Component {
   run = () => {
     let board = null;
     let states = null;
+
+    // For sanity, check first if we can stop something.
+    this.stop();
 
     const loop = () => {
       board = this.boardController.exportForEngine();

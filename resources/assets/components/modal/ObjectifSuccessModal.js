@@ -36,7 +36,7 @@ class ObjectifSuccessModal extends Component {
               <div className="media-content">
                 <div className="content">
                   <h2>
-                    Congratulations! Objectif completed!
+                    Congratulations! Goal completed!
                   </h2>
                   <table className="table is-bordered">
                     <tbody>
@@ -61,7 +61,7 @@ class ObjectifSuccessModal extends Component {
           }
           success={
             currentObjectif && currentObjectif.id < objectifs.length
-              ? 'Next Objectif'
+              ? 'Next Goal'
               : ''
           }
           onApply={onApply}

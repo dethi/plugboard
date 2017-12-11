@@ -24,6 +24,7 @@ class ChooseComponent extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.component !== this.props.component) {
       const data = nextProps.component.components;
+      if (!data) return;
 
       const components = [];
       const componentsInPalette = [];
