@@ -33,6 +33,9 @@ export class LinkLine {
     this.fabricLines.forEach(line =>
       this.linkA.elementView.boardView.fabricCanvas.remove(line));
 
+    console.log(this.linkA.pos.x / GRID_SIZE);
+    console.log(this.linkA.elementView.pos.x);
+
     this.path = this.linkA.elementView.boardView.controller.gridController.getPath(
       {
         x: Math.floor(this.linkA.pos.x / GRID_SIZE),
@@ -43,6 +46,20 @@ export class LinkLine {
         y: Math.floor(this.linkB.pos.y / GRID_SIZE)
       }
     );
+    console.log(this.path);
+
+    const tplop = this.linkA.elementView.boardView.controller.gridController.getPath(
+      {
+        x: Math.floor(this.linkA.elementView.pos.x),
+        y: Math.floor(this.linkA.elementView.pos.y)
+      },
+      {
+        x: Math.floor(this.linkB.elementView.pos.x),
+        y: Math.floor(this.linkB.elementView.pos.y)
+      }
+    );
+    console.log(tplop);
+
     this.fabricLines = this.createLines(this.on ? 'green' : 'red');
 
     this.linkA.elementView.boardView.fabricCanvas.add(...this.fabricLines);

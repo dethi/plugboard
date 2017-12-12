@@ -134,6 +134,7 @@ export default class BoardController {
     el.pos = newPos;
 
     this.gridController.moveElement(el, this.board.specs[el.specName], oldPos);
+    console.log('onElementMove', newPos);
     this.boardView.moveElement(elId, newPos);
 
     return true;

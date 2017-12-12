@@ -97,6 +97,7 @@ export default class GridController {
   }
 
   getPath(posA, posB) {
+    console.log('getPath', posA, posB);
     const myPath = this.myPathFinding.findPath(posA, posB);
 
     // Need to compress Path
