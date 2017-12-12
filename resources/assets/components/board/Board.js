@@ -32,7 +32,6 @@ class Board extends Component {
   componentDidMount() {
     document.documentElement.classList.add('disable-scroll');
     window.scrollTo(0, 0);
-
     this.boardController = new BoardController(
       this.refs.canvas,
       this.unSelectBlueprint
@@ -44,6 +43,7 @@ class Board extends Component {
     this.stop();
     this.boardController.dispose();
     this.boardController = null;
+    this.props.dispatch(BoardAction.deleteBoardMetaData());
   }
 
   componentWillReceiveProps(nextProps) {
