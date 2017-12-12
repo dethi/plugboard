@@ -33,17 +33,20 @@ export class LinkLine {
     this.fabricLines.forEach(line =>
       this.linkA.elementView.boardView.fabricCanvas.remove(line));
 
+    const boardPos = this.linkA.elementView.boardView.curBoardPos;
+
     this.path = this.linkA.elementView.boardView.controller.gridController.getPath(
       {
-        x: Math.floor(this.linkA.pos.x / GRID_SIZE),
-        y: Math.floor(this.linkA.pos.y / GRID_SIZE)
+        x: Math.floor(this.linkA.pos.x / GRID_SIZE + boardPos.x),
+        y: Math.floor(this.linkA.pos.y / GRID_SIZE + boardPos.y)
       },
       {
-        x: Math.floor(this.linkB.pos.x / GRID_SIZE),
-        y: Math.floor(this.linkB.pos.y / GRID_SIZE)
+        x: Math.floor(this.linkB.pos.x / GRID_SIZE + boardPos.x),
+        y: Math.floor(this.linkB.pos.y / GRID_SIZE + boardPos.y)
       }
     );
-    this.fabricLines = this.createLines(this.on ? 'green' : 'red');
+
+    this.fabricLines = this.createLines(this.on ? 'green' : 'red', boardPos);
 
     this.linkA.elementView.boardView.fabricCanvas.add(...this.fabricLines);
   }
@@ -57,7 +60,7 @@ export class LinkLine {
     this.refresh();
   }
 
-  createLines(color) {
+  createLines(color, boardPos) {
     const lines = [];
 
     let curPos = null;
@@ -90,35 +93,48 @@ export class LinkLine {
     } else {
       this.path.forEach(pos => {
         const realPos = new Vector(
-          pos.x * GRID_SIZE + GRID_SIZE / 2,
-          pos.y * GRID_SIZE + GRID_SIZE / 2
+          (pos.x - boardPos.x) * GRID_SIZE + GRID_SIZE / 2,
+          (pos.y - boardPos.y) * GRID_SIZE + GRID_SIZE / 2
         );
+
+        // Create Start Line
+        if (!curPos) {
+          lines.push(
+            fabricLine(
+              this.linkA.pos.x + LINK_SIZE / 2,
+              this.linkA.pos.y + LINK_SIZE / 2,
+              realPos.x,
+              realPos.y,
+              color
+            )
+          );
+        }
 
         // Aligne line with the link
         // I'm sure I can opti this shit but to lazy today
         // 40 degree in my room and I nedd to work on the .NET
         if (pos.x !== linkARealPos.x) isXAligneStart = false;
         if (isXAligneStart && !isXAligneEnd) {
-          realPos.x = this.linkA.pos.x + LINK_SIZE / 2;
+          realPos.x = this.linkA.pos.x + LINK_SIZE / 2 + boardPos.x;
         } else {
           if (pos.x === linkBRealPos.x) isXAligneEnd = true;
         }
 
         if (pos.x !== linkBRealPos.x) isXAligneEnd = false;
         if (isXAligneEnd) {
-          realPos.x = this.linkB.pos.x + LINK_SIZE / 2;
+          realPos.x = this.linkB.pos.x + LINK_SIZE / 2 + boardPos.x;
         }
 
         if (pos.y !== linkARealPos.y) isYAligneStart = false;
         if (isYAligneStart && !isYAligneEnd) {
-          realPos.y = this.linkA.pos.y + LINK_SIZE / 2;
+          realPos.y = this.linkA.pos.y + LINK_SIZE / 2 + boardPos.y;
         } else {
           if (pos.y === linkBRealPos.y) isYAligneEnd = true;
         }
 
         if (pos.y !== linkBRealPos.y) isYAligneEnd = false;
         if (isYAligneEnd) {
-          realPos.y = this.linkB.pos.y + LINK_SIZE / 2;
+          realPos.y = this.linkB.pos.y + LINK_SIZE / 2 + boardPos.y;
         }
 
         if (!curPos) {
