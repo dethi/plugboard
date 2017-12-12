@@ -3,12 +3,13 @@
   apt: name={{item}} state=latest
   with_items:
     - php
-    - php-mbstring
-    - php-mysql
-    - php-mongodb
-    - php-zip
-    - php-xml
+    - php-curl
     - php-gd
+    - php-mbstring
+    - php-mongodb
+    - php-mysql
+    - php-xml
+    - php-zip
     - composer
   tags: php
 
