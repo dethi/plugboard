@@ -30,7 +30,7 @@ export default class BoardView {
       selection: false,
       height: this.gridHeight,
       width: this.gridWidth,
-      renderOnAddRemove: true
+      renderOnAddRemove: false
     });
 
     this.leftMin = this.gridSize;
