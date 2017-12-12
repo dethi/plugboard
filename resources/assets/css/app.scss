@@ -30,14 +30,14 @@
 }
 
 .palette {
+    position: fixed;
+    bottom: 0;
 
-    top: 85%;
     overflow: hidden;
     margin: 0 auto;
     left:0px;
     right:0px;
-    max-width: 50%;
-    min-width: 20%;
+    width: 50%;
 
     p {
         margin: auto;
