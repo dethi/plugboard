@@ -75,10 +75,6 @@ class SaveNewBoardModal extends Component {
         title="Save new Board"
         content={
           <div className="content">
-            {this.props.board.preview &&
-              <div>
-                <img src={this.props.board.preview} alt="Preview" />
-              </div>}
             <div className="field">
               <div className="control">
                 <input
@@ -94,6 +90,10 @@ class SaveNewBoardModal extends Component {
                 />
               </div>
             </div>
+            {this.props.board.preview &&
+              <div>
+                <img src={this.props.board.preview} alt="Preview" />
+              </div>}
           </div>
         }
         success="Save"
