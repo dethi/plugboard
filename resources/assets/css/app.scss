@@ -83,13 +83,17 @@
         margin: auto;
         margin-bottom: 20px;
 
-        .image {
-            width: 80px;  /* Or whatever */
-            height: 80px; /* Or whatever */
-            margin: auto;  /* Magic! */
+        .image-square-ratio {
+            margin: auto;
+            width: 80px;
+            height: 80px;
+
+            background-position: center center;
+            background-size: contain;
+            background-repeat: no-repeat;
+
             margin-bottom: 10px;
         }
-
         .title {
             font-size: 20px
         }
