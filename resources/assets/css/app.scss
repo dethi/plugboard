@@ -50,7 +50,7 @@
     }
 
     .component-name {
-        margin-bottom: 5px; 
+        margin-bottom: 5px;
     }
 
     .box {
@@ -111,7 +111,7 @@
             margin: auto;  /* Magic! */
             margin-bottom: 10px;
         }
-        
+
         .title {
             font-size: 20px
         }
@@ -265,17 +265,20 @@ textarea {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: space-evenly;
     }
 
      .box {
-        margin: auto;
-        margin-bottom: 20px;
+        margin-bottom: 1.5rem;
 
-        .image {
-            width: 200px;  /* Or whatever */
-            height: 200px; /* Or whatever */
-            margin: auto;  /* Magic! */
-            margin-bottom: 10px;
+        .image-square-ratio {
+            margin: auto;
+            width: 200px;
+            height: 200px;
+
+            background-position: center center;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
     }
 }
