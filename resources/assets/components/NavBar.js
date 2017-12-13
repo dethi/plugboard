@@ -33,11 +33,6 @@ GuestMenu.PropTypes = {
 function LoggedMenu(props) {
   return (
     <div className="nav-right nav-menu">
-      {/*
-        <figure className="image is-24x24" style={{ marginRight: '8px' }}>
-          <img src={props.profile} alt="Profile" />
-        </figure>
-        */}
       <NavLink
         className="nav-item is-tab"
         to="/profile"
@@ -127,7 +122,11 @@ class NavBar extends Component {
         <div className="container">
           <div className="nav-left">
             <NavLink className="nav-item" to="/" data-tour="logo">
-              <img src="/static/Plugboard-Green.png" alt="Plugboard logo" />
+              <img
+                style={{ width: '184px' }}
+                src="/static/Plugboard-Green.png"
+                alt="Plugboard logo"
+              />
             </NavLink>
           </div>
           {this.props.showControl
