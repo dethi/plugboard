@@ -123,8 +123,8 @@ export default class BoardView {
     this.fabricCanvas.renderAll();
   }
 
-  toggleGridVisibility() {
-    this.isGridVisible = !this.isGridVisible;
+  toggleGridVisibility(isVisible) {
+    this.isGridVisible = isVisible;
     this.fabricGridLines.forEach(el => el.visible = this.isGridVisible);
     this.fabricCanvas.renderAll();
   }
@@ -313,6 +313,8 @@ export default class BoardView {
   }
 
   toPng() {
+    this.toggleGridVisibility(false);
+
     // Ugly
     let minX = 999999999999;
     let maxX = 0;
@@ -328,31 +330,22 @@ export default class BoardView {
       if (pos.y < minY) minY = pos.y;
     });
 
-    if (maxX === 0) {
-      return this.fabricCanvas.toDataURL('png');
-    }
-
-    // Ulgy way to create a square
-    if (maxX - minX < maxY - minY) {
-      maxX = minX + maxY - minY;
-    } else {
-      maxY = minY + maxX - minX;
-    }
-
     minX *= GRID_SIZE;
-    maxX = maxX * GRID_SIZE + GRID_SIZE;
+    maxX = (maxX + 1) * GRID_SIZE;
     minY *= GRID_SIZE;
-    maxY = maxY * GRID_SIZE + GRID_SIZE;
+    maxY = (maxY + 1) * GRID_SIZE;
 
     const options = {
       format: 'png',
-      left: minX - GRID_SIZE * 2.5,
-      top: minY - GRID_SIZE * 2.5,
-      width: maxX - minX + GRID_SIZE * 5,
-      height: maxY - minY + GRID_SIZE * 5
+      left: minX - GRID_SIZE,
+      top: minY - GRID_SIZE,
+      width: maxX - minX + GRID_SIZE * 2,
+      height: maxY - minY + GRID_SIZE * 2
     };
 
-    return this.fabricCanvas.toDataURL(options);
+    const data = this.fabricCanvas.toDataURL(options);
+    this.toggleGridVisibility(true);
+    return data;
   }
 
   getFabricPos(pos) {
