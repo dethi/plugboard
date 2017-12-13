@@ -13,9 +13,10 @@ export default function SelectableElementBoxImg(props) {
         className="image-square-ratio"
         style={{ backgroundImage: `url(${props.img})` }}
       />
-      <div className="content has-text-centered">
-        <strong className="title">{props.title}</strong>
-      </div>
+      {props.title &&
+        <div className="content has-text-centered">
+          <strong className="title">{props.title}</strong>
+        </div>}
     </a>
   );
 }

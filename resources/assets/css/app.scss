@@ -56,10 +56,14 @@
         margin: auto;
         margin-bottom: 20px;
 
-        .image {
-            width: 60px;  /* Or whatever */
-            height: 60px; /* Or whatever */
-            margin: auto;  /* Magic! */
+        .image-square-ratio {
+            margin: auto;
+            width: 60px;
+            height: 60px;
+
+            background-position: center center;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
     }
 }
