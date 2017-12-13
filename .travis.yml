@@ -4,7 +4,8 @@ language: php
 php:
 - '7.1'
 before_install:
-- pyenv global 3.5
+- pyenv versions
+- pyenv global system 3.5
 - echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 - cp .env.example .env
 - mkdir -p bootstrap/cache
