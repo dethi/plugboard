@@ -26,17 +26,9 @@ class NavBarAccueil extends Component {
               <img src="/static/Plugboard-White.png" alt="Plugboard logo" />
             </a>
           </div>
-          <span className="nav-toggle">
-            <span />
-            <span />
-            <span />
-          </span>
           <div className="nav-right nav-menu">
             <a className="nav-item">
               About
-            </a>
-            <a className="nav-item">
-              FAQ
             </a>
             <a className="nav-item">
               Contact
