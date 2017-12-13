@@ -30,9 +30,7 @@
 }
 
 .palette {
-    position: fixed;
     bottom: 0;
-
     overflow: hidden;
     margin: 0 auto;
     left:0px;
@@ -143,13 +141,12 @@ textarea {
 
 .on-canvas
 {
-    position: absolute;
-    background-color: white;
+    position: fixed;
 }
 
 .on-canvas-center
 {
-    top: 6%;
+    top: 4rem;
     overflow: hidden;
     margin: 0 auto;
     left:0px;
