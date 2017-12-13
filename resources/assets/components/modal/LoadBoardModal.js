@@ -51,7 +51,7 @@ class LoadBoardModal extends Component {
         modalName={this.state.modalName}
         title="Load Board"
         content={
-          <div className="load-board-modal">
+          <div className="list-elements">
             {loading &&
               <div className="has-text-centered">
                 <span className="icon is-large">

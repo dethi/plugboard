@@ -9,16 +9,13 @@ export default function SelectableElementBoxImg(props) {
       })}
       onClick={props.onClick}
     >
-      <article className="media">
-        <div className="media-content">
-          <figure className="image">
-            <img src={props.img} alt="Board Preview" />
-          </figure>
-          <div className="content has-text-centered">
-            <strong className="title">{props.title}</strong>
-          </div>
-        </div>
-      </article>
+      <div
+        className="image-square-ratio"
+        style={{ backgroundImage: `url(${props.img})` }}
+      />
+      <div className="content has-text-centered">
+        <strong className="title">{props.title}</strong>
+      </div>
     </a>
   );
 }
