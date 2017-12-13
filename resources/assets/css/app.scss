@@ -66,26 +66,6 @@
     }
 }
 
-.load-board-modal {
-    .parent {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .box {
-        margin: auto;
-        margin-bottom: 20px;
-
-        .image {
-            width: 200px;  /* Or whatever */
-            height: 200px; /* Or whatever */
-            margin: auto;  /* Magic! */
-            margin-bottom: 10px;
-        }
-    }
-}
-
 .choose-component-modal {
     .parent {
         display: flex;
