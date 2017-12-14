@@ -5,16 +5,15 @@
   <br>
 </p>
 
-Plugboard is a web platform to learn combinatory logic. Create, assemble, share!
+> Plugboard is a web platform to learn combinatory logic. Create, assemble, share!
 
 ## Features
 
-* **Be creative** in the sandbox mode
-* Learn combinatory logic with diverse **goals**
-* **Load and save** your project
-* Create component and **reuse them** in any project
-* **Share** your component with the community
-* ... and many more!
+* 🎨 **Be creative** in the sandbox mode
+* 🎯 Learn combinatory logic with diverse **goals**
+* 💾 **Load and save** your project
+* 💡 Create component and **reuse them** in any project
+* 📬 **Share** your component with the community
 
 ## Preview
 
