@@ -47,14 +47,11 @@ class ListObjectif extends Component {
 
   handleClickOutside = event => {
     const navBarQuickView = document.getElementById('show-goals');
-    const modalInfo = document.getElementById('modal-info');
     if (
       this.wrapperRef &&
       !this.wrapperRef.contains(event.target) &&
       navBarQuickView &&
-      !navBarQuickView.contains(event.target) &&
-      modalInfo &&
-      !modalInfo.contains(event.target)
+      !navBarQuickView.contains(event.target)
     ) {
       const {
         showQuickView

@@ -105,11 +105,13 @@ const setScoreAsync = (objectif, score) => {
         let value = localStorage.getItem(LocalStorageKey.SCORE);
         try {
           const scores = value ? JSON.parse(value) : [];
-          if (
-            scores[score.objectif_id - 1] &&
-            scores[score.objectif_id - 1].score > score.total
-          ) {
-            scores[score.objectif_id - 1] = score.total;
+          const currentScoreIndex = scores.findIndex(
+            e => e.objectif_id === objectif.id
+          );
+          if (currentScoreIndex !== -1) {
+            if (score.total > scores[currentScoreIndex].score) {
+              scores[currentScoreIndex].score = score.total;
+            }
           } else {
             scores.push({
               objectif_id: objectif.id,
